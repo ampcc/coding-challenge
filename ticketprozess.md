@@ -10,7 +10,7 @@ Unteraufgaben sollten nach bestem Wissen mit Informationen versehen werden (z.B.
 Damit Unteraufgaben nicht untergehen, sollten sie außerdem an ein Aufgabenpaket / Arbeitspaket angehängt werden (siehe nächster Punkt).
 <br>
 ### Beispiel:
-<img src="https://user-images.githubusercontent.com/73745030/227783314-7d416566-7b6a-4928-be7b-b4255196eabd.png" width=50%>
+<img src="https://user-images.githubusercontent.com/73745030/227784418-df082089-6789-4924-b97a-453e0dbe5566.png" width=50%>
 
 ## Aufgabenpakete / Arbeitspakete
 Als Beschreibung eines Aufgabenpakets bzw. Arbeitspakets wird die Option "Add a Task list" (Strg+Shift+I) gewählt und die zugehörigen Unteraufgaben wie folgt eingefügt: <br>
