@@ -26,3 +26,19 @@
 6. Select the virtual-environment as your python-interpreter. Open the Command Pallette by hitting `CMD/CTRL + SHIFT + P`.<br>Now type `Python: Select Interpreter` and choose the virtual-environment located at `./backend/env/bin/python`.
 
 7. Now you are ready to run the backend-server by starting the VS-Code debugger (e.g. `FN + F5`).
+
+<br>
+
+---
+## Problems you might face with Windows
+
+
+1. The Python-CLI might only work with `py` instead of `python`
+2. You <u>won't</u> be able to source in Windows shells
+   <br>
+   <br>
+   > **Solution:** <br> When you create a virtualenv under Windows, python creates a subfolder called 'Scripts' in the 'env' directory which contains a `activate.bat` file. You will have to run this script file. Afterwards, there is the `(env)` before your path in the shell confirming the activation of the virtualenv.
+   <br>
+   <br>
+   If you stil have trouble activating the virtualenv, consider switching from PowerShell (PS) to ComandPrompt (CMD). We recommend selecting the Command Prompt as your default shell in VS Code. To do this, go to the Command Pallette (`CMD/CTRL + SHIFT + P`) and type `Terminal: Select Default Profile`, then choose `Command Prompt`.
+3. VS Code might not identify your virtualenv as another interpreter option (see 6.). You will have to specify the path to the python.exe manually: `.backend\env\Scripts\python.exe`
