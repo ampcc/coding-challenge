@@ -1,4 +1,7 @@
-# Backend Virtual Environment Setup
+# Virual Environment Setup
+
+## Installation
+
 1. Make sure you are running on the latest python3-version (initial version: 3.11.2)
    
    ```
@@ -29,7 +32,6 @@
 
 <br>
 
----
 ## Problems you might face with Windows
 
 
@@ -42,3 +44,52 @@
    <br>
    If you stil have trouble activating the virtualenv, consider switching from PowerShell (PS) to ComandPrompt (CMD). We recommend selecting the Command Prompt as your default shell in VS Code. To do this, go to the Command Pallette (`CMD/CTRL + SHIFT + P`) and type `Terminal: Select Default Profile`, then choose `Command Prompt`.
 3. VS Code might not identify your virtualenv as another interpreter option (see 6.). You will have to specify the path to the python.exe manually: `.backend\env\Scripts\python.exe`
+
+
+---
+
+# Unittests
+
+Django’s unit tests use a Python standard library module: [unittest](https://docs.python.org/3/library/unittest.html#module-unittest).
+
+1. The folder structure of testcases looks like the following:
+   ```
+   demo
+   └── tests
+       ├── __init__.py         # for discovery
+       ├── component1
+       │   ├── __init__.py     # for discovery
+       │   ├── test_case2.py
+       │   └── test_case3.py
+       └──test_case1.py
+   ```
+
+2. To write a Testcase just use `django.test.TestCase`:
+   ```
+   from django.test import TestCase
+   
+   class NewTestCase(TestCase):
+   ```
+
+2. Make sure you are in the same directory as the `manage.py` file.
+
+
+3. To execute **just** the method `method1()` in the test located in `backend/demo/tests/component1/test1.py`, type:
+   ```
+   python3 manage.py test demo.tests.component1.test_case1.method1
+   ```
+
+4. To execute **just** the test located in `backend/demo/tests/component1/test1.py`, type:
+   ```
+   python3 manage.py test demo.tests.component1.test_case1
+   ```
+
+5. To execute **all** tests located beyond `backend/demo/tests/component1/*`, type:
+   ```
+   python3 manage.py test demo.tests.component1
+   ```
+
+6. To execute **all** tests type:
+   ```
+   python3 manage.py test
+   ```
