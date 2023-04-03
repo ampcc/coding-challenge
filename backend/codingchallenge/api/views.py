@@ -6,35 +6,41 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from .models import Test
-from .serializers import TestSerializer
+from .models import Challenge, Application
+from .serializers import TestChallengeSerializer, TestApplicationSerializer
 
-class TestListApiView(APIView):
+
+class TestChallengeApiView(APIView):
     # add permission to check if user is authenticated
     # permission_classes = [permissions.IsAuthenticated]
 
-    name="Test List Api View"
-    description="This is the description"
+    name = "Test Challenge Api View"
+    description = "get challenges or post a new one"
 
     # 1. List all
     def get(self, request, *args, **kwargs):
         '''
-        Versteh ich selber noch nicht wirklich
+        get challenges with following columns:
+            id,
+            challengeHeader,
+            challengeText
         '''
-        todos = Test.objects
-        serializer = TestSerializer(todos, many=True)
+        challenges = Challenge.objects
+        serializer = TestChallengeSerializer(challenges, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 2. Create
     def post(self, request, *args, **kwargs):
         '''
-        Versteh ich selber noch nicht wirklich
+        post challenge with following columns:
+            challengeHeading,
+            challengeText
         '''
         data = {
             'challengeHeading': request.data.get('challengeHeading'),
             'challengeText': request.data.get('challengeText')
         }
-        serializer = TestSerializer(data=data)
+        serializer = TestChallengeSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from .models import Test
-class TestSerializer(serializers.ModelSerializer):
+from .models import Challenge, Application
+
+
+class TestChallengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge
         fields = ["id", "challengeHeading", "challengeText"]

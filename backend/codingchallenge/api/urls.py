@@ -2,9 +2,11 @@
 from django.urls import path, include
 
 from .views import (
-    TestListApiView,
+    TestChallengeApiView,
+    TestApplicationApiView,
 )
 
 urlpatterns = [
-    path('task/', TestListApiView.as_view()),
+    path('challenge/', TestChallengeApiView.as_view()),
+    path('application/', TestApplicationApiView.as_view()),
 ]
