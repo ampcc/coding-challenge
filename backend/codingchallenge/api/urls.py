@@ -6,5 +6,5 @@ from .views import (
 )
 
 urlpatterns = [
-    path('task', TestListApiView.as_view()),
+    path('task/', TestListApiView.as_view()),
 ]

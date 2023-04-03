@@ -11,7 +11,7 @@ from .serializers import TestSerializer
 
 class TestListApiView(APIView):
     # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     name="Test List Api View"
     description="This is the description"
@@ -32,7 +32,7 @@ class TestListApiView(APIView):
         '''
         data = {
             'task': request.data.get('task'),
-            'completed': request.data.get('timestamp'),
+            'extra': request.data.get('extra'),
         }
         serializer = TestSerializer(data=data)
         if serializer.is_valid():
