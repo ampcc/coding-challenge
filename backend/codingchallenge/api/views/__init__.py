@@ -1,0 +1,2 @@
+from .application import TestApplicationApiView
+from .challenge import TestChallengeApiView
