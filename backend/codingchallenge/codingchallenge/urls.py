@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from api import urls as api_urls
+from backend.codingchallenge.api import urls as api_urls
 
 urlpatterns = [
     path('admin-panel/', admin.site.urls),
