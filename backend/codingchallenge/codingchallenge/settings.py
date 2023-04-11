@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,7 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=0^j$x0a94d#l05+336qx9&)o2!ypw7)ijmot9eq9%npff&-#s'
+
+# A .env file for the secret key is needed, to keep it private while using a public repository
+# Due to the way that python handles relative paths, the .env file must be located a folder above 
+# (even though the relative path may say otherwise)
+# --> That is the folder the start command for the django project is executed in
+# --> In python all relative paths are interpreted from the folder which is open in the terminal 
+ 
+load_dotenv('django.env')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
