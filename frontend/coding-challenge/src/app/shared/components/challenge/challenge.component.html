@@ -1,1 +1,78 @@
-<h1>challenge works!</h1>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Challenge</title>
+    <link rel="stylesheet" type="text/css" href="challenge.component.css">
+    <meta charset="UTF-8">
+</head>
+
+
+<body>
+    <div>
+        <h1>Coding Challenge Platform</h1>
+
+        <p>Remaing Time: {{time}}</p>
+        
+
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+            <mat-tab label="Intro">
+                <br>
+
+                <div id="text">
+                    Intro
+                    <br>
+                    {{intro}}
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Challenge">
+                <br>
+                
+                <div id="text">
+                    Challenge
+                    <br>
+                    {{challenge}}
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Upload">
+                <br>
+
+                <div>
+                    Programming Language
+
+                    <mat-form-field appearance="fill">
+                        <select matNativeControl required>
+                          <option value="c">C</option>
+                          <option value="java">Java</option>
+                          <option value="python">Python</option>
+                          <option value="rust">Rust</option>
+                          <option value="other">Other</option>
+                        </select>
+                    </mat-form-field>
+
+                </div>
+
+                <br>
+
+                <div>
+                    Operating System
+
+                    <mat-form-field appearance="fill">
+                        <select matNativeControl required>
+                          <option value="linux">Linux</option>
+                          <option value="windows">Windows</option>
+                          <option value="macos">MacOS</option>
+                          <option value="other">Other</option>
+                        </select>
+                    </mat-form-field>
+
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+</body>
+
+</html>

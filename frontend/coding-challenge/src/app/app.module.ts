@@ -11,6 +11,7 @@ import { AdminApplicationsComponent } from './shared/components/admin-applicatio
 import { AdminChallengesComponent } from './shared/components/admin-challenges/admin-challenges.component';
 import { AdminPasswordComponent } from './shared/components/admin-password/admin-password.component';
 import { AdminEditComponent } from './shared/components/admin-edit/admin-edit.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AdminEditComponent } from './shared/components/admin-edit/admin-edit.co
     MatDialogModule,
     AdminLoginComponent,
     AdminPasswordComponent,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
