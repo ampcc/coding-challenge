@@ -4,8 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DefaultComponent } from './shared/components/default/default.component';
-import { StartComponent } from './shared/components/start/start.component';
-import { ButtonComponent } from './shared/components/button/button.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -15,6 +14,7 @@ import { ButtonComponent } from './shared/components/button/button.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
