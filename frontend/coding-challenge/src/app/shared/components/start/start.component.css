@@ -6,12 +6,14 @@
 }
 
 h1 {
-    font-size: xx-large;
-    margin-bottom: 3em;
+    font-size: 5vw;
+    line-height: 5.5vw;
+    margin-bottom: 1em;
 }
 
 p {
-    font-size: large;
+    font-size: 2vw;
+    line-height: 2.5vw;
 }
 
 .first_line {
@@ -21,7 +23,8 @@ p {
 button {
     margin-top: 3em;
     padding: 1em;
-    font-size: medium;
+    font-size: 1vw;
+    line-height: 1.5vw;
     text-align: center;
     color: white;
     background-color: rgb(20, 20, 20);
@@ -32,6 +35,13 @@ button {
 button:hover {
     box-shadow: 0 0.4em 0.6em 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+}
+
+@media (max-width:1024px) {
+    button {
+        font-size: 1.5vw;
+        line-height: 2vw;
+    }
 }
 
 @media (max-width:890px) {
@@ -46,6 +56,16 @@ button:hover {
         margin-left: 5em;
         margin-right: 5em;
     }
+
+    p {
+        font-size: 3vw;
+        line-height: 3.5vw;
+    }
+
+    button {
+        font-size: 2vw;
+        line-height: 2.5vw;
+    }
 }
 
 @media (max-width:610px) {
@@ -57,31 +77,31 @@ button:hover {
 
 @media (max-width:555px) {
     .main_container {
-        margin-left: 1em;
+        margin-left: 1.5em;
         margin-top: 3em;
-        margin-right: 1em;
+        margin-right: 1.5em;
         padding-bottom: 3em;
     }
 
     h1 {
-        font-size: x-large;
-        margin-bottom: 2em;
+        font-size: 6vw;
+        line-height: 6.5vw;
     }
 
     p {
-        font-size: medium;
-    }
-
-    .first_line {
-        margin-bottom: 2em;
+        font-size: 4vw;
+        line-height: 4.5vw;
     }
 
     button {
-        margin-top: 2em;
-        font-size: small;
+        font-size: 2.5vw;
+        line-height: 3vw;
     }
+}
 
-    br {
-        display: none;
+@media (max-width:555px) {
+    button {
+        font-size: 3vw;
+        line-height: 3.5vw;
     }
 }

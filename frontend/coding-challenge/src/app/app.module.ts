@@ -8,7 +8,7 @@ import { DefaultComponent } from './shared/components/default/default.component'
 @NgModule({
   declarations: [
     AppComponent,
-    DefaultComponent
+    DefaultComponent,
   ],
   imports: [
     BrowserModule,

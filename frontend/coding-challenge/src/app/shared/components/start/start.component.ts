@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-start',
   templateUrl: './start.component.html',
   styleUrls: ['./start.component.css'],
   standalone: true,
-  imports: [MatButtonModule],
 })
+
 export class StartComponent {
 
 }
