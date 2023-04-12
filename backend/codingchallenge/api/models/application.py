@@ -1,29 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
-
-
-# The Default Values can be looked up at: https://docs.djangoproject.com/en/4.1/ref/models/fields/
-
-class Status(models.TextChoices):
-    NOTHING = 0,
-    ACTIVE = 1,
-    PASSIVE = 2
-
-
-class Challenge(models.Model):
-    challengeHeading = models.CharField(max_length=100)
-    challengeText = models.CharField(max_length=5000)
-
-    def __str__(self):
-        return self.challengeId
-
+from .status import Status
 
 class Application(models.Model):
+
     applicationId = models.CharField(max_length=8, blank=False)  # Validate that only Numbers can be Stored.
 
-    # Problem: its not defined now how to deal with authentication in django.
+    # Problem: it is not defined now how to deal with authentication in django.
     # Perhaps `applicationKey` and `applicationId`
-    # has to be in a seperate model,
+    # has to be in a separate model,
     # that supports authentication
 
     # following 3 attributes would be redundant:
@@ -45,3 +29,6 @@ class Application(models.Model):
 
     def __str__(self):
         return self.applicationId
+
+    class Meta:
+        app_label = "api"
