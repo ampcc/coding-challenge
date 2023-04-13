@@ -7,7 +7,7 @@ jobs:
       issues: read
     steps:
       - env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.CCBOT_TOKEN }}
         run: |
           curl -L \
             -H "Accept: application/vnd.github+json" \
