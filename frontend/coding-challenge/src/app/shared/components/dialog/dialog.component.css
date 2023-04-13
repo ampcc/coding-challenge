@@ -12,7 +12,8 @@ h1 {
     margin-bottom: 1em;
 }
 
-p {
+p,
+a {
     font-size: 1vw;
     line-height: 1.5vw;
 }

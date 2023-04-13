@@ -24,7 +24,7 @@ export class StartComponent {
         title: 'Start Coding Challenge',
         description: {
           important: 'Are you sure you want to start the Coding Challenge?',
-          details: 'After starting the Challenge, you will been given three days. The Challenge must be uploaded within this time.'
+          details: 'After starting the Challenge, you will been given three days. <br> The Challenge must be uploaded within this time.'
         },
         buttons: {
           left: { title: 'Start Coding Challenge', look: 'primary' },
