@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 
 export class StartComponent {
-  constructor(public dialog: MatDialog, public router: Router) { }
+  constructor(public dialog: MatDialog, public router: Router, private backendService: BackendService) { }
 
   openDialog(): void {
     console.log("hurra");
@@ -34,11 +34,9 @@ export class StartComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      let backendService = new BackendService();
-
       if (result) {
         // TODO: Real Applicant from URL
-        backendService.startChallenge("test");
+        this.backendService.startChallenge("test");
         console.log("Challenge has been started by test");
 
         this.router.navigate(['/challenge']);
