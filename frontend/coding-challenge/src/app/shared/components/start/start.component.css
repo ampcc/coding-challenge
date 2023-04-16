@@ -6,8 +6,8 @@
 }
 
 h1 {
-    font-size: 5vw;
-    line-height: 5.5vw;
+    font-size: 4vw;
+    line-height: 4.5vw;
     margin-bottom: 1em;
 }
 
@@ -17,7 +17,7 @@ p {
 }
 
 .first_line {
-    margin-bottom: 3em;
+    margin-bottom: 2.5em;
 }
 
 app-button {
