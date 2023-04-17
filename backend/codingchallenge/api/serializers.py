@@ -8,8 +8,8 @@ class TestChallengeSerializer(serializers.ModelSerializer):
         fields = ["id", "challengeHeading", "challengeText"]
 
 
-class TestApplicationSerializer(serializers.ModelSerializer):
+class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = ["id", "applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission", "githubRepo",
-                  "status", "created", "modified"]
+                  "status", "applicantEmail", "created", "modified"]
