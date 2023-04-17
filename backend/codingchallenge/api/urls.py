@@ -9,7 +9,7 @@ from .views import *
 
 urlpatterns = [
     path('challenge/', TestChallengeApiView.TestChallengeApiView.as_view()),
-    path('application/', TestApplicationApiView.TestApplicationApiView.as_view()),
+    path('application/', ApplicationView.as_view()),
 
     path('login/', obtain_auth_token),
     path('testAdminView/', AdminApiView.AdminView.as_view()),
