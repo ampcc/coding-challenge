@@ -1,9 +1,11 @@
 from django.db import models
 
 class Status(models.TextChoices):
-    NOTHING = 0,
-    ACTIVE = 1,
-    PASSIVE = 2
+    INITIAL = 0,
+    CHALLENGE_STARTED = 1,
+    IN_REVIEW = 2,
+    COMPLETED = 3,
+    ARCHIVED = 4,
 
     class Meta:
         app_label = "api"
