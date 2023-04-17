@@ -2,3 +2,4 @@ asgiref==3.6.0
 Django==4.1.7
 sqlparse==0.4.3
 djangorestframework==3.14.0
+django-unixtimestampfield==0.5.0
