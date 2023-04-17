@@ -79,7 +79,6 @@ class AdminApplicationView(APIView):
                 return Response({'detail': 'applicationId already in use'}, status=status.HTTP_409_CONFLICT)
 
             if 'challengeId' in request.data.get('application'):
-                # TODO: random challenge id
                 challengeId = request.data.get('application').get('challengeId')
 
             if 'days' in request.data.get('application'):
