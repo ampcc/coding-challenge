@@ -1,4 +1,5 @@
 from django.db import models
+from unixtimestampfield.fields import UnixTimeStampField
 from .status import Status
 
 class Application(models.Model):
@@ -23,7 +24,7 @@ class Application(models.Model):
     submission = UnixTimeStampField(blank=True, use_numeric=True)
     githubRepo = models.URLField(max_length=200, blank=True)
     status = models.IntegerField(choices=Status.choices,
-                                 default=Status.NOTHING)
+                                 default=Status.INITIAL)
     applicantEmail = models.CharField(max_length=50)
     created = UnixTimeStampField(auto_now_add=True, use_numeric=True)
     modified = UnixTimeStampField(auto_now=True, use_numeric=True)
