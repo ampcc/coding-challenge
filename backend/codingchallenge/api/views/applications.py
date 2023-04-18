@@ -1,3 +1,5 @@
+from django.core import serializers
+import json
 import time
 import random
 
@@ -8,6 +10,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 
 # import model
 from ..models import Application, Challenge
@@ -26,28 +29,14 @@ class AdminApplicationsView(APIView):
     name = "Admin Application View"
     description = "handling all requests for applications as a admin"
 
-    # 1. List all
-    def get(self, request, *args, **kwargs):
-        '''
-        get Application with follwing columns:
-            applicationId,
-            operatingSystem,
-            programingLanguage,
-            expiry,
-            submission,
-            githubRepo,
-            status,
-            created,
-            modified
-        '''
-        applications = Application.objects
-        serializer = ApplicationSerializer(applications, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # default 2 days time for start
+    days = 2
 
-    # 2. Create
+    # 4. Create Application
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#4-create-application
     def post(self, request, *args, **kwargs):
         '''
-        post Application with
+        create Application with
             required arguments:
                 applicationId,
                 applicantEmail
@@ -60,14 +49,12 @@ class AdminApplicationsView(APIView):
         try:
             # random challenge
             challengeId = random.choice(Challenge.objects.all()).id
-            # default 2 days time for start
-            days = 2
 
         except IndexError:
             return Response({'detail': 'there are no challenges in database'},
                             status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-        if len(request.data) == 0:
+        if request.data:
             return Response({'detail': 'body is empty'}, status=status.HTTP_204_NO_CONTENT)
 
         try:
@@ -92,7 +79,7 @@ class AdminApplicationsView(APIView):
             'applicationId': request.data.get('applicationId'),
             'applicantEmail': request.data.get('applicantEmail'),
             'challengeId': challengeId,
-            'expiry': time.time() + days * 24 * 60 * 60
+            'expiry': time.time() + self.days * 24 * 60 * 60
         }
 
         serializer = ApplicationSerializer(data=data)
@@ -102,4 +89,34 @@ class AdminApplicationsView(APIView):
 
             return Response(successObj, status=status.HTTP_201_CREATED)
 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # 5. Edit Application
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#editApplication
+    # /api/admin/applications/{applicationId}
+    def put(self, request, *args, **kwargs):
+        '''
+        create Application with
+            required arguments:
+                applicationId,
+
+
+            optional arguments:
+                applicationStatus
+                applicantEmail
+                challengeId
+                extendDays
+        '''
+
+        applicationId = Application.objects.filter(id=self.kwargs["applicationId"]).first()
+
+        serialized_application = json.loads(serializers.serialize("json", [applicationId]))[0]
+
+        for key in request.data.keys():
+            serialized_application["fields"][key] = request.data[key]
+
+        serializer = ApplicationSerializer(Application, data=serialized_application["fields"])
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
