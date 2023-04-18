@@ -1,52 +1,80 @@
 import time
 
-from django.urls import reverse
+from django.contrib.auth.models import User
 from rest_framework import status
+
+from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
-from ....models.challenge import Challenge
-from ....models.application import Application
+from .....models.challenge import Challenge
+from .....models.application import Application
+
+# Authorization
+from ....auth.mockAuth import MockAuth
 
 
 class test_createApplication(APITestCase):
-    def test_wrongUrl(self):
-        url = '/api/admin/dumb'
-        data = {
-            "applicationId": "TEST1234",
-            "applicantEmail": "hallo@thi.de",
-            "days": 6
-        }
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_wrongDatafields(self):
+    def setUp(self):
+        # Authorization
+        MockAuth.admin(self)
+
+        # Example Challenge in Database
         Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
+
+    def test_missingAuth(self):
+        # remove headers for this test
+        self.client.credentials()
 
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
             "applicantEmail": "hallo@thi.de",
-            "notGivenDatafield": 2
+            "challengeId": 1,
+            "days": 6
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_wrongUrl(self):
+        url = '/api/admin/dumb'
+        data = {
+            "applicationId": "TEST1234",
+            "applicantEmail": "hallo@thi.de",
+            "challengeId": 1,
+            "days": 6
+        }
+        response = self.client.post(url, data, format='json', )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_wrongDatafields(self):
+        url = '/api/admin/applications/'
+        data = {
+            "applicationId": "TEST1234",
+            "applicantEmail": "hallo@thi.de",
+            "notGivenDatafield": 2,
+            "days": 6
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_emptyData(self):
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
-
         url = '/api/admin/applications/'
         data = {}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_noChallenge(self):
+        # delete all challenge objects
+        Challenge.objects.all().delete()
+
         url = '/api/admin/applications/'
         data = {}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     def test_randomChallengeSelection(self):
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
+        # Add more challenges in Database
         Challenge.objects.create(challengeHeading="TestChallenge2", challengeText="This is a Test Challenge2")
         Challenge.objects.create(challengeHeading="TestChallenge3", challengeText="This is a Test Challenge3")
         Challenge.objects.create(challengeHeading="TestChallenge4", challengeText="This is a Test Challenge4")
@@ -70,8 +98,6 @@ class test_createApplication(APITestCase):
         self.assertIn(Challenge.objects.get(id=challengeId), Challenge.objects.all())
 
     def test_correctInput(self):
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
-
         url = '/api/admin/applications/'
         data = {
             "application": {
@@ -97,8 +123,6 @@ class test_createApplication(APITestCase):
         self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
 
     def test_correctInputDefault(self):
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
-
         url = '/api/admin/applications/'
         data = {
             "application": {
@@ -124,8 +148,6 @@ class test_createApplication(APITestCase):
         self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
 
     def test_multipleIds(self):
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
-
         url = '/api/admin/applications/'
         data = {
             "application": {

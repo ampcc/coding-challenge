@@ -18,8 +18,6 @@ from ...models import Application, Challenge
 from ...serializers import ApplicationSerializer
 
 
-#
-
 ### endpoint: /api/admin/applications
 class AdminApplicationView(APIView):
     # grant permission only for admin user
@@ -73,6 +71,9 @@ class AdminApplicationView(APIView):
             return Response({'detail': 'body is empty'}, status=status.HTTP_204_NO_CONTENT)
 
         try:
+
+            if not len(request.data.get('application').get('applicationId')) == 8:
+                return Response({'detail': 'applicationId has the wrong length'}, status=status.HTTP_400_BAD_REQUEST)
 
             if Application.objects.all().filter(
                     applicationId=request.data.get('application').get('applicationId')):
