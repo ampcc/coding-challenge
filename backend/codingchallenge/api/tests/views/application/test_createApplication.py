@@ -82,10 +82,8 @@ class test_createApplication(APITestCase):
 
         url = '/api/admin/applications/'
         data = {
-            "application": {
-                "applicationId": "TEST1234",
-                "applicantEmail": "hallo@thi.de",
-            }
+            "applicationId": "TEST1234",
+            "applicantEmail": "hallo@thi.de",
         }
         response = self.client.post(url, data, format='json')
 
@@ -100,12 +98,10 @@ class test_createApplication(APITestCase):
     def test_correctInput(self):
         url = '/api/admin/applications/'
         data = {
-            "application": {
-                "applicationId": "TEST1234",
-                "applicantEmail": "hallo@thi.de",
-                "challengeId": 1,
-                "days": 6
-            }
+            "applicationId": "TEST1234",
+            "applicantEmail": "hallo@thi.de",
+            "challengeId": 1,
+            "days": 6
         }
         response = self.client.post(url, data, format='json')
 
@@ -125,10 +121,8 @@ class test_createApplication(APITestCase):
     def test_correctInputDefault(self):
         url = '/api/admin/applications/'
         data = {
-            "application": {
-                "applicationId": "TEST1234",
-                "applicantEmail": "hallo@thi.de",
-            }
+            "applicationId": "TEST1234",
+            "applicantEmail": "hallo@thi.de",
         }
         response = self.client.post(url, data, format='json')
 
@@ -150,12 +144,10 @@ class test_createApplication(APITestCase):
     def test_multipleIds(self):
         url = '/api/admin/applications/'
         data = {
-            "application": {
-                "applicationId": "TEST1234",
-                "applicantEmail": "hallo@thi.de",
-                "challengeId": 1,
-                "days": 2
-            }
+            "applicationId": "TEST1234",
+            "applicantEmail": "hallo@thi.de",
+            "challengeId": 1,
+            "days": 2
         }
         response1 = self.client.post(url, data, format='json')
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
@@ -166,20 +158,16 @@ class test_createApplication(APITestCase):
     def test_wrongApplicationIdLength(self):
         url = '/api/admin/applications/'
         data = {
-            "application": {
-                "applicationId": "TEST123412312312312312",
-                "applicantEmail": "hallo@thi.de",
-                "challengeId": 1,
-                "days": 6
-            }
+            "applicationId": "TEST123412312312312312",
+            "applicantEmail": "hallo@thi.de",
+            "challengeId": 1,
+            "days": 6
         }
         data2 = {
-            "application": {
-                "applicationId": "TEST4",
-                "applicantEmail": "hallo@thi.de",
-                "challengeId": 1,
-                "days": 6
-            }
+            "applicationId": "TEST4",
+            "applicantEmail": "hallo@thi.de",
+            "challengeId": 1,
+            "days": 6
         }
         response = self.client.post(url, data, format='json')
         response2 = self.client.post(url, data2, format='json')
