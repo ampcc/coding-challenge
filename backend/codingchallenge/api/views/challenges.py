@@ -1,10 +1,13 @@
 from django.core import serializers
 import json
 
+# Authentication imports
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+
+# RESTapi imports
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from ...models import Challenge
 from ...serializers import ChallengeSerializer

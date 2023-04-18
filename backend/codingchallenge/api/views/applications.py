@@ -4,7 +4,6 @@ import random
 
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from django.contrib.auth.models import User
 
 # RESTapi imports
 from rest_framework import status
@@ -17,6 +16,8 @@ from ..models import Application, Challenge
 # import serializer
 from ..serializers import ApplicationSerializer
 
+# import errorMessage class
+from . import errorMessage
 
 ### endpoint: /api/admin/applications
 class AdminApplicationView(APIView):
