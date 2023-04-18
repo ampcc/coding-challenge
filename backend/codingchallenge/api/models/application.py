@@ -1,8 +1,13 @@
 from django.db import models
 from unixtimestampfield.fields import UnixTimeStampField
-from .status import Status
 
 class Application(models.Model):
+    class Status(models.IntegerChoices):
+        INITIAL = 0
+        CHALLENGE_STARTED = 1
+        IN_REVIEW = 2
+        COMPLETED = 3
+        ARCHIVED = 4
 
     applicationId = models.CharField(max_length=8, blank=False)  # Validate that only Numbers can be Stored.
 
