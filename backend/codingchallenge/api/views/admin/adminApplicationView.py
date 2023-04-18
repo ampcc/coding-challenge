@@ -23,7 +23,7 @@ from ...serializers import ApplicationSerializer
 ### endpoint: /api/admin/applications
 class AdminApplicationView(APIView):
     # grant permission only for admin user
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     name = "Admin Application View"
     description = "handling all requests for applications as a admin"
