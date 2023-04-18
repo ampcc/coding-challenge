@@ -4,14 +4,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ...models import Challenge, Application
-from ...serializers import TestChallengeSerializer
+from ...serializers import TestChallengeSerializer, TestApplicationSerializer
 
 
 # This view returnes a spefific challenge which id is passed through the url
 # Only this challenge is returned, assuming there are no duplicate ids  
 class GetChallengeApplicationApiView(APIView):
-    # add permission to check if user is authenticated
-    permission_classes = [IsAuthenticated]
+    # check if user is authenticated
+    # permission_classes = [IsAuthenticated]
 
     name = "Get Challenge Application Api View"
     description = "get a specific challenge as an applicant"
@@ -25,6 +25,15 @@ class GetChallengeApplicationApiView(APIView):
             challengeText
         '''
         
-        # challenge = Challenge.objects.filter(challengeId=challengeId)
-        # serializer = TestChallengeSerializer(challenge)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            application = Application.objects.get(id=applicationId).challengeId
+            try:
+                challengeOfSpecificApplication = Challenge.objects.get(id=application.challengeId)
+                serializer = TestChallengeSerializer(challengeOfSpecificApplication)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            
+            except:
+                return Response("The applications challenge can not be found!", status=status.HTTP_404_NOT_FOUND)
+            
+        except:
+            return Response("The referenced application can not be found!", status=status.HTTP_404_NOT_FOUND)
