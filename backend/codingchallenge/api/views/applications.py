@@ -75,6 +75,9 @@ class AdminApplicationsView(APIView):
         except AttributeError:
             return Response({'detail': 'wrong json attributes'}, status=status.HTTP_400_BAD_REQUEST)
 
+        except TypeError:
+            return Response({'detail': 'wrong json attributes'}, status=status.HTTP_400_BAD_REQUEST)
+
         data = {
             'applicationId': request.data.get('applicationId'),
             'applicantEmail': request.data.get('applicantEmail'),
@@ -111,6 +114,8 @@ class AdminApplicationsView(APIView):
         applicationId = Application.objects.filter(id=self.kwargs["applicationId"]).first()
 
         serialized_application = json.loads(serializers.serialize("json", [applicationId]))[0]
+
+        print(serialized_application)
 
         for key in request.data.keys():
             serialized_application["fields"][key] = request.data[key]
