@@ -72,25 +72,25 @@ class AdminApplicationsView(APIView):
 
         try:
 
-            if not len(request.data.get('application').get('applicationId')) == 8:
+            if not len(request.data.get('applicationId')) == 8:
                 return Response({'detail': 'applicationId has the wrong length'}, status=status.HTTP_400_BAD_REQUEST)
 
             if Application.objects.all().filter(
-                    applicationId=request.data.get('application').get('applicationId')):
+                    applicationId=request.data.get('applicationId')):
                 return Response({'detail': 'applicationId already in use'}, status=status.HTTP_409_CONFLICT)
 
-            if 'challengeId' in request.data.get('application'):
-                challengeId = request.data.get('application').get('challengeId')
+            if 'challengeId' in request.data:
+                challengeId = request.data.get('challengeId')
 
-            if 'days' in request.data.get('application'):
-                days = request.data.get('application').get('days')
+            if 'days' in request.data:
+                days = request.data.get('days')
 
         except AttributeError:
             return Response({'detail': 'wrong json attributes'}, status=status.HTTP_400_BAD_REQUEST)
 
         data = {
-            'applicationId': request.data.get('application').get('applicationId'),
-            'applicantEmail': request.data.get('application').get('applicantEmail'),
+            'applicationId': request.data.get('applicationId'),
+            'applicantEmail': request.data.get('applicantEmail'),
             'challengeId': challengeId,
             'expiry': time.time() + days * 24 * 60 * 60
         }
