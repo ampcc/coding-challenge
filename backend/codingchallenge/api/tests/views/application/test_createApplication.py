@@ -51,8 +51,8 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
-            "applicantEmail": "hallo@thi.de",
-            "notGivenDatafield": 2,
+            "wrongDatafield": "hallo@thi.de",
+            "challengeId": 2,
             "days": 6
         }
         response = self.client.post(url, data, format='json')
