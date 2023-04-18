@@ -10,6 +10,8 @@ from .. import errorMessage
 class ChallengesAdminView(APIView):
     permission_classes = [IsAdminUser]
 
+    # /api/admin/challenges
+    # /api/admin/challenges/<challengeId>
     def get(self, request, *args, **kwargs):
         if kwargs.keys():
             # getChallenge
@@ -25,6 +27,14 @@ class ChallengesAdminView(APIView):
             challenges = Challenge.objects.all()
             serializer = ChallengeSerializer(challenges, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # /api/admin/challenges
+    def post(self, request, *args, **kwargs):
+        serializer = ChallengeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Challenges(APIView):
     permission_classes = [IsAuthenticated]
