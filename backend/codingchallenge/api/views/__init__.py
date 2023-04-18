@@ -1,1 +1,1 @@
-from .challenge import Challenges
+from .challenge import challenges
