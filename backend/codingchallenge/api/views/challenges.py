@@ -9,12 +9,20 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ...models import Challenge
-from ...serializers import ChallengeSerializer
-from .. import errorMessage
+# import model
+from ..models import Challenge
+
+# import serializer
+from ..serializers import ChallengeSerializer
+
+# import errorMessage class
+from . import errorMessage
 
 class AdminChallengesView(APIView):
     permission_classes = [IsAdminUser]
+
+    name = "Admin Challenges View"
+    description = "handling all requests for challenges as a admin"
 
     # /api/admin/challenges
     # /api/admin/challenges/<challengeId>
@@ -68,3 +76,6 @@ class AdminChallengesView(APIView):
 
 class Challenges(APIView):
     permission_classes = [IsAuthenticated]
+
+    name = "Applicant Challenges View"
+    description = "handling all requests for challenges as a applicant"

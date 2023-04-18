@@ -1,4 +1,3 @@
-import math
 import time
 import random
 
@@ -20,7 +19,7 @@ from ..serializers import ApplicationSerializer
 from . import errorMessage
 
 ### endpoint: /api/admin/applications
-class AdminApplicationView(APIView):
+class AdminApplicationsView(APIView):
     # grant permission only for admin user
     permission_classes = [IsAdminUser]
 

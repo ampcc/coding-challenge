@@ -8,7 +8,7 @@ from .views import applications, challenges
 # Endpoint Definition
 
 urlpatterns = [
-    path('admin/applications/', applications.AdminApplicationView.as_view()),
+    path('admin/applications/', applications.AdminApplicationsView.as_view()),
 
     path('admin/challenges/<challengeId>', challenges.AdminChallengesView.as_view(), name="challengeId"),
     path('admin/challenges', challenges.AdminChallengesView.as_view()),
