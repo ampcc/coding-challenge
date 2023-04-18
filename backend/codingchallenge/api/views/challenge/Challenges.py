@@ -53,5 +53,15 @@ class ChallengesAdminView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # /api/admin/challenges/<challengeId>
+    def delete(self, request, *args, **kwargs):
+        challenge = Challenge.objects.filter(id=self.kwargs["challengeId"]).first()
+        try:
+            challenge.delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+
 class Challenges(APIView):
     permission_classes = [IsAuthenticated]
