@@ -12,6 +12,11 @@ urlpatterns = [
     
     path('admin/applications/', applications.AdminApplicationsView.as_view()),
     path('admin/applications/<applicationId>', applications.AdminApplicationsView.as_view(), name="applicationId"),
+    path('challenge/', TestChallengeApiView.TestChallengeApiView.as_view()),
+    path('/api/admin/challenges', GetChallengesAdminApiView.GetChallengesAdminApiView.as_view()),
+    path('/api/admin/challenges/<int:challengeId>', GetChallengeAdminApiView.GetChallengeAdminApiView.as_view()),
+    path('/api/application/challenges/<int:applicationId>', GetChallengeApplicationApiView.GetChallengeApplicationApiView.as_view()),
+    path('application/', TestApplicationApiView.TestApplicationApiView.as_view()),
 
     path('admin/challenges', challenges.AdminChallengesView.as_view()),
     path('admin/challenges/<challengeId>', challenges.AdminChallengesView.as_view(), name="challengeId"),
