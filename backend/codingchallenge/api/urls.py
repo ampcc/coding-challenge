@@ -2,17 +2,14 @@
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token 
 
-from .views import *
+from .views import applications
 
 
 # Endpoint Definition
 
 urlpatterns = [
-    path('challenge/', TestChallengeApiView.TestChallengeApiView.as_view()),
-    path('admin/applications/', adminApplicationView.AdminApplicationView.as_view()),
+    path('admin/applications/', applications.AdminApplicationView.as_view()),
 
     path('login/', obtain_auth_token),
-    path('testAdminView/', AdminApiView.AdminView.as_view()),
-    path('testApplicantView/', ApplicantApiView.ApplicantView.as_view()),
-    path('createApplicant/', AdminApiView.addApplicant.as_view()),
+
 ]

@@ -12,10 +12,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 # import model
-from ...models import Application, Challenge
+from ..models import Application, Challenge
 
 # import serializer
-from ...serializers import ApplicationSerializer
+from ..serializers import ApplicationSerializer
 
 
 ### endpoint: /api/admin/applications
