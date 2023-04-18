@@ -162,3 +162,27 @@ class test_createApplication(APITestCase):
 
         response2 = self.client.post(url, data, format='json')
         self.assertEqual(response2.status_code, status.HTTP_409_CONFLICT)
+
+    def test_wrongApplicationIdLength(self):
+        url = '/api/admin/applications/'
+        data = {
+            "application": {
+                "applicationId": "TEST123412312312312312",
+                "applicantEmail": "hallo@thi.de",
+                "challengeId": 1,
+                "days": 6
+            }
+        }
+        data2 = {
+            "application": {
+                "applicationId": "TEST4",
+                "applicantEmail": "hallo@thi.de",
+                "challengeId": 1,
+                "days": 6
+            }
+        }
+        response = self.client.post(url, data, format='json')
+        response2 = self.client.post(url, data2, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response2.status_code, status.HTTP_400_BAD_REQUEST)
