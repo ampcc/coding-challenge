@@ -8,8 +8,8 @@ from .views import *
 # Endpoint Definition
 
 urlpatterns = [
-    path('admin/challenges/<challengeId>', challenges.ChallengesAdminView.as_view(), name="challengeId"), 
-    path('admin/challenges', challenges.ChallengesAdminView.as_view()),     
+    path('admin/challenges/<challengeId>', challenges.AdminChallengesView.as_view(), name="challengeId"), 
+    path('admin/challenges', challenges.AdminChallengesView.as_view()),     
     path('challenges/', challenges.Challenges.as_view()),
 
     path('login/', obtain_auth_token),
