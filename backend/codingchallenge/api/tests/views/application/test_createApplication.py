@@ -60,7 +60,7 @@ class test_createApplication(APITestCase):
 
     def test_emptyData(self):
         url = '/api/admin/applications/'
-        data = {}
+        data = ""
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
@@ -69,7 +69,12 @@ class test_createApplication(APITestCase):
         Challenge.objects.all().delete()
 
         url = '/api/admin/applications/'
-        data = {}
+        data = {
+            "applicationStatus": 2,
+            "applicantEmail": "Test@thi.de",
+            "challengeId": 1,
+            "extendDays": 2
+        }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
 
