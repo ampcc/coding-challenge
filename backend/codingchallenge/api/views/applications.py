@@ -54,7 +54,7 @@ class AdminApplicationsView(APIView):
             return Response({'detail': 'there are no challenges in database'},
                             status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-        if request.data:
+        if not request.data:
             return Response({'detail': 'body is empty'}, status=status.HTTP_204_NO_CONTENT)
 
         try:
@@ -70,7 +70,7 @@ class AdminApplicationsView(APIView):
                 challengeId = request.data.get('challengeId')
 
             if 'days' in request.data:
-                days = request.data.get('days')
+                self.days = request.data.get('days')
 
         except AttributeError:
             return Response({'detail': 'wrong json attributes'}, status=status.HTTP_400_BAD_REQUEST)
@@ -100,28 +100,48 @@ class AdminApplicationsView(APIView):
     def put(self, request, *args, **kwargs):
         '''
         create Application with
-            required arguments:
-                applicationId,
-
-
             optional arguments:
                 applicationStatus
                 applicantEmail
                 challengeId
                 extendDays
         '''
+        allowedFields = ['applicationStatus', 'applicantEmail', 'challengeId', 'extendDays']
 
-        applicationId = Application.objects.filter(id=self.kwargs["applicationId"]).first()
+        applicationId = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
 
         serialized_application = json.loads(serializers.serialize("json", [applicationId]))[0]
 
-        print(serialized_application)
+        statusCode = statusCode = status.HTTP_200_OK
 
         for key in request.data.keys():
-            serialized_application["fields"][key] = request.data[key]
+            if key in allowedFields:
+                if key == allowedFields[0]:
+                    if request.data.get(key) in Application.Status.values:
+                        serialized_application['fields']['status'] = request.data.get(key)
+                    else:
+                        statusCode = status.HTTP_400_BAD_REQUEST
+                        break
+                if key == allowedFields[1]:
+                    serialized_application['fields'][key] = request.data.get(key)
+                if key == allowedFields[2]:
+                    if Challenge.objects.filter(id=request.data.get(key)):
+                        serialized_application['fields'][key] = request.data.get(key)
+                    else:
+                        statusCode = status.HTTP_400_BAD_REQUEST
+                        break
+                if key == allowedFields[3]:
+                    timeStamp = time.time() + request.data.get(key) * 24 * 60 * 60
+                    serialized_application['fields']['expiry'] = timeStamp
+            else:
+                statusCode = status.HTTP_400_BAD_REQUEST
+                break
 
-        serializer = ApplicationSerializer(Application, data=serialized_application["fields"])
+
+        serializer = ApplicationSerializer(applicationId, data=serialized_application["fields"])
+
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(serializer.data, status=statusCode)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
