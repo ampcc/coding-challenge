@@ -11,4 +11,4 @@ class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = ["id", "applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission", "githubRepo",
-                  "status", "applicantEmail", "created", "modified"]
+                  "status", "applicantEmail", "created", "modified", "user"]
