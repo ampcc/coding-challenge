@@ -207,7 +207,6 @@ class AdminApplicationsView(APIView):
         application.delete()
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
-
 ### endpoint: /api/submitApplication
 class SubmitApplicationView(APIView):
     permission_classes = [IsAuthenticated]
@@ -219,7 +218,8 @@ class SubmitApplicationView(APIView):
         return Response({"success": "true"})
 
 # Implementation of GET Application Status
-class ApplicationsView(APIView):
+### endpoint: /api/getApplicationStatus
+class StatusApplicationView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, *args, **kwargs):

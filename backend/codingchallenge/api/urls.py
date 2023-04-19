@@ -12,11 +12,11 @@ urlpatterns = [
     
     path('admin/applications/', applications.AdminApplicationsView.as_view()),
     path('admin/applications/<applicationId>', applications.AdminApplicationsView.as_view(), name="applicationId"),
-    path('application', applications.ApplicationsView.as_view()),
 
     path('admin/challenges', challenges.AdminChallengesView.as_view()),
     path('admin/challenges/<challengeId>', challenges.AdminChallengesView.as_view(), name="challengeId"),
 
     path('application/loginWithKey', obtain_auth_token),
+    path('application/getApplicationStatus', applications.StatusApplicationView.as_view()),
     path('application/submitChallenge', applications.SubmitApplicationView.as_view())
 ]
