@@ -13,7 +13,7 @@ class test_deleteApplication(APITestCase):
         MockAuth.admin(self)
 
         # default url
-        Application.objects.create(applicationId="TEST1234", applicantEmail="Test@thi.de", challengeId=1, expiry=0)
+        Application.objects.create(applicationId="TEST1234", applicantEmail="Test@thi.de", challengeId=1, expiry=0, user_id=1)
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
 
     def test_missingAuth(self):

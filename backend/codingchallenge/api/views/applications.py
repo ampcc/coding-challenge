@@ -186,6 +186,27 @@ class AdminApplicationsView(APIView):
         application.delete()
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
+class ResultApplicationView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request, *args, **kwargs):
+        """
+        get Result from github
+            query:
+                applicationId
+        """
+        try:
+            application = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
+
+            if not application:
+                raise TypeError
+
+        except(KeyError, TypeError):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        # dummy data
+        return Response({"resultobj": "compiled"}, status=status.HTTP_200_OK)
+
 
 ### endpoint: /api/submitApplication
 class SubmitApplicationView(APIView):
