@@ -1,27 +1,21 @@
-from django.core import serializers
 import json
-import time
 import random
+import time
 
-# Authentication imports
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
-
-# RESTapi imports
+from django.core import serializers
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-# import model
-from ..models import Application, Challenge
-
-# import serializer
-from ..serializers import ApplicationSerializer
-
-# import errorMessage class
 from . import jsonMessages
 
+from ..models import Application, Challenge
 
-### endpoint: /api/admin/applications
+from ..serializers import ApplicationSerializer
+
+
+# endpoint: /api/admin/applications
 class AdminApplicationsView(APIView):
     # grant permission only for admin user
     permission_classes = [IsAdminUser]
@@ -122,7 +116,7 @@ class AdminApplicationsView(APIView):
 
         serialized_application = json.loads(serializers.serialize("json", [application]))[0]
 
-        statusCode = statusCode = status.HTTP_200_OK
+        statusCode = status.HTTP_200_OK
 
         if request.data:
             for key in request.data.keys():

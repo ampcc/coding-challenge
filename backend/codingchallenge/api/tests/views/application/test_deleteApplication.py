@@ -1,20 +1,10 @@
-import json
-import time
-from django.core import serializers
-
-from django.contrib.auth.models import User
 from rest_framework import status
-
-from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
-from ....models.challenge import Challenge
-from ....models.application import Application
-
-# Authorization
 from ...auth.mockAuth import MockAuth
-
+from ....models.application import Application
 from ....views import jsonMessages
+
 
 class test_deleteApplication(APITestCase):
 
@@ -25,7 +15,6 @@ class test_deleteApplication(APITestCase):
         # default url
         Application.objects.create(applicationId="TEST1234", applicantEmail="Test@thi.de", challengeId=1, expiry=0)
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
-
 
     def test_missingAuth(self):
         # remove headers for this test
@@ -75,4 +64,3 @@ class test_deleteApplication(APITestCase):
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, jsonMessages.successJsonResponse())
-
