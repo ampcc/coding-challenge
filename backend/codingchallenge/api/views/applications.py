@@ -1,5 +1,7 @@
 import time
 import random
+import secrets
+import string
 
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -89,8 +91,13 @@ class AdminApplicationsView(APIView):
         except AttributeError:
             return Response({'detail': 'wrong json attributes'}, status=status.HTTP_400_BAD_REQUEST)
 
+        alphabet = string.ascii_letters + string.digits
+        passphrase = ''.join(secrets.choice(alphabet) for i in range(8))
+
+        print(passphrase)
+
         user = User.objects.create_user(username=request.data.get('applicationId'),
-                                 password='user')
+                                 password=passphrase)
         user.save()
 
         data = {
@@ -113,8 +120,10 @@ class AdminApplicationsView(APIView):
 
 ### endpoint: /api/submitApplication
 class SubmitApplicationView(APIView):
-
+ 
     def post(self, request, *args, **kwargs):
-        application = request.user.application.applicationId
-
-        return Response(application)
+        user = User.objects.get(username=request.user.username)
+        user.application.submission = time.time()
+        user.application.save()
+        return Response({"success": "true"})
+    
