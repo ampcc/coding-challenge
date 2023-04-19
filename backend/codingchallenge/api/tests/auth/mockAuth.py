@@ -9,7 +9,14 @@ class MockAuth:
         user = User.objects.create_superuser('admin', 'admin@test.com', "admin")
         user.save()
         token = Token.objects.create(user=user)
+
         testcase.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+
     @staticmethod
-    def applicant(testCase):
-        return 0
+    def applicant(testcase):
+        # Authorisation Header
+        user = User.objects.create_user('user', 'user@test.com', "user")
+        user.save()
+        token = Token.objects.create(user=user)
+
+        testcase.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
