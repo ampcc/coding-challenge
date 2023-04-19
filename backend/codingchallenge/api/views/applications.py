@@ -18,7 +18,7 @@ from . import jsonMessages
 
 from ..models import Application, Challenge
 
-from ..serializers import ApplicationSerializer
+from ..serializers import ApplicationSerializer, ChallengeSerializer
 
 
 # endpoint: /api/admin/applications
@@ -85,12 +85,14 @@ class AdminApplicationsView(APIView):
         user = User.objects.create_user(username=request.data.get('applicationId'),
                                  password=passphrase)
         user.save()
+        print("Note: Passphrase of", request.data.get('applicationId'), "is", passphrase + ".")
 
+        # expiry note: The last possible start of the challenge is days + 3. So the applicant has three days to start the challenge
         data = {
             'applicationId': request.data.get('applicationId'),
             'applicantEmail': request.data.get('applicantEmail'),
             'challengeId': challengeId,
-            'expiry': time.time() + self.days * 24 * 60 * 60,
+            'expiry': time.time() + (self.days + 3) * 24 * 60 * 60,
             'user': user.id
         }
 
@@ -217,3 +219,42 @@ class SubmitApplicationView(APIView):
         user.application.submission = time.time()
         user.application.save()
         return Response({"success": "true"})
+
+
+class StartChallengeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(username=request.user.username)
+        expiryTimestamp = user.application.expiry
+        currentTimestamp = time.time()
+        timestampDifference = expiryTimestamp - currentTimestamp
+
+        # seconds
+        allowedTimeframeToStart = 5 * 24 * 60 * 60
+        allowedTimeframeToFinish = 2 * 24 * 60 * 60
+
+        # applicationIsExpired
+        if timestampDifference > allowedTimeframeToStart:
+            secondsSinceExpiration = currentTimestamp - expiryTimestamp
+            # because the applicant didn't complete the challenge in the timeframe, the application gets archived.
+            user.application.status = Application.Status.ARCHIVED
+           
+            return Response(jsonMessages.errorJsonResponse("Can not start challenge! The application is expired since", secondsSinceExpiration, "seconds!"), status=status.HTTP_410_GONE)
+        # application is still running
+        else:
+            # if the application is even before last three days, the expiration will be set to exactly three days.
+            # otherwise the already short expiration timeframe (< 3 days remains the same)
+            if timestampDifference > allowedTimeframeToFinish:
+                user.application.expiry = time.time() + allowedTimeframeToFinish
+
+        challenge = Challenge.objects.filter(id=request.user.application.challengeId).first()
+        try:   
+            user.application.status = Application.Status.CHALLENGE_STARTED
+            
+            # saves applicationStatus and new expiration date
+            user.application.save()
+            serializer = ChallengeSerializer(challenge, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(jsonMessages.errorJsonResponse("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)
