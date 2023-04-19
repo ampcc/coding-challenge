@@ -109,11 +109,26 @@
                     </div>
                     
                     <div class="mb-3">
-                        <div class="dropzone">
-                            <input type="file" #fileDropRef id="fileDropRef" multiple />
-                            <h3 id="fileDropText">Drag and drop file here</h3>
-                            <h3 id="fileDropText">or</h3>
-                            <label id="fileBrowseText" for="fileDropRef">Browse for file</label>
+                        <div id="DragnDropBlock" appHandlerBundle>
+                            <!-- eventually more excepted filetypes are necessary -->
+                            <input type="file" id="fileHandler" name="file" accept=".zip" (change)="uploadFileHandler($event)" multiple />
+                            <div class="dropFileHeader"> Upload file(s) here or drag file(s) </div>
+                            <div id="infoDropFile"> We accept file(s) in .zip format, maximum size is 5GB </div>
+                        </div>
+
+                        <div class="files-list">
+                            <div class="single-file" *ngFor="let file of fileArray; let i = index">
+                                <div class="info">
+                                    <h4> 
+                                        {{file?.name}}
+                                    </h4>
+                                    <p class="size">
+                                        {{ formatBytes(file?.size) }}
+                                    </p>
+                                    <!-- <progress [value]="file?.progress"></progress> -->
+                                </div>
+                                <label class="delete" (click)="deleteFile(i)">x</label>
+                            </div>
                         </div>
                     </div>
                     

@@ -74,18 +74,17 @@ h1 {
 }
 
 
-
-.dropzone {
+#DragnDropBlock {
     width: 450px;
     height: 200px;
     padding: 2rem;
     text-align: center;
     border: dashed 1px #979797;
     position: relative;
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 
-#fileDropRef{
+#fileHandler {
     opacity: 0;
     position: absolute;
     z-index: 2;
@@ -95,7 +94,7 @@ h1 {
     left: 0;
 }
 
-#fileBrowseText {
+#fileHandlerLabel {
     color: white;
     width: 183px;
     height: 44px;
@@ -104,9 +103,17 @@ h1 {
     padding: 8px 16px;
 }
 
-#fileDropText {
+#fileHandlerLabel:hover {
+    cursor: pointer;
+}
+
+.dropFileHeader {
     font-size: 20px;
     font-weight: 600;
     color: #38424c;
+}
+
+#infoDropFile {
+    color: lightgrey;
 }
 
