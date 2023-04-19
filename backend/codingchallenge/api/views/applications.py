@@ -1,10 +1,16 @@
 import json
 import random
+import secrets
+import string
 import time
 
+# Authentication imports
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from django.contrib.auth.models import User
+
+# RESTapi imports
 from django.core import serializers
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -74,11 +80,18 @@ class AdminApplicationsView(APIView):
         except TypeError:
             return Response(jsonMessages.errorJsonResponse('wrong json attributes'), status=status.HTTP_400_BAD_REQUEST)
 
+        alphabet = string.ascii_letters + string.digits
+        passphrase = ''.join(secrets.choice(alphabet) for i in range(8))
+        user = User.objects.create_user(username=request.data.get('applicationId'),
+                                 password=passphrase)
+        user.save()
+
         data = {
             'applicationId': request.data.get('applicationId'),
             'applicantEmail': request.data.get('applicantEmail'),
             'challengeId': challengeId,
             'expiry': time.time() + self.days * 24 * 60 * 60
+            'user': user.id
         }
 
         serializer = ApplicationSerializer(data=data)
@@ -172,3 +185,14 @@ class AdminApplicationsView(APIView):
 
         application.delete()
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
+
+
+### endpoint: /api/submitApplication
+class SubmitApplicationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        user = User.objects.get(username=request.user.username)
+        user.application.submission = time.time()
+        user.application.save()
+        return Response({"success": "true"})
