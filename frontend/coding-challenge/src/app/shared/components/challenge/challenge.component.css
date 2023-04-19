@@ -45,12 +45,13 @@ h1 {
     overflow: hidden;
 }
 
-#inputOther {
+.inputOther{
     width: 300px;
     margin-top: 20px;
     /* margin-bottom: 20px; */
     margin-left: 225px;
 }
+
 
 #operatingSystem {
     float: left;

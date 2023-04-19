@@ -5,6 +5,10 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule } from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field'; 
 import {NgFor} from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { Challenge } from '../../models/challenge';
+import { Application } from '../../models/application';
 
 @Component({
   standalone: true,
@@ -13,7 +17,8 @@ import {NgFor} from '@angular/common';
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
-    NgFor
+    NgFor,
+    FormsModule
   ],
   selector: 'app-challenge',
   templateUrl: './challenge.component.html',
@@ -22,25 +27,40 @@ import {NgFor} from '@angular/common';
 })
 
 export class ChallengeComponent {
+  challenge: Challenge;
+  applicant: Application;
+  
   public time: string = '2 days 40 hours 35 minutes';
   public heading: string = 'Lorem ipsum';
-  public challenge: string = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+  public challengeText: string = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
 
-  public progLang: boolean = true;
-  public opSys: boolean = true;
+  public hideProgLang: boolean = true;
+  public hideOpSys: boolean = true;
+  public hideSuccess: boolean = true;
+  public hideUpload: boolean = false;
+
+  public os: string = 'default';
+  public pl: string = 'default';
 
   public fileArray: File[] = [];
 
 
   public constructor(private backend: BackendService) {
+    this.challenge = {challengeId: 0, challengeHeading: '',challengeText: ''};
+    this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: "", githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: "", passphrase: "a4Xz!5T%"};
   }
 
 
   public ngOnInit(): void {
-    const challengeInfos = this.backend.getChallenge('');
+    const challengeInfos = this.backend.getChallengeApp("Token " + this.applicant.applicationKey, this.applicant.applicationId.toString())
+        .subscribe((data) => this.challenge = {
+          challengeId: data.challenge.challengeId,
+          challengeHeading: data.challenge.challengeHeading,
+          challengeText: data.challenge.challengeText
+        });
 
     //this.heading = challengeInfos.challengeHeading;
-    //this.challenge = challengeInfos.challengeText;
+    //this.challengeText = challengeInfos.challengeText;
 
     //this.time = this.backend.getApplicant({passwordHash: '', adminKey: '', username: ''} ,0).expiryDate;
   }
@@ -50,9 +70,9 @@ export class ChallengeComponent {
     var selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
 
     if(selectedOption.value == "other") {
-      this.progLang = false;
+      this.hideProgLang = false;
     } else {
-      this.progLang = true;
+      this.hideProgLang = true;
     }
   }
 
@@ -61,9 +81,9 @@ export class ChallengeComponent {
     var selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
 
     if(selectedOption.value == "other") {
-      this.opSys = false;
+      this.hideOpSys = false;
     } else {
-      this.opSys = true;
+      this.hideOpSys = true;
     }
   }
 
@@ -100,4 +120,39 @@ export class ChallengeComponent {
     else if (size >= 1024)       { size = (size / 1024).toFixed(2) + " KB"; }
     return size;
   }
+
+
+  public submitChallenge(): void {
+    let required = false;
+    let resultPl = this.pl;
+    let resultOs = this.os;
+
+    if(resultPl === 'default') {
+      alert('Programming language required');
+      required = true;
+    } else if(resultPl === 'other') {
+      resultPl = (document.getElementById('progLang') as HTMLInputElement).value;
+    }
+
+    if(resultOs === 'default') {
+      alert('Operating system required');
+      required = true;
+    } else if(resultOs === 'other') {
+      resultOs = (document.getElementById('opSys') as HTMLInputElement).value;;
+    }
+
+    if(this.fileArray.length === 0) {
+      alert('No files for upload selected');
+      required = true;
+    }
+
+    if(!required) {
+      alert('Success: ' + resultOs + ', ' + resultPl);
+      this.hideSuccess = false;
+      this.hideUpload = true;
+      this.backend.uploadChallenge("Token" + this.applicant.applicationKey, resultOs, resultPl);
+      this.backend.submitChallenge("Token " + this.applicant.applicationKey);
+    }
+  }
+
 }

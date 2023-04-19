@@ -68,72 +68,82 @@
                 <div id="text">
                     {{heading}}
                     <br>
-                    {{challenge}}
+                    {{challengeText}}
                 </div>
             </mat-tab>
 
             <mat-tab label="Upload">
                 <br>
+                <div [hidden]="hideUpload">
+                    <div>
+                        <div class="mb-3">
+                            <label class="form-label" id="programmingLanguage">Programming Language:</label>
 
-                <div>
-                    <div class="mb-3">
-                        <label class="form-label" id="programmingLanguage">Programming Language:</label>
+                            <select class="form-select" id="selectProgLang" [(ngModel)]="pl" (change)="selectionProgLang()">
+                                <option id="disabledOption" value="default" disabled selected hidden>Programming Language</option>
+                                <option value="java">Java</option>
+                                <option value="c">C</option>
+                                <option value="python">Python</option>
+                                <option value="rust">Rust</option>
+                                <option value="other">Other</option>
+                            </select>
 
-                        <select class="form-select" id="selectProgLang" (change)="selectionProgLang()">
-                            <option id="disabledOption" value="" disabled selected hidden>Programming Language</option>
-                            <option value="java">Java</option>
-                            <option value="c">C</option>
-                            <option value="python">Python</option>
-                            <option value="rust">Rust</option>
-                            <option value="other">Other</option>
-                        </select>
-
-                        <input [hidden]="progLang" class="form-control" id="inputOther" type="text" placeholder="Other programming langugage">
-                    </div>
-                    <br>
-                </div>
-
-                <div>
-                    <div class="mb-3">
-                        <label class="form-label" id="operatingSystem">Operating System:</label>
-
-                        <select class="form-select" id="selectOpSys" (change)="selectionOpSys()">
-                            <option id="disabledOption" value="" disabled selected hidden>Operating System</option>
-                            <option value="linux">Linux</option>
-                            <option value="windows">Windows</option>
-                            <option value="macos">MacOS</option>
-                            <option value="other">Other</option>
-                        </select>
-
-                        <input [hidden]="opSys" class="form-control" id="inputOther" type="text" placeholder="Other operating system">
-                    </div>
-                    
-                    <div class="mb-3">
-                        <div id="DragnDropBlock" appHandlerBundle>
-                            <!-- eventually more excepted filetypes are necessary -->
-                            <input type="file" id="fileHandler" name="file" accept=".zip" (change)="uploadFileHandler($event)" multiple />
-                            <div class="dropFileHeader"> Upload file(s) here or drag file(s) </div>
-                            <div id="infoDropFile"> We accept file(s) in .zip format, maximum size is 5GB </div>
+                            <input [hidden]="hideProgLang" class="form-control inputOther" id="progLang" type="text" placeholder="Other programming langugage">
                         </div>
+                        
+                        <br>
+                    </div>
 
-                        <div class="files-list">
-                            <div class="single-file" *ngFor="let file of fileArray; let i = index">
-                                <div class="info">
-                                    <h4> 
-                                        {{file?.name}}
-                                    </h4>
-                                    <p class="size">
-                                        {{ formatBytes(file?.size) }}
-                                    </p>
-                                    <!-- <progress [value]="file?.progress"></progress> -->
+                    <div>
+                        <div class="mb-3">
+                            <label class="form-label" id="operatingSystem">Operating System:</label>
+
+                            <select class="form-select" id="selectOpSys" [(ngModel)]="os" (change)="selectionOpSys()">
+                                <option id="disabledOption" value="default" disabled selected hidden>Operating System</option>
+                                <option value="linux">Linux</option>
+                                <option value="windows">Windows</option>
+                                <option value="macos">MacOS</option>
+                                <option value="other">Other</option>
+                            </select>
+
+                            <input [hidden]="hideOpSys" class="form-control inputOther" id="opSys" type="text" placeholder="Other operating system">
+                        </div>
+                    </div>    
+                        <div class="mb-3">
+                            <div id="DragnDropBlock" appHandlerBundle>
+                                <!-- eventually more excepted filetypes are necessary -->
+                                <input type="file" id="fileHandler" name="file" accept=".zip" (change)="uploadFileHandler($event)" multiple />
+                                <div class="dropFileHeader"> Upload file(s) here or drag file(s) </div>
+                                <div id="infoDropFile"> We accept file(s) in .zip format, maximum size is 5GB </div>
+                            </div>
+
+                            <div class="files-list">
+                                <div class="single-file" *ngFor="let file of fileArray; let i = index">
+                                    <div class="info">
+                                        <h4> 
+                                            {{file?.name}}
+                                        </h4>
+                                        <p class="size">
+                                            {{ formatBytes(file?.size) }}
+                                        </p>
+                                        <!-- <progress [value]="file?.progress"></progress> -->
+                                    </div>
+                                    <label class="delete" (click)="deleteFile(i)">x</label>
                                 </div>
-                                <label class="delete" (click)="deleteFile(i)">x</label>
                             </div>
                         </div>
-                    </div>
-                    
-                    <button type="button" class="btn btn-dark">Submit Solution</button>
+                      
+                    <button type="button" class="btn btn-dark" (click)="submitChallenge()">Submit Solution</button> 
+                </div>
 
+                <div [hidden]="hideSuccess">
+                    <label>Your solution has been successfully uploaded</label>
+                    <br>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="350" height="350" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                      </svg>
+                    <br>
+                    <label>We will contact you!</label>
                 </div>
             </mat-tab>
         </mat-tab-group>
