@@ -121,7 +121,7 @@ class AdminApplicationsView(APIView):
 ### endpoint: /api/submitApplication
 class SubmitApplicationView(APIView):
  
-    def post(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         user = User.objects.get(username=request.user.username)
         user.application.submission = time.time()
         user.application.save()
