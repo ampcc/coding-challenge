@@ -18,5 +18,6 @@ urlpatterns = [
     path('admin/challenges/<challengeId>', challenges.AdminChallengesView.as_view(), name="challengeId"),
 
     path('application/loginWithKey', obtain_auth_token),
-    path('application/submitChallenge', applications.SubmitApplicationView.as_view())
+    path('application/submitChallenge', applications.SubmitApplicationView.as_view()),
+    path('application/startChallenge', applications.StartChallengeView.as_view())
 ]
