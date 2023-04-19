@@ -9,20 +9,56 @@
 
 
 <body>
-    <div>
+    <div id="elements">
         <h1>Coding Challenge Platform</h1>
 
-        <p>Remaing Time: {{time}}</p>
+        <p id="time">Remaing Time: {{time}}</p>
         
 
-        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" dynamicHeight>
             <mat-tab label="Intro">
                 <br>
 
                 <div id="text">
-                    Intro
+                    Hi applicant,
                     <br>
-                    {{intro}}
+                    <br/>
+                    thank you for taking your time during our first interview and welcome to our <b>Coding Challenge!</b>
+                    <br>
+                    <br/>
+                    This exercise is part of our application process and gives us a quick overview about your technical skills. As you noticed, we switched to English as we know, that developers usually communicate/work using this language, although the company language isn't the same.
+                    <br>
+                    <br/>
+                    Please read the introductions carefully as well as the problem definition, which can be found in the next tab. Nonetheless don't hesitate to ask us any questions about the setup, environment or the challenge itself. Please be prepared to show your running project upon request.
+                    <br>
+                    <br/>
+                    The coding challenge is described in the next tab including an introduction into the task and some user stories. The stories are standing for the scope of the challenge and will help you to understand the task in detail. Our company philosophy is to build high quality software, therefore please focus on quality rather on quantity.
+                    Every User Story should be fully tested by unit tests or more. Feel free to develop test-driven. Even though the challenge includes a visual representation of the exercise, a GUI is not needed. It just needs a basic console line of your choice. Some examples are shown at the end of the task.
+                    <br>
+                    <br/>
+                    About the environment:
+                    <ul>
+                        <li>Feel free to use your preferred coding language and IDE</li>
+                        <li>Tests need to be included</li>
+                        <li>The code can be compiled without errors and is runnable</li>
+                    </ul>
+                    <br/>
+                    Please upload the code <b>within the next 3 days</b> including following information:
+                    <ul>
+                        <li>On which operation system do you code and run the application</li>
+                        <li>Which programming language do you use</li>
+                        <li>Any further information which are needed to run the application</li>
+                    </ul>
+                    If you have any technical questions, please write us an Email.
+                    <br>
+                    <br/>
+                    Please note that there is no right or wrong solutions. The User Stories are representing how we work in our development teams. Clean & tested code is the foundation of our product development.
+                    <br>
+                    <br/>
+                    We are looking forward seeing your solutions to this problem. 
+                    <br>
+                    <br/>
+                    Happy coding.
                 </div>
             </mat-tab>
 
@@ -30,7 +66,7 @@
                 <br>
                 
                 <div id="text">
-                    Challenge
+                    {{heading}}
                     <br>
                     {{challenge}}
                 </div>
@@ -40,33 +76,48 @@
                 <br>
 
                 <div>
-                    Programming Language
+                    <div class="mb-3">
+                        <label class="form-label" id="programmingLanguage">Programming Language:</label>
 
-                    <mat-form-field appearance="fill">
-                        <select matNativeControl required>
-                          <option value="c">C</option>
-                          <option value="java">Java</option>
-                          <option value="python">Python</option>
-                          <option value="rust">Rust</option>
-                          <option value="other">Other</option>
+                        <select class="form-select" id="selectProgLang" (change)="selectionProgLang()">
+                            <option id="disabledOption" value="" disabled selected hidden>Programming Language</option>
+                            <option value="java">Java</option>
+                            <option value="c">C</option>
+                            <option value="python">Python</option>
+                            <option value="rust">Rust</option>
+                            <option value="other">Other</option>
                         </select>
-                    </mat-form-field>
 
+                        <input [hidden]="progLang" class="form-control" id="inputOther" type="text" placeholder="Other programming langugage">
+                    </div>
+                    <br>
                 </div>
 
-                <br>
-
                 <div>
-                    Operating System
+                    <div class="mb-3">
+                        <label class="form-label" id="operatingSystem">Operating System:</label>
 
-                    <mat-form-field appearance="fill">
-                        <select matNativeControl required>
-                          <option value="linux">Linux</option>
-                          <option value="windows">Windows</option>
-                          <option value="macos">MacOS</option>
-                          <option value="other">Other</option>
+                        <select class="form-select" id="selectOpSys" (change)="selectionOpSys()">
+                            <option id="disabledOption" value="" disabled selected hidden>Operating System</option>
+                            <option value="linux">Linux</option>
+                            <option value="windows">Windows</option>
+                            <option value="macos">MacOS</option>
+                            <option value="other">Other</option>
                         </select>
-                    </mat-form-field>
+
+                        <input [hidden]="opSys" class="form-control" id="inputOther" type="text" placeholder="Other operating system">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="dropzone">
+                            <input type="file" #fileDropRef id="fileDropRef" multiple />
+                            <h3 id="fileDropText">Drag and drop file here</h3>
+                            <h3 id="fileDropText">or</h3>
+                            <label id="fileBrowseText" for="fileDropRef">Browse for file</label>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-dark">Submit Solution</button>
 
                 </div>
             </mat-tab>
