@@ -90,7 +90,7 @@ class AdminApplicationsView(APIView):
             'applicationId': request.data.get('applicationId'),
             'applicantEmail': request.data.get('applicantEmail'),
             'challengeId': challengeId,
-            'expiry': time.time() + self.days * 24 * 60 * 60
+            'expiry': time.time() + self.days * 24 * 60 * 60,
             'user': user.id
         }
 
