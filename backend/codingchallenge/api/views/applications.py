@@ -120,7 +120,8 @@ class AdminApplicationsView(APIView):
 
 ### endpoint: /api/submitApplication
 class SubmitApplicationView(APIView):
- 
+    permission_classes = [IsAuthenticated]
+
     def put(self, request, *args, **kwargs):
         user = User.objects.get(username=request.user.username)
         user.application.submission = time.time()
