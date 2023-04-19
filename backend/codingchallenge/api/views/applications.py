@@ -35,7 +35,7 @@ class AdminApplicationsView(APIView):
     # 4. Create Application
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#4-create-application
     def post(self, request, *args, **kwargs):
-        '''
+        """
         create Application with
             required arguments:
                 applicationId,
@@ -44,7 +44,7 @@ class AdminApplicationsView(APIView):
             optional arguments:
                 challengeId
                 days
-        '''
+        """
 
         try:
             # random challenge
@@ -99,26 +99,28 @@ class AdminApplicationsView(APIView):
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#editApplication
     # /api/admin/applications/{applicationId}
     def put(self, request, *args, **kwargs):
-        '''
+        """
         create Application with
+            query:
+                applicationId
             optional arguments:
                 applicationStatus
                 applicantEmail
                 challengeId
                 extendDays
-        '''
+        """
         allowedFields = ['applicationStatus', 'applicantEmail', 'challengeId', 'extendDays']
 
         try:
-            applicationId = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
+            application = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
 
-            if not applicationId:
+            if not application:
                 raise TypeError
 
         except (KeyError, TypeError):
             return Response(jsonMessages.errorJsonResponse('applicationId not found'), status=status.HTTP_404_NOT_FOUND)
 
-        serialized_application = json.loads(serializers.serialize("json", [applicationId]))[0]
+        serialized_application = json.loads(serializers.serialize("json", [application]))[0]
 
         statusCode = statusCode = status.HTTP_200_OK
 
@@ -148,10 +150,31 @@ class AdminApplicationsView(APIView):
         else:
             statusCode = status.HTTP_204_NO_CONTENT
 
-        serializer = ApplicationSerializer(applicationId, data=serialized_application["fields"])
+        serializer = ApplicationSerializer(application, data=serialized_application["fields"])
 
         if serializer.is_valid():
             serializer.save()
 
             return Response(serializer.data, status=statusCode)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # 6. Delete Application
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#6-delete-application
+    # /api/admin/applications/{applicationId}
+    def delete(self, request, *args, **kwargs):
+        """
+        delete Application with
+            query:
+                applicationId
+        """
+        try:
+            application = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
+
+            if not application:
+                raise TypeError
+
+        except(KeyError, TypeError):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        application.delete()
+        return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)

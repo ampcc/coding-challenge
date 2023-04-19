@@ -14,7 +14,6 @@ from ....models.application import Application
 # Authorization
 from ...auth.mockAuth import MockAuth
 
-
 class test_editApplication(APITestCase):
 
     def setUp(self):
@@ -85,7 +84,6 @@ class test_editApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         wantedResponse = json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields']
-
         self.assertEqual(response.data, wantedResponse)
 
     def test_notAllowedDatafields(self):
