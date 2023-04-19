@@ -33,7 +33,10 @@ class test_createApplication(APITestCase):
             "challengeId": 1,
             "days": 6
         }
+        self.assertEqual(Application.objects.count(), 0)
+
         response = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongUrl(self):
@@ -44,7 +47,10 @@ class test_createApplication(APITestCase):
             "challengeId": 1,
             "days": 6
         }
-        response = self.client.post(url, data, format='json', )
+        self.assertEqual(Application.objects.count(), 0)
+
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrongDatafields(self):
@@ -55,13 +61,17 @@ class test_createApplication(APITestCase):
             "challengeId": 2,
             "days": 6
         }
+        self.assertEqual(Application.objects.count(), 0)
+
         response = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_emptyData(self):
         url = '/api/admin/applications/'
         data = ""
         response = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_noChallenge(self):
@@ -91,9 +101,9 @@ class test_createApplication(APITestCase):
             "applicantEmail": "hallo@thi.de",
         }
         response = self.client.post(url, data, format='json')
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Application.objects.count(), 1)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data, jsonMessages.successJsonResponse())
 
         # test if challengeId is a valid random challenge from database
         challengeId = Application.objects.get().challengeId
@@ -108,13 +118,15 @@ class test_createApplication(APITestCase):
             "challengeId": 1,
             "days": 6
         }
+        self.assertEqual(Application.objects.count(), 0)
+
         response = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 1)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data, jsonMessages.successJsonResponse())
 
         timestamp = time.time()
         timestamp = timestamp + 6 * 24 * 60 * 60
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Application.objects.count(), 1)
 
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
         self.assertEqual(Application.objects.get().applicantEmail, 'hallo@thi.de')
@@ -129,13 +141,15 @@ class test_createApplication(APITestCase):
             "applicationId": "TEST1234",
             "applicantEmail": "hallo@thi.de",
         }
+        self.assertEqual(Application.objects.count(), 0)
+
         response = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 1)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data, jsonMessages.successJsonResponse())
 
         timestamp = time.time()
         timestamp = timestamp + 2 * 24 * 60 * 60
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Application.objects.count(), 1)
 
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
         self.assertEqual(Application.objects.get().applicantEmail, 'hallo@thi.de')
@@ -154,10 +168,14 @@ class test_createApplication(APITestCase):
             "challengeId": 1,
             "days": 2
         }
+        self.assertEqual(Application.objects.count(), 0)
+
         response1 = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
 
         response2 = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response2.status_code, status.HTTP_409_CONFLICT)
 
     def test_wrongApplicationIdLength(self):
@@ -174,8 +192,12 @@ class test_createApplication(APITestCase):
             "challengeId": 1,
             "days": 6
         }
-        response = self.client.post(url, data, format='json')
-        response2 = self.client.post(url, data2, format='json')
 
+        self.assertEqual(Application.objects.count(), 0)
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        response2 = self.client.post(url, data2, format='json')
+        self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response2.status_code, status.HTTP_400_BAD_REQUEST)
