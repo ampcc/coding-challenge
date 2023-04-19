@@ -29,6 +29,21 @@ class AdminApplicationsView(APIView):
     name = "Admin Application View"
     description = "handling all requests for applications as a admin"
 
+    def get(self, request, *args, **kwargs):
+        
+        if kwargs.keys():
+            applicationId = self.kwargs["applicationId"]
+            application = Application.objects.filter(id = applicationId).first()
+            try:
+                serializer = ApplicationSerializer(application, many = False)
+                return Response(serializer.data, status = status.HTTP_200_OK)
+            except:
+                return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status = status.HTTP_404_NOT_FOUND)
+        else:
+            applications = Application.objects
+            serializer = ApplicationSerializer(applications, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+    
     # default 2 days time for start
     days = 2
 
@@ -196,3 +211,18 @@ class SubmitApplicationView(APIView):
         user.application.submission = time.time()
         user.application.save()
         return Response({"success": "true"})
+
+class ApplicationsView(APIView):
+    
+   def get(self, request, *args, **kwargs):
+        
+        if kwargs.keys():
+            applicationId = self.kwargs["applicationId"]
+            application = Application.objects.filter(id = applicationId).first()
+            try:
+                applicationStatus = { 
+                    'status': getattr(application, 'status')
+                }
+                return Response(applicationStatus, status = status.HTTP_200_OK)
+            except:
+                return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status = status.HTTP_404_NOT_FOUND)
