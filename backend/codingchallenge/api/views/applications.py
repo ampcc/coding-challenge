@@ -19,7 +19,7 @@ from ..models import Application, Challenge
 from ..serializers import ApplicationSerializer
 
 # import errorMessage class
-from . import errorMessage
+from . import jsonMessages
 
 ### endpoint: /api/admin/applications
 class AdminApplicationsView(APIView):
@@ -51,20 +51,20 @@ class AdminApplicationsView(APIView):
             challengeId = random.choice(Challenge.objects.all()).id
 
         except IndexError:
-            return Response({'detail': 'there are no challenges in database'},
+            return Response(jsonMessages.errorJsonResponse('there are no challenges in database'),
                             status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
         if not request.data:
-            return Response({'detail': 'body is empty'}, status=status.HTTP_204_NO_CONTENT)
+            return Response(jsonMessages.errorJsonResponse('body is empty'), status=status.HTTP_204_NO_CONTENT)
 
         try:
 
             if not len(request.data.get('applicationId')) == 8:
-                return Response({'detail': 'applicationId has the wrong length'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(jsonMessages.errorJsonResponse('applicationId has the wrong length'), status=status.HTTP_400_BAD_REQUEST)
 
             if Application.objects.all().filter(
                     applicationId=request.data.get('applicationId')):
-                return Response({'detail': 'applicationId already in use'}, status=status.HTTP_409_CONFLICT)
+                return Response(jsonMessages.errorJsonResponse('applicationId already in use'), status=status.HTTP_409_CONFLICT)
 
             if 'challengeId' in request.data:
                 challengeId = request.data.get('challengeId')
@@ -73,10 +73,10 @@ class AdminApplicationsView(APIView):
                 self.days = request.data.get('days')
 
         except AttributeError:
-            return Response({'detail': 'wrong json attributes'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(jsonMessages.errorJsonResponse('wrong json attributes'), status=status.HTTP_400_BAD_REQUEST)
 
         except TypeError:
-            return Response({'detail': 'wrong json attributes'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(jsonMessages.errorJsonResponse('wrong json attributes'), status=status.HTTP_400_BAD_REQUEST)
 
         data = {
             'applicationId': request.data.get('applicationId'),
@@ -88,9 +88,8 @@ class AdminApplicationsView(APIView):
         serializer = ApplicationSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            successObj = {"success": "true"}
 
-            return Response(successObj, status=status.HTTP_201_CREATED)
+            return Response(jsonMessages.successJsonResponse(), status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
