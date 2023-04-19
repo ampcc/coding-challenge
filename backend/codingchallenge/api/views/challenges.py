@@ -16,7 +16,7 @@ from ..models import Challenge
 from ..serializers import ChallengeSerializer
 
 # import errorMessage class
-from . import errorMessage
+from . import jsonMessages
 
 class AdminChallengesView(APIView):
     permission_classes = [IsAdminUser]
@@ -35,7 +35,7 @@ class AdminChallengesView(APIView):
                 serializer = ChallengeSerializer(challenge, many=False)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except:
-                return Response(errorMessage.errorJsonResponse("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)     
+                return Response(jsonMessages.errorJsonResponse("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)
         else:
             # getChallenges
             challenges = Challenge.objects.all()
