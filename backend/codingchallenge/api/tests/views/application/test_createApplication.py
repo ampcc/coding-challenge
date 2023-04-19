@@ -12,6 +12,7 @@ from ....models.application import Application
 # Authorization
 from ...auth.mockAuth import MockAuth
 
+from ....views import jsonMessages
 
 class test_createApplication(APITestCase):
 
@@ -70,6 +71,8 @@ class test_createApplication(APITestCase):
     def test_emptyData(self):
         url = '/api/admin/applications/'
         data = ""
+        self.assertEqual(Application.objects.count(), 0)
+
         response = self.client.post(url, data, format='json')
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -85,7 +88,10 @@ class test_createApplication(APITestCase):
             "challengeId": 1,
             "extendDays": 2
         }
+        self.assertEqual(Application.objects.count(), 0)
+
         response = self.client.post(url, data, format='json')
+        self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     def test_randomChallengeSelection(self):
@@ -100,6 +106,8 @@ class test_createApplication(APITestCase):
             "applicationId": "TEST1234",
             "applicantEmail": "hallo@thi.de",
         }
+        self.assertEqual(Application.objects.count(), 0)
+
         response = self.client.post(url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -173,6 +181,7 @@ class test_createApplication(APITestCase):
         response1 = self.client.post(url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response1.data, jsonMessages.successJsonResponse())
 
         response2 = self.client.post(url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
