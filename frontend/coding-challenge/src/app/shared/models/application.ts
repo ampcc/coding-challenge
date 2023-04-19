@@ -1,7 +1,7 @@
-export interface Applicant {
-  applicantId: number;
-  applicantKey: string;
-  passphrase?: string;
+export interface Application {
+  applicationId: string;
+  applicationKey: string;
+  passphrase: string;
   challengeId: number;
   operatingSystem: string;
   programmingLanguage: string;

@@ -1,74 +1,133 @@
 import { Injectable } from '@angular/core';
 import { Admin } from '../shared/models/admin';
-import { Applicant } from '../shared/models/applicant';
+import { Application } from '../shared/models/application';
 import { Challenge } from '../shared/models/challange';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+
+import { Observable, throwError } from 'rxjs';
+import { adminLoginCreds, applicationLoginCreds } from '../shared/models/loginCreds';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendService {
 
-  constructor() { }
-  public editApplicant(admin: Admin, applicant: Applicant): boolean {
+  private backendURL = "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io";
+
+  constructor(private http: HttpClient) { }
+
+  /*---------------------------------------------
+  Applicant API Calls
+  -----------------------------------------------*/
+
+  public loginWithAppKey(_applicationKey: string, _applicationId: string):Observable<any>{
+    var body: applicationLoginCreds = {applicationId: _applicationId, applicationKey: _applicationKey}
+    return this.http.post(this.backendURL + "/api/application/loginWithKey", body);
+  }
+
+  public loginWithPassphrase(_passphrase: string): Observable<any>{
+    const headers = new HttpHeaders().set('passphrase', _passphrase);
+    return this.http.get(this.backendURL + "/api/application/loginWithPassphrase", {'headers': headers});
+  }
+  public getStatus(_applicantToken: string, _applicationId: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
+    return this.http.get(this.backendURL + "/api/application/getApplicationStatus/" + _applicationId, {'headers': headers});
+  }
+
+  public getChallengeApp(_applicantToken: string, _applicationId: string): Observable<any>{
+    const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
+    return this.http.get(this.backendURL + "/api/application/challenges/" + _applicationId, {'headers': headers});
+  }
+
+  public uploadChallenge(_applicantKey: string, _oS: string, _pL: string): boolean{
     return true;
   }
 
-  public getApplicants(admin: Admin): Applicant[] {
-    var a : Applicant  = {
-      applicantId: 0,
-      applicantKey: "",
-      challengeId: 0,
-      operatingSystem: "",
-      programmingLanguage: "",
-      expiryDate: "",
-      submissionDate: "",
-      githubRepoURL: "",
-      status: 0
-    };
-    let res = [a];
-    return res;
+  public submitChallenge(_applicationToken: string): Observable<any>{
+    const headers = new HttpHeaders().set('Authorization', "Token " + _applicationToken);
+    return this.http.get(this.backendURL+'/api/application/submitChallenge', {'headers': headers});
   }
 
-  public getApplicant(admin : Admin, applicantId: number): Applicant {
-    var a : Applicant  = {
-      applicantId: 0,
-      applicantKey: "",
-      challengeId: 0,
-      operatingSystem: "",
-      programmingLanguage: "",
-      expiryDate: "",
-      submissionDate: "",
-      githubRepoURL: "",
-      status: 0
-    };
-    return a;
+  public startChallenge(_applicantToken: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
+    return this.http.get(this.backendURL + "/api/application/startChallenge", {'headers': headers});
   }
 
-  public login(username: string, passwordHash:string): Admin {
-    return {adminId: 0, adminKey: "", passwordHash: "", username: ""};
+
+  /*---------------------------------------------
+  Admin API Calls
+  -----------------------------------------------*/
+
+
+  public loginAdmin(_username: string, _password: string): Observable<any>{
+    var body: adminLoginCreds = {username: _username, password: _password};
+    return this.http.post(this.backendURL + "/api/admin/login", body);
   }
 
-  public getStatus(applicantKey: string): string[]{
-    return ["", ""];
+  public getApplication(_adminToken: string, _applicationId: string): Observable<any>{
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    return this.http.get(this.backendURL + "/api/admin/applications/" + _applicationId, {'headers': headers});
   }
 
-  public getChallenge(applicantKey: string): Challenge{
-    return {challengeId:0,challengeHeading: "",challengeText:""};
+  public getApplications(_adminToken: string, _applicationStatus?: number): Observable<any>{
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    if(typeof _applicationStatus === 'undefined'){
+      return this.http.get(this.backendURL + "/api/admin/applications", {'headers': headers});
+    }else {
+      return this.http.get(this.backendURL + "/api/admin/applications", {'headers': headers, params:{applicationStatus: _applicationStatus}});
+    }
   }
 
-  public uploadChallenge(applicantKey: string, oS: string, pL: string): boolean{
-    return true;
+  public editApplication(_adminToken: string, _applicationId: string, _applicationStatus?: number, _challengeId?: number, _extendDays?: number): Observable<any> {
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    var body = {application: {}};
+    if(typeof _applicationStatus !== 'undefined'){
+      Object.assign(body.application, {applicationStatus: _applicationStatus});
+    }
+    if(typeof _challengeId !== 'undefined'){
+      Object.assign(body.application, {challengeId: _challengeId});
+    }
+    if(typeof _extendDays !== 'undefined'){
+      Object.assign(body.application, {extendDays: _extendDays});
+    }
+    return this.http.put(this.backendURL + "/api/admin/applications/" + _applicationId, body, {'headers': headers});
   }
 
-  public startChallenge(applicantKey: string): boolean {
-    return true;
+  public deleteApplication(_adminToken: string, _applicationId: string): Observable<any>{
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    return this.http.delete(this.backendURL + "/api/admin/applications/" + _applicationId, {'headers': headers});
   }
 
-  public createChallenge(admin: Admin, challengeHead: string, challengeText: string):boolean{
-    return true;
+  public getResult(_adminToken: string, _applicationId: string): Observable<any> {
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    return this.http.get(this.backendURL + "/api/admin/applications/results/" + _applicationId, {'headers': headers});
   }
 
-  public changePassword(admin: Admin, oldPwHash: string, newPwHash: string): boolean{
-    return true;
+  public getChallengeAdm(_adminToken: string, _challengeId: number): Observable<any>{
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    return this.http.get(this.backendURL + "/api/admin/challenges/" + _challengeId, {'headers': headers});
+  }
+
+  public getChallenges(_adminToken: string): Observable<any> {
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    return this.http.get(this.backendURL + "/api/admin/challenges", {'headers': headers});
+  }
+
+  public createChallenge(_adminToken: string, _challenge: Challenge): Observable<any> {
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    var body = {challenge:{challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText}};
+    return this.http.post(this.backendURL + "/api/admin/challenges", body, {'headers': headers});
+  }
+
+  public editChallenge(_adminToken: string, _challenge: Challenge): Observable<any> {
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    var body = {challenge:{challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText}};
+    return this.http.put(this.backendURL + "/api/admin/challenges/" + _challenge.challengeId, body, {'headers': headers});
+  }
+
+  public deleteChallenge(_adminToken: string, _challengeId: number): Observable<any> {
+    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    return this.http.delete(this.backendURL + "/api/admin/challenges/" + _challengeId, {'headers': headers});
   }
 }
