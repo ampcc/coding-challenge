@@ -18,7 +18,7 @@ from . import jsonMessages
 
 from ..models import Application, Challenge
 
-from ..serializers import ApplicationSerializer
+from ..serializers import ApplicationSerializer, ApplicationStatus
 
 
 # endpoint: /api/admin/applications
@@ -29,16 +29,22 @@ class AdminApplicationsView(APIView):
     name = "Admin Application View"
     description = "handling all requests for applications as a admin"
 
+    # Implementation of GET Application and GET Applications
     def get(self, request, *args, **kwargs):
         
+        # if kwargs has keys, then there is a specific call for an exact Application 
+        # -> call is GET Application
         if kwargs.keys():
             applicationId = self.kwargs["applicationId"]
-            application = Application.objects.filter(id = applicationId).first()
+            application = Application.objects.filter(applicationId = applicationId).first()
             try:
                 serializer = ApplicationSerializer(application, many = False)
                 return Response(serializer.data, status = status.HTTP_200_OK)
             except:
                 return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status = status.HTTP_404_NOT_FOUND)
+       
+        # if kwargs is empty, all Applications get returned
+        # -> call is GET Applications
         else:
             applications = Application.objects
             serializer = ApplicationSerializer(applications, many=True)
@@ -96,7 +102,7 @@ class AdminApplicationsView(APIView):
             return Response(jsonMessages.errorJsonResponse('wrong json attributes'), status=status.HTTP_400_BAD_REQUEST)
 
         alphabet = string.ascii_letters + string.digits
-        passphrase = ''.join(secrets.choice(alphabet) for i in range(8))
+        passphrase = ''.join(secrets.choice(alphabet) for i in range(8))    
         user = User.objects.create_user(username=request.data.get('applicationId'),
                                  password=passphrase)
         user.save()
@@ -212,17 +218,12 @@ class SubmitApplicationView(APIView):
         user.application.save()
         return Response({"success": "true"})
 
+# Implementation of GET Application Status
 class ApplicationsView(APIView):
+    permission_classes = [IsAuthenticated]
     
-   def get(self, request, *args, **kwargs):
-        
-        if kwargs.keys():
-            applicationId = self.kwargs["applicationId"]
-            application = Application.objects.filter(id = applicationId).first()
-            try:
-                applicationStatus = { 
-                    'status': getattr(application, 'status')
-                }
-                return Response(applicationStatus, status = status.HTTP_200_OK)
-            except:
-                return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status = status.HTTP_404_NOT_FOUND)
+    def get(self, request, *args, **kwargs):
+            user = User.objects.get(username = request.user.username)
+            application = Application.objects.filter(applicationId = user.username).first()
+            serializer = ApplicationStatus(application, many=False)
+            return Response(serializer.data, status = status.HTTP_200_OK)
