@@ -88,7 +88,6 @@ class test_editApplication(APITestCase):
 
         self.assertEqual(response.data, wantedResponse)
 
-
     def test_notAllowedDatafields(self):
         url = '/api/admin/applications/' + self.applicationId
         data = {
@@ -99,16 +98,16 @@ class test_editApplication(APITestCase):
         }
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data, json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
-
+        self.assertEqual(response.data,
+                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
 
     def test_emptyData(self):
         url = '/api/admin/applications/' + self.applicationId
         data = ""
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(response.data, json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
-
+        self.assertEqual(response.data,
+                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
 
     def test_correctInput(self):
         url = '/api/admin/applications/' + self.applicationId
@@ -120,9 +119,7 @@ class test_editApplication(APITestCase):
         }
         response = self.client.put(url, data, format='json')
 
-
-
-        timestamp = Application.objects.get().expiry
+        timestamp = time.time()
         timestamp = timestamp + 2 * 24 * 60 * 60
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -137,8 +134,8 @@ class test_editApplication(APITestCase):
         # rounds the assertion to seconds
         self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
 
-        self.assertEqual(response.data, json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
-
+        self.assertEqual(response.data,
+                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
 
     def test_nonExistingStatus(self):
         url = '/api/admin/applications/' + self.applicationId
@@ -153,7 +150,8 @@ class test_editApplication(APITestCase):
 
         self.assertNotEqual(Application.objects.get().status, 123123)
 
-        self.assertEqual(response.data, json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
+        self.assertEqual(response.data,
+                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
 
     def test_nonExistingChallengeId(self):
         url = '/api/admin/applications/' + self.applicationId
@@ -167,4 +165,5 @@ class test_editApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         self.assertNotEqual(Application.objects.get().challengeId, 123123)
-        self.assertEqual(response.data, json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
+        self.assertEqual(response.data,
+                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])

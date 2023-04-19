@@ -11,7 +11,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
 # import model
 from ..models import Application, Challenge
 
@@ -20,6 +19,7 @@ from ..serializers import ApplicationSerializer
 
 # import errorMessage class
 from . import jsonMessages
+
 
 ### endpoint: /api/admin/applications
 class AdminApplicationsView(APIView):
@@ -60,11 +60,13 @@ class AdminApplicationsView(APIView):
         try:
 
             if not len(request.data.get('applicationId')) == 8:
-                return Response(jsonMessages.errorJsonResponse('applicationId has the wrong length'), status=status.HTTP_400_BAD_REQUEST)
+                return Response(jsonMessages.errorJsonResponse('applicationId has the wrong length'),
+                                status=status.HTTP_400_BAD_REQUEST)
 
             if Application.objects.all().filter(
                     applicationId=request.data.get('applicationId')):
-                return Response(jsonMessages.errorJsonResponse('applicationId already in use'), status=status.HTTP_409_CONFLICT)
+                return Response(jsonMessages.errorJsonResponse('applicationId already in use'),
+                                status=status.HTTP_409_CONFLICT)
 
             if 'challengeId' in request.data:
                 challengeId = request.data.get('challengeId')
@@ -107,35 +109,44 @@ class AdminApplicationsView(APIView):
         '''
         allowedFields = ['applicationStatus', 'applicantEmail', 'challengeId', 'extendDays']
 
-        applicationId = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
+        try:
+            applicationId = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
+
+            if not applicationId:
+                raise TypeError
+
+        except (KeyError, TypeError):
+            return Response(jsonMessages.errorJsonResponse('applicationId not found'), status=status.HTTP_404_NOT_FOUND)
 
         serialized_application = json.loads(serializers.serialize("json", [applicationId]))[0]
 
         statusCode = statusCode = status.HTTP_200_OK
 
-        for key in request.data.keys():
-            if key in allowedFields:
-                if key == allowedFields[0]:
-                    if request.data.get(key) in Application.Status.values:
-                        serialized_application['fields']['status'] = request.data.get(key)
-                    else:
-                        statusCode = status.HTTP_400_BAD_REQUEST
-                        break
-                if key == allowedFields[1]:
-                    serialized_application['fields'][key] = request.data.get(key)
-                if key == allowedFields[2]:
-                    if Challenge.objects.filter(id=request.data.get(key)):
+        if request.data:
+            for key in request.data.keys():
+                if key in allowedFields:
+                    if key == allowedFields[0]:
+                        if request.data.get(key) in Application.Status.values:
+                            serialized_application['fields']['status'] = request.data.get(key)
+                        else:
+                            statusCode = status.HTTP_400_BAD_REQUEST
+                            break
+                    if key == allowedFields[1]:
                         serialized_application['fields'][key] = request.data.get(key)
-                    else:
-                        statusCode = status.HTTP_400_BAD_REQUEST
-                        break
-                if key == allowedFields[3]:
-                    timeStamp = time.time() + request.data.get(key) * 24 * 60 * 60
-                    serialized_application['fields']['expiry'] = timeStamp
-            else:
-                statusCode = status.HTTP_400_BAD_REQUEST
-                break
-
+                    if key == allowedFields[2]:
+                        if Challenge.objects.filter(id=request.data.get(key)):
+                            serialized_application['fields'][key] = request.data.get(key)
+                        else:
+                            statusCode = status.HTTP_400_BAD_REQUEST
+                            break
+                    if key == allowedFields[3]:
+                        timeStamp = time.time() + request.data.get(key) * 24 * 60 * 60
+                        serialized_application['fields']['expiry'] = timeStamp
+                else:
+                    statusCode = status.HTTP_400_BAD_REQUEST
+                    break
+        else:
+            statusCode = status.HTTP_204_NO_CONTENT
 
         serializer = ApplicationSerializer(applicationId, data=serialized_application["fields"])
 
