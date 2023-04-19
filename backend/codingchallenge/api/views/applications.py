@@ -3,6 +3,7 @@ import random
 
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from django.contrib.auth.models import User
 
 # RESTapi imports
 from rest_framework import status
@@ -88,18 +89,32 @@ class AdminApplicationsView(APIView):
         except AttributeError:
             return Response({'detail': 'wrong json attributes'}, status=status.HTTP_400_BAD_REQUEST)
 
+        user = User.objects.create_user(username=request.data.get('applicationId'),
+                                 password='user')
+        user.save()
+
         data = {
             'applicationId': request.data.get('applicationId'),
             'applicantEmail': request.data.get('applicantEmail'),
             'challengeId': challengeId,
-            'expiry': time.time() + days * 24 * 60 * 60
+            'expiry': time.time() + days * 24 * 60 * 60,
+            'user': user.id
         }
 
         serializer = ApplicationSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+            
             successObj = {"success": "true"}
 
             return Response(successObj, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+### endpoint: /api/submitApplication
+class SubmitApplicationView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        application = request.user.application.applicationId
+
+        return Response(application)
