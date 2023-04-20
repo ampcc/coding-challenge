@@ -2,8 +2,5 @@ asgiref==3.6.0
 Django==4.1.7
 sqlparse==0.4.3
 djangorestframework==3.14.0
-<<<<<<< HEAD
 django-unixtimestampfield==0.5.0
-=======
 python-dotenv==1.0.0
->>>>>>> 9a7f8f4 (Move SECRET_KEY to an .env file)
