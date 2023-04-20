@@ -252,7 +252,7 @@ class StartChallengeView(APIView):
             secondsSinceExpiration = currentTimestamp - expiryTimestamp
             # because the applicant didn't complete the challenge in the timeframe, the application gets archived.
             user.application.status = Application.Status.ARCHIVED
-           
+            user.application.save()           
             return Response(jsonMessages.errorJsonResponse("Can not start challenge! The application is expired since", secondsSinceExpiration, "seconds!"), status=status.HTTP_410_GONE)
         # application is still running
         else:
