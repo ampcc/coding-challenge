@@ -1,0 +1,16 @@
+<div class="dialog_container">
+    <button id="close" (click)="closeDialog(false)">X</button>
+    <h1 mat-dialog-title>{{data.title}}</h1>
+    <div mat-dialog-content *ngIf="data.description">
+        <a *ngIf="data.description.link && data.description.url"
+            href={{data.description.url}}>{{data.description.link}}</a>
+        <p *ngIf="data.description.important" id="bold" [innerHTML]="data.description.important"></p>
+        <p *ngIf="data.description.details" [innerHTML]="data.description.details"></p>
+    </div>
+    <div mat-dialog-actions id="button_container" *ngIf="data.buttons && (data.buttons.left || data.buttons.right)">
+        <app-button *ngIf="data.buttons.left" id="left_button" title={{data.buttons.left.title}}
+            look={{data.buttons.left.look}} (click)="closeDialog(true)"></app-button>
+        <app-button *ngIf="data.buttons.right" id="right_button" title={{data.buttons.right.title}}
+            look={{data.buttons.right.look}} (click)="closeDialog(false)"></app-button>
+    </div>
+</div>

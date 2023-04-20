@@ -1,0 +1,57 @@
+.spacer {
+    flex: 1;
+}
+
+.toolbar {
+    position: static;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(0, 35, 57);
+}
+
+a {
+    margin: 35px;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}
+
+.logo {
+    height: 50px;
+}
+
+.home {
+    padding: 10px;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0.3em;
+    border-color: white;
+}
+
+.home:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.body {
+    position: relative;
+    min-height: 84%;
+}
+
+.content {
+    padding-bottom: 80px;
+}
+
+.footer {
+    height: 80px;
+    width: 100%;
+    font-size: 25px;
+    bottom: 0;
+    position: absolute;
+    display: flex;
+}

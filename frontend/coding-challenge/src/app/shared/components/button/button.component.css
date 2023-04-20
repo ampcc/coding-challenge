@@ -1,0 +1,66 @@
+button {
+    padding: 1em;
+    font-size: 1vw;
+    line-height: 1.5vw;
+    text-align: center;
+    border: 0.1em;
+    border-style: solid;
+    border-radius: 0.3em;
+    width: 100%;
+}
+
+button:hover {
+    box-shadow: 0 0.4em 0.6em 0 rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+.primary {
+    color: white;
+    background-color: rgb(20, 20, 20);
+    border-color: rgb(20, 20, 20);
+}
+
+.primary:hover {
+    background-color: rgb(50, 50, 50);
+}
+
+.secondary {
+    color: black;
+    background-color: white;
+    border-color: black;
+}
+
+.secondary:hover {
+    background-color: rgb(210, 210, 210);
+}
+
+.delete {
+    color: white;
+    background-color: red;
+    border-color: red;
+}
+
+.delete:hover {
+    background-color: rgb(255, 60, 60);
+}
+
+@media (max-width:1024px) {
+    button {
+        font-size: 1.5vw;
+        line-height: 2vw;
+    }
+}
+
+@media (max-width:740px) {
+    button {
+        font-size: 2vw;
+        line-height: 2.5vw;
+    }
+}
+
+@media (max-width:555px) {
+    button {
+        font-size: 2vw;
+        line-height: 2.5vw;
+    }
+}
