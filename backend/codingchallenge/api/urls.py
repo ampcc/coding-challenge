@@ -9,9 +9,10 @@ from .views import applications, challenges
 
 urlpatterns = [
     path('admin/login', obtain_auth_token),
-
+    
     path('admin/applications/', applications.AdminApplicationsView.as_view()),
     path('admin/applications/<applicationId>', applications.AdminApplicationsView.as_view(), name="applicationId"),
+    path('application', applications.ApplicationsView.as_view()),
     path('admin/applications/result/<applicationId>', applications.ResultApplicationView.as_view(), name="applicationId"),
 
     path('admin/challenges', challenges.AdminChallengesView.as_view()),
