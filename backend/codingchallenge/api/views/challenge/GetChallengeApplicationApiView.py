@@ -11,7 +11,7 @@ from ...serializers import TestChallengeSerializer, TestApplicationSerializer
 # Only this challenge is returned, assuming there are no duplicate ids  
 class GetChallengeApplicationApiView(APIView):
     # check if user is authenticated
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     name = "Get Challenge Application Api View"
     description = "get a specific challenge as an applicant"
@@ -26,7 +26,7 @@ class GetChallengeApplicationApiView(APIView):
         '''
         
         try:
-            application = Application.objects.get(id=applicationId).challengeId
+            application = Application.objects.get(id=applicationId)
             try:
                 challengeOfSpecificApplication = Challenge.objects.get(id=application.challengeId)
                 serializer = TestChallengeSerializer(challengeOfSpecificApplication)

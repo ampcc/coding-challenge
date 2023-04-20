@@ -29,7 +29,7 @@ urlpatterns = [
     path('admin/challenges', GetChallengesAdminApiView.GetChallengesAdminApiView.as_view()),
     path('admin/challenges/<int:challengeId>', GetChallengeAdminApiView.GetChallengeAdminApiView.as_view()),
     path('application/challenges/<int:applicationId>', GetChallengeApplicationApiView.GetChallengeApplicationApiView.as_view()),
-    path('application/', TestApplicationApiView.TestApplicationApiView.as_view()),
+    # path('application/', TestApplicationApiView.TestApplicationApiView.as_view()),
 
     path('login/', obtain_auth_token),
     path('testAdminView/', AdminApiView.AdminView.as_view()),

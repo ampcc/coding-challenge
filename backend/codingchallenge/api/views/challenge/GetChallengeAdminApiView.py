@@ -11,7 +11,7 @@ from ...serializers import TestChallengeSerializer
 # Only this challenge is returned, assuming there are no duplicate ids  
 class GetChallengeAdminApiView(APIView):
     # check if user is authenticated
-    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
 
     name = "Get Challenge Admin Api View"
     description = "get a specific challenge as an admin"

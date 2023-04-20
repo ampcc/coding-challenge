@@ -7,24 +7,18 @@ from ...models import Challenge
 from ...serializers import TestChallengeSerializer
 
 
-# This view returnes a spefific challenge which id is passed through the url
-# Only this challenge is returned, assuming there are no duplicate ids  
+# This view returnes all challenges
 class GetChallengesAdminApiView(APIView):
     # check if user is authenticated
-    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
 
-    name = "Get Challenges Admin Api View"
-    description = "get all challenges as an admin"
-
-    # 1. List all
     def get(self, request):
         '''
-        get a challenge with following columns:
-            id,
-            challengeHeader,
-            challengeText
+        Returns a challenge via HTTP-Get with the following columns:
+            - id
+            - challengeHeader
+            - challengeText
         '''
         challenge = Challenge.objects.all()
         serializer = TestChallengeSerializer(challenge, many=True)
-        # return Response("Moin", status=status.HTTP_200_OK)
         return Response(serializer.data, status=status.HTTP_200_OK)
