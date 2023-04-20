@@ -19,70 +19,106 @@ h1 {
 #text {
     border: solid 2px lightgray;
     border-radius: 10px;
-    width: 50%;
+    width: 60%;
     height: auto;
     padding: 10px;
+    margin-top: 20px;
     margin-bottom: 20px;
     font-size: 16px !important;
 }
 
+/* Style div für Upload */
+#divUpload {
+    width: 50%;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px !important;
+}
 
 /* Style upload challenge */
 .form-select {
-    width: 300px;
+    width: 60%;
+    margin-left: auto; 
+    margin-right: 0;
 }
 
 .mb-3 {
     overflow: hidden;
 }
 
-#programmingLanguage {
+#programmingLanguage, #operatingSystem {
     float: left;
-    margin-right: 50px;
+    margin-left: 0; 
+    margin-right: auto;
 }
 
-#selectProgLang {
+#selectOpSys, #selectProgLang {
     overflow: hidden;
+}
+
+#selectProgLang [ng-reflect-model="default"] {
+    color: black !important;
 }
 
 .inputOther{
-    width: 300px;
     margin-top: 20px;
-    /* margin-bottom: 20px; */
-    margin-left: 225px;
+    width: 60%;
+    margin-left: auto; 
+    margin-right: 0;
 }
 
-
-#operatingSystem {
-    float: left;
-    margin-right: 95px;
-}
-
-#selectOpSys {
-    overflow: hidden;
-}
-
-#disabledOption {
-    color: blue !important;
-    opacity: 1;
-}
 
 
 .btn.btn-dark {
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
+    margin-left: 0; 
+    margin-right: auto;
 }
 
 
+/* Drag and Drop Field */
 #DragnDropBlock {
-    width: 450px;
-    height: 200px;
-    padding: 2rem;
+    width: 100%;
+    height: 220px;
+    padding: 5px;
     text-align: center;
     border: dashed 1px #979797;
+    border-radius: 10px;
     position: relative;
-    /* margin: 0 auto; */
+    margin: 0 auto;
+
+    /* Center items vertically and horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.dropFileHeader {
+    font-size: 35px;
+    font-weight: 400;
+    color: #38424c;
+    padding: 5px;
+}
+
+.picUpload {
+    width: 75px;
+    height: 75px;
+    display: block;
+    margin: auto;
+}
+
+.infoDropFile {
+    font-size: 20px;
+    color: lightgrey;
+    padding: 5px;
+}
+
+.dropFileHeader {
+    font-size: 30px;
 }
 
 #fileHandler {
@@ -95,26 +131,95 @@ h1 {
     left: 0;
 }
 
-#fileHandlerLabel {
-    color: white;
-    width: 183px;
-    height: 44px;
-    border-radius: 21.5px;
-    background-color: #db202f;
-    padding: 8px 16px;
-}
-
-#fileHandlerLabel:hover {
+#fileHandler:hover {
     cursor: pointer;
 }
 
-.dropFileHeader {
+
+
+/* Uploades Files */
+.files-list {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px !important;
+}
+
+.single-file {
+    border: dotted 1px lightgray;
+    border-radius: 10px;
+    padding: 5px;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.picntext{
+    overflow: hidden;
+    float: left;
+}
+
+.folder {
+    float: left;
+    margin-left: 0; 
+    margin-right: auto;
+    padding: 10px;
+}
+
+.info {
+    overflow: hidden;
+    padding: 10px;
+}
+
+.delete {
+    cursor: pointer;
+    float: right;
+    margin-left: auto;
+    margin-right: 0;
+    padding: 10px;
+}
+
+.picDelete {
+    width: 25px;
+    height: 25px;
+    display: block;
+    margin: auto;
+}
+
+.filename {
     font-size: 20px;
-    font-weight: 600;
-    color: #38424c;
+    margin:0;
 }
 
-#infoDropFile {
-    color: lightgrey;
+.size {
+    font-size: 15px;
 }
 
+/* Successful Upload */
+#divSuccess {
+    width: 40%;
+    height: auto;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0;
+    text-align: center;
+    position: relative;
+    /* Center items vertically and horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.textSuccess {
+    font-size: 20px;
+}
+
+.picSuccess {
+    width: 300px;
+    height: 300px;
+    display: block;
+    margin: auto;
+}
