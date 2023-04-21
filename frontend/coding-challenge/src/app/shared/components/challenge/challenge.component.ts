@@ -93,9 +93,10 @@ export class ChallengeComponent {
     
     if(typeof files !== 'undefined' && files !== null) {
       for(let i = 0; i < files?.length; i++) {
-        // checks if the filesize is greater than 5 GB (= 536879120 Byte)
+        // checks if the filesize is greater than 5 GB (= 5368709120 Byte)
+        // 50 MB = 52,428,800 Byte
         // and if the filetype is not supported
-        if(files[i].size > 536879120 || !files[i].name.includes('.zip')) {
+        if(files[i].size > 52428800 || !files[i].name.includes('.zip')) {
           console.log('File is too big or has the wrong filetype');
           alert('The file ' + files[i].name + 'is too big or has the wrong filetype');
           continue;

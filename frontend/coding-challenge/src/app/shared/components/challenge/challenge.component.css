@@ -57,8 +57,8 @@ h1 {
     overflow: hidden;
 }
 
-#selectProgLang [ng-reflect-model="default"] {
-    color: black !important;
+#selectProgLang option[value="default"]{
+    color: red !important;
 }
 
 .inputOther{
