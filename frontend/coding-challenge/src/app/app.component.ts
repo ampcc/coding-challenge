@@ -10,12 +10,16 @@ import { BackendService } from 'src/app/core/backend.service';
 export class AppComponent {
   title = 'coding-challenge';
   showLogout = false;
+  link = '/start';
 
   constructor(private backendService: BackendService, private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        if (event.url.includes('admin') && !event.url.includes('login')) {
-          this.showLogout = true;
+        if (event.url.includes('admin')) {
+          this.link = '/admin_login'
+          if (!event.url.includes('login')) {
+            this.showLogout = true;
+          }
         }
       }
     })
