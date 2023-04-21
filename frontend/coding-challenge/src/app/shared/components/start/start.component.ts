@@ -17,7 +17,6 @@ export class StartComponent {
   constructor(public dialog: MatDialog, public router: Router, private backendService: BackendService) { }
 
   openDialog(): void {
-    console.log("hurra");
     DialogComponent.name;
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {

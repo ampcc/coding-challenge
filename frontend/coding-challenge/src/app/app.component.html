@@ -1,28 +1,27 @@
-<!-- Toolbar -->
-<div class="page">
-  <div class="toolbar" role="banner">
-    <a class="logo_link" href="/start">
-      <img class="logo" alt="amplimind Logo" src="../assets/amplimind_logo.png" />
-    </a>
-    <div class="spacer"></div>
-    <a class="home_link" href="https://amplimind.io/">
-      <div class="home">Homepage</div>
-    </a>
-  </div>
-
-  <div class="body">
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
-
-
-    <div class="footer">
-      <a class="impressum_link" href="https://amplimind.io/impressum/">
-        Impressum
-      </a>
-      <a class="datenschutz_link" href="https://amplimind.io/datenschutzerklaerung/">
-        Datenschutzerklärung
-      </a>
-    </div>
-  </div>
+<div class="toolbar" role="banner">
+  <a class="logo_link" href="/start">
+    <img class="logo" alt="amplimind Logo" src="../assets/amplimind_logo.png" />
+  </a>
+  <div class="spacer"></div>
+  <a *ngIf="this.showLogout" class="logout_link" href="/admin_login" (click)="logout()">
+    <img class="logout" src="../assets/logout.svg">
+  </a>
+  <a class="home_link" href="https://amplimind.io/">
+    <div class="home">Homepage</div>
+  </a>
 </div>
+
+
+<div class="body">
+  <router-outlet></router-outlet>
+</div>
+
+
+<footer class="footer">
+  <a class="impressum_link" href="https://amplimind.io/impressum/">
+    Impressum
+  </a>
+  <a class="datenschutz_link" href="https://amplimind.io/datenschutzerklaerung/">
+    Datenschutzerklärung
+  </a>
+</footer>

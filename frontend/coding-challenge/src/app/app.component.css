@@ -24,6 +24,16 @@ a {
     height: 50px;
 }
 
+.logout_link {
+    margin-right: 0;
+}
+
+.logout {
+    height: 50px;
+    fill: white;
+    filter: invert();
+}
+
 .home {
     padding: 10px;
     color: white;
@@ -39,19 +49,12 @@ a {
 }
 
 .body {
-    position: relative;
-    min-height: 84%;
-}
-
-.content {
-    padding-bottom: 80px;
+    min-height: 80vh;
 }
 
 .footer {
     height: 80px;
     width: 100%;
     font-size: 25px;
-    bottom: 0;
-    position: absolute;
     display: flex;
 }
