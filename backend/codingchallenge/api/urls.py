@@ -12,11 +12,6 @@ urlpatterns = [
     
     path('admin/applications/', applications.AdminApplicationsView.as_view()),
     path('admin/applications/<applicationId>', applications.AdminApplicationsView.as_view(), name="applicationId"),
-    path('challenge/', TestChallengeApiView.TestChallengeApiView.as_view()),
-    path('/api/admin/challenges', GetChallengesAdminApiView.GetChallengesAdminApiView.as_view()),
-    path('/api/admin/challenges/<int:challengeId>', GetChallengeAdminApiView.GetChallengeAdminApiView.as_view()),
-    path('/api/application/challenges/<int:applicationId>', GetChallengeApplicationApiView.GetChallengeApplicationApiView.as_view()),
-    path('application/', TestApplicationApiView.TestApplicationApiView.as_view()),
 
     path('admin/challenges', challenges.AdminChallengesView.as_view()),
     path('admin/challenges/<challengeId>', challenges.AdminChallengesView.as_view(), name="challengeId"),
@@ -24,15 +19,6 @@ urlpatterns = [
     path('application/loginWithKey', obtain_auth_token),
     path('application/getApplicationStatus', applications.StatusApplicationView.as_view()),
     path('application/submitChallenge', applications.SubmitApplicationView.as_view()),
-    path('application/startChallenge', applications.StartChallengeView.as_view())
-]
-    path('admin/challenges', GetChallengesAdminApiView.GetChallengesAdminApiView.as_view()),
-    path('admin/challenges/<int:challengeId>', GetChallengeAdminApiView.GetChallengeAdminApiView.as_view()),
-    path('application/challenges/<int:applicationId>', GetChallengeApplicationApiView.GetChallengeApplicationApiView.as_view()),
-    # path('application/', TestApplicationApiView.TestApplicationApiView.as_view()),
-
-    path('login/', obtain_auth_token),
-    path('testAdminView/', AdminApiView.AdminView.as_view()),
-    path('testApplicantView/', ApplicantApiView.ApplicantView.as_view()),
-    path('createApplicant/', AdminApiView.addApplicant.as_view()),
+    path('application/startChallenge', applications.StartChallengeView.as_view()),
+    path('application/challenges/<applicationId>', challenges.ApplicationChallengesView.as_view(), name="applicationId"),
 ]
