@@ -13,7 +13,7 @@
   </div>
 
 
-  <div *ngIf="this.adminPage" class="open_sitenav" (click)="openSitenav()">
+  <div *ngIf="this.adminPage" class="open_sitenav" (click)="openSitenav()" [ngClass]="{'not_clickable': !this.sitenavClosed}">
     <img src="../assets/menu.svg" class="sitenav_icon">
   </div>
 
@@ -34,12 +34,12 @@
   </div>
 
 
-  <div class="body">
+  <div class="body" [ngClass]="{'not_clickable': !this.sitenavClosed}">
     <router-outlet></router-outlet>
   </div>
 
 
-  <footer class="footer">
+  <footer class="footer" [ngClass]="{'not_clickable': !this.sitenavClosed}">
     <a class="impressum_link" href="https://amplimind.io/impressum/">
       Impressum
     </a>

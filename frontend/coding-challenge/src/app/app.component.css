@@ -108,6 +108,10 @@ a {
     color: white;
 }
 
+.not_clickable {
+    pointer-events: none;
+}
+
 
 .body {
     min-height: calc(100vh - 3 * 80px);
