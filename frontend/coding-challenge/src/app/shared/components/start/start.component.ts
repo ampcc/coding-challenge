@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 
 export class StartComponent {
-  constructor(public dialog: MatDialog, public router: Router, private backendService: BackendService) { }
+  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService) { }
 
   openDialog(): void {
     DialogComponent.name;

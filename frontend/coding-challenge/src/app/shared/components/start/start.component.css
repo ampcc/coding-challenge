@@ -25,13 +25,6 @@ app-button {
     padding-top: 4em;
 }
 
-@media (max-width:1024px) {
-    button {
-        font-size: 1.5vw;
-        line-height: 2vw;
-    }
-}
-
 @media (max-width:890px) {
     .main_container {
         margin-left: 10em;

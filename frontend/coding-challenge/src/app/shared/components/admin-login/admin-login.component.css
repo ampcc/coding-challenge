@@ -8,5 +8,94 @@
 h1 {
     font-size: 4vw;
     line-height: 4.5vw;
-    margin-bottom: 1em;
+}
+
+hr {
+    margin-bottom: 7em;
+    background-color: gray;
+    height: 0.1em;
+}
+
+.inputField {
+    width: calc(100% - 2 * 1em);
+    padding: 1em;
+    font-size: 1vw;
+    line-height: 1.5vw;
+    border: 0.1em;
+    border-style: solid;
+    border-radius: 0.3em;
+    border-color: gray;
+}
+
+.show_error {
+    border-color: red;
+    outline: none;
+}
+
+.heading {
+    margin-top: 2em;
+    font-size: 2vw;
+    line-height: 2.5vw;
+}
+
+.error_message {
+    margin-top: 0.1em;
+    font-size: 1vw;
+    line-height: 1.5vw;
+    color: red;
+}
+
+.no_error {
+    visibility: hidden;
+}
+
+app-button {
+    display: inline-block;
+    width: 15%;
+    margin-top: 5em;
+}
+
+@media (max-width:890px) {
+    .main_container {
+        margin-left: 10em;
+        margin-right: 10em;
+    }
+}
+
+@media (max-width:740px) {
+    .main_container {
+        margin-left: 5em;
+        margin-right: 5em;
+    }
+
+    .heading {
+        font-size: 3vw;
+        line-height: 3.5vw;
+    }
+}
+
+@media (max-width:610px) {
+    .main_container {
+        margin-left: 3em;
+        margin-right: 3em;
+    }
+}
+
+@media (max-width:555px) {
+    .main_container {
+        margin-left: 1.5em;
+        margin-top: 3em;
+        margin-right: 1.5em;
+        padding-bottom: 3em;
+    }
+
+    h1 {
+        font-size: 6vw;
+        line-height: 6.5vw;
+    }
+
+    .heading {
+        font-size: 4vw;
+        line-height: 4.5vw;
+    }
 }

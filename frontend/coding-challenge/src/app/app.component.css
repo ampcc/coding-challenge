@@ -1,3 +1,8 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
 .spacer {
     flex: 1;
 }
@@ -12,24 +17,26 @@
 }
 
 a {
-    margin: 35px;
+    margin-left: 35px;
+    margin-right: 35px;
     text-decoration: none;
     color: black;
-    font-size: 1vw;
-    line-height: 1.5vw;
+    font-size: 0.7vw;
+    line-height: 1.2vw;
 }
 
 .logo {
+    padding: 10px;
     height: 50px;
 }
 
 .logout_link {
     margin-right: 0;
+    height: 50px;
 }
 
 .logout {
     height: 50px;
-    fill: white;
     filter: invert();
 }
 
@@ -60,28 +67,36 @@ a {
 }
 
 @media (max-width:1024px) {
-    a, .footer {
+
+    a,
+    .footer {
         font-size: 1.5vw;
         line-height: 2vw;
     }
 }
 
 @media (max-width:740px) {
-    a, .footer {
+
+    a,
+    .footer {
         font-size: 2vw;
         line-height: 2.5vw;
     }
 }
 
 @media (max-width:555px) {
-    a, .footer {
+
+    a,
+    .footer {
         font-size: 2.5vw;
         line-height: 3vw;
     }
 }
 
 @media (max-width:400px) {
-    a, .footer {
+
+    a,
+    .footer {
         font-size: 3vw;
         line-height: 3.5vw;
     }

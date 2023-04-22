@@ -15,7 +15,6 @@ import { AdminPasswordComponent } from './shared/components/admin-password/admin
   declarations: [
     AppComponent,
     DefaultComponent,
-    AdminLoginComponent,
     AdminApplicationsComponent,
     AdminChallengesComponent,
     AdminPasswordComponent,
@@ -25,6 +24,7 @@ import { AdminPasswordComponent } from './shared/components/admin-password/admin
     HttpClientModule,
     AppRoutingModule,
     MatDialogModule,
+    AdminLoginComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],
