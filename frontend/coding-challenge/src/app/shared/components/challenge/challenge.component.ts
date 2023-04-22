@@ -39,6 +39,13 @@ export class ChallengeComponent {
   public hideSuccess: boolean = true;
   public hideUpload: boolean = false;
 
+  public msgProgLang: string ='';
+  public msgOpSys: string ='';
+  public msgFileUplod: string ='';
+  public hideMsgProgLang: boolean = true;
+  public hideMsgOpSys: boolean = true;
+  public hideMsgFileUplod: boolean = true;
+
   public os: string = 'default';
   public pl: string = 'default';
 
@@ -90,19 +97,40 @@ export class ChallengeComponent {
 
   public uploadFileHandler(event: Event): any {
     var files = (event.target as HTMLInputElement).files;
+    var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
     
     if(typeof files !== 'undefined' && files !== null) {
       for(let i = 0; i < files?.length; i++) {
         // checks if the filesize is greater than 5 GB (= 5368709120 Byte)
         // 50 MB = 52,428,800 Byte
         // and if the filetype is not supported
-        if(files[i].size > 52428800 || !files[i].name.includes('.zip')) {
-          console.log('File is too big or has the wrong filetype');
-          alert('The file ' + files[i].name + 'is too big or has the wrong filetype');
-          continue;
-        } 
+        if(files[i].size > 52428800) {
+          this.msgFileUplod = 'The file ' + files[i].name + ' is too big';
+          this.hideMsgFileUplod = false;
 
-        this.fileArray.push(files[i]);
+          element.setAttribute("style", "border-color:red;");
+
+          continue;
+        } else if (!files[i].name.includes('.zip')) {
+          this.msgFileUplod = 'The file ' + files[i].name + ' has the wrong filetype';
+          this.hideMsgFileUplod = false;
+
+          element.setAttribute("style", "border-color:red;");
+
+          continue;
+        } else if (files[i].size > 52428800 && !files[i].name.includes('.zip')) {
+          this.msgFileUplod = 'The file ' + files[i].name + ' has the wrong filetype and is too big';
+          this.hideMsgFileUplod = false;
+
+          element.setAttribute("style", "border-color:red; ");
+
+          continue;
+        } else {
+          this.hideMsgFileUplod = true;
+          this.fileArray.push(files[i]);
+
+          element.setAttribute("style", "border-color:lightgrey;");
+        }
       }
     }  
   }
@@ -128,23 +156,72 @@ export class ChallengeComponent {
     let resultPl = this.pl;
     let resultOs = this.os;
 
+    let elementProgLang = <HTMLSelectElement>document.getElementById('selectProgLang');
+    var elementOpSys = <HTMLSelectElement>document.getElementById('selectOpSys');
+    var elementDragnDrop = <HTMLInputElement>document.getElementById('DragnDropBlock');
+
     if(resultPl === 'default') {
-      alert('Programming language required');
+      this.hideMsgProgLang = false;
+      this.msgProgLang = 'Programming language required';
+      elementProgLang.setAttribute("style", "border-color:red;");
       required = true;
     } else if(resultPl === 'other') {
-      resultPl = (document.getElementById('progLang') as HTMLInputElement).value;
+      let elementInputProgLang = <HTMLInputElement>document.getElementById('progLang');
+
+      resultPl = elementInputProgLang.value;
+      
+      if(resultPl === '') {
+        this.hideMsgProgLang = false;
+        this.msgProgLang = 'Programming language required';
+        elementProgLang.setAttribute("style", "border-color:red;");
+        elementInputProgLang.setAttribute("style", "border-color:red;");
+        required = true;
+      } else {
+        this.hideMsgProgLang = true;
+        required = false;
+        elementProgLang.setAttribute("style", "border-color:lightgrey;");
+        elementInputProgLang.setAttribute("style", "border-color:lightgrey;");
+      }
+    } else {
+      this.hideMsgProgLang = true;
+      elementProgLang.setAttribute("style", "border-color:lightgrey;");
     }
 
     if(resultOs === 'default') {
-      alert('Operating system required');
+      this.hideMsgOpSys = false;
+      this.msgOpSys = 'Operating system required';
+      elementOpSys.setAttribute("style", "border-color:red;");
       required = true;
     } else if(resultOs === 'other') {
-      resultOs = (document.getElementById('opSys') as HTMLInputElement).value;;
+      let elementInputOpSy = <HTMLInputElement>document.getElementById('opSys');
+      
+      resultOs = elementInputOpSy.value;
+
+      if(resultOs === '') {
+        this.hideMsgOpSys = false;
+        this.msgOpSys = 'Operating system required';
+        elementOpSys.setAttribute("style", "border-color:red;");
+        elementInputOpSy.setAttribute("style", "border-color:red;");
+        required = true;
+      } else {
+        this.hideMsgOpSys = true;
+        required = false;
+        elementOpSys.setAttribute("style", "border-color:lightgrey;");
+        elementInputOpSy.setAttribute("style", "border-color:lightgrey;");
+      }
+    } else {
+      this.hideMsgOpSys = true;
+      elementOpSys.setAttribute("style", "border-color:lightgrey;");
     }
 
     if(this.fileArray.length === 0) {
-      alert('No files for upload selected');
+      this.hideMsgFileUplod = false;
+      this.msgFileUplod = 'No files for upload selected';
+      elementDragnDrop.setAttribute("style", "border-color:red;");
       required = true;
+    } else {
+      this.hideMsgFileUplod = true;
+      elementDragnDrop.setAttribute("style", "border-color:lightgrey;");
     }
 
     if(!required) {

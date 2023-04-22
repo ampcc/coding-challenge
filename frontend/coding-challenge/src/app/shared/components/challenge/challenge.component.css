@@ -37,6 +37,17 @@ h1 {
 }
 
 /* Style upload challenge */
+.errorMessage {
+    color: red;
+    margin-left: 40%;
+    margin-top: 5px;
+}
+
+.errorMessage.msgFileUpload {
+    text-align: center !important;
+    margin: auto !important;
+}
+
 .form-select {
     width: 60%;
     margin-left: auto; 
@@ -85,7 +96,7 @@ h1 {
     height: 220px;
     padding: 5px;
     text-align: center;
-    border: dashed 1px #979797;
+    border: dashed 1px lightgrey;
     border-radius: 10px;
     position: relative;
     margin: 0 auto;
@@ -196,6 +207,7 @@ h1 {
 .size {
     font-size: 15px;
 }
+
 
 /* Successful Upload */
 #divSuccess {

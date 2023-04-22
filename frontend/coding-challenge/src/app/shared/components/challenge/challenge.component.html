@@ -98,10 +98,12 @@
                                 <option value="other">Other</option>
                             </select>
 
-                            <input [hidden]="hideProgLang" class="form-control inputOther" id="progLang" type="text"
-                                placeholder="Other programming langugage" required>
+                            <div>
+                                <input [hidden]="hideProgLang" class="form-control inputOther" id="progLang" type="text"
+                                    placeholder="Other programming langugage" required>
 
-                            <label [hidden]="true" id="errorMessage">The programming language is required</label>
+                                <div [hidden]="hideMsgProgLang" class="errorMessage">{{msgProgLang}}</div>
+                            </div>
                         </div>
 
 
@@ -121,7 +123,7 @@
                             <input [hidden]="hideOpSys" class="form-control inputOther" id="opSys" type="text"
                                 placeholder="Other operating system" required>
 
-                            <label [hidden]="true" id="errorMessage">The operating system is required</label>
+                            <div [hidden]="hideMsgOpSys" class="errorMessage">{{msgOpSys}}</div>
                         </div>
                     </div>
 
@@ -131,6 +133,7 @@
                             <input type="file" id="fileHandler" name="file" accept=".zip"
                                 (change)="uploadFileHandler($event)" multiple />
 
+                            
                             <div class="textDragnDrop">
                                 <label class="dropFileHeader"> Upload file(s) here or drag file(s) </label>
 
@@ -146,7 +149,7 @@
                                 </label>
                             </div>
                         </div>
-                        <label [hidden]="true" id="errorMessage">No files for upload selected</label>
+                        <div [hidden]="hideMsgFileUplod" class="errorMessage msgFileUpload">{{msgFileUplod}}</div>
 
                         <div class="files-list">
                             <div class="single-file" *ngFor="let file of fileArray; let i = index">
