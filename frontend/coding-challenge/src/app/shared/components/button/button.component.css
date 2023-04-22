@@ -60,7 +60,14 @@ button:hover {
 
 @media (max-width:555px) {
     button {
-        font-size: 2vw;
-        line-height: 2.5vw;
+        font-size: 2.5vw;
+        line-height: 3vw;
+    }
+}
+
+@media (max-width:555px) {
+    button {
+        font-size: 3vw;
+        line-height: 3.5vw;
     }
 }

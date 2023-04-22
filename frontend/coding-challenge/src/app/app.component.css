@@ -3,10 +3,8 @@
 }
 
 .toolbar {
-    position: static;
     top: 0;
-    left: 0;
-    right: 0;
+    width: 100%;
     height: 80px;
     display: flex;
     align-items: center;
@@ -17,7 +15,8 @@ a {
     margin: 35px;
     text-decoration: none;
     color: black;
-    font-size: 16px;
+    font-size: 1vw;
+    line-height: 1.5vw;
 }
 
 .logo {
@@ -49,12 +48,41 @@ a {
 }
 
 .body {
-    min-height: 80vh;
+    min-height: calc(100vh - 3 * 80px);
 }
 
 .footer {
     height: 80px;
     width: 100%;
-    font-size: 25px;
+    font-size: 1vw;
+    line-height: 1.5vw;
     display: flex;
+}
+
+@media (max-width:1024px) {
+    a, .footer {
+        font-size: 1.5vw;
+        line-height: 2vw;
+    }
+}
+
+@media (max-width:740px) {
+    a, .footer {
+        font-size: 2vw;
+        line-height: 2.5vw;
+    }
+}
+
+@media (max-width:555px) {
+    a, .footer {
+        font-size: 2.5vw;
+        line-height: 3vw;
+    }
+}
+
+@media (max-width:400px) {
+    a, .footer {
+        font-size: 3vw;
+        line-height: 3.5vw;
+    }
 }
