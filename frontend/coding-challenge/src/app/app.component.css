@@ -35,6 +35,10 @@ a {
     height: 50px;
 }
 
+.logout_link:hover {
+    cursor: pointer;
+}
+
 .logout {
     height: 50px;
     filter: invert();

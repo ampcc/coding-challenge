@@ -17,7 +17,6 @@ export class StartComponent {
   constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService) { }
 
   openDialog(): void {
-    DialogComponent.name;
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Start Coding Challenge',
