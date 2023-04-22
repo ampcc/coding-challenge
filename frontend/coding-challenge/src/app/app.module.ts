@@ -10,7 +10,6 @@ import { AdminLoginComponent } from './shared/components/admin-login/admin-login
 import { AdminApplicationsComponent } from './shared/components/admin-applications/admin-applications.component';
 import { AdminChallengesComponent } from './shared/components/admin-challenges/admin-challenges.component';
 import { AdminPasswordComponent } from './shared/components/admin-password/admin-password.component';
-import { SitenavigationComponent } from './shared/components/sitenavigation/sitenavigation.component';
 
 @NgModule({
   declarations: [
@@ -18,8 +17,6 @@ import { SitenavigationComponent } from './shared/components/sitenavigation/site
     DefaultComponent,
     AdminApplicationsComponent,
     AdminChallengesComponent,
-    AdminPasswordComponent,
-    SitenavigationComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +24,7 @@ import { SitenavigationComponent } from './shared/components/sitenavigation/site
     AppRoutingModule,
     MatDialogModule,
     AdminLoginComponent,
+    AdminPasswordComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

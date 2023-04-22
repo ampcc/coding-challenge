@@ -7,20 +7,33 @@ import { BackendService } from 'src/app/core/backend.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'coding-challenge';
-  showLogout = false;
+  adminPage = false;
+  sitenavClosed = true;
+  adminApplicants = false;
+  adminChallenges = false;
+  adminPassword = false;
   link = '/start';
 
   constructor(private dialog: MatDialog, private backendService: BackendService, private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (event.url.includes('admin')) {
-          this.link = '/admin_login'
+          this.link = '/admin_login';
           if (!event.url.includes('login')) {
-            this.showLogout = true;
+            this.adminPage = true;
+            this.link = '/admin_applications';
+
+            if (event.url.includes('applications')) {
+              this.adminApplicants = true;
+            } else if (event.url.includes('challenges')) {
+              this.adminChallenges = true;
+            } else if (event.url.includes('password')) {
+              this.adminPassword = true;
+            }
           }
         }
       }
@@ -45,5 +58,15 @@ export class AppComponent {
         this.router.navigate(['/admin_login']);
       }
     })
+  }
+
+  openSitenav(): void {
+    document.body.style.backgroundColor = "rgba(55, 55, 55, 0.3)";
+    this.sitenavClosed = false;
+  }
+
+  closeSitenav(): void {
+    document.body.style.backgroundColor = "initial";
+    this.sitenavClosed = true;
   }
 }
