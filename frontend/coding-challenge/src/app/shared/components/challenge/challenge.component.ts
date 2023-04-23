@@ -4,6 +4,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule } from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field'; 
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 import {NgFor} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -30,9 +32,13 @@ export class ChallengeComponent {
   challenge: Challenge;
   applicant: Application;
   
-  public time: string = '2 days 40 hours 35 minutes';
+  public time: string = '2 days 4 hours 35 minutes';
   public heading: string = 'Lorem ipsum';
   public challengeText: string = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+
+  public hideContentIntro: boolean = false;
+  public hideContentChallenge: boolean = true;
+  public hideContentUpload: boolean = true;
 
   public hideProgLang: boolean = true;
   public hideOpSys: boolean = true;
@@ -52,7 +58,7 @@ export class ChallengeComponent {
   public fileArray: File[] = [];
 
 
-  public constructor(private backend: BackendService) {
+  public constructor(private backend: BackendService, public dialog: MatDialog,) {
     this.challenge = {challengeId: 0, challengeHeading: '',challengeText: ''};
     this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: "", githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: "", passphrase: "a4Xz!5T%"};
   }
@@ -73,8 +79,46 @@ export class ChallengeComponent {
   }
 
 
+  public changeTab(id: string): void {
+    let elementIntro = <HTMLLabelElement>document.getElementById('tab_intro');
+    let elementChallenge = <HTMLLabelElement>document.getElementById('tab_challenge');
+    let elementUpload = <HTMLLabelElement>document.getElementById('tab_upload');
+
+    switch(id) {
+      case 'tab_intro':
+        this.hideContentIntro = false;
+        this.hideContentChallenge = true;
+        this.hideContentUpload = true;
+
+        elementIntro.setAttribute("style", "border-bottom: 2px solid black;");
+        elementChallenge.setAttribute("style", "border-bottom: none;");
+        elementUpload.setAttribute("style", "border-bottom: none;");
+        break;
+      case 'tab_challenge':
+        this.hideContentChallenge = false;
+        this.hideContentIntro = true;
+        this.hideContentUpload = true;
+
+        elementIntro.setAttribute("style", "border-bottom: none;");
+        elementChallenge.setAttribute("style", "border-bottom: 2px solid black;");
+        elementUpload.setAttribute("style", "border-bottom: none;");
+        break;
+      case 'tab_upload':
+        this.hideContentUpload = false;
+        this.hideContentIntro = true;
+        this.hideContentChallenge = true;
+
+        elementIntro.setAttribute("style", "border-bottom: none;");
+        elementChallenge.setAttribute("style", "border-bottom: none;");
+        elementUpload.setAttribute("style", "border-bottom: 2px solid black;");
+        break;
+    }
+    
+  }
+
+
   public selectionProgLang(): void {
-    var selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
+    let selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
 
     if(selectedOption.value == "other") {
       this.hideProgLang = false;
@@ -92,6 +136,20 @@ export class ChallengeComponent {
     } else {
       this.hideOpSys = true;
     }
+  }
+
+
+  public openDialogInfo(): void {
+    DialogComponent.name;
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Info: File structure',
+        description: {
+          important: 'Please pay attention to the following folder structure when uploading:',
+          details: 'project.zip -> project -> src -> ...'
+        },
+      },
+    });
   }
 
 

@@ -1,5 +1,7 @@
 <div class="dialog_container">
-    <button id="close" (click)="closeDialog(false)">X</button>
+    <button id="close" (click)="closeDialog(false)">
+        <img src="../../../../assets/x.svg" width="40" height="40">
+    </button>
     <h1 mat-dialog-title>{{data.title}}</h1>
     <div mat-dialog-content *ngIf="data.description">
         <a *ngIf="data.description.link && data.description.url"

@@ -1,11 +1,16 @@
 /* Style generell view */
 #elements {
-    margin-left: 40px;
-    margin-top: 40px;
+    margin: auto;
+    width: 75%;
+    padding-top: 120px;
+    padding-bottom: 120px;
 }
 
-h1 {
+h2 {
+    line-height: 1.2em;
     font-size: 50px;
+    font-weight: 600;
+    color: rgb(0, 0, 0);
     margin-bottom: 50px;
 }
 
@@ -14,12 +19,37 @@ h1 {
     margin-bottom: 10px;
 }
 
+.tab_list {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.tabs{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    align-items: center;
+    
+    padding-top: 16px;
+    padding-bottom: 14px;
+}
+
+.tabs:hover {
+    cursor: pointer;
+}
+
+#tab_intro {
+    border-bottom: 2px solid black;
+}
+
+#tab_challenge, #tab_upload {
+    margin-left: 24px;;
+}
 
 /* Style div for Intro and Challenge */
 #text {
-    border: solid 2px lightgray;
+    border: solid 1px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
-    width: 60%;
+    width: 100%;
     height: auto;
     padding: 10px;
     margin-top: 20px;
@@ -29,7 +59,7 @@ h1 {
 
 /* Style div für Upload */
 #divUpload {
-    width: 50%;
+    width: 100%;
     height: auto;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -45,13 +75,21 @@ h1 {
 
 .errorMessage.msgFileUpload {
     text-align: center !important;
-    margin: auto !important;
+    margin-top: 5px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 .form-select {
     width: 60%;
     margin-left: auto; 
     margin-right: 0;
+    
+}
+
+.form-select:focus {
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    box-shadow: none !important;
 }
 
 .mb-3 {
@@ -68,18 +106,12 @@ h1 {
     overflow: hidden;
 }
 
-#selectProgLang option[value="default"]{
-    color: red !important;
-}
-
 .inputOther{
     margin-top: 20px;
     width: 60%;
     margin-left: auto; 
     margin-right: 0;
 }
-
-
 
 .btn.btn-dark {
     padding: 10px;
@@ -91,15 +123,25 @@ h1 {
 
 
 /* Drag and Drop Field */
+.question-circle {  
+    margin: 0;
+    margin-top: 0.5cm;
+}
+
+.question-circle:hover {  
+    cursor: pointer;
+}
+
 #DragnDropBlock {
     width: 100%;
     height: 220px;
     padding: 5px;
     text-align: center;
-    border: dashed 1px lightgrey;
+    border: dashed 2px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     position: relative;
     margin: 0 auto;
+    margin-top: 0.5cm;
 
     /* Center items vertically and horizontally */
     display: flex;
@@ -124,7 +166,7 @@ h1 {
 
 .infoDropFile {
     font-size: 20px;
-    color: lightgrey;
+    color: rgba(0, 0, 0, 0.15);
     padding: 5px;
 }
 
@@ -148,7 +190,7 @@ h1 {
 
 
 
-/* Uploades Files */
+/* Uploaded Files */
 .files-list {
     width: 100%;
     height: auto;
@@ -158,7 +200,7 @@ h1 {
 }
 
 .single-file {
-    border: dotted 1px lightgray;
+    border: dotted 2px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     padding: 5px;
     overflow: hidden;
@@ -211,7 +253,7 @@ h1 {
 
 /* Successful Upload */
 #divSuccess {
-    width: 40%;
+    width: 100%;
     height: auto;
     padding: 10px;
     margin-top: 20px;
@@ -226,7 +268,7 @@ h1 {
 } 
 
 .textSuccess {
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .picSuccess {
