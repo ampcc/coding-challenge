@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --> That is the folder the start command for the django project is executed in
 # --> In python all relative paths are interpreted from the folder which is open in the terminal 
  
-load_dotenv('django.env')
+load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
