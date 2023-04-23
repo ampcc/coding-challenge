@@ -18,7 +18,7 @@ from . import jsonMessages
 
 from ..models import Application, Challenge
 
-from ..serializers import ApplicationSerializer, ApplicationStatus, ChallengeSerializer
+from ..serializers import GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer, PostApplicationSerializer
 
 
 
@@ -40,7 +40,7 @@ class AdminApplicationsView(APIView):
             applicationId = self.kwargs["applicationId"]
             application = Application.objects.filter(applicationId = applicationId).first()
             try:
-                serializer = ApplicationSerializer(application, many = False)
+                serializer = GetApplicationSerializer(application, many = False)
                 return Response(serializer.data, status = status.HTTP_200_OK)
             except:
                 return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status = status.HTTP_404_NOT_FOUND)
@@ -49,7 +49,7 @@ class AdminApplicationsView(APIView):
         # -> call is GET Applications
         else:
             applications = Application.objects
-            serializer = ApplicationSerializer(applications, many=True)
+            serializer = GetApplicationSerializer(applications, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
     
     # default 2 days time for start
@@ -61,8 +61,7 @@ class AdminApplicationsView(APIView):
         """
         create Application with
             required arguments:
-                applicationId,
-                applicantEmail
+                applicationId
 
             optional arguments:
                 challengeId
@@ -104,27 +103,26 @@ class AdminApplicationsView(APIView):
             return Response(jsonMessages.errorJsonResponse('wrong json attributes'), status=status.HTTP_400_BAD_REQUEST)
 
         alphabet = string.ascii_letters + string.digits
-        passphrase = ''.join(secrets.choice(alphabet) for i in range(8))    
+        key = ''.join(secrets.choice(alphabet) for i in range(16))    
         user = User.objects.create_user(username=request.data.get('applicationId'),
-                                 password=passphrase)
+                                 password=key)
         user.save()
-        print("Note: Passphrase of", request.data.get('applicationId'), "is", passphrase + ".")
 
         # expiry note: The last possible start of the challenge is days + 3. So the applicant has three days to start the challenge
         data = {
             'applicationId': request.data.get('applicationId'),
-            'applicantEmail': request.data.get('applicantEmail'),
             'challengeId': challengeId,
-            'expiry': time.time() + (self.days + 3) * 24 * 60 * 60,
+            'expiry': time.time() + self.days * 24 * 60 * 60,
             'user': user.id
         }
 
-        serializer = ApplicationSerializer(data=data)
+        serializer = GetApplicationSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
 
-            return Response(jsonMessages.successJsonResponse(), status=status.HTTP_201_CREATED)
-
+            applications = Application.objects.get(applicationId=request.data.get('applicationId'))
+            postSerializer = PostApplicationSerializer(applications, many=False, context={'key': key, "applicationId": request.data.get('applicationId')})
+            return Response(postSerializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # 5. Edit Application
@@ -137,11 +135,10 @@ class AdminApplicationsView(APIView):
                 applicationId
             optional arguments:
                 applicationStatus
-                applicantEmail
                 challengeId
                 extendDays
         """
-        allowedFields = ['applicationStatus', 'applicantEmail', 'challengeId', 'extendDays']
+        allowedFields = ['applicationStatus', 'challengeId', 'extendDays']
 
         try:
             application = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
@@ -166,14 +163,12 @@ class AdminApplicationsView(APIView):
                             statusCode = status.HTTP_400_BAD_REQUEST
                             break
                     if key == allowedFields[1]:
-                        serialized_application['fields'][key] = request.data.get(key)
-                    if key == allowedFields[2]:
                         if Challenge.objects.filter(id=request.data.get(key)):
                             serialized_application['fields'][key] = request.data.get(key)
                         else:
                             statusCode = status.HTTP_400_BAD_REQUEST
                             break
-                    if key == allowedFields[3]:
+                    if key == allowedFields[2]:
                         timeStamp = time.time() + request.data.get(key) * 24 * 60 * 60
                         serialized_application['fields']['expiry'] = timeStamp
                 else:
@@ -182,7 +177,7 @@ class AdminApplicationsView(APIView):
         else:
             statusCode = status.HTTP_204_NO_CONTENT
 
-        serializer = ApplicationSerializer(application, data=serialized_application["fields"])
+        serializer = GetApplicationSerializer(application, data=serialized_application["fields"])
 
         if serializer.is_valid():
             serializer.save()
@@ -230,7 +225,7 @@ class StatusApplicationView(APIView):
     def get(self, request, *args, **kwargs):
             user = User.objects.get(username = request.user.username)
             application = Application.objects.filter(applicationId = user.username).first()
-            serializer = ApplicationStatus(application, many=False)
+            serializer = GetApplicationStatus(application, many=False)
             return Response(serializer.data, status = status.HTTP_200_OK)
 
 
@@ -267,7 +262,7 @@ class StartChallengeView(APIView):
             
             # saves applicationStatus and new expiration date
             user.application.save()
-            serializer = ChallengeSerializer(challenge, many=False)
+            serializer = GetChallengeSerializer(challenge, many=False)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(jsonMessages.errorJsonResponse("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)

@@ -17,7 +17,7 @@ class test_editApplication(APITestCase):
         MockAuth.admin(self)
 
         # default url
-        Application.objects.create(applicationId="TEST1234", applicantEmail="Test@thi.de", challengeId=1, expiry=0, user_id=1)
+        Application.objects.create(applicationId="TEST1234", challengeId=1, expiry=0, user_id=1)
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
 
         # Example Challenge in Database
@@ -36,7 +36,6 @@ class test_editApplication(APITestCase):
         url = '/api/admin/dumb'
         data = {
             "applicationStatus": 2,
-            "applicantEmail": "Test@thi.de",
             "challengeId": 1,
             "extendDays": 2
         }
@@ -48,7 +47,6 @@ class test_editApplication(APITestCase):
 
         data = {
             "applicationStatus": 2,
-            "applicantEmail": "Test@thi.de",
             "challengeId": 1,
             "extendDays": 2
         }
@@ -60,7 +58,6 @@ class test_editApplication(APITestCase):
 
         data = {
             "applicationStatus": 2,
-            "applicantEmail": "Test@thi.de",
             "challengeId": 1,
             "extendDays": 2
         }
@@ -71,8 +68,7 @@ class test_editApplication(APITestCase):
         url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 2,
-            "wrongDatafield": "Test@thi.de",
-            "challengeId": 1,
+            "wrongDatafield": 1,
             "extendDays": 2
         }
         response = self.client.put(url, data, format='json')
@@ -86,7 +82,6 @@ class test_editApplication(APITestCase):
         url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationId": "TEST1234",
-            "applicantEmail": "Test@thi.de",
             "challengeId": 1,
             "extendDays": 2
         }
@@ -107,7 +102,6 @@ class test_editApplication(APITestCase):
         url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 2,
-            "applicantEmail": "Test@thi.de",
             "challengeId": 1,
             "extendDays": 2
         }
@@ -122,7 +116,6 @@ class test_editApplication(APITestCase):
         self.assertEqual(Application.objects.get().status, 2)
 
         self.assertEqual(Application.objects.get().applicationId, self.applicationId)
-        self.assertEqual(Application.objects.get().applicantEmail, 'Test@thi.de')
         self.assertEqual(Application.objects.get().challengeId, 1)
 
         # rounds the assertion to seconds
@@ -135,7 +128,6 @@ class test_editApplication(APITestCase):
         url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 123123,
-            "applicantEmail": "Test@thi.de",
             "challengeId": 1,
             "extendDays": 2
         }
@@ -151,7 +143,6 @@ class test_editApplication(APITestCase):
         url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 2,
-            "applicantEmail": "Test@thi.de",
             "challengeId": 123123,
             "extendDays": 2
         }

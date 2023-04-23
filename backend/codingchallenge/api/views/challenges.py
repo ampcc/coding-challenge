@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from ..models import Challenge
 
 # import serializer
-from ..serializers import ChallengeSerializer
+from ..serializers import GetChallengeSerializer
 
 # import errorMessage class
 from . import jsonMessages
@@ -32,19 +32,19 @@ class AdminChallengesView(APIView):
             challengeId = self.kwargs["challengeId"]
             challenge = Challenge.objects.filter(id=challengeId).first()
             try:
-                serializer = ChallengeSerializer(challenge, many=False)
+                serializer = GetChallengeSerializer(challenge, many=False)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except:
                 return Response(jsonMessages.errorJsonResponse("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)
         else:
             # getChallenges
             challenges = Challenge.objects.all()
-            serializer = ChallengeSerializer(challenges, many=True)
+            serializer = GetChallengeSerializer(challenges, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
     # /api/admin/challenges
     def post(self, request, *args, **kwargs):
-        serializer = ChallengeSerializer(data=request.data)
+        serializer = GetChallengeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -58,7 +58,7 @@ class AdminChallengesView(APIView):
         for key in request.data.keys():
             serialized_challenge["fields"][key] = request.data[key]
         
-        serializer = ChallengeSerializer(challenge, data=serialized_challenge["fields"])
+        serializer = GetChallengeSerializer(challenge, data=serialized_challenge["fields"])
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
