@@ -1,0 +1,11 @@
+.main_container {
+    margin-left: 15em;
+    margin-top: 5em;
+    margin-right: 15em;
+    padding-bottom: 5em;
+}
+
+h1 {
+    font-size: 4vw;
+    line-height: 4.5vw;
+}

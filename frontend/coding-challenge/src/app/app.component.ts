@@ -61,12 +61,10 @@ export class AppComponent {
   }
 
   openSitenav(): void {
-    document.body.style.backgroundColor = "rgba(55, 55, 55, 0.3)";
     this.sitenavClosed = false;
   }
 
   closeSitenav(): void {
-    document.body.style.backgroundColor = "initial";
     this.sitenavClosed = true;
   }
 }

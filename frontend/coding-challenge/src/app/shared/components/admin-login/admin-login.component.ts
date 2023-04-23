@@ -20,29 +20,25 @@ export class AdminLoginComponent {
   username: string = '';
   password: string = '';
 
-  username_error: string = 'Error';
-  password_error: string = 'Error';
+  usernameError: string = 'Error';
+  passwordError: string = 'Error';
 
-  show_username_error: boolean = false;
-  show_password_error: boolean = false;
+  showUsernameError: boolean = false;
+  showPasswordError: boolean = false;
 
   constructor(private router: Router, private backendService: BackendService) { }
 
-  setValue(): void {
-
-  }
-
   login(username: string, password: string): void {
-    this.show_username_error = false;
-    this.show_password_error = false;
+    this.showUsernameError = false;
+    this.showPasswordError = false;
     if (username == '' || password == '') {
       if (username == '') {
-        this.username_error = 'Please enter an username!';
-        this.show_username_error = true;
+        this.usernameError = 'Please enter an username!';
+        this.showUsernameError = true;
       }
       if (password == '') {
-        this.password_error = 'Please enter a password!';
-        this.show_password_error = true;
+        this.passwordError = 'Please enter a password!';
+        this.showPasswordError = true;
       }
     } else {
       this.backendService.loginAdmin(username, password);
@@ -52,10 +48,10 @@ export class AdminLoginComponent {
       let m = d.getMinutes();
 
       if ((m % 2) == 1) {
-        this.username_error = 'Wrong login initials. Please try again!';
-        this.password_error = 'Wrong login initials. Please try again!';
-        this.show_username_error = true;
-        this.show_password_error = true;
+        this.usernameError = 'Wrong login initials. Please try again!';
+        this.passwordError = 'Wrong login initials. Please try again!';
+        this.showUsernameError = true;
+        this.showPasswordError = true;
       } else {
         this.router.navigate(['/admin_applications']);
       }

@@ -19,6 +19,7 @@
 
 
   <div *ngIf="this.adminPage" class="sitenav" id="sitenav" [ngClass]="{'closed_sitenav': this.sitenavClosed}">
+    <div class="space"></div>
     <div class="close_sitenav" (click)="closeSitenav()">
       <img src="../assets/menu.svg" class="sitenav_icon">
     </div>
@@ -34,17 +35,20 @@
   </div>
 
 
-  <div class="body" [ngClass]="{'not_clickable': !this.sitenavClosed}">
-    <router-outlet></router-outlet>
+  <div [ngClass]="{'in_background': !this.sitenavClosed}"></div>
+  <div [ngClass]="{'not_clickable': !this.sitenavClosed}">
+    <div class="body">
+      <router-outlet></router-outlet>
+    </div>
+  
+  
+    <footer class="footer">
+      <a class="impressum_link" href="https://amplimind.io/impressum/">
+        Impressum
+      </a>
+      <a class="datenschutz_link" href="https://amplimind.io/datenschutzerklaerung/">
+        Datenschutzerklärung
+      </a>
+    </footer>
   </div>
-
-
-  <footer class="footer" [ngClass]="{'not_clickable': !this.sitenavClosed}">
-    <a class="impressum_link" href="https://amplimind.io/impressum/">
-      Impressum
-    </a>
-    <a class="datenschutz_link" href="https://amplimind.io/datenschutzerklaerung/">
-      Datenschutzerklärung
-    </a>
-  </footer>
 </div>
