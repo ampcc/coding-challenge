@@ -1,19 +1,37 @@
 from rest_framework import serializers
 from .models import Challenge, Application
+from django.db.models import CharField
 
-
-class ChallengeSerializer(serializers.ModelSerializer):
+class GetChallengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge
         fields = ["id", "challengeHeading", "challengeText"]
 
-class ApplicationSerializer(serializers.ModelSerializer):
+class GetApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = ["applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission", "githubRepo",
-                  "status", "applicantEmail", "created", "modified", "user"]
+                  "status", "created", "modified", "user"]
 
-class ApplicationStatus(serializers.ModelSerializer):
+class PostApplicationSerializer(serializers.ModelSerializer):
+    tmpLink = serializers.SerializerMethodField()
+
+    def get_tmpLink(self, obj):
+        key = self.context.get("key")
+        applicationId = self.context.get("applicationId")
+        if key:
+            tmpLink = "www.amplimind.io/application?id=" + applicationId + "&key=" + key
+            return "www.amplimind.io/application?id=" + applicationId + "&key=" + key
+        return False
+
+    class Meta:
+        model = Application
+        tmpLink = CharField()
+        serializers.SerializerMethodField('getTmpLink')
+
+        fields = ["applicationId", "created", "status", "expiry", "tmpLink"]
+
+class GetApplicationStatus(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = ["applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission", "status"]

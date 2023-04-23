@@ -20,7 +20,6 @@ class Application(models.Model):
     githubRepo = models.URLField(max_length=200, blank=True)
     status = models.IntegerField(choices=Status.choices,
                                  default=Status.INITIAL)
-    applicantEmail = models.CharField(max_length=50)
     created = UnixTimeStampField(auto_now_add=True, use_numeric=True)
     modified = UnixTimeStampField(auto_now=True, use_numeric=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
