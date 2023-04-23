@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 export class StartComponent {
   constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService) { }
 
+  // Dialog to ask the user to confirm that he wants to start the challenge gets displayed
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
@@ -31,6 +32,7 @@ export class StartComponent {
       },
     });
 
+    // If the dialog is closed and the result is true, the user decided to start the challenge, the backend starts the challenge and the user is navigated to the challenge page
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // TODO: Real Applicant from URL

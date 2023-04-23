@@ -18,6 +18,7 @@ export class AppComponent {
   adminPassword = false;
   link = '/start';
 
+  // Check whether the logout button and sitenavigation should be displayed
   constructor(private dialog: MatDialog, private backendService: BackendService, private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -40,6 +41,7 @@ export class AppComponent {
     })
   }
 
+  // Show Dialog to ask the admin to confirm that he wants to log out
   logout(): void {
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
@@ -51,6 +53,7 @@ export class AppComponent {
       },
     });
 
+    // If the user confirmed the logout, he gets navigated to the login page
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // TODO: Logout for admin
@@ -60,10 +63,12 @@ export class AppComponent {
     })
   }
 
+  // Sitenavigation gets opened
   openSitenav(): void {
     this.sitenavClosed = false;
   }
 
+  // Sitenavigation gets closed
   closeSitenav(): void {
     this.sitenavClosed = true;
   }

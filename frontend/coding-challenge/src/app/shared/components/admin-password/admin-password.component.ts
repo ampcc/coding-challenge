@@ -33,6 +33,10 @@ export class AdminPasswordComponent {
 
   constructor(private router: Router, private backendService: BackendService) { }
 
+  // If new password, old password, or confirm password are empty, error messages are shown underneath the corresponding text fields
+  // Otherwise it is checked, whether the old password is correct and whether the new password contains at least eight letters including at least one uppercase letter, one lowercase letter, one number, and one special character
+  // It is also checked, if the old password and the confirm password are equal
+  //In case all of the above factors are true the password gets changed and the user gets navigated to the applications page
   setPassword(oldP: string, newP: string, confirmP: string): void {
     this.showOldPasswordError = false;
     this.showNewPasswordError = false;
@@ -77,6 +81,7 @@ export class AdminPasswordComponent {
     }
   }
 
+  // In case the user decides not to change the password he can cancel and gets navigated to the applications page
   cancel(): void {
     this.router.navigate(['/admin_applications']);
   }

@@ -28,6 +28,8 @@ export class AdminLoginComponent {
 
   constructor(private router: Router, private backendService: BackendService) { }
 
+  // When username or password are empty, error messges appear underneath the text fields
+  // Otherwise teh backend is called to try and log the admin in. Depending on the reponse the logged in admin gets navigated to the applications page or error messages are shown
   login(username: string, password: string): void {
     this.showUsernameError = false;
     this.showPasswordError = false;
@@ -43,7 +45,7 @@ export class AdminLoginComponent {
     } else {
       this.backendService.loginAdmin(username, password);
 
-      // TODO: Validate response instead
+      // TODO: Validate response of loginAdmin instead of minuteson clock
       const d = new Date();
       let m = d.getMinutes();
 
