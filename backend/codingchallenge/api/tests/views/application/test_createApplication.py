@@ -8,6 +8,7 @@ from ....models.application import Application
 from ....models.challenge import Challenge
 from ....views import jsonMessages
 
+import unittest.mock as mock
 
 class test_createApplication(APITestCase):
 
@@ -25,7 +26,6 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
-            "applicantEmail": "hallo@thi.de",
             "challengeId": 1,
             "days": 6
         }
@@ -39,7 +39,6 @@ class test_createApplication(APITestCase):
         url = '/api/admin/dumb'
         data = {
             "applicationId": "TEST1234",
-            "applicantEmail": "hallo@thi.de",
             "challengeId": 1,
             "days": 6
         }
@@ -52,8 +51,7 @@ class test_createApplication(APITestCase):
     def test_wrongDatafields(self):
         url = '/api/admin/applications/'
         data = {
-            "applicationId": "TEST1234",
-            "wrongDatafield": "hallo@thi.de",
+            "wrongDatafield": "TEST1234",
             "challengeId": 2,
             "days": 6
         }
@@ -79,7 +77,6 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationStatus": 2,
-            "applicantEmail": "Test@thi.de",
             "challengeId": 1,
             "extendDays": 2
         }
@@ -99,14 +96,25 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
-            "applicantEmail": "hallo@thi.de",
         }
+        expectedReturnData = {
+            "applicationId": "TEST1234",
+            "created": mock.ANY,
+            "status": "0",
+            "expiry": mock.ANY,
+            "tmpLink": mock.ANY
+        }
+
         self.assertEqual(Application.objects.count(), 0)
 
         response = self.client.post(url, data, format='json')
+
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, jsonMessages.successJsonResponse())
+        self.assertIn("www.amplimind.io/application?id=TEST1234&key=", response.data['tmpLink'])
+        # tmpLink also contains a key
+        self.assertGreater(len(response.data['tmpLink']), len("www.amplimind.io/application?id=TEST1234&key="))
+        self.assertEqual(expectedReturnData, response.data)
 
         # test if challengeId is a valid random challenge from database
         challengeId = Application.objects.get().challengeId
@@ -117,22 +125,29 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
-            "applicantEmail": "hallo@thi.de",
             "challengeId": 1,
             "days": 6
         }
+
+        expectedReturnData = {
+            "applicationId": "TEST1234",
+            "created": mock.ANY,
+            "status": "0",
+            "expiry": mock.ANY,
+            "tmpLink": mock.ANY
+        }
+
         self.assertEqual(Application.objects.count(), 0)
 
         response = self.client.post(url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, jsonMessages.successJsonResponse())
+        self.assertEqual(response.data, expectedReturnData)
 
         timestamp = time.time()
         timestamp = timestamp + 6 * 24 * 60 * 60
 
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
-        self.assertEqual(Application.objects.get().applicantEmail, 'hallo@thi.de')
         self.assertEqual(Application.objects.get().challengeId, 1)
 
         # rounds the assertion to seconds
@@ -142,20 +157,26 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
-            "applicantEmail": "hallo@thi.de",
+        }
+
+        expectedReturnData = {
+            "applicationId": "TEST1234",
+            "created": mock.ANY,
+            "status": "0",
+            "expiry": mock.ANY,
+            "tmpLink": mock.ANY
         }
         self.assertEqual(Application.objects.count(), 0)
 
         response = self.client.post(url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, jsonMessages.successJsonResponse())
+        self.assertEqual(response.data, expectedReturnData)
 
         timestamp = time.time()
         timestamp = timestamp + 2 * 24 * 60 * 60
 
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
-        self.assertEqual(Application.objects.get().applicantEmail, 'hallo@thi.de')
 
         # test if challengeId is the single created challenge
         self.assertEqual(Application.objects.get().challengeId, 1)
@@ -167,16 +188,22 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
-            "applicantEmail": "hallo@thi.de",
             "challengeId": 1,
             "days": 2
+        }
+        expectedReturnData = {
+            "applicationId": "TEST1234",
+            "created": mock.ANY,
+            "status": "0",
+            "expiry": mock.ANY,
+            "tmpLink": mock.ANY
         }
         self.assertEqual(Application.objects.count(), 0)
 
         response1 = self.client.post(url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response1.data, jsonMessages.successJsonResponse())
+        self.assertEqual(response1.data, expectedReturnData)
 
         response2 = self.client.post(url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
@@ -186,13 +213,11 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST123412312312312312",
-            "applicantEmail": "hallo@thi.de",
             "challengeId": 1,
             "days": 6
         }
         data2 = {
             "applicationId": "TEST4",
-            "applicantEmail": "hallo@thi.de",
             "challengeId": 1,
             "days": 6
         }

@@ -27,7 +27,6 @@ class PostApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         tmpLink = CharField()
-        serializers.SerializerMethodField('getTmpLink')
 
         fields = ["applicationId", "created", "status", "expiry", "tmpLink"]
 

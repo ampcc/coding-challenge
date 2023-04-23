@@ -122,7 +122,7 @@ class AdminApplicationsView(APIView):
 
             applications = Application.objects.get(applicationId=request.data.get('applicationId'))
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': key, "applicationId": request.data.get('applicationId')})
-            return Response(postSerializer.data, status=status.HTTP_200_OK)
+            return Response(postSerializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # 5. Edit Application
@@ -163,14 +163,12 @@ class AdminApplicationsView(APIView):
                             statusCode = status.HTTP_400_BAD_REQUEST
                             break
                     if key == allowedFields[1]:
-                        serialized_application['fields'][key] = request.data.get(key)
-                    if key == allowedFields[2]:
                         if Challenge.objects.filter(id=request.data.get(key)):
                             serialized_application['fields'][key] = request.data.get(key)
                         else:
                             statusCode = status.HTTP_400_BAD_REQUEST
                             break
-                    if key == allowedFields[3]:
+                    if key == allowedFields[2]:
                         timeStamp = time.time() + request.data.get(key) * 24 * 60 * 60
                         serialized_application['fields']['expiry'] = timeStamp
                 else:
