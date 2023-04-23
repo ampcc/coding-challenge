@@ -1,27 +1,49 @@
-.spacer {
-    flex: 1;
+:host {
+    display: block;
+    min-height: 100%;
 }
 
 .toolbar {
-    position: static;
     top: 0;
-    left: 0;
-    right: 0;
+    width: 100%;
     height: 80px;
     display: flex;
     align-items: center;
     background-color: rgb(0, 35, 57);
+    position: fixed;
+    z-index: 4;
+}
+
+.spacer {
+    flex: 1;
 }
 
 a {
-    margin: 35px;
+    margin-left: 35px;
+    margin-right: 35px;
     text-decoration: none;
     color: black;
-    font-size: 16px;
+    font-size: 0.7vw;
+    line-height: 1.2vw;
 }
 
 .logo {
+    padding: 10px;
     height: 50px;
+}
+
+.logout_link {
+    margin-right: 0;
+    height: 50px;
+}
+
+.logout_link:hover {
+    cursor: pointer;
+}
+
+.logout {
+    height: 50px;
+    filter: invert();
 }
 
 .home {
@@ -38,20 +60,125 @@ a {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.body {
-    position: relative;
-    min-height: 84%;
+
+.sitenav {
+    width: 20%;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color: white;
+    z-index: 3;
 }
 
-.content {
-    padding-bottom: 80px;
+.space {
+    height: 80px;
+}
+
+.closed_sitenav {
+    display: none;
+}
+
+.open_sitenav {
+    padding-top: 80px;
+    margin: 2em;
+    float: right;
+}
+
+.open_sitenav:hover {
+    cursor: pointer;
+}
+
+.close_sitenav {
+    display: inline-block;
+    margin: 2em 0 1em 2em;
+}
+
+.close_sitenav:hover {
+    cursor: pointer;
+}
+
+.sitenav_icon {
+    height: 2em;
+}
+
+.sitenav_link {
+    margin: 0;
+    display: block;
+    padding: 0.5em 1em;
+    font-size: 1vw;
+    line-height: 1.5vw;
+}
+
+.sitenav_link_selected {
+    background-color: rgb(0, 35, 57);
+    color: white;
+}
+
+.not_clickable {
+    pointer-events: none;
+}
+
+.in_background {
+    background-color: rgba(55, 55, 55, 0.3);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 2;
+}
+
+
+.body {
+    padding-top: 80px;
+    min-height: calc(100vh - 3 * 80px);
 }
 
 .footer {
     height: 80px;
     width: 100%;
-    font-size: 25px;
-    bottom: 0;
-    position: absolute;
+    font-size: 1vw;
+    line-height: 1.5vw;
     display: flex;
+}
+
+@media (max-width:1024px) {
+
+    a,
+    .footer,
+    .sitenav_link {
+        font-size: 1.5vw;
+        line-height: 2vw;
+    }
+}
+
+@media (max-width:740px) {
+
+    a,
+    .footer,
+    .sitenav_link {
+        font-size: 2vw;
+        line-height: 2.5vw;
+    }
+}
+
+@media (max-width:555px) {
+
+    a,
+    .footer,
+    .sitenav_link {
+        font-size: 2.5vw;
+        line-height: 3vw;
+    }
+}
+
+@media (max-width:400px) {
+
+    a,
+    .footer,
+    .sitenav_link {
+        font-size: 3vw;
+        line-height: 3.5vw;
+    }
 }

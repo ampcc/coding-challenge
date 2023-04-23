@@ -1,28 +1,54 @@
-<!-- Toolbar -->
-<div class="page">
+<div id="page">
   <div class="toolbar" role="banner">
-    <a class="logo_link" href="/">
-      <img class="logo" alt="amplimind Logo" src="../assets/amplimind_logo.png" />
+    <a class="logo_link" href={{this.link}}>
+      <img class="logo" alt="amplimind Logo" src="../assets/amplimind_logo.png">
     </a>
     <div class="spacer"></div>
+    <div *ngIf="this.adminPage" class="logout_link" href="/admin_login" (click)="logout()">
+      <img class="logout" src="../assets/logout.svg">
+    </div>
     <a class="home_link" href="https://amplimind.io/">
       <div class="home">Homepage</div>
     </a>
   </div>
 
-  <div class="body">
-    <div class="content">
+
+  <div *ngIf="this.adminPage" class="open_sitenav" (click)="openSitenav()" [ngClass]="{'not_clickable': !this.sitenavClosed}">
+    <img src="../assets/menu.svg" class="sitenav_icon">
+  </div>
+
+
+  <div *ngIf="this.adminPage" class="sitenav" id="sitenav" [ngClass]="{'closed_sitenav': this.sitenavClosed}">
+    <div class="space"></div>
+    <div class="close_sitenav" (click)="closeSitenav()">
+      <img src="../assets/menu.svg" class="sitenav_icon">
+    </div>
+    <a href="/admin_applications" class="sitenav_link" [ngClass]="{'sitenav_link_selected': this.adminApplicants}">
+      <div>Show Applicants</div>
+    </a>
+    <a href="/admin_challenges" class="sitenav_link" [ngClass]="{'sitenav_link_selected': this.adminChallenges}">
+      <div>Show Tasks</div>
+    </a>
+    <a href="/admin_password" class="sitenav_link" [ngClass]="{'sitenav_link_selected': this.adminPassword}">
+      <div>Change Password</div>
+    </a>
+  </div>
+
+
+  <div [ngClass]="{'in_background': !this.sitenavClosed}"></div>
+  <div [ngClass]="{'not_clickable': !this.sitenavClosed}">
+    <div class="body">
       <router-outlet></router-outlet>
     </div>
-
-
-    <div class="footer">
+  
+  
+    <footer class="footer">
       <a class="impressum_link" href="https://amplimind.io/impressum/">
         Impressum
       </a>
       <a class="datenschutz_link" href="https://amplimind.io/datenschutzerklaerung/">
         Datenschutzerklärung
       </a>
-    </div>
+    </footer>
   </div>
 </div>

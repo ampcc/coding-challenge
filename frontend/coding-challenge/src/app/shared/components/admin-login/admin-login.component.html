@@ -1,0 +1,11 @@
+<div class="main_container">
+    <h1>Administrator Login</h1>
+    <hr>
+    <p class="heading">Username</p>
+    <input class="inputField" type="text" placeholder="Please enter your username" [(ngModel)]="username" [ngClass]="{'show_error': this.showUsernameError}">
+    <p class="error_message" [ngClass]="{'no_error': !this.showUsernameError}">{{this.usernameError}}</p>
+    <p class="heading">Password</p>
+    <input class="inputField" type="password" placeholder="Please enter your password" [(ngModel)]="password" [ngClass]="{'show_error': this.showPasswordError}">
+    <p class="error_message" [ngClass]="{'no_error': !this.showPasswordError}">{{this.passwordError}}</p>
+    <app-button title="Login" look="primary" (click)="login(username, password)"></app-button>
+</div>

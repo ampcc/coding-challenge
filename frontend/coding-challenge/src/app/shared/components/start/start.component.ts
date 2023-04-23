@@ -14,17 +14,16 @@ import { Router } from '@angular/router';
 })
 
 export class StartComponent {
-  constructor(public dialog: MatDialog, public router: Router, private backendService: BackendService) { }
+  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService) { }
 
+  // Dialog to ask the user to confirm that he wants to start the challenge gets displayed
   openDialog(): void {
-    console.log("hurra");
-    DialogComponent.name;
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Start Coding Challenge',
         description: {
           important: 'Are you sure you want to start the Coding Challenge?',
-          details: 'Since receiving our mail you have a period of two days to start the Challenge. <br>Once you have done so, you have three days to upload your solution.'
+          details: 'Since receiving our mail you have a period of ten days to start the Challenge. <br>Once you have done so, you have three days to upload your solution.'
         },
         buttons: {
           left: { title: 'Start Coding Challenge', look: 'primary' },
@@ -33,6 +32,7 @@ export class StartComponent {
       },
     });
 
+    // If the dialog is closed and the result is true, the user decided to start the challenge, the backend starts the challenge and the user is navigated to the challenge page
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // TODO: Real Applicant from URL

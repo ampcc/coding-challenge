@@ -11,6 +11,8 @@ import { NgIf } from '@angular/common';
   imports: [ButtonComponent, NgIf]
 })
 export class DialogComponent {
+  // The dialog element expects at least a title string
+  // Apart from that it can handle a description and two buttons
   constructor(@Inject(MAT_DIALOG_DATA) public data: {
     title: string,
     description: {
@@ -20,12 +22,19 @@ export class DialogComponent {
       details: string,
     },
     buttons: {
-      left: { title: string, look: string },
-      right: { title: string, look: string }
+      left: {
+        title: string,
+        look: string
+      },
+      right: {
+        title: string,
+        look: string
+      }
     }
   },
     public dialogRef: MatDialogRef<DialogComponent>) { }
 
+  //The Dialog can be closed with the press of a button
   public closeDialog(state: boolean) {
     this.dialogRef.close(state);
   }
