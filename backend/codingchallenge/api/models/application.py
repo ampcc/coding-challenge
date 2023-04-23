@@ -9,7 +9,8 @@ class Application(models.Model):
         CHALLENGE_STARTED = 1
         IN_REVIEW = 2
         COMPLETED = 3
-        ARCHIVED = 4
+        EXPIRED = 4
+        ARCHIVED = 5
 
     applicationId = models.CharField(max_length=8, blank=False)  # Validate that only Numbers can be Stored.
     challengeId = models.IntegerField()
