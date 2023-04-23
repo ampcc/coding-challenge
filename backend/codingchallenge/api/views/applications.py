@@ -112,7 +112,7 @@ class AdminApplicationsView(APIView):
         data = {
             'applicationId': request.data.get('applicationId'),
             'challengeId': challengeId,
-            'expiry': time.time() + (self.days + 3) * 24 * 60 * 60,
+            'expiry': time.time() + self.days * 24 * 60 * 60,
             'user': user.id
         }
 

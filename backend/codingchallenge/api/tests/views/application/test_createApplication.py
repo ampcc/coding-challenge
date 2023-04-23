@@ -100,7 +100,7 @@ class test_createApplication(APITestCase):
         expectedReturnData = {
             "applicationId": "TEST1234",
             "created": mock.ANY,
-            "status": "0",
+            "status": 0,
             "expiry": mock.ANY,
             "tmpLink": mock.ANY
         }
@@ -132,7 +132,7 @@ class test_createApplication(APITestCase):
         expectedReturnData = {
             "applicationId": "TEST1234",
             "created": mock.ANY,
-            "status": "0",
+            "status": 0,
             "expiry": mock.ANY,
             "tmpLink": mock.ANY
         }
@@ -162,7 +162,7 @@ class test_createApplication(APITestCase):
         expectedReturnData = {
             "applicationId": "TEST1234",
             "created": mock.ANY,
-            "status": "0",
+            "status": 0,
             "expiry": mock.ANY,
             "tmpLink": mock.ANY
         }
@@ -194,7 +194,7 @@ class test_createApplication(APITestCase):
         expectedReturnData = {
             "applicationId": "TEST1234",
             "created": mock.ANY,
-            "status": "0",
+            "status": 0,
             "expiry": mock.ANY,
             "tmpLink": mock.ANY
         }
