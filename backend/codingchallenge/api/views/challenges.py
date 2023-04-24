@@ -3,6 +3,7 @@ import json
 
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from django.contrib.auth.models import User
 
 # RESTapi imports
 from rest_framework import status
@@ -10,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 # import model
-from ..models import Challenge
+from ..models import Challenge, Application
 
 # import serializer
 from ..serializers import GetChallengeSerializer
@@ -29,13 +30,21 @@ class AdminChallengesView(APIView):
     def get(self, request, *args, **kwargs):
         if kwargs.keys():
             # getChallenge
-            challengeId = self.kwargs["challengeId"]
-            challenge = Challenge.objects.filter(id=challengeId).first()
             try:
-                serializer = GetChallengeSerializer(challenge, many=False)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            except:
-                return Response(jsonMessages.errorJsonResponse("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)
+                challengeId = self.kwargs["challengeId"]
+                try:
+                    challenge = Challenge.objects.get(id=challengeId)
+                    serializer = GetChallengeSerializer(challenge, many=False)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                
+                except Challenge.DoesNotExist:
+                    return Response(jsonMessages.errorJsonResponse("The desired challenge can not be found!"), status=status.HTTP_404_NOT_FOUND)  
+                except Challenge.MultipleObjectsReturned:
+                    return Response(jsonMessages.errorJsonResponse("Multiple challenges with the same id exist!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            except KeyError:
+                return Response(jsonMessages.errorJsonResponse("Parameter challengeId is missing!"), status=status.HTTP_400_BAD_REQUEST)
+        
         else:
             # getChallenges
             challenges = Challenge.objects.all()
@@ -72,10 +81,51 @@ class AdminChallengesView(APIView):
             return Response(status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
 
-class Challenges(APIView):
+
+# endpoint: /api/application/challenges/<applicationId>
+class ApplicationChallengesView(APIView):
     permission_classes = [IsAuthenticated]
 
-    name = "Applicant Challenges View"
-    description = "handling all requests for challenges as a applicant"
+    name = "Get Challenge Application View"
+    description = "get a specific challenge for the corespnding applicant"
+
+    def get(self, request, *args, **kwargs):
+        """
+        get the challenge of the specified application
+            required arguments:
+                applicationId
+
+            returns:
+                id
+                challengeHeader
+                challengeText
+        """
+
+        user = User.objects.get(username = request.user.username)
+
+        try:
+            applicationId = self.kwargs["applicationId"]
+            if applicationId != user.username:
+                return Response(jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"), status=status.HTTP_403_FORBIDDEN)
+            
+            try:
+                application = Application.objects.get(applicationId=applicationId)
+                try:
+                    challengeOfSpecificApplication = Challenge.objects.get(id=application.challengeId)
+                    serializer = GetChallengeSerializer(challengeOfSpecificApplication, many=False)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                
+                except Challenge.DoesNotExist:
+                    return Response(jsonMessages.errorJsonResponse("The applications challenge can not be found!"), status=status.HTTP_404_NOT_FOUND)  
+                except Challenge.MultipleObjectsReturned:
+                    return Response(jsonMessages.errorJsonResponse("Multiple challenges with the same id exist!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                
+            except Application.DoesNotExist:
+                return Response(jsonMessages.errorJsonResponse("The referenced application can not be found!"), status=status.HTTP_404_NOT_FOUND)
+            except Application.MultipleObjectsReturned:
+                return Response(jsonMessages.errorJsonResponse("Multiple applications with the same id exist!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        except KeyError:
+            return Response(jsonMessages.errorJsonResponse("Parameter applicationId is missing!"), status=status.HTTP_400_BAD_REQUEST)
+
