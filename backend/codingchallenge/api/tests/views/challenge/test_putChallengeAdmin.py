@@ -5,7 +5,7 @@ from ...auth.mockAuth import MockAuth
 from ....models.challenge import Challenge
 from ....serializers import GetChallengeSerializer
 
-class test_postChallengeAdmin(APITestCase):
+class test_putChallengeAdmin(APITestCase):
     url = "/api/admin/challenges/"
     
     def setUp(self):
