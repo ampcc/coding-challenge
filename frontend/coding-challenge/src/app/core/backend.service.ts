@@ -49,7 +49,7 @@ export class BackendService {
     return this.http.get(this.backendURL+'/api/application/submitChallenge', {'headers': headers});
   }
 
-  public startChallenge(_applicantToken: string): Observable<any> {
+  public startChallenge(_applicantToken: string|null): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
     return this.http.get(this.backendURL + "/api/application/startChallenge", {'headers': headers});
   }
