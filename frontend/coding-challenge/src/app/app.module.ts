@@ -17,7 +17,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   declarations: [
     AppComponent,
     DefaultComponent,
-    AdminApplicationsComponent,
     AdminChallengesComponent,
     AdminEditComponent,
   ],
@@ -28,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatDialogModule,
     AdminLoginComponent,
     AdminPasswordComponent,
+    AdminApplicationsComponent,
     BrowserAnimationsModule
   ],
   providers: [],

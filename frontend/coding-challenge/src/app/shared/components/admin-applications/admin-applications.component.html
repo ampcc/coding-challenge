@@ -1,3 +1,46 @@
-<div class="main_container">
-    <h1>Coding Challenge: Applications</h1>
-</div>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin View Applicants</title>
+    <link rel="stylesheet" type="text/css" href="admin-applications.component.css">
+    <meta charset="UTF-8">
+</head>
+
+
+<body>
+    <div id="elements">
+        <div class="heading">
+            <h2>Coding Challenge: Applicants</h2>
+        </div>
+
+
+        <div class="view_tab">
+            <div class="tab_list">
+                <label class="tabs" id="tab_active_challenges" for="tab-1" (click)="changeTab('tab_active_challenges')">
+                    Active Challenge
+                </label>
+
+                <label class="tabs" id="tab_archiv" for="tab-2" (click)="changeTab('tab_archiv')">
+                    Archiv
+                </label>
+            </div>
+
+            <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
+                <div class="list_applicants">
+                    test
+                    <div class="single_applicant" *ngFor="let app of applicantsArray; let i = index">
+                    </div>
+                </div>
+            </div>
+
+
+            <div [hidden]="hideContentArchiv" class="contentArchiv">
+                Test
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
