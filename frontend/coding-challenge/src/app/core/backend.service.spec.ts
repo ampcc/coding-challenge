@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { BackendService } from './backend.service';
 import { TestBed, fakeAsync, flush } from '@angular/core/testing';
-import { Challenge } from '../shared/models/challange';
+import { Challenge } from '../shared/models/challenge';
 import { HttpHeaders } from '@angular/common/http';
 
 

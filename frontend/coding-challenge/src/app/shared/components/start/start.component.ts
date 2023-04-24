@@ -23,6 +23,12 @@ export class StartComponent implements OnInit{
     this.applicationToken = window.sessionStorage.getItem('Auth-Token');
     if(this.applicationToken === null){
       this.router.navigateByUrl("/unauthorized")
+    }else{
+      this.backendService.getStatus(this.applicationToken).subscribe((response) =>{
+        if(response.progress === 1){
+          this.router.navigateByUrl("/challenge");
+        }
+      });
     }
   }
 
@@ -45,7 +51,7 @@ export class StartComponent implements OnInit{
     // If the dialog is closed and the result is true, the user decided to start the challenge, the backend starts the challenge and the user is navigated to the challenge page
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.backendService.startChallenge(this.applicationToken).subscribe((response) => {
+        this.backendService.startChallenge(this.applicationToken).subscribe(() => {
           this.router.navigateByUrl("/challenge");
         }, (error: HttpErrorResponse) => {
           switch(error.status){
