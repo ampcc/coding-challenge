@@ -26,4 +26,12 @@ class GithubApi:
 
         return ret
 
-    # def createRepo(self):
+    def createRepo(self, repoName, repoDescription):
+        return self.gApi.get_organization('ampcc').create_repo(name=repoName, description=repoDescription, private=True)
+
+    def pushFile(self, repoName, path, file):
+        return self.gApi.get_organization('ampcc').get_repo(repoName).create_file(path=path,message="auto push "+path,content=file)
+    #
+    # def addActions(self):
+    #
+    # def getActionResult(self):
