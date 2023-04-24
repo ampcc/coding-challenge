@@ -38,7 +38,7 @@ class AdminChallengesView(APIView):
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 
                 except Challenge.DoesNotExist:
-                    return Response(jsonMessages.errorJsonResponse("The applications challenge can not be found!"), status=status.HTTP_404_NOT_FOUND)  
+                    return Response(jsonMessages.errorJsonResponse("The desired challenge can not be found!"), status=status.HTTP_404_NOT_FOUND)  
                 except Challenge.MultipleObjectsReturned:
                     return Response(jsonMessages.errorJsonResponse("Multiple challenges with the same id exist!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
