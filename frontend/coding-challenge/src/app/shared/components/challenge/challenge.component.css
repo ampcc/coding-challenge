@@ -1,0 +1,279 @@
+/* Style generell view */
+#elements {
+    margin: auto;
+    width: 75%;
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+h2 {
+    line-height: 1.2em;
+    font-size: 50px;
+    font-weight: 600;
+    color: rgb(0, 0, 0);
+    margin-bottom: 50px;
+}
+
+#time {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.tab_list {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.tabs{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    align-items: center;
+    
+    padding-top: 16px;
+    padding-bottom: 14px;
+}
+
+.tabs:hover {
+    cursor: pointer;
+}
+
+#tab_intro {
+    border-bottom: 2px solid black;
+}
+
+#tab_challenge, #tab_upload {
+    margin-left: 24px;;
+}
+
+/* Style div for Intro and Challenge */
+#text {
+    border: solid 1px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px !important;
+}
+
+/* Style div für Upload */
+#divUpload {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px !important;
+}
+
+/* Style upload challenge */
+.errorMessage {
+    color: red;
+    margin-left: 40%;
+    margin-top: 5px;
+}
+
+.errorMessage.msgFileUpload {
+    text-align: center !important;
+    margin-top: 5px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.form-select {
+    width: 60%;
+    margin-left: auto; 
+    margin-right: 0;
+    
+}
+
+.form-select:focus {
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    box-shadow: none !important;
+}
+
+.mb-3 {
+    overflow: hidden;
+}
+
+#programmingLanguage, #operatingSystem {
+    float: left;
+    margin-left: 0; 
+    margin-right: auto;
+}
+
+#selectOpSys, #selectProgLang {
+    overflow: hidden;
+}
+
+.inputOther{
+    margin-top: 20px;
+    width: 60%;
+    margin-left: auto; 
+    margin-right: 0;
+}
+
+.btn.btn-dark {
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 0; 
+    margin-right: auto;
+}
+
+
+/* Drag and Drop Field */
+.question-circle {  
+    margin: 0;
+    margin-top: 0.5cm;
+}
+
+.question-circle:hover {  
+    cursor: pointer;
+}
+
+#DragnDropBlock {
+    width: 100%;
+    height: 220px;
+    padding: 5px;
+    text-align: center;
+    border: dashed 2px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 0.5cm;
+
+    /* Center items vertically and horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.dropFileHeader {
+    font-size: 35px;
+    font-weight: 400;
+    color: #38424c;
+    padding: 5px;
+}
+
+.picUpload {
+    width: 75px;
+    height: 75px;
+    display: block;
+    margin: auto;
+}
+
+.infoDropFile {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.15);
+    padding: 5px;
+}
+
+.dropFileHeader {
+    font-size: 30px;
+}
+
+#fileHandler {
+    opacity: 0;
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+#fileHandler:hover {
+    cursor: pointer;
+}
+
+
+
+/* Uploaded Files */
+.files-list {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px !important;
+}
+
+.single-file {
+    border: dotted 2px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    padding: 5px;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.picntext{
+    overflow: hidden;
+    float: left;
+}
+
+.folder {
+    float: left;
+    margin-left: 0; 
+    margin-right: auto;
+    padding: 10px;
+}
+
+.info {
+    overflow: hidden;
+    padding: 10px;
+}
+
+.delete {
+    cursor: pointer;
+    float: right;
+    margin-left: auto;
+    margin-right: 0;
+    padding: 10px;
+}
+
+.picDelete {
+    width: 25px;
+    height: 25px;
+    display: block;
+    margin: auto;
+}
+
+.filename {
+    font-size: 20px;
+    margin:0;
+}
+
+.size {
+    font-size: 15px;
+}
+
+
+/* Successful Upload */
+#divSuccess {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0;
+    text-align: center;
+    position: relative;
+    /* Center items vertically and horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.textSuccess {
+    font-size: 25px;
+}
+
+.picSuccess {
+    width: 300px;
+    height: 300px;
+    display: block;
+    margin: auto;
+}
