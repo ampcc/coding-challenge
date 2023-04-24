@@ -25,17 +25,23 @@ a {
 }
 
 #close {
-    color: rgb(50, 50, 50);
     display: flex;
     float: right;
     background: none;
     border: none;
-    font-size: 2vw;
 }
 
 #close:hover {
-    color: rgb(100, 100, 100);
     cursor: pointer;
+}
+
+#close_image {
+    filter: invert(60%);
+    width: 3vw;
+}
+
+#close_image:hover {
+    filter: invert(75%);
 }
 
 #button_container {

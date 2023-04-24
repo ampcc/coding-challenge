@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Admin } from '../shared/models/admin';
 import { Application } from '../shared/models/application';
-import { Challenge } from '../shared/models/challange';
+import { Challenge } from '../shared/models/challenge';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 

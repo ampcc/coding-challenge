@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BackendService } from 'src/app/core/backend.service';
-import { Challenge } from '../../models/challange';
+import { Challenge } from '../../models/challenge';
 import { Application } from '../../models/application';
 import { FormsModule } from '@angular/forms';
 
