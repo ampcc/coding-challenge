@@ -172,7 +172,7 @@ class AdminApplicationsView(APIView):
                         else:
                             return Response(jsonMessages.errorJsonResponse("Invalid expiry date!"), status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    return Response(jsonMessages.errorJsonResponse("Key", key, "not valid!"), status=status.HTTP_400_BAD_REQUEST)
+                    return Response(jsonMessages.errorJsonResponse("Field: " + key + " not valid!"), status=status.HTTP_400_BAD_REQUEST)
 
         else:
             return Response(jsonMessages.errorJsonResponse("No data provided!"), status=status.HTTP_204_NO_CONTENT)

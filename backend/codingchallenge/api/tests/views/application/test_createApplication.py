@@ -126,7 +126,7 @@ class test_createApplication(APITestCase):
         url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
-            "challengeId": 1,
+            "challengeId": 3,
             "expiry": time.time() + 6 * 24 * 60 * 60
         }
 
@@ -152,7 +152,7 @@ class test_createApplication(APITestCase):
         # rounds the assertion to seconds
         self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
-        self.assertEqual(Application.objects.get().challengeId, 1)
+        self.assertEqual(Application.objects.get().challengeId, 3)
 
     def test_correctInputDefault(self):
         url = '/api/admin/applications/'

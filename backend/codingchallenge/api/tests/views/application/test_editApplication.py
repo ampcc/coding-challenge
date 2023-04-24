@@ -74,42 +74,34 @@ class test_editApplication(APITestCase):
         response = self.client.put(url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        wantedResponse = json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields']
-        self.assertEqual(response.data, wantedResponse)
+        self.assertEqual(response.data, {"detail": "Field: wrongDatafield not valid!"})
 
     def test_notAllowedDatafields(self):
         url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
-            "extendDays": 2
+            "expiry": 2
         }
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data,
-                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
+        self.assertEqual(response.data, {"detail": "Field: applicationId not valid!"})
 
     def test_emptyData(self):
         url = '/api/admin/applications/' + self.applicationId
         data = ""
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(response.data,
-                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
+        self.assertEqual(response.data, {"detail": "No data provided!"})
 
     def test_correctInput(self):
         url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 2,
             "challengeId": 1,
-            "extendDays": 2
+            "expiry": 99999999999999
         }
         response = self.client.put(url, data, format='json')
-
-        timestamp = time.time()
-        timestamp = timestamp + 2 * 24 * 60 * 60
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Application.objects.count(), 1)
 
@@ -119,7 +111,7 @@ class test_editApplication(APITestCase):
         self.assertEqual(Application.objects.get().challengeId, 1)
 
         # rounds the assertion to seconds
-        self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
+        self.assertAlmostEqual(Application.objects.get().expiry, 99999999999999, 0)
 
         self.assertEqual(response.data,
                          json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
@@ -136,9 +128,7 @@ class test_editApplication(APITestCase):
 
         self.assertNotEqual(Application.objects.get().status, 123123)
 
-        self.assertEqual(response.data,
-                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
-
+        self.assertEqual(response.data, {"detail": "Invalid status!"})
     def test_nonExistingChallengeId(self):
         url = '/api/admin/applications/' + self.applicationId
         data = {
@@ -150,5 +140,4 @@ class test_editApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         self.assertNotEqual(Application.objects.get().challengeId, 123123)
-        self.assertEqual(response.data,
-                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
+        self.assertEqual(response.data, {"detail": "Invalid challengeId!"})
