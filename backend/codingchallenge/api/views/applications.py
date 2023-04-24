@@ -214,8 +214,9 @@ class SubmitApplicationView(APIView):
     gApi = GithubApi()
     print(gApi.getRepos())
     # print(gApi.createRepo("TESTGITHUBAPI", "please dont delete, this is used for testing purposes"))
-    # print(gApi.pushFile("TESTGITHUBAPI", "testfolder/test.txt", "TEST CONTENT"))
-
+    # print(gApi.pushFile("TESTGITHUBAPI", "testlinting.py", open("manage.py", "r").read()))
+    # print(gApi.addLinter("TESTGITHUBAPI"))
+    print(gApi.getLinterResult("TESTGITHUBAPI"))
 
     def put(self, request, *args, **kwargs):
 
