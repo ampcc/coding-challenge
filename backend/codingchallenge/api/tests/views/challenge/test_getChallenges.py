@@ -24,14 +24,14 @@ class test_getChallenges(APITestCase):
         response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_wrongToken(self):
+    def test_invalidToken(self):
         # for this test, use the example token from the wiki
         self.client.credentials(HTTP_AUTHORIZATION='Token 62ce30b676d95ef439af5e1d84f9161034c67c4a')
 
         url = '/api/admin/challenges'
         data = {}
         response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongTokenFormat(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 1234')
@@ -85,7 +85,7 @@ class test_getChallenges(APITestCase):
         url = '/api/admin/challenges'
         data = {}
         response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
         self.assertEqual(Challenge.objects.count(), 2)
 
     def test_callAsPut(self):

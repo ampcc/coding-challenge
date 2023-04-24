@@ -23,69 +23,52 @@ class test_getChallengeAdmin(APITestCase):
         self.client.credentials()
 
         url = '/api/admin/challenges/1'
-        data = {
-            "challengeId": 1
-        }
+        data = {}
         response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_wrongToken(self):
+    def test_invalidToken(self):
         # for this test, use the example token from the wiki
         self.client.credentials(HTTP_AUTHORIZATION='Token 62ce30b676d95ef439af5e1d84f9161034c67c4a')
 
         url = '/api/admin/challenges/1'
-        data = {
-            "challengeId": 1
-        }
+        data = {}
         response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongTokenFormat(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 1234')
 
         url = '/api/admin/challenges/1'
-        data = {
-            "challengeId": 1
-        }
+        data = {}
         response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongUrl(self):
         url = '/api/admin/super_cool_challenges/45'
-        data = {
-            "challengeId": 1
-        }
+        data = {}
         response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_missingChallengeId(self):
-        url = '/api/admin/challenges/1'
+        url = '/api/admin/challenges/'
 
         data = {}
         response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data, jsonMessages.errorJsonResponse("Parameter challengeId is missing!"))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_challengeDoesNotExist(self):
         url = '/api/admin/challenges/67'
 
-        data = {
-            "challengeId": 67
-        }
+        data = {}
         response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data, jsonMessages.errorJsonResponse("The desired challenge can not be found!"))
 
-    # def test_dupplicateIds(self):
-    #     c = Challenge(id=1, challengeHeading="DuplicateTestChallenge", challengeText="This is a duplicate Test Challenge")
-    #     c.save(force_insert=True)
-
     def test_receiveCorrectChallenges(self):
         url = '/api/admin/challenges/'
 
-        data = {
-            "challengeId": 1
-        }
+        data = {}
         response = self.client.get(url + "1", data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
@@ -94,9 +77,7 @@ class test_getChallengeAdmin(APITestCase):
             "challengeText": "This is a Test Challenge"
         })
 
-        data = {
-            "challengeId": 2
-        }
+        data = {}
         response = self.client.get(url + "2", data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
@@ -108,7 +89,6 @@ class test_getChallengeAdmin(APITestCase):
     def test_ignoreAdditionalData(self):
         url = '/api/admin/challenges/1'
         data = {
-            "challengeId": 1,
             "stuff": "World!"
         }
         response = self.client.get(url, data, format='json')
@@ -121,18 +101,14 @@ class test_getChallengeAdmin(APITestCase):
 
     def test_callAsPost(self):
         url = '/api/admin/challenges/1'
-        data = {
-            "challengeId": 1
-        }
+        data = {}
         response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
         self.assertEqual(Challenge.objects.count(), 2)
 
     def test_callAsPut(self):
         url = '/api/admin/challenges/1'
-        data = {
-            "challengeId": 1
-        }
+        data = {}
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(Challenge.objects.count(), 2)
@@ -141,8 +117,6 @@ class test_getChallengeAdmin(APITestCase):
         MockAuth.applicant(self)
 
         url = '/api/admin/challenges/1'
-        data = {
-            "challengeId": 1
-        }
+        data = {}
         response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)        
