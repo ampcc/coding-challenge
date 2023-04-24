@@ -67,8 +67,8 @@ class AdminChallengesView(APIView):
         except Challenge.DoesNotExist:
             return Response(jsonMessages.errorJsonResponse("No object found for given challengeId."), status=status.HTTP_404_NOT_FOUND)
         except Challenge.MultipleObjectsReturned:
-            return Response(jsonMessages.errorJsonResponse("There have been found multiple challenges for the given challengeId. \
-                                                           This should never be the case."), status=status.HTTP_409_CONFLICT)
+            return Response(jsonMessages.errorJsonResponse("There have been found multiple challenges for the given challengeId. " +
+                                                           "This should never be the case."), status=status.HTTP_409_CONFLICT)
 
         # check for valid body arguments
         keys_of_request = request.data.keys()
