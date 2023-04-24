@@ -19,7 +19,7 @@ class test_getChallengeApplication(APITestCase):
         Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
         Challenge.objects.create(challengeHeading="TestChallenge2", challengeText="This is a second challenge")
 
-        Application.objects.create(applicationId="user", applicantEmail="Test@thi.de", challengeId=1, expiry=0, user_id=1)
+        Application.objects.create(applicationId="user", challengeId=1, expiry=0, user_id=1)
         self.applicationId = "user"
 
     def test_missingToken(self):
@@ -67,7 +67,7 @@ class test_getChallengeApplication(APITestCase):
         self.assertEqual(response.data, jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"))
 
     def test_challengeDoesNotExist(self):
-        Application.objects.create(applicationId="WrongApplication", applicantEmail="Test@thi.de", challengeId=107, expiry=0, user_id=189)
+        Application.objects.create(applicationId="WrongApplication", challengeId=107, expiry=0, user_id=189)
         url = '/api/application/challenges/WrongApplication'
 
         data = {}

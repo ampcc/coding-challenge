@@ -113,7 +113,7 @@ class ApplicationChallengesView(APIView):
                 application = Application.objects.get(applicationId=applicationId)
                 try:
                     challengeOfSpecificApplication = Challenge.objects.get(id=application.challengeId)
-                    serializer = ChallengeSerializer(challengeOfSpecificApplication, many=False)
+                    serializer = GetChallengeSerializer(challengeOfSpecificApplication, many=False)
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 
                 except Challenge.DoesNotExist:
