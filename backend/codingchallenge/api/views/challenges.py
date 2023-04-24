@@ -69,9 +69,9 @@ class AdminChallengesView(APIView):
         challenge = Challenge.objects.filter(id=self.kwargs["challengeId"]).first()
         try:
             challenge.delete()
-            return Response(status=status.HTTP_200_OK)
+            return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
         except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(jsonMessages.errorJsonResponse("Could not delete challenge " + self.kwargs["challengeId"] + "!"), status=status.HTTP_404_NOT_FOUND)
         
 
 class Challenges(APIView):

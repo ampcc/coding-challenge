@@ -136,9 +136,9 @@ class AdminApplicationsView(APIView):
             optional arguments:
                 applicationStatus
                 challengeId
-                extendDays
+                expiry
         """
-        allowedFields = ['applicationStatus', 'challengeId', 'extendDays']
+        allowedFields = ['applicationStatus', 'challengeId', 'expiry']
 
         try:
             application = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
@@ -160,30 +160,31 @@ class AdminApplicationsView(APIView):
                         if request.data.get(key) in Application.Status.values:
                             serialized_application['fields']['status'] = request.data.get(key)
                         else:
-                            statusCode = status.HTTP_400_BAD_REQUEST
-                            break
+                            return Response(jsonMessages.errorJsonResponse("Invalid status!"), status=status.HTTP_400_BAD_REQUEST)
                     if key == allowedFields[1]:
                         if Challenge.objects.filter(id=request.data.get(key)):
                             serialized_application['fields'][key] = request.data.get(key)
                         else:
-                            statusCode = status.HTTP_400_BAD_REQUEST
-                            break
+                            return Response(jsonMessages.errorJsonResponse("Invalid challengeId!"), status=status.HTTP_400_BAD_REQUEST)
                     if key == allowedFields[2]:
-                        timeStamp = time.time() + request.data.get(key) * 24 * 60 * 60
-                        serialized_application['fields']['expiry'] = timeStamp
+                        if request.data.get(key) > time.time():
+                            serialized_application['fields']['expiry'] = request.data.get(key)
+                        else:
+                            return Response(jsonMessages.errorJsonResponse("Invalid expiry date!"), status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    statusCode = status.HTTP_400_BAD_REQUEST
-                    break
+                    return Response(jsonMessages.errorJsonResponse("Key", key, "not valid!"), status=status.HTTP_400_BAD_REQUEST)
+
         else:
-            statusCode = status.HTTP_204_NO_CONTENT
+            return Response(jsonMessages.errorJsonResponse("No data provided!"), status=status.HTTP_204_NO_CONTENT)
+
 
         serializer = GetApplicationSerializer(application, data=serialized_application["fields"])
 
-        if serializer.is_valid():
+        if serializer.is_valid() and statusCode == status.HTTP_200_OK:
             serializer.save()
-
             return Response(serializer.data, status=statusCode)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(jsonMessages.errorJsonResponse("Please check input!"), status=status.HTTP_400_BAD_REQUEST)
 
     # 6. Delete Application
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#6-delete-application
@@ -212,10 +213,13 @@ class SubmitApplicationView(APIView):
 
     def put(self, request, *args, **kwargs):
         user = User.objects.get(username=request.user.username)
-        user.application.submission = time.time()
-        user.application.save()
-        return Response({"success": "true"})
-
+        if user.application.status < Application.Status.IN_REVIEW:
+            user.application.submission = time.time()
+            user.application.status = Application.Status.IN_REVIEW
+            user.application.save()
+            return Response({"success": "true"})
+        else:
+            return Response(jsonMessages.errorJsonResponse("Can not submit challenge! The challenge has already been submitted!"), status=status.HTTP_400_BAD_REQUEST)
 
 # Implementation of GET Application Status
 ### endpoint: /api/getApplicationStatus
@@ -234,6 +238,10 @@ class StartChallengeView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = User.objects.get(username=request.user.username)
+
+        if user.application.status >= Application.Status.CHALLENGE_STARTED:
+            return Response(jsonMessages.errorJsonResponse("Can not start challenge! The challenge has already been started!"), status=status.HTTP_400_BAD_REQUEST)
+
         expiryTimestamp = user.application.expiry
         currentTimestamp = time.time()
 
@@ -241,10 +249,10 @@ class StartChallengeView(APIView):
         # application is expired
             user.application.status = Application.Status.EXPIRED
             user.application.save()
-            return Response(jsonMessages.errorJsonResponse("Can not start challenge! The application is expired since", expiryTimestamp - currentTimestamp, "seconds!"), status=status.HTTP_410_GONE)
+            return Response(jsonMessages.errorJsonResponse("Can not start challenge! The application is expired since " + str(expiryTimestamp - currentTimestamp) + " seconds!"), status=status.HTTP_410_GONE)
         # application is still running
         else:
-            user.application.expiry = time.time() + expirySettings.daysToFinishSinceChallengeStart
+            user.application.expiry = time.time() + expirySettings.daysToFinishSinceChallengeStart * 24 * 60 * 60
             user.application.status = Application.Status.CHALLENGE_STARTED
         try:
             challenge = Challenge.objects.get(id=request.user.application.challengeId)
