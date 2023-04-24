@@ -54,7 +54,7 @@ h2 {
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-size: 16px !important;
+    font-size: 16px;
 }
 
 /* Style div für Upload */
@@ -63,7 +63,7 @@ h2 {
     height: auto;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-size: 16px !important;
+    font-size: 16px;
 }
 
 /* Style upload challenge */
@@ -88,8 +88,8 @@ h2 {
 }
 
 .form-select:focus {
-    border-color: rgba(0, 0, 0, 0.15) !important;
-    box-shadow: none !important;
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: none;
 }
 
 .mb-3 {
@@ -113,6 +113,11 @@ h2 {
     margin-right: 0;
 }
 
+.inputOther:focus {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: none;
+}
+
 .btn.btn-dark {
     padding: 10px;
     padding-left: 20px;
@@ -134,7 +139,7 @@ h2 {
 
 #DragnDropBlock {
     width: 100%;
-    height: 220px;
+    /* height: 220px; */
     padding: 5px;
     text-align: center;
     border: dashed 2px rgba(0, 0, 0, 0.15);
@@ -144,14 +149,14 @@ h2 {
     margin-top: 0.5cm;
 
     /* Center items vertically and horizontally */
-    display: flex;
+    display: inline-block;
     justify-content: center;
     align-items: center;
 }
 
 
 .dropFileHeader {
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 400;
     color: #38424c;
     padding: 5px;
@@ -168,10 +173,6 @@ h2 {
     font-size: 20px;
     color: rgba(0, 0, 0, 0.15);
     padding: 5px;
-}
-
-.dropFileHeader {
-    font-size: 30px;
 }
 
 #fileHandler {
@@ -196,7 +197,7 @@ h2 {
     height: auto;
     margin-top: 20px;
     margin-bottom: 20px;
-    font-size: 16px !important;
+    font-size: 16px;
 }
 
 .single-file {
@@ -276,4 +277,48 @@ h2 {
     height: 300px;
     display: block;
     margin: auto;
+}
+
+
+/* Responsive Webdesign */ 
+@media screen and (min-width: 2000px) {
+    h2 {
+        font-size: 80px;
+    }
+
+    #text, #divUpload, .size, .tabs, .files-list, .form-select{
+        font-size: 25px;
+    }
+
+    #time, .infoDropFile, .filename {
+        font-size: 30px;
+    }
+
+    .textSuccess {
+        font-size: 35px;
+    }
+
+    .dropFileHeader {
+        font-size: 40px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mb-3 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-select, .inputOther {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .errorMessage {
+        width: 100%;
+        text-align: center;
+        margin: auto;
+        margin-top: 5px;
+    }
 }

@@ -12,7 +12,6 @@ const routes: Routes = [
   { path: 'start', component: StartComponent },
   { path: 'challenge', component: ChallengeComponent },
   { path: 'admin', component: AdminComponent },
-  { path: 'challenge', component: ChallengeComponent },
   { path: 'admin_login', component: AdminLoginComponent },
   { path: 'admin_applications', component: AdminApplicationsComponent },
   { path: 'admin_challenges', component: AdminChallengesComponent },
