@@ -4,3 +4,4 @@ sqlparse==0.4.3
 djangorestframework==3.14.0
 django-unixtimestampfield==0.5.0
 python-dotenv==1.0.0
+PyGithub==1.58.1

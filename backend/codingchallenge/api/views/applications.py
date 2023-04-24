@@ -20,7 +20,7 @@ from ..models import Application, Challenge
 
 from ..serializers import GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer, PostApplicationSerializer
 
-
+from ..include.githubApi import GithubApi
 
 
 # endpoint: /api/admin/applications
@@ -211,7 +211,12 @@ class AdminApplicationsView(APIView):
 class SubmitApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
+    gApi = GithubApi()
+    print(gApi.getRepos())
+
     def put(self, request, *args, **kwargs):
+
+
         user = User.objects.get(username=request.user.username)
         if user.application.status < Application.Status.IN_REVIEW:
             user.application.submission = time.time()
