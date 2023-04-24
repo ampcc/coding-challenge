@@ -1,6 +1,6 @@
 # from django.conf.urls import url
 from django.urls import path, include
-from rest_framework.authtoken.views import obtain_auth_token 
+from rest_framework.authtoken.views import obtain_auth_token
 
 from .views import applications, challenges
 
@@ -19,5 +19,6 @@ urlpatterns = [
     path('application/loginWithKey', obtain_auth_token),
     path('application/getApplicationStatus', applications.StatusApplicationView.as_view()),
     path('application/submitChallenge', applications.SubmitApplicationView.as_view()),
-    path('application/startChallenge', applications.StartChallengeView.as_view())
+    path('application/startChallenge', applications.StartChallengeView.as_view()),
+    path('application/challenges/<applicationId>', challenges.ApplicationChallengesView.as_view(), name="applicationId"),
 ]
