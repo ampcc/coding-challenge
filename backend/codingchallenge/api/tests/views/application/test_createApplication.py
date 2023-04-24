@@ -7,6 +7,7 @@ from ...auth.mockAuth import MockAuth
 from ....models.application import Application
 from ....models.challenge import Challenge
 from ....views import jsonMessages
+from ....views import expirySettings
 
 import unittest.mock as mock
 
@@ -126,7 +127,7 @@ class test_createApplication(APITestCase):
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
-            "days": 6
+            "expiry": time.time() + 6 * 24 * 60 * 60
         }
 
         expectedReturnData = {
@@ -140,18 +141,18 @@ class test_createApplication(APITestCase):
         self.assertEqual(Application.objects.count(), 0)
 
         response = self.client.post(url, data, format='json')
+
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, expectedReturnData)
-
+        
         timestamp = time.time()
         timestamp = timestamp + 6 * 24 * 60 * 60
 
-        self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
-        self.assertEqual(Application.objects.get().challengeId, 1)
-
         # rounds the assertion to seconds
         self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
+        self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
+        self.assertEqual(Application.objects.get().challengeId, 1)
 
     def test_correctInputDefault(self):
         url = '/api/admin/applications/'
@@ -174,7 +175,7 @@ class test_createApplication(APITestCase):
         self.assertEqual(response.data, expectedReturnData)
 
         timestamp = time.time()
-        timestamp = timestamp + 2 * 24 * 60 * 60
+        timestamp = timestamp + expirySettings.daysUntilChallengeStart * 24 * 60 * 60
 
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
 

@@ -1,6 +1,6 @@
 def errorJsonResponse(responseText):
     error = {
-        "errorMessage": responseText
+        "detail": responseText
     }
     return error
 
