@@ -158,38 +158,35 @@ export class ChallengeComponent {
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
     
     if(typeof files !== 'undefined' && files !== null) {
-      for(let i = 0; i < files?.length; i++) {
         // checks if the filesize is greater than 5 GB (= 5368709120 Byte)
         // 50 MB = 52,428,800 Byte
         // and if the filetype is not supported
-        if(files[i].size > 52428800) {
-          this.msgFileUplod = 'The file ' + files[i].name + ' is too big';
+        if(this.fileArray.length !== 0) {
+          this.msgFileUplod = 'You already uploaded a file. Please delete that file before uploading another one.';
           this.hideMsgFileUplod = false;
 
           element.setAttribute("style", "border-color:red;");
-
-          continue;
-        } else if (!files[i].name.includes('.zip')) {
-          this.msgFileUplod = 'The file ' + files[i].name + ' has the wrong filetype';
+        } else if(files[0].size > 52428800) {
+          this.msgFileUplod = 'The file ' + files[0].name + ' is too big';
           this.hideMsgFileUplod = false;
 
           element.setAttribute("style", "border-color:red;");
+        } else if (!files[0].name.includes('.zip')) {
+          this.msgFileUplod = 'The file ' + files[0].name + ' has the wrong filetype';
+          this.hideMsgFileUplod = false;
 
-          continue;
-        } else if (files[i].size > 52428800 && !files[i].name.includes('.zip')) {
-          this.msgFileUplod = 'The file ' + files[i].name + ' has the wrong filetype and is too big';
+          element.setAttribute("style", "border-color:red;");
+        } else if (files[0].size > 52428800 && !files[0].name.includes('.zip')) {
+          this.msgFileUplod = 'The file ' + files[0].name + ' has the wrong filetype and is too big';
           this.hideMsgFileUplod = false;
 
           element.setAttribute("style", "border-color:red; ");
-
-          continue;
         } else {
           this.hideMsgFileUplod = true;
-          this.fileArray.push(files[i]);
+          this.fileArray.push(files[0]);
 
           element.setAttribute("style", "border-color:lightgrey;");
         }
-      }
     }  
   }
 
