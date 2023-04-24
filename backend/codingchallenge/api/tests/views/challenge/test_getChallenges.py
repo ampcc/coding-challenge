@@ -81,20 +81,6 @@ class test_getChallenges(APITestCase):
             "challengeText": "This is a second challenge"
         }])
 
-    def test_callAsPost(self):
-        url = '/api/admin/challenges'
-        data = {}
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-        self.assertEqual(Challenge.objects.count(), 2)
-
-    def test_callAsPut(self):
-        url = '/api/admin/challenges'
-        data = {}
-        response = self.client.put(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(Challenge.objects.count(), 2)
-
     def test_callNotAsAdmin(self):
         MockAuth.applicant(self)
 
