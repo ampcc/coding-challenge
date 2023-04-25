@@ -13,7 +13,7 @@ import { adminLoginCreds, applicationLoginCreds } from '../shared/models/loginCr
 })
 export class BackendService {
 
-  private backendURL = "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io";
+  private backendURL = "http://127.0.0.1:8000";
 
   constructor(private http: HttpClient) { }
 
