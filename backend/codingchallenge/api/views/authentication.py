@@ -15,7 +15,6 @@ class KeyAuthentication(ObtainAuthToken):
         if kwargs.keys():
             key = self.kwargs["key"]
 
-            load_dotenv()
             fernet_key = os.getenv('ENCRYPTION_KEY')
             fernet = Fernet(fernet_key.encode())
             decryptedMessage = fernet.decrypt(key).decode()
@@ -24,9 +23,12 @@ class KeyAuthentication(ObtainAuthToken):
             
             user = authenticate(request, username=username, password=password)
 
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({
-                "token": token.key
-            })
+            if user:
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({
+                    "token": token.key
+                })
+            else:
+                return Response(jsonMessages.errorJsonResponse("No application matches the given key! Please try again!"), status=status.HTTP_401_UNAUTHORIZED)
         
         return Response(jsonMessages.errorJsonResponse("No key given!"), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
