@@ -16,7 +16,7 @@ class GithubApi:
         self.installation_id = int(os.getenv('GH_APP_INSTALLATION_ID'))
 
         self.gApi = Github(app_auth=AppAuthentication(app_id=self.app_id, private_key=self.private_key,
-                                                     installation_id=self.installation_id))
+                                                      installation_id=self.installation_id))
 
     def getRepos(self):
         ret = []
@@ -34,52 +34,91 @@ class GithubApi:
 
     # def pushFiles(self):
     def pushFile(self, repoName, path, file):
-        return self.gApi.get_organization('ampcc').get_repo(repoName).create_file(path=path,message="auto push "+path,content=file)
+        return self.gApi.get_organization('ampcc').get_repo(repoName).create_file(path=path,
+                                                                                  message="auto push " + path,
+                                                                                  content=file)
 
     def addLinter(self, repoName):
-        linterCode="""
-            # This workflow executes several linters on changed files based on languages used in your code base whenever
-            # you push a code or open a pull request.
-            #
-            # You can adjust the behavior by modifying this file.
-            # For more information, see:
-            # https://github.com/github/super-linter
-            name: Lint Code Base
+        linterCode = """
+            # MegaLinter GitHub Action configuration file
+            # More info at https://megalinter.io
+            name: MegaLinter
             
             on:
-              push:
-                branches: [ "main" ]
+              # Trigger mega-linter at every push. Action will also be visible from Pull Requests to main
+              push: # Comment this line to trigger action only on pull-requests (not recommended if you don't pay for GH Actions)
               pull_request:
-                branches: [ "main" ]
+                branches: [master, main]
+                
+            permissions:
+              contents: write
+            
+            env: # Comment env block if you do not want to apply fixes
+              # Apply linter fixes configuration
+              APPLY_FIXES: none # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
+            
+            concurrency:
+              group: ${{ github.ref }}-${{ github.workflow }}
+              cancel-in-progress: true
+            
             jobs:
-              run-lint:
+              build:
+                name: MegaLinter
                 runs-on: ubuntu-latest
                 steps:
-                  - name: Checkout code
+                  # Git Checkout
+                  - name: Checkout Code
                     uses: actions/checkout@v3
                     with:
-                      # Full git history is needed to get a proper list of changed files within `super-linter`
-                      fetch-depth: 0
+                      token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+                      fetch-depth: 0 # If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to improve performances
             
-                  - name: Lint Code Base
-                    uses: github/super-linter@v4
+                  # MegaLinter
+                  - name: MegaLinter
+                    id: ml
+                    # You can override MegaLinter flavor used to have faster performances
+                    # More info at https://megalinter.io/flavors/
+                    uses: oxsecurity/megalinter@v6
+                    # uses: oxsecurity/megalinter/flavors/python@v6.22.2
                     env:
-                      VALIDATE_ALL_CODEBASE: false
-                      DEFAULT_BRANCH: "main"
+                      # All available variables are described in documentation
+                      # https://megalinter.io/configuration/
+                      VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }} # Validates all source when push on main, else just the git diff with main. Override with true if you always want to lint all sources
                       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                      REPORT_OUTPUT_FOLDER: megalinter-reports
+                      CLEAR_REPORT_FOLDER: true
+                      LOG_FILE: megalinter.log
+            
+                  # Upload MegaLinter artifacts
+                  - name: Archive production artifacts
+                    if: ${{ success() }} || ${{ failure() }}
+                    uses: actions/upload-artifact@v3
+                    with:
+                      name: MegaLinter reports
+                      path: |
+                        megalinter-reports
+            
+            
+                  # Upload Megalinter Log
+                  - name: Push logs in repo
+                    if: ${{ success() }} ||  ${{ failure() }}
+                    uses: Endbug/add-and-commit@v9
+                    with:
+                      #author_name: Megalint Bot
+                      #default_author: github_actions
+                      #author_email: mail@example.com
+                      #message: 'Your commit message'
+                      #github_token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+                      add: |
+                        megalinter-reports
         """
 
-        return self.gApi.get_organization('ampcc').get_repo(repoName).create_file(path=".github/workflows/super-linter.yml",
-                                                                                  message="added superlinter",
-                                                                                  content=linterCode)
-    #
-    # def addActions(self):
-    #
-    # def getActionResult(self):
+        return self.gApi.get_organization('ampcc').get_repo(repoName).create_file(
+            path=".github/workflows/super-linter.yml",
+            message="added superlinter",
+            content=linterCode)
+
 
     def getLinterResult(self, repoName):
-        workflow_run = self.gApi.get_organization('ampcc').get_repo(repoName).get_workflow_runs()[0]
-
-        print(workflow_run.status) #can be "completed" and "queued"
-        print(workflow_run.conclusion) #can be null and "success" and ???
-        return workflow_run.raw_data
+        megalinterLog = self.gApi.get_organization('ampcc').get_repo(repoName).get_contents('megalinter-reports/megalinter.log')
+        return megalinterLog.decoded_content.decode()
