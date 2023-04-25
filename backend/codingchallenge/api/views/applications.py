@@ -3,6 +3,10 @@ import random
 import secrets
 import string
 import time
+import os
+
+from cryptography.fernet import Fernet
+from dotenv import load_dotenv
 
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -103,10 +107,17 @@ class AdminApplicationsView(APIView):
             return Response(jsonMessages.errorJsonResponse('Wrong json attributes'), status=status.HTTP_400_BAD_REQUEST)
 
         alphabet = string.ascii_letters + string.digits
-        key = ''.join(secrets.choice(alphabet) for i in range(16))    
+        password = ''.join(secrets.choice(alphabet) for i in range(16))    
         user = User.objects.create_user(username=request.data.get('applicationId'),
-                                 password=key)
+                                 password=password)
         user.save()
+
+        # the key is build as follows: "applicationId+password". Note: The applicationId does always have 8 digits.
+        keyPlain = request.data.get('applicationId') + "+" + password
+        load_dotenv()
+        fernet_key = os.getenv('ENCRYPTION_KEY')
+        fernet = Fernet(fernet_key.encode())
+        encKey = fernet.encrypt(keyPlain.encode()).decode("utf-8")
 
         # expiry note: The last possible start of the challenge is days + 3. So the applicant has three days to start the challenge
         data = {
@@ -121,7 +132,7 @@ class AdminApplicationsView(APIView):
             serializer.save()
 
             applications = Application.objects.get(applicationId=request.data.get('applicationId'))
-            postSerializer = PostApplicationSerializer(applications, many=False, context={'key': key, "applicationId": request.data.get('applicationId')})
+            postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey, "applicationId": request.data.get('applicationId')})
             return Response(postSerializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
