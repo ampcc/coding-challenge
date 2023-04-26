@@ -11,4 +11,5 @@ import { CommonModule } from '@angular/common';
 export class ButtonComponent {
   @Input() title!: string;
   @Input() look!: string;
+  @Input() font!: string;
 }

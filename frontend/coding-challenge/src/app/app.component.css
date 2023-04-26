@@ -23,8 +23,9 @@ a {
     margin-right: 35px;
     text-decoration: none;
     color: black;
-    font-size: 0.7vw;
-    line-height: 1.2vw;
+    font-size: 16px;
+    line-height: 25px;
+    font-weight: 400;
 }
 
 .logo {
@@ -33,7 +34,7 @@ a {
 
 .logout_link {
     margin-right: 0;
-    height: 50px;
+    display: inline-block;
 }
 
 .logout_link:hover {
@@ -41,7 +42,7 @@ a {
 }
 
 .logout {
-    height: 50px;
+    height: 40px;
     filter: invert();
 }
 
@@ -90,7 +91,7 @@ a {
 
 .close_sitenav {
     display: inline-block;
-    margin: 2em 0 1em 2em;
+    margin: 1.5em 0 1em 1.5em;
 }
 
 .close_sitenav:hover {
@@ -98,15 +99,16 @@ a {
 }
 
 .sitenav_icon {
-    height: 2em;
+    height: 1.5em;
 }
 
 .sitenav_link {
     margin: 0;
     display: block;
     padding: 0.5em 1em;
-    font-size: 1vw;
-    line-height: 1.5vw;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
 }
 
 .sitenav_link_selected {
@@ -131,53 +133,57 @@ a {
 
 .body {
     padding-top: 80px;
-    min-height: calc(100vh - 3 * 80px);
+    min-height: calc(100vh - 80px);
 }
 
 .footer {
     height: 80px;
     width: 100%;
-    font-size: 1vw;
-    line-height: 1.5vw;
     display: flex;
 }
 
-@media (max-width:1024px) {
+.footer a:hover {
+    text-decoration: underline;
+}
 
-    a,
-    .footer,
+@media (min-width:2000px) {
+    a {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
     .sitenav_link {
-        font-size: 1.5vw;
-        line-height: 2vw;
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    .close_sitenav {
+        margin: 2em 0 1em 2em;
+    }
+
+    .sitenav_icon {
+        height: 2em;
     }
 }
 
-@media (max-width:740px) {
-
-    a,
-    .footer,
-    .sitenav_link {
-        font-size: 2vw;
-        line-height: 2.5vw;
+@media (max-width:1440px) {
+    .sitenav {
+        width: 30%;
     }
 }
 
-@media (max-width:555px) {
-
-    a,
-    .footer,
-    .sitenav_link {
-        font-size: 2.5vw;
-        line-height: 3vw;
+@media (max-width:768px) {
+    .sitenav {
+        width: 55%;
     }
 }
 
-@media (max-width:400px) {
+@media (max-width:425px) {
+    .logo {
+        height: 35.6px;
+    }
 
-    a,
-    .footer,
-    .sitenav_link {
-        font-size: 3vw;
-        line-height: 3.5vw;
+    .sitenav {
+        width: 100%;
     }
 }

@@ -11,8 +11,9 @@
     </div>
     <div mat-dialog-actions id="button_container" *ngIf="data.buttons && (data.buttons.left || data.buttons.right)">
         <app-button *ngIf="data.buttons.left" id="left_button" title={{data.buttons.left.title}}
-            look={{data.buttons.left.look}} (click)="closeDialog(true)"></app-button>
+            look={{data.buttons.left.look}} font="smaller" (click)="closeDialog(true)"></app-button>
+            <div class="spacer"></div>
         <app-button *ngIf="data.buttons.right" id="right_button" title={{data.buttons.right.title}}
-            look={{data.buttons.right.look}} (click)="closeDialog(false)"></app-button>
+            look={{data.buttons.right.look}} font="smaller" (click)="closeDialog(false)"></app-button>
     </div>
 </div>
