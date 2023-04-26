@@ -24,19 +24,43 @@
                 <label class="tabs" id="tab_archiv" for="tab-2" (click)="changeTab('tab_archiv')">
                     Archiv
                 </label>
+
+                <button title="Filter">Filter</button>
             </div>
 
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
-                <div class="list_applicants">
-                    test
+                <div class="list" id="list_applicants">
                     <div class="single_applicant" *ngFor="let app of applicantsArray; let i = index">
+                        <div class="text_elements">
+                            <h4 class="applicantId">
+                                {{app.applicationId}}
+                            </h4>
+                            <span>Challenge: {{challengeHeading}}</span>
+                            <span>Status: {{status}}</span>
+                            <span [hidden]="hideSubmissionDate">Submission date: {{app.submissionDate}}</span>
+                            <span [hidden]="hideTimeLimit">Timelimit: {{timeLimit}} days</span>
+                        </div>
+                        
+                        <button class="btn btn-dark" (click)="openDialogActiveChallenges(app)">Details</button>
                     </div>
                 </div>
             </div>
 
 
             <div [hidden]="hideContentArchiv" class="contentArchiv">
-                Test
+                <div class="list" id="list_archiv">
+                    <div class="single_archiv" *ngFor="let archiv of archivArray; let i = index">
+                        <div class="text_elements">
+                            <h4 class="applicantId">
+                                {{archiv.applicationId}}
+                            </h4>
+                            <span>Challenge: {{challengeHeading}}</span>
+                            <span>Submission date: {{archiv.submissionDate}}</span>
+                        </div>
+                        
+                        <button class="btn btn-dark" (click)="openDialogArchiv(archiv)">Details</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
