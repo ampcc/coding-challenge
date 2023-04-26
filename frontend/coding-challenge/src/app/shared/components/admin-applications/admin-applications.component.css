@@ -17,14 +17,17 @@ h2 {
 /* style tab navigation */
 .tab_list {
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
-.tabs{
+.tabs {
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
     align-items: center;
-    
+
     padding-top: 16px;
     padding-bottom: 14px;
 }
@@ -38,9 +41,87 @@ h2 {
 }
 
 #tab_archiv {
-    margin-left: 24px;;
+    margin-left: 24px;
+    ;
 }
 
+
+/* style filter elements */
+#labelFilter {
+    cursor: pointer;
+}
+
+.filter {
+    display: inline-block;
+    margin-left: auto; 
+    margin-right: 0;
+    z-index: 1;
+}
+
+.filterSelect {
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 10px;
+    z-index: 1;
+}
+
+ul,
+#myUL {
+    list-style-type: none;
+}
+
+#myUL {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    font-size: 16px;
+}
+
+.test {
+    border-bottom: 1px solid lightgrey;
+}
+
+#last_tree,
+.test {
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.caret {
+    cursor: pointer;
+    -moz-user-select: none;
+    /* Firefox 2+ */
+    user-select: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.apply_button {
+    height: 40px;
+    text-align: center;
+}
 
 /* style lists */
 .list {
@@ -49,7 +130,8 @@ h2 {
     margin-bottom: 20px;
 }
 
-.single_applicant, .single_archiv {
+.single_applicant,
+.single_archiv {
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 10px;
@@ -74,31 +156,29 @@ span {
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
-    margin-left: 0; 
+    margin-left: 0;
     margin-right: auto;
 }
 
 
-/* Responsive Webdesign */ 
+/* Responsive Webdesign */
 @media screen and (min-width: 2000px) {
     h2 {
         font-size: 80px;
     }
 
-    .tabs{
+    .tabs {
         font-size: 25px;
     }
 
     h4 {
         font-size: 35px;
     }
-    
+
     span {
         font-size: 30px;
     }
 
 }
 
-@media screen and (max-width: 768px) {
-
-}
+@media screen and (max-width: 768px) {}

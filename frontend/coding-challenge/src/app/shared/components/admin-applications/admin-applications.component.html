@@ -17,15 +17,64 @@
 
         <div class="view_tab">
             <div class="tab_list">
-                <label class="tabs" id="tab_active_challenges" for="tab-1" (click)="changeTab('tab_active_challenges')">
-                    Active Challenge
-                </label>
+                <div>
+                    <label class="tabs" id="tab_active_challenges" for="tab-1"
+                        (click)="changeTab('tab_active_challenges')">
+                        Active Challenge
+                    </label>
 
-                <label class="tabs" id="tab_archiv" for="tab-2" (click)="changeTab('tab_archiv')">
-                    Archiv
-                </label>
+                    <label class="tabs" id="tab_archiv" for="tab-2" (click)="changeTab('tab_archiv')">
+                        Archiv
+                    </label>
+                </div>
 
-                <button title="Filter">Filter</button>
+                <div class="filter">
+                    <div>
+                        <label (click)="showFilter()" id="labelFilter">Filter <img src="../../../../assets/funnel.svg"
+                                class="funnel"></label>
+                    </div>
+                    <div [hidden]="hideFilterSelect" class="filterSelect">
+                        <ul id="myUL">
+                            <li class="test"><span class="caret" id="caret1"
+                                    (click)="toggleTreeView('caret1')">Challenges</span>
+                                <ul class="nested">
+                                    <li><input type="checkbox" id="challenge1" (change)="checkbocChallengeChange()"
+                                            value="challenge1" />Challenge1</li>
+                                    <li><input type="checkbox" id="challenge2" (change)="checkbocChallengeChange()"
+                                            value="challenge2" />Challenge2</li>
+                                    <li><input type="checkbox" id="challenge3" (change)="checkbocChallengeChange()"
+                                            value="challenge3" />Challenge3</li>
+                                </ul>
+                            </li>
+                            <li class="test"><span class="caret" id="caret2"
+                                    (click)="toggleTreeView('caret2')">Status</span>
+                                <ul class="nested">
+                                    <li><input type="checkbox" id="uploaded" (change)="checkboxStatusChange()"
+                                            value="uploaded" />uploaded</li>
+                                    <li><input type="checkbox" id="not_uploaded_yet" (change)="checkboxStatusChange()"
+                                            value="not_uploaded_yet" />not uploaded yet</li>
+                                    <li><input type="checkbox" id="not_uploaded_in_time"
+                                            (change)="checkboxStatusChange()" value="not_uploaded_in_time" />not
+                                        submitted in time</li>
+                                </ul>
+                            </li>
+                            <li id="last_tree"><span class="caret" id="caret3" (click)="toggleTreeView('caret3')">Time
+                                    Limit</span>
+                                <ul class="nested">
+                                    <li><input type="checkbox" id="three_day" (change)="checkboxTimeLimitChange()"
+                                            value="three_day" />3 days</li>
+                                    <li><input type="checkbox" id="two_day" (change)="checkboxTimeLimitChange()"
+                                            value="two_day" />2 days</li>
+                                    <li><input type="checkbox" id="one_day" (change)="checkboxTimeLimitChange()"
+                                            value="one_day" />1 day</li>
+                                    <li><input type="checkbox" id="expired" (change)="checkboxTimeLimitChange()"
+                                            value="expired" />expired</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <button class="btn btn-dark apply_button">Apply</button>
+                    </div>
+                </div>
             </div>
 
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
@@ -40,7 +89,7 @@
                             <span [hidden]="hideSubmissionDate">Submission date: {{app.submissionDate}}</span>
                             <span [hidden]="hideTimeLimit">Timelimit: {{timeLimit}} days</span>
                         </div>
-                        
+
                         <button class="btn btn-dark" (click)="openDialogActiveChallenges(app)">Details</button>
                     </div>
                 </div>
@@ -57,7 +106,7 @@
                             <span>Challenge: {{challengeHeading}}</span>
                             <span>Submission date: {{archiv.submissionDate}}</span>
                         </div>
-                        
+
                         <button class="btn btn-dark" (click)="openDialogArchiv(archiv)">Details</button>
                     </div>
                 </div>

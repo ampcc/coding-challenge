@@ -27,6 +27,8 @@ export class AdminApplicationsComponent {
   public hideContentActiveChallenges: boolean = false;
   public hideContentArchiv: boolean = true;
 
+  public hideFilterSelect: boolean = true;
+
   public applicantsArray: Application[] = [];
   public archivArray: Application[] = [];
 
@@ -40,7 +42,7 @@ export class AdminApplicationsComponent {
 
   public constructor(private backend: BackendService, public dialog: MatDialog,) {
     this.challenge = {challengeId: 0, challengeHeading: '',challengeText: ''};
-    this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: "", githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: "", passphrase: "a4Xz!5T%"};
+    this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"};
   }
 
 
@@ -74,6 +76,35 @@ export class AdminApplicationsComponent {
         break;
     } 
   }
+
+  public showFilter(): void {
+    this.hideFilterSelect = !this.hideFilterSelect;
+  }
+
+  public toggleTreeView(id: string): void {
+    let element = document.getElementById(id);
+    if(element !== null && element !== undefined) {    
+      let parentElement = element.parentElement;
+      
+      if(parentElement !== null && parentElement !== undefined) {
+        parentElement.querySelector(".nested")!.classList.toggle("active");
+        element.classList.toggle("caret-down");
+      }
+    }
+  }
+
+  public checkbocChallengeChange(): void {
+
+  }
+
+  public checkboxStatusChange(): void {
+
+  }
+
+  public checkboxTimeLimitChange(): void {
+
+  }
+
 
   public openDialogActiveChallenges(application: Application): void {
     DialogComponent.name;
