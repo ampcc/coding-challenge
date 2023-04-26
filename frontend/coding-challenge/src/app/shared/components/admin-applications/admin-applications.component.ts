@@ -27,7 +27,15 @@ export class AdminApplicationsComponent {
   public hideContentActiveChallenges: boolean = false;
   public hideContentArchiv: boolean = true;
 
-  public applicantsArray: File[] = [];
+  public applicantsArray: Application[] = [];
+  public archivArray: Application[] = [];
+
+  public hideSubmissionDate: boolean = false;
+  public hideTimeLimit: boolean = false;
+
+  public challengeHeading: string = '';
+  public status: string = '';
+  public timeLimit: number = 0;
 
 
   public constructor(private backend: BackendService, public dialog: MatDialog,) {
@@ -64,7 +72,40 @@ export class AdminApplicationsComponent {
         elementActiveChallenge.setAttribute("style", "border-bottom: none;");
         elementArchive.setAttribute("style", "border-bottom: 2px solid black;");
         break;
-    }
-    
+    } 
+  }
+
+  public openDialogActiveChallenges(application: Application): void {
+    DialogComponent.name;
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Applicant ' + application.applicationId,
+        description: {
+          important: 'Open Project on GitHub',
+          details: 'Test'
+        },
+        buttons: {
+          left: { title: 'Archive', look: 'primary' },
+          right: { title: 'Cancel', look: 'secondary' }
+        }
+      },
+    });
+  }
+
+  public openDialogArchiv(application: Application): void {
+    DialogComponent.name;
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Applicant ' + application.applicationId,
+        description: {
+          important: 'Open Project on GitHub',
+          details: 'Test'
+        },
+        buttons: {
+          left: { title: 'Archive', look: 'primary' },
+          right: { title: 'Cancel', look: 'secondary' }
+        }
+      },
+    });
   }
 }

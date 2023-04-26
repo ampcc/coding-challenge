@@ -42,6 +42,43 @@ h2 {
 }
 
 
+/* style lists */
+.list {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.single_applicant, .single_archiv {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 0.5cm;
+}
+
+.text_elements {
+    display: flex;
+    flex-direction: row;
+}
+
+h4 {
+    font-size: 25px;
+}
+
+span {
+    font-size: 20px;
+}
+
+.btn.btn-dark {
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 0; 
+    margin-right: auto;
+}
+
+
 /* Responsive Webdesign */ 
 @media screen and (min-width: 2000px) {
     h2 {
@@ -50,6 +87,14 @@ h2 {
 
     .tabs{
         font-size: 25px;
+    }
+
+    h4 {
+        font-size: 35px;
+    }
+    
+    span {
+        font-size: 30px;
     }
 
 }
