@@ -1,7 +1,8 @@
 button {
     padding: 1em;
-    font-size: 1vw;
-    line-height: 1.5vw;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
     text-align: center;
     border: 0.1em;
     border-style: solid;
@@ -44,30 +45,23 @@ button:hover {
     background-color: rgb(255, 60, 60);
 }
 
+@media (min-width:2000px) {
+    button {
+        font-size: 30px;
+        line-height: 40px;
+    }
+}
+
 @media (max-width:1024px) {
-    button {
-        font-size: 1.5vw;
-        line-height: 2vw;
+    .smaller {
+        font-size: 16px;
+        line-height: 25px;
     }
 }
 
-@media (max-width:740px) {
-    button {
-        font-size: 2vw;
-        line-height: 2.5vw;
-    }
-}
-
-@media (max-width:555px) {
-    button {
-        font-size: 2.5vw;
-        line-height: 3vw;
-    }
-}
-
-@media (max-width:555px) {
-    button {
-        font-size: 3vw;
-        line-height: 3.5vw;
+@media (max-width:768px) {
+    .normal {
+        font-size: 16px;
+        line-height: 25px;
     }
 }
