@@ -25,11 +25,37 @@ export class StartComponent implements OnInit{
       this.router.navigateByUrl("/unauthorized")
     }else{
       this.backendService.getStatus(this.applicationToken).subscribe((response) =>{
-        if(response.progress === 1){
+        if(response.status === 1){
           this.router.navigateByUrl("/challenge");
         }
       });
     }
+  }
+
+  tryToStartChallenge(){
+    this.backendService.startChallenge(this.applicationToken).subscribe((data) => {
+      console.log(data);
+      this.router.navigateByUrl("/challenge");
+    }, (error: HttpErrorResponse) => {
+      switch(error.status){
+        case 403:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/forbidden");
+          break;
+        case 404:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/notFound");
+          break;
+        case 410:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/gone");
+          break;
+      default:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/internalError");
+          break;
+      }
+    });
   }
 
   // Dialog to ask the user to confirm that he wants to start the challenge gets displayed
@@ -51,29 +77,11 @@ export class StartComponent implements OnInit{
     // If the dialog is closed and the result is true, the user decided to start the challenge, the backend starts the challenge and the user is navigated to the challenge page
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.backendService.startChallenge(this.applicationToken).subscribe(() => {
-          this.router.navigateByUrl("/challenge");
-        }, (error: HttpErrorResponse) => {
-          switch(error.status){
-            case 403:
-              window.sessionStorage.clear();
-              this.router.navigateByUrl("/forbidden");
-              break;
-            case 404:
-              window.sessionStorage.clear();
-              this.router.navigateByUrl("/notFound");
-              break;
-          default:
-              window.sessionStorage.clear();
-              this.router.navigateByUrl("/internalError");
-              break;
-          }
-        });
-        console.log("Challenge has been started by test");
-
-
+        this.tryToStartChallenge();
       }
     })
   }
+
+
 
 }

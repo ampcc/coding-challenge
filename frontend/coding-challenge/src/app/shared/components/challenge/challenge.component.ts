@@ -75,9 +75,9 @@ export class ChallengeComponent implements OnInit{
 
     // Get the current Status
       this.backend.getStatus(this.applicationToken).subscribe((response) => {
-        this.applicant = {applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiryDate: response.expiryDate, githubRepoURL: "",
+        this.applicant = {applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiryDate: response.expiry, githubRepoURL: "",
                           operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submissionDate: 0, status: response.progress};
-        this.time = this.calcRemainingTime(new Date().getTime(), this.applicant.expiryDate);
+        this.time = this.calcRemainingTime(new Date().getTime()/1000, this.applicant.expiryDate);
       }, (error: HttpErrorResponse) => {
         switch(error.status){
           case 401:
@@ -93,28 +93,28 @@ export class ChallengeComponent implements OnInit{
             this.router.navigateByUrl("/internalError");
             break;
         }
+      },() => {
+        // Get the Challenge
+        this.backend.getChallengeApp(this.applicationToken, this.applicant.applicationId).subscribe((response) =>{
+          this.challengeText = response.challengeText;
+          this.heading = response.challengeHeading;
+        }, (error: HttpErrorResponse) => {
+          switch(error.status){
+            case 403:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/forbidden");
+              break;
+            case 404:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/notFound");
+              break;
+          default:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/internalError");
+              break;
+          }
+        });
       });
-    // Get the Challenge
-      this.backend.getChallengeApp(this.applicationToken, this.applicant.applicationId).subscribe((response) =>{
-        this.challengeText = response.challengeText;
-        this.heading = response.challengeHeading;
-      }, (error: HttpErrorResponse) => {
-        switch(error.status){
-          case 403:
-            window.sessionStorage.clear();
-            this.router.navigateByUrl("/forbidden");
-            break;
-          case 404:
-            window.sessionStorage.clear();
-            this.router.navigateByUrl("/notFound");
-            break;
-        default:
-            window.sessionStorage.clear();
-            this.router.navigateByUrl("/internalError");
-            break;
-        }
-      });
-
     }
   }
 
@@ -333,11 +333,12 @@ export class ChallengeComponent implements OnInit{
 
   private calcRemainingTime(_currentTime: number, _expiryTime: number): string{
     var timeDelta = _expiryTime - _currentTime;
-    const days = Math.floor(timeDelta / (1000*3600*24));
-    timeDelta -= days *1000*3600*24;
-    const hours = Math.floor(timeDelta / (1000*3600));
-    timeDelta -= hours *1000*3600;
-    const minutes = Math.floor(timeDelta / (1000*60))
+    console.log(_expiryTime + ";" + _currentTime + ";" + timeDelta);
+    const days = Math.floor(timeDelta / (3600*24));
+    timeDelta -= days *3600*24;
+    const hours = Math.floor(timeDelta / (3600));
+    timeDelta -= hours *3600;
+    const minutes = Math.floor(timeDelta / (60))
     return days + " days " + hours + " hours " + minutes + " minutes";
   }
 }

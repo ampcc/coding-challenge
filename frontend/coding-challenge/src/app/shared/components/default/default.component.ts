@@ -9,21 +9,19 @@ import { BackendService } from 'src/app/core/backend.service';
   styleUrls: ['./default.component.css']
 })
 export class DefaultComponent implements OnInit{
-  private id: string;
   private key: string;
 
   constructor(private backendService: BackendService, private route: ActivatedRoute, private router: Router){
-    this.id = "";
     this.key = "";
   }
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
-      this.id = params["id"];
       this.key = params["key"];
       window.sessionStorage.clear();
     });
-    this.backendService.loginWithAppKey(this.key, this.id).subscribe(data => {
-      window.sessionStorage.setItem('Auth-Token', data.applicationToken);
+    this.backendService.loginWithAppKey(this.key).subscribe(data => {
+      console.log(data);
+      window.sessionStorage.setItem('Auth-Token', data.token);
       this.router.navigateByUrl("/start");
     },(error: HttpErrorResponse) => {
       switch(error.status){

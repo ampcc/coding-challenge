@@ -34,7 +34,7 @@ Applicant API Calls Tests
   describe('getChallenge', () => {
     it('check Request Method, Headers and Body',() => {
       let expHeaders = new HttpHeaders().set('Authorization', "Token " + applicationToken);
-      service.getChallengeApp(applicationToken, applicationId).subscribe((res) => {
+      service.getChallengeApp(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
       const testRequest = httpController.expectOne(`${url}/api/application/challenges/${applicationId}`);
@@ -47,7 +47,7 @@ Applicant API Calls Tests
   describe('login with Key', () => {
     it('check Request Method, Headers and Body',() => {
       var expBody = {applicationId: "A0000113", applicationKey: "62ce30b676d95ef439af5e1d84f9161034c67c4a"}
-      service.loginWithAppKey(applicationKey, applicationId).subscribe((res) => {
+      service.loginWithAppKey(applicationKey).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
       const testRequest = httpController.expectOne(`${url}/api/application/loginWithKey`);
@@ -60,7 +60,7 @@ Applicant API Calls Tests
   describe('getStatus', () => {
     it('check Request Method, Headers and Body',() => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + applicationToken);
-      service.getStatus(applicationToken, applicationId).subscribe((res) => {
+      service.getStatus(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
       const testRequest = httpController.expectOne(`${url}/api/application/getApplicationStatus/${applicationId}`);

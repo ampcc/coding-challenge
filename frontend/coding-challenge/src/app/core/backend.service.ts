@@ -13,7 +13,7 @@ import { adminLoginCreds, applicationLoginCreds } from '../shared/models/loginCr
 })
 export class BackendService {
 
-  private backendURL = "http://127.0.0.1:8000";
+  private backendURL = "http://localhost:8000";
 
   constructor(private http: HttpClient) { }
 
@@ -21,9 +21,9 @@ export class BackendService {
   Applicant API Calls
   -----------------------------------------------*/
 
-  public loginWithAppKey(_applicationKey: string, _applicationId: string):Observable<any>{
-    var body: applicationLoginCreds = {applicationId: _applicationId, applicationKey: _applicationKey}
-    return this.http.post(this.backendURL + "/api/application/loginWithKey", body);
+  public loginWithAppKey(_applicationKey: string):Observable<any>{
+    //var body: applicationLoginCreds = {applicationId: _applicationId, applicationKey: _applicationKey}
+    return this.http.post(this.backendURL + "/api/application/loginWithKey/" + _applicationKey,{});
   }
 
   public loginWithPassphrase(_passphrase: string): Observable<any>{
@@ -35,9 +35,9 @@ export class BackendService {
     return this.http.get(this.backendURL + "/api/application/getApplicationStatus", {'headers': headers});
   }
 
-  public getChallengeApp(_applicantToken: string, _applicationId: string): Observable<any>{
+  public getChallengeApp(_applicantToken: string | null, _applicantId?: string): Observable<any>{
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
-    return this.http.get(this.backendURL + "/api/application/challenges/" + _applicationId, {'headers': headers});
+    return this.http.get(this.backendURL + "/api/application/challenges/" + _applicantId, {'headers': headers});
   }
 
   public uploadChallenge(_applicantKey: string, _oS: string, _pL: string): boolean{
