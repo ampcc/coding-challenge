@@ -24,7 +24,7 @@ export class DialogComponent {
     buttons: {
       left: {
         title: string,
-        look: string
+        look: string,
       },
       right: {
         title: string,
