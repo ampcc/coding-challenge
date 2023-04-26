@@ -20,8 +20,8 @@ class PostApplicationSerializer(serializers.ModelSerializer):
         key = self.context.get("key")
         applicationId = self.context.get("applicationId")
         if key:
-            tmpLink = "www.amplimind.io/application?id=" + applicationId + "&key=" + key
-            return "www.amplimind.io/application?id=" + applicationId + "&key=" + key
+            tmpLink = "www.amplimind.io/application/" + key
+            return tmpLink
         return False
 
     class Meta:
