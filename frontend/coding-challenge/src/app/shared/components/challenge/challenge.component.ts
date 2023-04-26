@@ -1,9 +1,9 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {BackendService} from 'src/app/core/backend.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule } from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field'; 
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import {NgFor} from '@angular/common';
@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 
 import { Challenge } from '../../models/challenge';
 import { Application } from '../../models/application';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -28,10 +30,10 @@ import { Application } from '../../models/application';
   encapsulation: ViewEncapsulation.None
 })
 
-export class ChallengeComponent {
-  challenge: Challenge;
+export class ChallengeComponent implements OnInit{
   applicant: Application;
-  
+  private applicationToken: string | null;
+
   public time: string = '2 days 4 hours 35 minutes';
   public heading: string = 'Lorem ipsum';
   public challengeText: string = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
@@ -58,24 +60,62 @@ export class ChallengeComponent {
   public fileArray: File[] = [];
 
 
-  public constructor(private backend: BackendService, public dialog: MatDialog,) {
-    this.challenge = {challengeId: 0, challengeHeading: '',challengeText: ''};
-    this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: "", githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: "", passphrase: "a4Xz!5T%"};
+  public constructor(private backend: BackendService, public dialog: MatDialog, private router: Router) {
+    this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"};
+    this.applicationToken = null;
   }
 
 
   public ngOnInit(): void {
-    const challengeInfos = this.backend.getChallengeApp("Token " + this.applicant.applicationKey, this.applicant.applicationId.toString())
-        .subscribe((data) => this.challenge = {
-          challengeId: data.challenge.challengeId,
-          challengeHeading: data.challenge.challengeHeading,
-          challengeText: data.challenge.challengeText
+    // Check if Application Token is available
+    this.applicationToken = window.sessionStorage.getItem('Auth-Token');
+    if(this.applicationToken === null){
+      this.router.navigateByUrl("/unauthorized")
+    }else{
+
+    // Get the current Status
+      this.backend.getStatus(this.applicationToken).subscribe((response) => {
+        this.applicant = {applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiryDate: response.expiry, githubRepoURL: "",
+                          operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submissionDate: 0, status: response.progress};
+        this.time = this.calcRemainingTime(new Date().getTime()/1000, this.applicant.expiryDate);
+      }, (error: HttpErrorResponse) => {
+        switch(error.status){
+          case 401:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/unauthorized");
+            break;
+          case 404:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/notFound");
+            break;
+        default:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/internalError");
+            break;
+        }
+      },() => {
+        // Get the Challenge
+        this.backend.getChallengeApp(this.applicationToken, this.applicant.applicationId).subscribe((response) =>{
+          this.challengeText = response.challengeText;
+          this.heading = response.challengeHeading;
+        }, (error: HttpErrorResponse) => {
+          switch(error.status){
+            case 403:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/forbidden");
+              break;
+            case 404:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/notFound");
+              break;
+          default:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/internalError");
+              break;
+          }
         });
-
-    //this.heading = challengeInfos.challengeHeading;
-    //this.challengeText = challengeInfos.challengeText;
-
-    //this.time = this.backend.getApplicant({passwordHash: '', adminKey: '', username: ''} ,0).expiryDate;
+      });
+    }
   }
 
 
@@ -113,7 +153,7 @@ export class ChallengeComponent {
         elementUpload.setAttribute("style", "border-bottom: 2px solid black;");
         break;
     }
-    
+
   }
 
 
@@ -156,7 +196,7 @@ export class ChallengeComponent {
   public uploadFileHandler(event: Event): any {
     var files = (event.target as HTMLInputElement).files;
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
-    
+
     if(typeof files !== 'undefined' && files !== null) {
       for(let i = 0; i < files?.length; i++) {
         // checks if the filesize is greater than 5 GB (= 5368709120 Byte)
@@ -190,7 +230,7 @@ export class ChallengeComponent {
           element.setAttribute("style", "border-color:lightgrey;");
         }
       }
-    }  
+    }
   }
 
   public deleteFile(index: number): void {
@@ -227,7 +267,7 @@ export class ChallengeComponent {
       let elementInputProgLang = <HTMLInputElement>document.getElementById('progLang');
 
       resultPl = elementInputProgLang.value;
-      
+
       if(resultPl === '') {
         this.hideMsgProgLang = false;
         this.msgProgLang = 'Programming language required';
@@ -252,7 +292,7 @@ export class ChallengeComponent {
       required = true;
     } else if(resultOs === 'other') {
       let elementInputOpSy = <HTMLInputElement>document.getElementById('opSys');
-      
+
       resultOs = elementInputOpSy.value;
 
       if(resultOs === '') {
@@ -291,4 +331,14 @@ export class ChallengeComponent {
     }
   }
 
+  private calcRemainingTime(_currentTime: number, _expiryTime: number): string{
+    var timeDelta = _expiryTime - _currentTime;
+    console.log(_expiryTime + ";" + _currentTime + ";" + timeDelta);
+    const days = Math.floor(timeDelta / (3600*24));
+    timeDelta -= days *3600*24;
+    const hours = Math.floor(timeDelta / (3600));
+    timeDelta -= hours *3600;
+    const minutes = Math.floor(timeDelta / (60))
+    return days + " days " + hours + " hours " + minutes + " minutes";
+  }
 }

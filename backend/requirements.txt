@@ -3,6 +3,7 @@ cffi==1.15.1
 cryptography==40.0.2
 Django==4.1.7
 sqlparse==0.4.4
+django-cors-headers==3.14.0
 django-unixtimestampfield==0.5.0
 djangorestframework==3.14.0
 pycparser==2.21
