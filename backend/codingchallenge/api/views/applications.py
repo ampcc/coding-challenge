@@ -102,7 +102,9 @@ class AdminApplicationsView(APIView):
                     self.expiryTimestamp = float(request.data.get('expiry'))
                 except ValueError:
                     return Response(jsonMessages.errorJsonResponse('Wrong json attributes. Please check expiryTimestamp value!'), status=status.HTTP_400_BAD_REQUEST)
-            
+            else:
+                self.expiryTimestamp = time.time() + expirySettings.daysUntilChallengeStart * 24 * 60 * 60
+
         except (AttributeError, TypeError):
             return Response(jsonMessages.errorJsonResponse('Wrong json attributes'), status=status.HTTP_400_BAD_REQUEST)
 
