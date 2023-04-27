@@ -242,7 +242,7 @@ class StatusApplicationView(APIView):
     def get(self, request, *args, **kwargs):
             user = User.objects.get(username = request.user.username)
             application = Application.objects.filter(applicationId = user.username).first()
-            serializer = GetApplicationStatus(application, many=False)
+            serializer = GetApplicationStatus(application, many = False)
             return Response(serializer.data, status = status.HTTP_200_OK)
 
 
