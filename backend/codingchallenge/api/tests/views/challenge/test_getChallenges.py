@@ -6,7 +6,7 @@ from ....models.challenge import Challenge
 
 
 class test_getChallenges(APITestCase):
-    url = '/api/admin/challenges/'
+    url = '/api/admin/challenges'
 
     def setUp(self):
         # Authorization
