@@ -91,10 +91,10 @@ class test_getApplications(APITestCase):
         }
         
         #Data that is expected
-        espected_data = GetApplicationSerializer(Application.objects.all(), many=True)
+        expected_data = GetApplicationSerializer(Application.objects.all(), many=True)
         #Real response with additional data
         response = self.client.get(self.url, data)
         
         #Comparison of the real response data with the expected data
-        self.assertEqual(response.data, espected_data.data)
+        self.assertEqual(response.data, expected_data.data)
     

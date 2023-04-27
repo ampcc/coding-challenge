@@ -1,107 +1,99 @@
-import time
-
+import json
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from ...auth.mockAuth import MockAuth
-from ....models.application import Application
 from ....models.challenge import Challenge
-from ....views import jsonMessages
+from ....serializers import GetApplicationStatus
+from ....models.application import Application
 
-
+#Test for GET ApplicationStatus and LoginWithKey
+#This test needs a User Object with an user token so its also tests loginWithKey
 class test_getApplicationStatus(APITestCase):
+    url = "/api/application/getApplicationStatus"
 
     def setUp(self):
         # Authorization
-        MockAuth.applicant(self)
+        MockAuth.admin(self)
 
-        # Example Application in Database
-        Application.objects.create(applicationId="12345678", challengeId=1, expiry=0, user_id=1)
-        Application.objects.create(applicationId="user1234", challengeId=2, expiry=0, user_id=2)
-'''
-    def test_missingToken(self):
-        self.client.credentials()
+        # create application to be able to log a user in
+        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
+        self.response_key_url = self.client.post("/api/admin/applications/", {"applicationId": "TEST1234"}, format="json")
+        index_last_dash = self.response_key_url.data["tmpLink"].rfind("/") + 1
+        self.key = self.response_key_url.data["tmpLink"][index_last_dash:]
 
-        url = '/api/application/getApplicationStatus/'
-        data = {}
-        response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        response = self.client.post("/api/application/loginWithKey/" + self.key)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + response.data["token"])
+        
 
-    def test_invalidToken(self):
-        # test for invalid token (Used an admin token)
-        self.client.credentials(HTTP_AUTHORIZATION='Token 648f5cad595ae411e2427997c469caaf74c1cce3')
+    #Test the successful Response of getApplicationStatus, its also a test for the right token
+    def test_successfulResponse(self):
+        
+        #Data that is expected
+        expected_data = GetApplicationStatus(Application.objects.get(applicationId = "TEST1234"))
+        #Real response
+        response = self.client.get(self.url)
+        
+        #Comparison of the real response data with the expected data
+        self.assertEqual(response.data, json.loads(json.dumps(expected_data.data)))
+    
 
-        url = '/api/application/getApplicationStatus/'
-        data = {}
-        response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_correctToken(self):
-        # test with admin token (Funktioniert das??? oder passt id nicht zu token)
-        self.client.credentials(HTTP_AUTHORIZATION='Token 4f25709a420a92aa01cc67b091b92ac0247f168a')
-
-        url = '/api/application/getApplicationStatus/'
-        data = {}
-        response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {
-            "applicationId": "32n4j23s",
-            "challengeId": 3,
-            "operatingSystem": "Windows",
-            "programmingLanguage": "python",
-            "expiry": 0,
-            "submission": 0.0,
-            "status": 0
-        })
-
-    def test_wrongTokenFormat(self):
-        # test for invalid token
-        self.client.credentials(HTTP_AUTHORIZATION='Token 83438ysfdfhzz')
-
-        url = '/api/application/getApplicationStatus/'
-        data = {}
-        response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
+    #Test wrong url
     def test_wrongUrl(self):
-        url = '/api/application/getApplicationStatus/'
-        data = {}
-        response = self.client.get(url, data, format='json')
+        
+        #Define wrong url for the test
+        wrongUrl = '/api/admin/appppplications'
+        #Define response
+        response = self.client.get(wrongUrl, {}, format='json')
+        #Compare defined response status code with status 404 not found
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+
+    #Test with missing Token
+    def test_missingToken(self):
+
+        #Delete token
+        self.client.credentials()
+        #Define response
+        response = self.client.get(self.url, {}, format='json')
+        #Compare defined response status code with status 401 unauthorized
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+    #Test with invalid Token(applicant token)
+    def test_invalidToken(self):
+        
+        #Give wrong token
+        self.client.credentials(HTTP_AUTHORIZATION='Token 4f25709a420a92aa01cc67b091b92ac0247f168a')
+        #Define response
+        response = self.client.get(self.url, {}, format='json')
+        #Compare defined response status code with status 401 unauthorized
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+   
+    #Test with wrong Token format
+    def test_wrongTokenFormat(self):
+        
+        #Give wrong token
+        self.client.credentials(HTTP_AUTHORIZATION='Token 8234kawsdjfas')
+        #Define response
+        response = self.client.get(self.url, {}, format='json')
+        #Compare defined response status code with status 401 unauthorized
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+    #Test to ingore additional data
     def test_ignoreAdditionalData(self):
-        url = '/api/application/getApplicationStatus/'
+        
+        #Define additional data
         data = {
-            "stuff": "World!"
+            "name": "ExampleName"
         }
-        response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {
-            "id": 1,
-            "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
-        })
-
-    def test_callAsPost(self):
-        url = '/api/application/getApplicationStatus/'
-        data = {}
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-        self.assertEqual(Application.objects.count(), 11)
-
-    def test_callAsPut(self):
-        url = '/api/application/getApplicationStatus/'
-        data = {}
-        response = self.client.put(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(Application.objects.count(), 11)
-
-    def test_callNotAsUser(self):
-        MockAuth.applicant(self)
-
-        url = '/api/application/getApplicationStatus/'
-        data = {}
-        response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertEqual(response.data, jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"))
-'''
+        
+        #Data that is expected
+        expected_data = GetApplicationStatus(Application.objects.get(applicationId = "TEST1234"))
+        #Real response with additional data
+        response = self.client.get(self.url, data)
+        
+        #Comparison of the real response data with the expected data
+        self.assertEqual(response.data, json.loads(json.dumps(expected_data.data)))
