@@ -20,6 +20,7 @@ h2 {
     width: 100%;
     display: flex;
     flex-direction: row;
+    /* z-index: 1; */
 }
 
 .tabs {
@@ -53,9 +54,17 @@ h2 {
 
 .filter {
     display: inline-block;
-    margin-left: auto; 
+    margin: auto;
     margin-right: 0;
-    z-index: 1;
+    /* z-index: 1; */
+}
+
+#filterTree {
+    margin: auto;
+    margin-top: 0.5cm;
+    position: absolute;
+    background-color: white;
+    right: 12.5%;
 }
 
 .filterSelect {
@@ -63,7 +72,7 @@ h2 {
     border-radius: 10px;
     display: inline-block;
     padding: 10px;
-    z-index: 1;
+    /* z-index: 1; */
 }
 
 ul,
@@ -80,12 +89,17 @@ li {
     font-size: 16px;
 }
 
-.test {
+.tree {
     border-bottom: 1px solid lightgrey;
 }
 
+.tree_checkbox_label {
+    margin-left: 0.5em;
+    font-size: 16px;
+}
+
 #last_tree,
-.test {
+.tree {
     margin-bottom: 5px;
     padding: 5px;
 }
