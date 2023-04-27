@@ -4,10 +4,13 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
-from . import jsonMessages
-from cryptography.fernet import Fernet
-from dotenv import load_dotenv
+
 from django.contrib.auth import authenticate, login
+from django.conf import settings
+from cryptography.fernet import Fernet
+
+from . import jsonMessages
+
 
 class KeyAuthentication(ObtainAuthToken):
 
@@ -15,7 +18,7 @@ class KeyAuthentication(ObtainAuthToken):
         if kwargs.keys():
             key = self.kwargs["key"]
 
-            fernet_key = os.getenv('ENCRYPTION_KEY')
+            fernet_key = settings.ENCRYPTION_KEY
             fernet = Fernet(fernet_key.encode())
             decryptedMessage = fernet.decrypt(key).decode()
             username = decryptedMessage[0:8]
