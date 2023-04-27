@@ -1,3 +1,4 @@
+import urllib.parse
 import os
 
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -16,7 +17,7 @@ class KeyAuthentication(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
         if kwargs.keys():
-            key = self.kwargs["key"]
+            key = urllib.parse.unquote(self.kwargs["key"])
 
             fernet_key = settings.ENCRYPTION_KEY
             fernet = Fernet(fernet_key.encode())
