@@ -5,8 +5,8 @@ import string
 import time
 import os
 
+from django.conf import settings
 from cryptography.fernet import Fernet
-from dotenv import load_dotenv
 
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -114,10 +114,10 @@ class AdminApplicationsView(APIView):
                                  password=password)
         user.save()
 
-        # the key is build as follows: "applicationId+password". Note: The applicationId does always have 8 digits.
+        # the key is build as follows: "applicationId+password".
+        # Note: The applicationId does always have 8 digits.
         keyPlain = request.data.get('applicationId') + "+" + password
-        load_dotenv()
-        fernet_key = os.getenv('ENCRYPTION_KEY')
+        fernet_key = settings.ENCRYPTION_KEY
         fernet = Fernet(fernet_key.encode())
         encKey = fernet.encrypt(keyPlain.encode()).decode("utf-8")
 
