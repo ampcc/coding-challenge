@@ -30,12 +30,12 @@ class test_getApplications(APITestCase):
     def test_successfulResponse(self):
         
         #Data that is expected
-        espected_data = GetApplicationSerializer(Application.objects.all(), many=True)
+        expected_data = GetApplicationSerializer(Application.objects.all(), many=True)
         #Real response
         response = self.client.get(self.url)
         
         #Comparison of the real response data with the expected data
-        self.assertEqual(response.data, espected_data.data)
+        self.assertEqual(response.data, expected_data.data)
     
     
     #Test wrong url
@@ -81,13 +81,6 @@ class test_getApplications(APITestCase):
         #Compare defined response status code with status 401 unauthorized
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    '''
-    def test_callAsPost(self):
-
-        response = self.client.post(self.url, {'applicationId':'13232338'}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-        #self.assertEqual(Application.objects.count(), 11)
-    '''
 
     #Test to ingore additional data
     def test_ignoreAdditionalData(self):
