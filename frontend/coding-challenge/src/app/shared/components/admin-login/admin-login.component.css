@@ -109,7 +109,7 @@ app-button {
     }
 }
 
-@media (max-width:768px) {
+@media (max-width:425px) {
     h1 {
         font-size: 30px;
         line-height: 50px;

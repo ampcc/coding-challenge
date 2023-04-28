@@ -102,4 +102,19 @@ app-button {
         font-size: 20px;
         line-height: 30px;
     }
+
+    #button_container {
+        display: block;
+        width: 100%;
+    }
+
+    app-button {
+        width: 100%;
+    }
+}
+
+@media (max-width:425px) {
+    #close_image {
+        width: 7vw;
+    }
 }

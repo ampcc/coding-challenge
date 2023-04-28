@@ -65,3 +65,17 @@ button:hover {
         line-height: 25px;
     }
 }
+
+@media (max-width:375px) {
+    button {
+        font-size: 16px;
+        line-height: 25px;
+    }
+}
+
+@media (max-width:375px) {
+    .smaller {
+        font-size: 13px;
+        line-height: 23px;
+    }
+}
