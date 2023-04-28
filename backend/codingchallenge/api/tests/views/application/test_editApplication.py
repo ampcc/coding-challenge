@@ -140,4 +140,4 @@ class test_editApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         self.assertNotEqual(Application.objects.get().challengeId, 123123)
-        self.assertEqual(response.data, {"detail": "Invalid challengeId!"})
+        self.assertEqual(response.data, {"detail": "Passed Challenge ID does not exist!"})

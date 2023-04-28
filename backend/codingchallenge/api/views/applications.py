@@ -95,7 +95,10 @@ class AdminApplicationsView(APIView):
                                 status=status.HTTP_409_CONFLICT)
 
             if 'challengeId' in request.data:
-                challengeId = request.data.get('challengeId')
+                if Challenge.objects.filter(id=request.data.get('challengeId')):
+                    challengeId = request.data.get('challengeId')
+                else:
+                    return Response(jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"), status=status.HTTP_404_NOT_FOUND)
 
             if 'expiry' in request.data:
                 try:
@@ -176,9 +179,9 @@ class AdminApplicationsView(APIView):
                             return Response(jsonMessages.errorJsonResponse("Invalid status!"), status=status.HTTP_400_BAD_REQUEST)
                     if key == allowedFields[1]:
                         if Challenge.objects.filter(id=request.data.get(key)):
-                            serialized_application['fields'][key] = request.data.get(key)
+                            serialized_application['fields']['challengeId'] = request.data.get(key)
                         else:
-                            return Response(jsonMessages.errorJsonResponse("Invalid challengeId!"), status=status.HTTP_400_BAD_REQUEST)
+                            return Response(jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"), status=status.HTTP_400_BAD_REQUEST)
                     if key == allowedFields[2]:
                         if request.data.get(key) > time.time():
                             serialized_application['fields']['expiry'] = request.data.get(key)
