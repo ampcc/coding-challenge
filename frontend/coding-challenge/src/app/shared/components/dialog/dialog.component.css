@@ -13,41 +13,63 @@ h1 {
     margin-bottom: 1em;
 }
 
-p,
-a {
+p {
     font-size: 20px;
     line-height: 30px;
     font-weight: 400;
 }
 
-#bold {
+.bold,
+a {
     font-size: 30px;
     line-height: 40px;
     font-weight: 600;
     margin-bottom: 1.5em;
 }
 
-#close {
+.link {
+    color: darkblue;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.link_text{
+    margin-bottom: 1em;
+}
+
+.close {
     display: flex;
     float: right;
     background: none;
     border: none;
 }
 
-#close:hover {
+.close:hover {
     cursor: pointer;
 }
 
-#close_image {
+.close_image {
     filter: invert(60%);
     width: 3vw;
 }
 
-#close_image:hover {
+.close_image:hover {
     filter: invert(75%);
 }
 
-#button_container {
+.image_container {
+    width: 100%;
+    margin: auto;
+}
+
+.image {
+    height: 100%;
+}
+
+.button_container {
     display: inline-flex;
     width: 100%;
 }
@@ -64,13 +86,13 @@ app-button {
 
 @media (min-width:2000px) {
 
-    p,
-    a {
+    p {
         font-size: 30px;
         line-height: 40px;
     }
 
-    #bold {
+    .bold,
+    a {
         font-size: 40px;
         line-height: 50px;
     }
@@ -81,7 +103,7 @@ app-button {
         width: 49%;
     }
 
-    #close_image {
+    .close_image {
         width: 5vw;
     }
 }
@@ -92,18 +114,18 @@ app-button {
         line-height: 50px;
     }
 
-    p,
-    a {
+    p {
         font-size: 16px;
         line-height: 25px;
     }
 
-    #bold {
+    .bold,
+    a {
         font-size: 20px;
         line-height: 30px;
     }
 
-    #button_container {
+    .button_container {
         display: block;
         width: 100%;
     }
@@ -114,7 +136,7 @@ app-button {
 }
 
 @media (max-width:425px) {
-    #close_image {
+    .close_image {
         width: 7vw;
     }
 }
