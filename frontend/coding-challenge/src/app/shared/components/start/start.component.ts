@@ -14,30 +14,30 @@ import { HttpErrorResponse } from '@angular/common/http';
   imports: [ButtonComponent]
 })
 
-export class StartComponent implements OnInit{
+export class StartComponent implements OnInit {
   private applicationToken: string | null;
   constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService) {
     this.applicationToken = null;
-   }
+  }
   ngOnInit(): void {
     this.applicationToken = window.sessionStorage.getItem('Auth-Token');
-    if(this.applicationToken === null){
+    if (this.applicationToken === null) {
       this.router.navigateByUrl("/unauthorized")
-    }else{
-      this.backendService.getStatus(this.applicationToken).subscribe((response) =>{
-        if(response.status === 1){
+    } else {
+      this.backendService.getStatus(this.applicationToken).subscribe((response) => {
+        if (response.status === 1) {
           this.router.navigateByUrl("/challenge");
         }
       });
     }
   }
 
-  tryToStartChallenge(){
+  tryToStartChallenge() {
     this.backendService.startChallenge(this.applicationToken).subscribe((data) => {
       console.log(data);
       this.router.navigateByUrl("/challenge");
     }, (error: HttpErrorResponse) => {
-      switch(error.status){
+      switch (error.status) {
         case 403:
           window.sessionStorage.clear();
           this.router.navigateByUrl("/forbidden");
@@ -50,7 +50,7 @@ export class StartComponent implements OnInit{
           window.sessionStorage.clear();
           this.router.navigateByUrl("/gone");
           break;
-      default:
+        default:
           window.sessionStorage.clear();
           this.router.navigateByUrl("/internalError");
           break;

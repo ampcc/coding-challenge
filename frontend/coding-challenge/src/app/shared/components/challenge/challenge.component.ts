@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {BackendService} from 'src/app/core/backend.service';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule } from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { BackendService } from 'src/app/core/backend.service';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
-import {NgFor} from '@angular/common';
+import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Challenge } from '../../models/challenge';
@@ -30,7 +30,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   encapsulation: ViewEncapsulation.None
 })
 
-export class ChallengeComponent implements OnInit{
+export class ChallengeComponent implements OnInit {
   applicant: Application;
   private applicationToken: string | null;
 
@@ -47,9 +47,9 @@ export class ChallengeComponent implements OnInit{
   public hideSuccess: boolean = true;
   public hideUpload: boolean = false;
 
-  public msgProgLang: string ='';
-  public msgOpSys: string ='';
-  public msgFileUplod: string ='';
+  public msgProgLang: string = '';
+  public msgOpSys: string = '';
+  public msgFileUplod: string = '';
   public hideMsgProgLang: boolean = true;
   public hideMsgOpSys: boolean = true;
   public hideMsgFileUplod: boolean = true;
@@ -61,7 +61,7 @@ export class ChallengeComponent implements OnInit{
 
 
   public constructor(private backend: BackendService, public dialog: MatDialog, private router: Router) {
-    this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"};
+    this.applicant = { applicationId: "", applicationKey: "", challengeId: 0, expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%" };
     this.applicationToken = null;
   }
 
@@ -69,17 +69,19 @@ export class ChallengeComponent implements OnInit{
   public ngOnInit(): void {
     // Check if Application Token is available
     this.applicationToken = window.sessionStorage.getItem('Auth-Token');
-    if(this.applicationToken === null){
+    if (this.applicationToken === null) {
       this.router.navigateByUrl("/unauthorized")
-    }else{
+    } else {
 
-    // Get the current Status
+      // Get the current Status
       this.backend.getStatus(this.applicationToken).subscribe((response) => {
-        this.applicant = {applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiryDate: response.expiry, githubRepoURL: "",
-                          operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submissionDate: 0, status: response.progress};
-        this.time = this.calcRemainingTime(new Date().getTime()/1000, this.applicant.expiryDate);
+        this.applicant = {
+          applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiryDate: response.expiry, githubRepoURL: "",
+          operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submissionDate: 0, status: response.progress
+        };
+        this.time = this.calcRemainingTime(new Date().getTime() / 1000, this.applicant.expiryDate);
       }, (error: HttpErrorResponse) => {
-        switch(error.status){
+        switch (error.status) {
           case 401:
             window.sessionStorage.clear();
             this.router.navigateByUrl("/unauthorized");
@@ -88,18 +90,18 @@ export class ChallengeComponent implements OnInit{
             window.sessionStorage.clear();
             this.router.navigateByUrl("/notFound");
             break;
-        default:
+          default:
             window.sessionStorage.clear();
             this.router.navigateByUrl("/internalError");
             break;
         }
-      },() => {
+      }, () => {
         // Get the Challenge
-        this.backend.getChallengeApp(this.applicationToken, this.applicant.applicationId).subscribe((response) =>{
+        this.backend.getChallengeApp(this.applicationToken, this.applicant.applicationId).subscribe((response) => {
           this.challengeText = response.challengeText;
           this.heading = response.challengeHeading;
         }, (error: HttpErrorResponse) => {
-          switch(error.status){
+          switch (error.status) {
             case 403:
               window.sessionStorage.clear();
               this.router.navigateByUrl("/forbidden");
@@ -108,7 +110,7 @@ export class ChallengeComponent implements OnInit{
               window.sessionStorage.clear();
               this.router.navigateByUrl("/notFound");
               break;
-          default:
+            default:
               window.sessionStorage.clear();
               this.router.navigateByUrl("/internalError");
               break;
@@ -124,7 +126,7 @@ export class ChallengeComponent implements OnInit{
     let elementChallenge = <HTMLLabelElement>document.getElementById('tab_challenge');
     let elementUpload = <HTMLLabelElement>document.getElementById('tab_upload');
 
-    switch(id) {
+    switch (id) {
       case 'tab_intro':
         this.hideContentIntro = false;
         this.hideContentChallenge = true;
@@ -160,7 +162,7 @@ export class ChallengeComponent implements OnInit{
   public selectionProgLang(): void {
     let selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
 
-    if(selectedOption.value == "other") {
+    if (selectedOption.value == "other") {
       this.hideProgLang = false;
     } else {
       this.hideProgLang = true;
@@ -171,7 +173,7 @@ export class ChallengeComponent implements OnInit{
   public selectionOpSys(): void {
     var selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
 
-    if(selectedOption.value == "other") {
+    if (selectedOption.value == "other") {
       this.hideOpSys = false;
     } else {
       this.hideOpSys = true;
@@ -197,41 +199,40 @@ export class ChallengeComponent implements OnInit{
     var files = (event.target as HTMLInputElement).files;
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
 
-    if(typeof files !== 'undefined' && files !== null) {
-      for(let i = 0; i < files?.length; i++) {
-        // checks if the filesize is greater than 5 GB (= 5368709120 Byte)
-        // 50 MB = 52,428,800 Byte
-        // and if the filetype is not supported
-        if(files[i].size > 52428800) {
-          this.msgFileUplod = 'The file ' + files[i].name + ' is too big';
-          this.hideMsgFileUplod = false;
+    if (typeof files !== 'undefined' && files !== null) {
+      // checks if the filesize is greater than 5 GB (= 5368709120 Byte)
+      // 50 MB = 52,428,800 Byte
+      // and if the filetype is not supported
+      if (this.fileArray.length !== 0) {
+        this.msgFileUplod = 'You already uploaded a file. Please delete that file before uploading another one.';
+        this.hideMsgFileUplod = false;
 
-          element.setAttribute("style", "border-color:red;");
+        element.setAttribute("style", "border-color:red;");
+      } else if (files[0].size > 52428800) {
+        this.msgFileUplod = 'The file ' + files[0].name + ' is too big';
+        this.hideMsgFileUplod = false;
 
-          continue;
-        } else if (!files[i].name.includes('.zip')) {
-          this.msgFileUplod = 'The file ' + files[i].name + ' has the wrong filetype';
-          this.hideMsgFileUplod = false;
+        element.setAttribute("style", "border-color:red;");
+      } else if (!files[0].name.includes('.zip')) {
+        this.msgFileUplod = 'The file ' + files[0].name + ' has the wrong filetype';
+        this.hideMsgFileUplod = false;
 
-          element.setAttribute("style", "border-color:red;");
+        element.setAttribute("style", "border-color:red;");
+      } else if (files[0].size > 52428800 && !files[0].name.includes('.zip')) {
+        this.msgFileUplod = 'The file ' + files[0].name + ' has the wrong filetype and is too big';
+        this.hideMsgFileUplod = false;
 
-          continue;
-        } else if (files[i].size > 52428800 && !files[i].name.includes('.zip')) {
-          this.msgFileUplod = 'The file ' + files[i].name + ' has the wrong filetype and is too big';
-          this.hideMsgFileUplod = false;
+        element.setAttribute("style", "border-color:red; ");
+      } else {
+        this.hideMsgFileUplod = true;
+        this.fileArray.push(files[0]);
 
-          element.setAttribute("style", "border-color:red; ");
-
-          continue;
-        } else {
-          this.hideMsgFileUplod = true;
-          this.fileArray.push(files[i]);
-
-          element.setAttribute("style", "border-color:lightgrey;");
-        }
+        element.setAttribute("style", "border-color:lightgrey;");
       }
     }
   }
+
+
 
   public deleteFile(index: number): void {
     let deletedElement = this.fileArray[index];
@@ -243,8 +244,8 @@ export class ChallengeComponent implements OnInit{
 
   public formatBytes(size: any): String {
     if (size >= 1073741824) { size = (size / 1073741824).toFixed(2) + " GB"; }
-    else if (size >= 1048576)    { size = (size / 1048576).toFixed(2) + " MB"; }
-    else if (size >= 1024)       { size = (size / 1024).toFixed(2) + " KB"; }
+    else if (size >= 1048576) { size = (size / 1048576).toFixed(2) + " MB"; }
+    else if (size >= 1024) { size = (size / 1024).toFixed(2) + " KB"; }
     return size;
   }
 
@@ -258,17 +259,17 @@ export class ChallengeComponent implements OnInit{
     var elementOpSys = <HTMLSelectElement>document.getElementById('selectOpSys');
     var elementDragnDrop = <HTMLInputElement>document.getElementById('DragnDropBlock');
 
-    if(resultPl === 'default') {
+    if (resultPl === 'default') {
       this.hideMsgProgLang = false;
       this.msgProgLang = 'Programming language required';
       elementProgLang.setAttribute("style", "border-color:red;");
       required = true;
-    } else if(resultPl === 'other') {
+    } else if (resultPl === 'other') {
       let elementInputProgLang = <HTMLInputElement>document.getElementById('progLang');
 
       resultPl = elementInputProgLang.value;
 
-      if(resultPl === '') {
+      if (resultPl === '') {
         this.hideMsgProgLang = false;
         this.msgProgLang = 'Programming language required';
         elementProgLang.setAttribute("style", "border-color:red;");
@@ -285,17 +286,17 @@ export class ChallengeComponent implements OnInit{
       elementProgLang.setAttribute("style", "border-color:lightgrey;");
     }
 
-    if(resultOs === 'default') {
+    if (resultOs === 'default') {
       this.hideMsgOpSys = false;
       this.msgOpSys = 'Operating system required';
       elementOpSys.setAttribute("style", "border-color:red;");
       required = true;
-    } else if(resultOs === 'other') {
+    } else if (resultOs === 'other') {
       let elementInputOpSy = <HTMLInputElement>document.getElementById('opSys');
 
       resultOs = elementInputOpSy.value;
 
-      if(resultOs === '') {
+      if (resultOs === '') {
         this.hideMsgOpSys = false;
         this.msgOpSys = 'Operating system required';
         elementOpSys.setAttribute("style", "border-color:red;");
@@ -312,7 +313,7 @@ export class ChallengeComponent implements OnInit{
       elementOpSys.setAttribute("style", "border-color:lightgrey;");
     }
 
-    if(this.fileArray.length === 0) {
+    if (this.fileArray.length === 0) {
       this.hideMsgFileUplod = false;
       this.msgFileUplod = 'No files for upload selected';
       elementDragnDrop.setAttribute("style", "border-color:red;");
@@ -322,7 +323,7 @@ export class ChallengeComponent implements OnInit{
       elementDragnDrop.setAttribute("style", "border-color:lightgrey;");
     }
 
-    if(!required) {
+    if (!required) {
       alert('Success: ' + resultOs + ', ' + resultPl);
       this.hideSuccess = false;
       this.hideUpload = true;
@@ -331,13 +332,13 @@ export class ChallengeComponent implements OnInit{
     }
   }
 
-  private calcRemainingTime(_currentTime: number, _expiryTime: number): string{
+  private calcRemainingTime(_currentTime: number, _expiryTime: number): string {
     var timeDelta = _expiryTime - _currentTime;
     console.log(_expiryTime + ";" + _currentTime + ";" + timeDelta);
-    const days = Math.floor(timeDelta / (3600*24));
-    timeDelta -= days *3600*24;
+    const days = Math.floor(timeDelta / (3600 * 24));
+    timeDelta -= days * 3600 * 24;
     const hours = Math.floor(timeDelta / (3600));
-    timeDelta -= hours *3600;
+    timeDelta -= hours * 3600;
     const minutes = Math.floor(timeDelta / (60))
     return days + " days " + hours + " hours " + minutes + " minutes";
   }

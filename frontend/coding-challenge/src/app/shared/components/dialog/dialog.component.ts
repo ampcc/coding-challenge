@@ -21,10 +21,13 @@ export class DialogComponent {
       important: string,
       details: string,
     },
+    image: {
+      source: string,
+    },
     buttons: {
       left: {
         title: string,
-        look: string
+        look: string,
       },
       right: {
         title: string,

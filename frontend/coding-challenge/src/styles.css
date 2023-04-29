@@ -2,12 +2,10 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Comfortaa'; }
-button {
+button, input {
   font-family: inherit;
 }
-input {
-  font-family: inherit;
-}
+
 
 @font-face {
     font-family: 'Comfortaa';

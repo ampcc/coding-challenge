@@ -7,109 +7,136 @@
 }
 
 h1 {
-    font-size: 2.5vw;
-    line-height: 3vw;
+    font-size: 50px;
+    line-height: 70px;
+    font-weight: 600;
     margin-bottom: 1em;
 }
 
-p,
-a {
-    font-size: 1vw;
-    line-height: 1.5vw;
+p {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
 }
 
-#bold {
-    font-size: 1.5vw;
-    line-height: 2vw;
+.bold,
+a {
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 600;
     margin-bottom: 1.5em;
 }
 
-#close {
+.link {
+    color: darkblue;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.link_text{
+    margin-bottom: 1em;
+}
+
+.close {
     display: flex;
     float: right;
     background: none;
     border: none;
 }
 
-#close:hover {
+.close:hover {
     cursor: pointer;
 }
 
-#close_image {
+.close_image {
     filter: invert(60%);
     width: 3vw;
 }
 
-#close_image:hover {
+.close_image:hover {
     filter: invert(75%);
 }
 
-#button_container {
-    display: grid;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-auto-flow: column;
-    justify-content: center;
-    gap: 4em;
+.image_container {
+    width: 100%;
+    margin: auto;
+}
+
+.image {
+    height: 100%;
+}
+
+.button_container {
+    display: inline-flex;
+    width: 100%;
+}
+
+.spacer {
+    flex: 1;
+}
+
+app-button {
+    display: inline-block;
+    width: 40%;
     margin-top: 3em;
 }
 
+@media (min-width:2000px) {
+
+    p {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    .bold,
+    a {
+        font-size: 40px;
+        line-height: 50px;
+    }
+}
+
 @media (max-width:1024px) {
-    h1 {
-        font-size: 3vw;
-        line-height: 3.5vw;
-        margin-bottom: 1em;
+    app-button {
+        width: 49%;
     }
 
-    p {
-        font-size: 1.5vw;
-        line-height: 2vw;
-    }
-
-    #bold {
-        font-size: 2vw;
-        line-height: 2.5vw;
-        margin-bottom: 1.5em;
+    .close_image {
+        width: 5vw;
     }
 }
 
-@media (max-width:770px) {
+@media (max-width:768px) {
     h1 {
-        font-size: 3vw;
-        line-height: 3.5vw;
-        margin-bottom: 1em;
+        font-size: 30px;
+        line-height: 50px;
     }
 
     p {
-        font-size: 2vw;
-        line-height: 2.5vw;
+        font-size: 16px;
+        line-height: 25px;
     }
 
-    #bold {
-        font-size: 2.5vw;
-        line-height: 3vw;
-        margin-bottom: 1.5em;
+    .bold,
+    a {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .button_container {
+        display: block;
+        width: 100%;
+    }
+
+    app-button {
+        width: 100%;
     }
 }
 
-@media (max-width:555px) {
-    h1 {
-        font-size: 3vw;
-        line-height: 3.5vw;
-        margin-bottom: 1em;
-    }
-
-    p {
-        font-size: 2vw;
-        line-height: 2.5vw;
-    }
-
-    #bold {
-        font-size: 2.5vw;
-        line-height: 3vw;
-        margin-bottom: 1.5em;
-    }
-
-    #button_container {
-        gap: 2em;
+@media (max-width:425px) {
+    .close_image {
+        width: 7vw;
     }
 }
