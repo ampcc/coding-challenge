@@ -46,13 +46,12 @@ class AdminChangePassword(APIView):
     permission_classes = [IsAdminUser]
     
     def put(self, request, *args, **kwargs):
-        try:
-            oldPassword = request.data.get('oldPassword')
-            newPassword = request.data.get('newPassword')
-        except KeyError:
-            return Response(jsonMessages.errorJsonResponse("Could not get new Password. Please check HTTP Request!"), status=status.HTTP_400_BAD_REQUEST)
-        if newPassword == "":
-            return Response(jsonMessages.errorJsonResponse("The new password must not be empty!"), status=status.HTTP_400_BAD_REQUEST)            
+        oldPassword = request.data.get('oldPassword')
+        newPassword = request.data.get('newPassword')
+        if oldPassword == None or newPassword == None:
+            return Response(jsonMessages.errorJsonResponse("Wrong keys sent! Can not process request!"), status=status.HTTP_400_BAD_REQUEST)
+        if len(oldPassword) == 0 or len(newPassword) == 0:
+            return Response(jsonMessages.errorJsonResponse("Password(s) must not be empty!"), status=status.HTTP_400_BAD_REQUEST)
         user = authenticate(request, username=request.user.username, password=oldPassword)
         if not user:
             return Response(jsonMessages.errorJsonResponse("The old password does not match the currently logged in admin user account!"), status=status.HTTP_403_FORBIDDEN)
