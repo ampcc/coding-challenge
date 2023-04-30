@@ -9,7 +9,8 @@ from .views import applications, challenges, authentication
 
 urlpatterns = [
     path('admin/login', obtain_auth_token),
-    
+    path('admin/changePassword', authentication.AdminChangePassword.as_view()),
+
     path('admin/applications/', applications.AdminApplicationsView.as_view()),
     path('admin/applications/<applicationId>', applications.AdminApplicationsView.as_view(), name="applicationId"),
 
