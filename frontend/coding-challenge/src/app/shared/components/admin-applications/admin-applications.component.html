@@ -11,7 +11,7 @@
 <body>
     <div id="elements">
         <div class="heading">
-            <h2>Coding Challenge: Applicants</h2>
+            <h2>Coding Challenge: Applications</h2>
         </div>
 
 
@@ -20,7 +20,7 @@
                 <div>
                     <label class="tabs" id="tab_active_challenges" for="tab-1"
                         (click)="changeTab('tab_active_challenges')">
-                        Active Challenge
+                        Active Applications
                     </label>
 
                     <label class="tabs" id="tab_archiv" for="tab-2" (click)="changeTab('tab_archiv')">
@@ -90,8 +90,9 @@
                             <span [hidden]="hideSubmissionDate">Submission date: {{app.submissionDate}}</span>
                             <span [hidden]="hideTimeLimit">Timelimit: {{timeLimit}} days</span>
                         </div>
-
-                        <button class="btn btn-dark" (click)="openDialogActiveChallenges(app)">Details</button>
+                        <div class="btn_position">
+                            <button class="btn btn-dark" (click)="openDialogActiveChallenges(app)">Details</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,8 +108,9 @@
                             <span>Challenge: {{challengeHeading}}</span>
                             <span>Submission date: {{archiv.submissionDate}}</span>
                         </div>
-
-                        <button class="btn btn-dark" (click)="openDialogArchiv(archiv)">Details</button>
+                        <div class="btn_position">
+                            <button class="btn btn-dark" (click)="openDialogArchiv(archiv)">Details</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -29,8 +29,12 @@ export class AdminApplicationsComponent {
 
   public hideFilterSelect: boolean = true;
 
-  public applicantsArray: Application[] = [];
-  public archivArray: Application[] = [];
+  public applicantsArray: Application[] = [{applicationId: "sdfs0", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}, 
+                                           {applicationId: "dgtertxc", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}
+                                          ];
+  public archivArray: Application[] = [{applicationId: "sdfs0", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}, 
+                                       {applicationId: "dgtertxc", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}
+                                      ];
 
   public hideSubmissionDate: boolean = false;
   public hideTimeLimit: boolean = false;
