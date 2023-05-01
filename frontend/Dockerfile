@@ -11,4 +11,7 @@ WORKDIR /frontend
 
 COPY ./coding-challenge/ .
 
-CMD [ "ng", "serve" ]
+# Install project dependencies
+RUN npm install package.json
+
+CMD [ "ng", "serve", "--host", "0.0.0.0" ]

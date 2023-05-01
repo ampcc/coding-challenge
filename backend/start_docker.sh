@@ -4,7 +4,5 @@ read -p "Do you want to build a new image? (This process could take a while) [Y/
 
 if [ $(input) = 'Y' ]; then
     docker build -t django-server:latest .
-    docker run --net=host --name django-server django-server:latest
-else
-    docker run --net=host --name django-server django-server:latest
 fi
+docker run --net=host --name django-server django-server:latest
