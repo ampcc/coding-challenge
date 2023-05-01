@@ -1,4 +1,10 @@
+#!/bin/sh
+echo "Starting the container for the django server!\n"
+read -p "Do you want to build a new image? (This process could take a while) [Y/N]: " input
 
-docker build -t django-server:latest .
-docker run --net=host django-server:latest
-
+if [ $(input) = 'Y' ]; then
+    docker build -t django-server:latest .
+    docker run --net=host --name django-server django-server:latest
+else
+    docker run --net=host --name django-server django-server:latest
+fi
