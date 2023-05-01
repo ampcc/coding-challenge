@@ -112,10 +112,10 @@
                             <h4 class="applicantId">
                                 {{app.applicationId}}
                             </h4>
-                            <span>Challenge: {{getChallengeHeading(app.challengeId)}}</span>
-                            <span>Status: {{getStatusText(app.status)}}</span>
-                            <span [hidden]="hideSubmissionDate">Submission date: {{getSubmissionDateText(app.submissionDate)}}</span>
-                            <span [hidden]="hideTimeLimit">Timelimit: {{getTimeLimit(app)}} days</span>
+                            <span><b>Challenge:</b> {{getChallengeHeading(app.challengeId)}}</span>
+                            <span><b>Status:</b> {{getStatusText(app.status)}}</span>
+                            <span [hidden]="hideSubmissionDate"><b>Submission date:</b> {{getSubmissionDateText(app.submissionDate)}}</span>
+                            <span [hidden]="hideTimeLimit"><b>Timelimit:</b> {{getTimeLimit(app)}} days</span>
                         </div>
                         <div class="btn_position">
                             <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details" (click)="openDialogActiveChallenges(app)">Details</button>
@@ -132,8 +132,8 @@
                             <h4 class="applicantId">
                                 {{archiv.applicationId}}
                             </h4>
-                            <span>Challenge: {{getChallengeHeading(archiv.challengeId)}}</span>
-                            <span>Submission date: {{getSubmissionDateText(archiv.submissionDate)}}</span>
+                            <span><b>Challenge:</b> {{getChallengeHeading(archiv.challengeId)}}</span>
+                            <span><b>Submission date:</b> {{getSubmissionDateText(archiv.submissionDate)}}</span>
                         </div>
                         <div class="btn_position">
                             <button *ngIf="getSubmissionDateText(archiv.submissionDate) !== 'not uploaded in time'" class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
