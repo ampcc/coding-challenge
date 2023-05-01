@@ -29,6 +29,9 @@ export class AdminApplicationsComponent {
 
   public hideFilterSelect: boolean = true;
 
+  public challengeArray: Challenge[] = [{challengeId: 0, challengeHeading: 'Challenge0',challengeText: 'xxx'},
+                                        {challengeId: 1, challengeHeading: 'Challenge1',challengeText: 'xxx'}
+                                       ];
   public applicantsArray: Application[] = [{applicationId: "sdfs0", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}, 
                                            {applicationId: "dgtertxc", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}
                                           ];

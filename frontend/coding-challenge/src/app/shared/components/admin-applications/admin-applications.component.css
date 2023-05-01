@@ -50,6 +50,7 @@ h2 {
 /* style filter elements */
 #labelFilter {
     cursor: pointer;
+    font-size: 16px;
 }
 
 .filter {
@@ -61,9 +62,10 @@ h2 {
 
 #filterTree {
     margin: auto;
-    margin-top: 0.5cm;
+    /* margin-top: 0.25cm; */
     position: absolute;
     background-color: white;
+    box-shadow: 5px 5px 20px 5px rgba(0, 0, 0, 0.15);
     right: 12.5%;
 }
 
@@ -198,8 +200,17 @@ span {
         font-size: 80px;
     }
 
-    .tabs {
+    .tabs,
+    #labelFilter,
+    .caret,
+    .tree_checkbox_label
+     {
         font-size: 25px;
+    }
+
+    .funnel {
+        width: 25px;
+        height: 25px;
     }
 
     h4 {

@@ -30,8 +30,10 @@
 
                 <div class="filter">
                     <div>
-                        <label (click)="showFilter()" id="labelFilter">Filter <img src="../../../../assets/funnel.svg"
-                                class="funnel"></label>
+                        <label (click)="showFilter()" id="labelFilter">
+                            Filter 
+                            <img src="../../../../assets/funnel.svg" class="funnel">
+                        </label>
                     </div>
                 </div>
             </div>
@@ -40,37 +42,62 @@
                     <ul id="myUL">
                         <li class="tree">
                             <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
-                            <ul class="nested">
-                                <li><input type="checkbox" id="challenge1" (change)="checkbocChallengeChange()"
-                                        value="challenge1" /><span class="tree_checkbox_label"> Challenge1</span></li>
-                                <li><input type="checkbox" id="challenge2" (change)="checkbocChallengeChange()"
-                                        value="challenge2" /><span class="tree_checkbox_label"> Challenge2</span></li>
-                                <li><input type="checkbox" id="challenge3" (change)="checkbocChallengeChange()"
-                                        value="challenge3" /><span class="tree_checkbox_label"> Challenge3</span></li>
+                            <ul class="nested" >
+                                <li *ngFor="let challenge of challengeArray">
+                                    <input type="checkbox" class="challengeFilterElement" id="challenge{{challenge.challengeId}}" (change)="checkbocChallengeChange()" value="challenge{{challenge.challengeId}}" />
+                                    <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
+                                </li>
                             </ul>
                         </li>
-                        <li class="tree">
+                        <li [hidden]="hideContentActiveChallenges" class="tree">
                             <span class="caret" id="caret2" (click)="toggleTreeView('caret2')">Status</span>
                             <ul class="nested">
-                                <li><input type="checkbox" id="uploaded" (change)="checkboxStatusChange()"
-                                        value="uploaded" /><span class="tree_checkbox_label"> uploaded</span></li>
-                                <li><input type="checkbox" id="not_uploaded_yet" (change)="checkboxStatusChange()"
-                                        value="not_uploaded_yet" /><span class="tree_checkbox_label"> not uploaded yet</span></li>
-                                <li><input type="checkbox" id="not_uploaded_in_time"
-                                        (change)="checkboxStatusChange()" value="not_uploaded_in_time" /><span class="tree_checkbox_label"> not submitted in time</span></li>
+                                <li>
+                                    <input type="checkbox" id="uploaded" (change)="checkboxStatusChange()"
+                                        value="uploaded" />
+                                    <span class="tree_checkbox_label"> uploaded</span>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="not_uploaded_yet" (change)="checkboxStatusChange()"
+                                        value="not_uploaded_yet" />
+                                    <span class="tree_checkbox_label"> not uploaded yet</span>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="not_uploaded_in_time"
+                                        (change)="checkboxStatusChange()" value="not_uploaded_in_time" />
+                                    <span class="tree_checkbox_label"> not submitted in time</span>
+                                </li>
                             </ul>
                         </li>
-                        <li id="last_tree">
+                        <li [hidden]="hideContentActiveChallenges" id="last_tree">
                             <span class="caret" id="caret3" (click)="toggleTreeView('caret3')">Time Limit</span>
                             <ul class="nested">
-                                <li><input type="checkbox" id="three_day" (change)="checkboxTimeLimitChange()"
-                                        value="three_day" /><span class="tree_checkbox_label"> 3 days</span></li>
-                                <li><input type="checkbox" id="two_day" (change)="checkboxTimeLimitChange()"
-                                        value="two_day" /><span class="tree_checkbox_label"> 2 days</span></li>
-                                <li><input type="checkbox" id="one_day" (change)="checkboxTimeLimitChange()"
-                                        value="one_day" /><span class="tree_checkbox_label"> 1 days</span></li>
-                                <li><input type="checkbox" id="expired" (change)="checkboxTimeLimitChange()"
-                                        value="expired" /><span class="tree_checkbox_label"> expired</span></li>
+                                <li>
+                                    <input type="checkbox" id="three_day" (change)="checkboxTimeLimitChange()"
+                                        value="three_day" />
+                                    <span class="tree_checkbox_label"> 3 days</span>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="two_day" (change)="checkboxTimeLimitChange()"
+                                        value="two_day" />
+                                    <span class="tree_checkbox_label"> 2 days</span>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="one_day" (change)="checkboxTimeLimitChange()"
+                                        value="one_day" />
+                                    <span class="tree_checkbox_label"> 1 day</span>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="expired" (change)="checkboxTimeLimitChange()"
+                                        value="expired" />
+                                    <span class="tree_checkbox_label"> expired</span>
+                                </li>
+                                <!-- optional: if we include the possibility to extend the time limit  -->
+                                <!-- <li>
+                                    <input type="checkbox" id="expired" (change)="checkboxTimeLimitChange()"
+                                        value="expired" />
+                                    <span class="tree_checkbox_label"> other</span>
+                                </li> -->
                             </ul>
                         </li>
                     </ul>
