@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import {BackendService} from 'src/app/core/backend.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
-import {NgFor} from '@angular/common';
+import {NgFor, NgIf} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Challenge } from '../../models/challenge';
@@ -12,6 +12,7 @@ import { Application } from '../../models/application';
   standalone: true,
   imports: [
     NgFor,
+    NgIf,
     FormsModule,
   ],
   selector: 'app-admin-applications',
@@ -33,20 +34,17 @@ export class AdminApplicationsComponent {
                                         {challengeId: 1, challengeHeading: 'Challenge1',challengeText: 'xxx'}
                                        ];
   public applicantsArray: Application[] = [{applicationId: "sdfs0", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}, 
-                                           {applicationId: "dgtertxc", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}
+                                           {applicationId: "dgtertxc", applicationKey:"", challengeId: 1 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 3, submissionDate: 23456, passphrase: "a4Xz!5T%"}
                                           ];
   public archivArray: Application[] = [{applicationId: "sdfs0", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}, 
-                                       {applicationId: "dgtertxc", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}
+                                       {applicationId: "dgtertxc", applicationKey:"", challengeId: 1 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 234234, passphrase: "a4Xz!5T%"}
                                       ];
 
   public hideSubmissionDate: boolean = false;
   public hideTimeLimit: boolean = false;
 
-  public challengeHeading: string = '';
-  public status: string = '';
-  public timeLimit: number = 0;
-
-
+ 
+ 
   public constructor(private backend: BackendService, public dialog: MatDialog,) {
     this.challenge = {challengeId: 0, challengeHeading: '',challengeText: ''};
     this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"};
@@ -100,7 +98,7 @@ export class AdminApplicationsComponent {
     }
   }
 
-  public checkbocChallengeChange(): void {
+  public checkboxChallengeChange(): void {
 
   }
 
@@ -111,6 +109,46 @@ export class AdminApplicationsComponent {
   public checkboxTimeLimitChange(): void {
 
   }
+
+  public getChallengeHeading(challengeId: number): string {
+    let elementHeading = this.challengeArray.find(element => element.challengeId === challengeId)?.challengeHeading;
+
+    if(elementHeading === undefined) {
+      return 'Error: Challenge not found';
+    }
+    return elementHeading;
+  }
+
+  public getStatusText(status: number): string {
+    switch (status) {
+      case 0:
+        return 'not uploaded yet';
+      case 1:
+        return 'not uploaded yet';
+      case 2:
+        return 'uploaded';
+      case 3:
+        return 'uploaded';
+      case 4: 
+        return 'not submitted in time';
+      case 5:
+        return 'archived';
+      default:
+        return 'given status is unknown: ' + status;
+    }
+    
+  }
+
+  public getTimeLimit(app: Application): number {
+    return 2;
+  }
+
+  public getSubmissionDateText(submissionDate: number): string {
+    if(submissionDate === 0 || submissionDate === null || submissionDate === undefined) {
+      return 'not uploaded in time';
+    }
+    return '' + submissionDate;
+  };
 
 
   public openDialogActiveChallenges(application: Application): void {

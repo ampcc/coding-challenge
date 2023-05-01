@@ -44,7 +44,7 @@
                             <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
                             <ul class="nested" >
                                 <li *ngFor="let challenge of challengeArray">
-                                    <input type="checkbox" class="challengeFilterElement" id="challenge{{challenge.challengeId}}" (change)="checkbocChallengeChange()" value="challenge{{challenge.challengeId}}" />
+                                    <input type="checkbox" class="challengeFilterElement" id="challenge{{challenge.challengeId}}" (change)="checkboxChallengeChange()" value="challenge{{challenge.challengeId}}" />
                                     <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
                                 </li>
                             </ul>
@@ -112,13 +112,13 @@
                             <h4 class="applicantId">
                                 {{app.applicationId}}
                             </h4>
-                            <span>Challenge: {{challengeHeading}}</span>
-                            <span>Status: {{status}}</span>
-                            <span [hidden]="hideSubmissionDate">Submission date: {{app.submissionDate}}</span>
-                            <span [hidden]="hideTimeLimit">Timelimit: {{timeLimit}} days</span>
+                            <span>Challenge: {{getChallengeHeading(app.challengeId)}}</span>
+                            <span>Status: {{getStatusText(app.status)}}</span>
+                            <span [hidden]="hideSubmissionDate">Submission date: {{getSubmissionDateText(app.submissionDate)}}</span>
+                            <span [hidden]="hideTimeLimit">Timelimit: {{getTimeLimit(app)}} days</span>
                         </div>
                         <div class="btn_position">
-                            <button class="btn btn-dark details" (click)="openDialogActiveChallenges(app)">Details</button>
+                            <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details" (click)="openDialogActiveChallenges(app)">Details</button>
                         </div>
                     </div>
                 </div>
@@ -132,11 +132,11 @@
                             <h4 class="applicantId">
                                 {{archiv.applicationId}}
                             </h4>
-                            <span>Challenge: {{challengeHeading}}</span>
-                            <span>Submission date: {{archiv.submissionDate}}</span>
+                            <span>Challenge: {{getChallengeHeading(archiv.challengeId)}}</span>
+                            <span>Submission date: {{getSubmissionDateText(archiv.submissionDate)}}</span>
                         </div>
                         <div class="btn_position">
-                            <button class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
+                            <button *ngIf="getSubmissionDateText(archiv.submissionDate) !== 'not uploaded in time'" class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
                         </div>
                     </div>
                 </div>
