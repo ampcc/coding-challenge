@@ -122,18 +122,32 @@ export class AdminApplicationsComponent {
   public getStatusText(status: number): string {
     switch (status) {
       case 0:
+        this.hideSubmissionDate = true;
+        this.hideTimeLimit= false;
         return 'not uploaded yet';
       case 1:
+        this.hideSubmissionDate = true;
+        this.hideTimeLimit= false;
         return 'not uploaded yet';
       case 2:
+        this.hideSubmissionDate = false;
+        this.hideTimeLimit= true;
         return 'uploaded';
       case 3:
+        this.hideSubmissionDate = false;
+        this.hideTimeLimit= true;
         return 'uploaded';
       case 4: 
+        this.hideSubmissionDate = true;
+        this.hideTimeLimit= false;  
         return 'not submitted in time';
       case 5:
+        this.hideSubmissionDate = false;
+        this.hideTimeLimit= true;
         return 'archived';
       default:
+        this.hideSubmissionDate = true;
+        this.hideTimeLimit= true;
         return 'given status is unknown: ' + status;
     }
     
