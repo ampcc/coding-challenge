@@ -115,7 +115,7 @@
                             <span><b>Challenge:</b> {{getChallengeHeading(app.challengeId)}}</span>
                             <span><b>Status:</b> {{getStatusText(app.status)}}</span>
                             <span [hidden]="hideSubmissionDate"><b>Submission date:</b> {{getSubmissionDateText(app.submissionDate)}}</span>
-                            <span [hidden]="hideTimeLimit"><b>Timelimit:</b> {{getTimeLimit(app)}} days</span>
+                            <span [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}} days</span>
                         </div>
                         <div class="btn_position">
                             <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details" (click)="openDialogActiveChallenges(app)">Details</button>
