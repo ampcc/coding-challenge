@@ -1,11 +1,227 @@
-.main_container {
-    margin-left: 15em;
-    margin-top: 5em;
-    margin-right: 15em;
-    padding-bottom: 5em;
+/* Style generell view */
+#elements {
+    margin: auto;
+    width: 75%;
+    padding-top: 120px;
+    padding-bottom: 120px;
 }
 
-h1 {
-    font-size: 4vw;
-    line-height: 4.5vw;
+h2 {
+    line-height: 1.2em;
+    font-size: 50px;
+    font-weight: 600;
+    color: rgb(0, 0, 0);
+    margin-bottom: 50px;
+}
+
+/* style tab navigation */
+.tab_list {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    /* z-index: 1; */
+}
+
+.tabs {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    align-items: center;
+
+    padding-top: 16px;
+    padding-bottom: 14px;
+}
+
+.tabs:hover {
+    cursor: pointer;
+}
+
+#tab_active_challenges {
+    border-bottom: 2px solid black;
+}
+
+
+/* style filter elements */
+#labelFilter {
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.filter {
+    display: inline-block;
+    margin: auto;
+    margin-right: 0;
+    /* z-index: 1; */
+}
+
+#filterTree {
+    margin: auto;
+    /* margin-top: 0.25cm; */
+    position: absolute;
+    background-color: white;
+    box-shadow: 5px 5px 20px 5px rgba(0, 0, 0, 0.15);
+    right: 12.5%;
+}
+
+.filterSelect {
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 10px;
+    /* z-index: 1; */
+}
+
+ul,
+#myUL {
+    list-style-type: none;
+}
+
+#myUL {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    font-size: 16px;
+}
+
+.tree_checkbox_label {
+    margin-left: 0.5em;
+    font-size: 16px;
+}
+
+#last_tree {
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.caret {
+    cursor: pointer;
+    -moz-user-select: none;
+    /* Firefox 2+ */
+    user-select: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.btn.btn-dark.apply_button {
+    height: auto;
+    width: auto;
+    font-size: 16px;
+    text-align: center;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* style lists */
+.list {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.single_challenge {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    margin-bottom: 0.5cm;
+    /* display: inline-block; */
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+}
+
+.text_elements {
+    display: flex;
+    align-items: center;
+}
+
+h4 {
+    font-size: 25px;
+    line-height: 1.2em;
+    margin: 0;
+}
+
+span {
+    font-size: 20px;
+}
+
+.btn_position {
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.btn.btn-dark.details {
+    height: auto;
+    width: 150px;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+
+/* Responsive Webdesign */
+@media screen and (min-width: 2000px) {
+    h2 {
+        font-size: 80px;
+    }
+
+    .tabs,
+    #labelFilter,
+    .caret,
+    .tree_checkbox_label
+    {
+        font-size: 25px;
+    }
+
+    h4 {
+        font-size: 35px;
+    }
+
+    span {
+        font-size: 30px;
+    }
+
+    .funnel {
+        width: 25px;
+        height: 25px;
+    }
+
+    .btn.btn-dark.apply_button
+     {
+        font-size: 22px;
+        width: 120px;
+    }
+
+    .btn.btn-dark.details {
+        height: auto;
+        width: 200px;
+        padding: 10px;
+        font-weight: 400;
+        font-size: 25px;
+    }
 }

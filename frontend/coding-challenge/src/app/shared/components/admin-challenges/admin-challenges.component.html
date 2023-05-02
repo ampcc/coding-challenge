@@ -1,3 +1,73 @@
-<div class="main_container">
-    <h1>Coding Challenge: Challenges</h1>
-</div>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin View Challenges</title>
+    <link rel="stylesheet" type="text/css" href="admin-challenges.component.css">
+    <meta charset="UTF-8">
+</head>
+
+
+<body>
+    <div id="elements">
+        <div class="heading">
+            <h2>Coding Challenge: Challenges</h2>
+        </div>
+
+
+        <div class="view_tab">
+            <div class="tab_list">
+                <div>
+                    <label class="tabs" id="tab_active_challenges" for="tab-1"
+                        (click)="changeTab('tab_active_challenges')">
+                        Active Challenges
+                    </label>
+                </div>
+
+                <div class="filter">
+                    <div>
+                        <label (click)="showFilter()" id="labelFilter">
+                            Filter
+                            <img src="../../../../assets/funnel.svg" class="funnel">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
+                <ul id="myUL">
+                    <li id="last_tree">
+                        <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
+                        <ul class="nested">
+                            <li *ngFor="let challenge of challengeArray">
+                                <input type="checkbox" class="challengeFilterElement"
+                                    id="challenge{{challenge.challengeId}}" (change)="checkboxChallengeChange()"
+                                    value="challenge{{challenge.challengeId}}" />
+                                <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <button class="btn btn-dark apply_button">Apply</button>
+            </div>
+
+            <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
+                <div class="list" id="list_challenges">
+                    <div class="single_challenge" *ngFor="let challenge of challengeArray; let i = index">
+                        <div class="text_elements">
+                            <h4 class="challengeId">
+                                {{challenge.challengeHeading}}
+                            </h4>
+                        </div>
+                        <div class="btn_position">
+                            <button class="btn btn-dark details"
+                                (click)="openDialogActiveChallenges(challenge)">Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
