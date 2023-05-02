@@ -65,6 +65,7 @@ class AdminApplicationsView(APIView):
 
     # 4. Create Application
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#4-create-application
+    # /api/admin/applications
     def post(self, request, *args, **kwargs):
         """
         create Application with
