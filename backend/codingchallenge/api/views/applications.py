@@ -181,7 +181,7 @@ class AdminApplicationsView(APIView):
                         if Challenge.objects.filter(id=request.data.get(key)):
                             serialized_application['fields']['challengeId'] = request.data.get(key)
                         else:
-                            return Response(jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"), status=status.HTTP_400_BAD_REQUEST)
+                            return Response(jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"), status=status.HTTP_404_NOT_FOUND)
                     if key == allowedFields[2]:
                         if request.data.get(key) > time.time():
                             serialized_application['fields']['expiry'] = request.data.get(key)
