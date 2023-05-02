@@ -259,7 +259,7 @@ class AdminResultApplicationView(APIView):
                 raise TypeError
 
         except(KeyError, TypeError):
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status=status.HTTP_404_NOT_FOUND)
 
         if application.githubRepo:
             repoName = application.githubRepo
@@ -309,7 +309,7 @@ class UploadApplicationView(APIView):
             user.application.githubRepo = repoName
             user.application.save()
 
-            return Response({"success": "true"}, status=status.HTTP_200_OK)
+            return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
         else:
             return Response(
                 jsonMessages.errorJsonResponse("challenge has already been submitted"),
