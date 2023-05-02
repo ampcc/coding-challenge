@@ -7,6 +7,7 @@ from ....views import jsonMessages
 
 
 class test_deleteApplication(APITestCase):
+    url = '/api/admin/applications'
 
     def setUp(self):
         # Authorization
@@ -19,12 +20,9 @@ class test_deleteApplication(APITestCase):
     def test_missingAuth(self):
         # remove headers for this test
         self.client.credentials()
-
-        url = '/api/admin/applications/' + self.applicationId
-
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(url, format='json')
+        response = self.client.delete(self.url + "/" + self.applicationId, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -33,34 +31,28 @@ class test_deleteApplication(APITestCase):
 
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(url, format='json')
+        response = self.client.delete(self.url, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_noApplicationId(self):
-        url = '/api/admin/applications/'
-
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(url, format='json', )
+        response = self.client.delete(self.url, format='json', )
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrongApplicationId(self):
-        url = '/api/admin/applications/' + '4321TSET'
-
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(url, format='json', )
+        response = self.client.delete(self.url + "/4321TSET", format='json', )
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_correctInput(self):
-        url = '/api/admin/applications/' + self.applicationId
-
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(url, format='json')
+        response = self.client.delete(self.url + "/" + self.applicationId)
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, jsonMessages.successJsonResponse())

@@ -6,7 +6,7 @@ from ....models.challenge import Challenge
 from ....serializers import GetChallengeSerializer
 
 class test_postChallengeAdmin(APITestCase):
-    url = "/api/admin/challenges/"
+    url = "/api/admin/challenges"
     
     def setUp(self):
         # Authorization

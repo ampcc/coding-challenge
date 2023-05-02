@@ -10,6 +10,7 @@ from ....views import jsonMessages
 
 
 class test_getChallengeApplication(APITestCase):
+    url = "/api/application/challenges"
 
     def setUp(self):
         # Authorization
@@ -26,61 +27,63 @@ class test_getChallengeApplication(APITestCase):
         # remove headers for this test
         self.client.credentials()
 
-        url = '/api/application/challenges'
-        data = {}
-        response = self.client.get(url, data, format='json')
+        response = self.client.get(self.url + "/" + self.applicationId)
+
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_invalidToken(self):
         # for this test, use the example token from the wiki
         self.client.credentials(HTTP_AUTHORIZATION='Token 62ce30b676d95ef439af5e1d84f9161034c67c4a')
 
-        url = '/api/application/challenges'
-        data = {}
-        response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        response = self.client.get(self.url + "/" + self.applicationId)
 
-    def test_wrongToken(self):
-        ...
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongTokenFormat(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 1234')
 
-        url = '/api/application/challenges'
-        data = {}
-        response = self.client.get(url, data, format='json')
+        response = self.client.get(self.url + "/" + self.applicationId)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_missingApplicationId(self):
+        response = self.client.get(self.url + "/")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_wrongApplicationId(self):
+        response = self.client.get(self.url + "/23456")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.data, jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"))
 
     def test_challengeDoesNotExist(self):
         Application.objects.create(applicationId="WrongApplication", challengeId=107, expiry=0, user_id=189)
         url = '/api/application/challenges/WrongApplication'
 
-        data = {}
-        response = self.client.get(url, data, format='json')
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data, jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"))
 
     def test_wrongUrl(self):
-        url = '/api/application/super_cool_challenges'
-        data = {}
-        response = self.client.get(url, data, format='json')
+        url = '/api/application/super_cool_challenges/45'
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_applicationDoesNotExist(self):
+        response = self.client.get(self.url + "/67")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.data, jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"))
 
     def test_challengeDoesNotExist(self):
         Application.objects.filter(applicationId=self.applicationId).update(challengeId=3)
 
-        url = '/api/application/challenges'
+        response = self.client.get(self.url + "/" + self.applicationId)
 
-        data = {}
-        response = self.client.get(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data, jsonMessages.errorJsonResponse("The applications challenge can not be found!"))
 
     def test_receiveCorrectChallenges(self):
-        url = '/api/application/challenges'
 
-        data = {}
-        response = self.client.get(url, data, format='json')
+        response = self.client.get(self.url + "/" + self.applicationId)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
             "id": 1,
@@ -89,11 +92,11 @@ class test_getChallengeApplication(APITestCase):
         })
 
     def test_ignoreAdditionalData(self):
-        url = '/api/application/challenges'
+    
         data = {
             "stuff": "World!"
         }
-        response = self.client.get(url, data, format='json')
+        response = self.client.get(self.url + "/" + self.applicationId)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
             "id": 1,
@@ -102,26 +105,22 @@ class test_getChallengeApplication(APITestCase):
         })
 
     def test_callAsPost(self):
-        url = '/api/application/challenges'
-        data = {}
-        response = self.client.post(url, data, format='json')
+
+        response = self.client.post(self.url + "/" + self.applicationId, {}, format="json")
+
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
         self.assertEqual(Challenge.objects.count(), 2)
 
     def test_callAsPut(self):
-        url = '/api/appliaction/challenges'
-        data = {}
-        response = self.client.put(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        response = self.client.put(self.url + "/" + self.applicationId)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
         self.assertEqual(Challenge.objects.count(), 2)
 
     def test_callNotAsUser(self):
         MockAuth.admin(self)
 
-        url = '/api/application/challenges'
+        response = self.client.get(self.url + "/" + self.applicationId)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.data, jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"))
 
-        data = {}
-        response = self.client.get(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.data, jsonMessages.errorJsonResponse("The referenced application can not be found!"))
-        
