@@ -247,15 +247,6 @@ class AdminResultApplicationView(APIView):
 class SubmitApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
-    gApi = GithubApi()
-    print(gApi.getRepos())
-    # print(gApi.createRepo("TESTGITHUBAPI2", "testGithubApi"))
-    # print(gApi.getRepos())
-    # print(gApi.pushFile("TESTGITHUBAPI2", "testlinting.py", open("manage.py", "r").read()))
-    # print(gApi.addLinter("TESTGITHUBAPI2"))
-    # print(gApi.getLinterResult("TESTGITHUBAPI2"))
-    # TODO: Maybe print(gApi.getRepoUrl("TESTGITHUBAPI2"))
-
     def put(self, request, *args, **kwargs):
 
 
