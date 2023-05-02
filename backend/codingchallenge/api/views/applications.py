@@ -290,7 +290,7 @@ class UploadApplicationView(APIView):
             return Response({"success": "true"})
         else:
             return Response(
-                jsonMessages.errorJsonResponse("Can not submit challenge! The challenge has already been submitted!"),
+                jsonMessages.errorJsonResponse("challenge has already been submitted"),
                 status=status.HTTP_400_BAD_REQUEST)
 
 ### endpoint: /api/submitApplication
