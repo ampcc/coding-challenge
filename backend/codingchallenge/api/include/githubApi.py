@@ -28,7 +28,6 @@ class GithubApi:
 
     def createRepo(self, repoName, repoDescription):
         self.gApi.get_organization('ampcc').create_repo(name=repoName, description=repoDescription, private=True)
-        self.addLinter(repoName)
 
         return True
 

@@ -4,9 +4,11 @@ import secrets
 import string
 import time
 import os
+from zipfile import ZipFile
 
 from django.conf import settings
 from cryptography.fernet import Fernet
+from rest_framework.parsers import FileUploadParser
 
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -271,10 +273,14 @@ class AdminResultApplicationView(APIView):
 
 class UploadApplicationView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [FileUploadParser]
+
+    gApi = GithubApi()
 
     # 18. Upload Challenge
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-challenge
     # /api/application/uploadChallenge
+    # Todo: Test Cases for this method
     def post(self, request, *args, **kwargs):
         """
         post Challenge with
@@ -284,10 +290,26 @@ class UploadApplicationView(APIView):
         user = User.objects.get(username=request.user.username)
 
         if user.application.status < Application.Status.IN_REVIEW:
+
+            repoName = f'{user.application.applicationId}_{user.application.challengeId}'
+
+            self.gApi.createRepo(repoName, 'to be defined')
+
+            raw_file = request.data['file']
+            file_obj = ZipFile(raw_file)
+
+            for path in file_obj.namelist():
+                if not path.endswith('/'):
+                    self.gApi.pushFile(repoName, path, file_obj.read(path))
+
+            self.gApi.addLinter(repoName)
+
             user.application.submission = time.time()
             user.application.status = Application.Status.IN_REVIEW
+            user.application.githubRepo = repoName
             user.application.save()
-            return Response({"success": "true"})
+
+            return Response({"success": "true"}, status=status.HTTP_200_OK)
         else:
             return Response(
                 jsonMessages.errorJsonResponse("challenge has already been submitted"),

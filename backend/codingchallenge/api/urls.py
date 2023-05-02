@@ -1,5 +1,5 @@
 # from django.conf.urls import url
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework.authtoken.views import obtain_auth_token
 
 from .views import applications, challenges, authentication
@@ -23,5 +23,7 @@ urlpatterns = [
     path('application/submitChallenge', applications.SubmitApplicationView.as_view()),
     path('application/startChallenge', applications.StartChallengeView.as_view()),
     path('application/challenges', challenges.ApplicationChallengesView.as_view()),
+
+    # re_path(r'^application/uploadChallenge/(?P<filename>[^/]+)$', applications.UploadApplicationView.as_view())
     path('application/uploadChallenge', applications.UploadApplicationView.as_view()),
 ]
