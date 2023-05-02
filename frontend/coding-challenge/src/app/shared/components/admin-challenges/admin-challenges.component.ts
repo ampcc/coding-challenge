@@ -92,12 +92,9 @@ export class AdminChallengesComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.router.navigateByUrl("/challenge");
+        this.router.navigateByUrl("/admin_edit_challenge");
       }
     })
-
-    
   }
-
 
 }
