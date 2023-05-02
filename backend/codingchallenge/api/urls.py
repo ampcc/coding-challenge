@@ -12,6 +12,7 @@ urlpatterns = [
     
     path('admin/applications/', applications.AdminApplicationsView.as_view()),
     path('admin/applications/<applicationId>', applications.AdminApplicationsView.as_view(), name="applicationId"),
+    path('admin/applications/results/<applicationId>', applications.AdminResultApplicationView.as_view(), name="applicationId"),
 
     path('admin/challenges', challenges.AdminChallengesView.as_view()),
     path('admin/challenges/<challengeId>', challenges.AdminChallengesView.as_view(), name="challengeId"),

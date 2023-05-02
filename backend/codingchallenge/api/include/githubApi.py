@@ -48,4 +48,13 @@ class GithubApi:
 
     def getLinterResult(self, repoName):
         megalinterLog = self.gApi.get_organization('ampcc').get_repo(repoName).get_contents('megalinter-reports/megalinter.log')
-        return megalinterLog.decoded_content.decode()
+        decodedLinter = megalinterLog.decoded_content.decode()
+
+        # ----SUMMARY ----
+        linterStartIndex = decodedLinter.find("+----SUMMARY----")
+        linterSummary = decodedLinter[linterStartIndex:-1:1]
+        linterEndIndex = linterSummary.find('\n\n')
+
+        cleanSummary = linterSummary[0:linterEndIndex:1]
+
+        return cleanSummary

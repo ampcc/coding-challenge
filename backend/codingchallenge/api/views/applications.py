@@ -207,16 +207,54 @@ class AdminApplicationsView(APIView):
         application.delete()
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
+
+class AdminResultApplicationView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    gApi = GithubApi()
+
+    # 8. Get Result
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#8-get-result
+    # /api/admin/applications/results/{applicationId}
+    # Todo: Test Cases for this method
+    def get(self, request, *args, **kwargs):
+        """
+        get Linter Results with
+            query:
+                applicationId
+        """
+        try:
+            application = Application.objects.get(applicationId=self.kwargs["applicationId"])
+
+            if not application:
+                raise TypeError
+
+        except(KeyError, TypeError):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if application.githubRepo:
+            repoName = application.githubRepo
+        else:
+            return Response(
+                jsonMessages.errorJsonResponse("Can not find repo"),
+                status=status.HTTP_400_BAD_REQUEST)
+
+
+        return Response({'content': self.gApi.getLinterResult(repoName)}, status=status.HTTP_200_OK)
+
 ### endpoint: /api/submitApplication
 class SubmitApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
     gApi = GithubApi()
     print(gApi.getRepos())
-    # print(gApi.createRepo("TESTGITHUBAPI", "please dont delete, this is used for testing purposes"))
-    # print(gApi.pushFile("TESTGITHUBAPI", "testlinting2.py", open("manage.py", "r").read()))
-    # print(gApi.addLinter("TESTGITHUBAPI"))
-    print(gApi.getLinterResult("TESTGITHUBAPI"))
+    # print(gApi.createRepo("TESTGITHUBAPI2", "testGithubApi"))
+    # print(gApi.getRepos())
+    # print(gApi.pushFile("TESTGITHUBAPI2", "testlinting.py", open("manage.py", "r").read()))
+    # print(gApi.addLinter("TESTGITHUBAPI2"))
+    # print(gApi.getLinterResult("TESTGITHUBAPI2"))
+    # TODO: Maybe print(gApi.getRepoUrl("TESTGITHUBAPI2"))
 
     def put(self, request, *args, **kwargs):
 
@@ -272,4 +310,3 @@ class StartChallengeView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(jsonMessages.errorJsonResponse("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)
-
