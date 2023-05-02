@@ -123,8 +123,10 @@ class test_editApplication(APITestCase):
             "challengeId": 123123,
             "extendDays": 2
         }
+        
         response = self.client.put(self.url + "/" + self.applicationId, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
 
         self.assertNotEqual(Application.objects.get().challengeId, 123123)
-        self.assertEqual(response.data, {"detail": "Invalid challengeId!"})
+        self.assertEqual(response.data, {"detail": "Passed Challenge ID does not exist!"})

@@ -107,9 +107,9 @@ class test_createApplication(APITestCase):
 
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn("www.amplimind.io/application?id=TEST1234&key=", response.data['tmpLink'])
+        self.assertIn("www.amplimind.io/application/", response.data['tmpLink'])
         # tmpLink also contains a key
-        self.assertGreater(len(response.data['tmpLink']), len("www.amplimind.io/application?id=TEST1234&key="))
+        self.assertGreater(len(response.data['tmpLink']), len("www.amplimind.io/application/"))
         self.assertEqual(expectedReturnData, response.data)
 
         # test if challengeId is a valid random challenge from database

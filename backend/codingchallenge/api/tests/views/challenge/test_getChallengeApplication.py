@@ -28,6 +28,7 @@ class test_getChallengeApplication(APITestCase):
         self.client.credentials()
 
         response = self.client.get(self.url + "/" + self.applicationId)
+
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_invalidToken(self):
@@ -35,6 +36,7 @@ class test_getChallengeApplication(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token 62ce30b676d95ef439af5e1d84f9161034c67c4a')
 
         response = self.client.get(self.url + "/" + self.applicationId)
+
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongTokenFormat(self):
@@ -74,11 +76,14 @@ class test_getChallengeApplication(APITestCase):
         Application.objects.filter(applicationId=self.applicationId).update(challengeId=3)
 
         response = self.client.get(self.url + "/" + self.applicationId)
+
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data, jsonMessages.errorJsonResponse("The applications challenge can not be found!"))
 
     def test_receiveCorrectChallenges(self):
+
         response = self.client.get(self.url + "/" + self.applicationId)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {
             "id": 1,
@@ -87,6 +92,7 @@ class test_getChallengeApplication(APITestCase):
         })
 
     def test_ignoreAdditionalData(self):
+    
         data = {
             "stuff": "World!"
         }
@@ -99,13 +105,16 @@ class test_getChallengeApplication(APITestCase):
         })
 
     def test_callAsPost(self):
+
         response = self.client.post(self.url + "/" + self.applicationId, {}, format="json")
+
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
         self.assertEqual(Challenge.objects.count(), 2)
 
     def test_callAsPut(self):
         response = self.client.put(self.url + "/" + self.applicationId)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
         self.assertEqual(Challenge.objects.count(), 2)
 
     def test_callNotAsUser(self):
@@ -114,3 +123,4 @@ class test_getChallengeApplication(APITestCase):
         response = self.client.get(self.url + "/" + self.applicationId)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response.data, jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"))
+

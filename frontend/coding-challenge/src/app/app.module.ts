@@ -22,7 +22,6 @@ import { ForbiddenComponent } from './shared/components/errors/forbidden/forbidd
   declarations: [
     AppComponent,
     DefaultComponent,
-    AdminApplicationsComponent,
     AdminChallengesComponent,
     AdminEditComponent,
     UnauthorizedComponent,
@@ -38,6 +37,7 @@ import { ForbiddenComponent } from './shared/components/errors/forbidden/forbidd
     MatDialogModule,
     AdminLoginComponent,
     AdminPasswordComponent,
+    AdminApplicationsComponent,
     BrowserAnimationsModule
   ],
   providers: [],

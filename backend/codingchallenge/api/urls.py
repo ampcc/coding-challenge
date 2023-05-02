@@ -11,6 +11,8 @@ urlpatterns = [
     path('admin/login', obtain_auth_token),
     
     path('admin/applications', applications.AdminApplicationsView.as_view()),
+    path('admin/changePassword', authentication.AdminChangePassword.as_view()),
+
     path('admin/applications/<applicationId>', applications.AdminApplicationsView.as_view(), name="applicationId"),
 
     path('admin/challenges', challenges.AdminChallengesView.as_view()),
@@ -20,5 +22,5 @@ urlpatterns = [
     path('application/getApplicationStatus', applications.StatusApplicationView.as_view()),
     path('application/submitChallenge', applications.SubmitApplicationView.as_view()),
     path('application/startChallenge', applications.StartChallengeView.as_view()),
-    path('application/challenges/<applicationId>', challenges.ApplicationChallengesView.as_view(), name="applicationId"),
+    path('application/challenges', challenges.ApplicationChallengesView.as_view()),
 ]
