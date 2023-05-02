@@ -18,7 +18,7 @@ class Application(models.Model):
     programmingLanguage = models.CharField(max_length=100, blank=True)
     expiry = UnixTimeStampField(use_numeric=True)
     submission = UnixTimeStampField(blank=True, use_numeric=True)
-    githubRepo = models.URLField(max_length=200, blank=True)
+    githubRepo = models.CharField(max_length=50, blank=True)
     status = models.IntegerField(choices=Status.choices,
                                  default=Status.INITIAL)
     created = UnixTimeStampField(auto_now_add=True, use_numeric=True)

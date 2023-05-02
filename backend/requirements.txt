@@ -8,5 +8,6 @@ django-unixtimestampfield==0.5.0
 djangorestframework==3.14.0
 pycparser==2.21
 python-dotenv==1.0.0
+PyGithub==1.58.1
 pytz==2023.3
 six==1.16.0

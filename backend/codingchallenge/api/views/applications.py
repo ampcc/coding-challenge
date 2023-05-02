@@ -25,6 +25,8 @@ from ..models import Application, Challenge
 from ..serializers import GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer, \
     PostApplicationSerializer
 
+from ..include.githubApi import GithubApi
+
 
 # endpoint: /api/admin/applications
 class AdminApplicationsView(APIView):
@@ -232,6 +234,41 @@ class AdminApplicationsView(APIView):
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
 
+class AdminResultApplicationView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    gApi = GithubApi()
+
+    # 8. Get Result
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#8-get-result
+    # /api/admin/applications/results/{applicationId}
+    # Todo: Test Cases for this method
+    def get(self, request, *args, **kwargs):
+        """
+        get Linter Results with
+            query:
+                applicationId
+        """
+        try:
+            application = Application.objects.get(applicationId=self.kwargs["applicationId"])
+
+            if not application:
+                raise TypeError
+
+        except(KeyError, TypeError):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if application.githubRepo:
+            repoName = application.githubRepo
+        else:
+            return Response(
+                jsonMessages.errorJsonResponse("Can not find repo"),
+                status=status.HTTP_400_BAD_REQUEST)
+
+
+        return Response({'content': self.gApi.getLinterResult(repoName)}, status=status.HTTP_200_OK)
+
 class UploadApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -256,12 +293,12 @@ class UploadApplicationView(APIView):
                 jsonMessages.errorJsonResponse("Can not submit challenge! The challenge has already been submitted!"),
                 status=status.HTTP_400_BAD_REQUEST)
 
-
 ### endpoint: /api/submitApplication
 class SubmitApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
+
         user = User.objects.get(username=request.user.username)
         if user.application.status < Application.Status.IN_REVIEW:
             user.application.submission = time.time()
