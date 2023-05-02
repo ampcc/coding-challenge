@@ -12,6 +12,7 @@ from ....views import expirySettings
 import unittest.mock as mock
 
 class test_createApplication(APITestCase):
+    url = '/api/admin/applications'
 
     def setUp(self):
         # Authorization
@@ -24,7 +25,6 @@ class test_createApplication(APITestCase):
         # remove headers for this test
         self.client.credentials()
 
-        url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
@@ -32,7 +32,7 @@ class test_createApplication(APITestCase):
         }
         self.assertEqual(Application.objects.count(), 0)
 
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -50,7 +50,6 @@ class test_createApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrongDatafields(self):
-        url = '/api/admin/applications/'
         data = {
             "wrongDatafield": "TEST1234",
             "challengeId": 2,
@@ -58,16 +57,14 @@ class test_createApplication(APITestCase):
         }
         self.assertEqual(Application.objects.count(), 0)
 
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_emptyData(self):
-        url = '/api/admin/applications/'
-        data = ""
         self.assertEqual(Application.objects.count(), 0)
 
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, {}, format='json')
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
@@ -75,7 +72,6 @@ class test_createApplication(APITestCase):
         # delete all challenge objects
         Challenge.objects.all().delete()
 
-        url = '/api/admin/applications/'
         data = {
             "applicationStatus": 2,
             "challengeId": 1,
@@ -83,7 +79,7 @@ class test_createApplication(APITestCase):
         }
         self.assertEqual(Application.objects.count(), 0)
 
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
 
@@ -94,7 +90,6 @@ class test_createApplication(APITestCase):
         Challenge.objects.create(challengeHeading="TestChallenge4", challengeText="This is a Test Challenge4")
         Challenge.objects.create(challengeHeading="TestChallenge5", challengeText="This is a Test Challenge5")
 
-        url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
         }
@@ -108,7 +103,7 @@ class test_createApplication(APITestCase):
 
         self.assertEqual(Application.objects.count(), 0)
 
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
 
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -123,7 +118,6 @@ class test_createApplication(APITestCase):
         self.assertIn(Challenge.objects.get(id=challengeId), Challenge.objects.all())
 
     def test_correctInput(self):
-        url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
@@ -140,7 +134,7 @@ class test_createApplication(APITestCase):
 
         self.assertEqual(Application.objects.count(), 0)
 
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
 
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -155,7 +149,6 @@ class test_createApplication(APITestCase):
         self.assertEqual(Application.objects.get().challengeId, 1)
 
     def test_correctInputDefault(self):
-        url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
         }
@@ -169,7 +162,7 @@ class test_createApplication(APITestCase):
         }
         self.assertEqual(Application.objects.count(), 0)
 
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, expectedReturnData)
@@ -186,7 +179,6 @@ class test_createApplication(APITestCase):
         self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
 
     def test_multipleIds(self):
-        url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
@@ -201,17 +193,16 @@ class test_createApplication(APITestCase):
         }
         self.assertEqual(Application.objects.count(), 0)
 
-        response1 = self.client.post(url, data, format='json')
+        response1 = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response1.data, expectedReturnData)
 
-        response2 = self.client.post(url, data, format='json')
+        response2 = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response2.status_code, status.HTTP_409_CONFLICT)
 
     def test_wrongApplicationIdLength(self):
-        url = '/api/admin/applications/'
         data = {
             "applicationId": "TEST123412312312312312",
             "challengeId": 1,
@@ -224,10 +215,10 @@ class test_createApplication(APITestCase):
         }
 
         self.assertEqual(Application.objects.count(), 0)
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        response2 = self.client.post(url, data2, format='json')
+        response2 = self.client.post(self.url, data2, format='json')
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response2.status_code, status.HTTP_400_BAD_REQUEST)

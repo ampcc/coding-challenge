@@ -11,6 +11,7 @@ from ....models.challenge import Challenge
 
 
 class test_editApplication(APITestCase):
+    url = '/api/admin/applications'
 
     def setUp(self):
         # Authorization
@@ -27,9 +28,7 @@ class test_editApplication(APITestCase):
         # remove headers for this test
         self.client.credentials()
 
-        url = '/api/admin/applications/' + self.applicationId
-        data = {}
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(self.url + "/" + self.applicationId, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongUrl(self):
@@ -43,65 +42,56 @@ class test_editApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_noApplicationId(self):
-        url = '/api/admin/applications/'
-
         data = {
             "applicationStatus": 2,
             "challengeId": 1,
             "extendDays": 2
         }
-        response = self.client.put(url, data, format='json', )
+        response = self.client.put(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrongApplicationId(self):
-        url = '/api/admin/applications/' + '4321TSET'
-
         data = {
             "applicationStatus": 2,
             "challengeId": 1,
             "extendDays": 2
         }
-        response = self.client.put(url, data, format='json', )
+        response = self.client.put(self.url + "/4321TSET", data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrongDatafields(self):
-        url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 2,
             "wrongDatafield": 1,
             "extendDays": 2
         }
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(self.url + "/" + self.applicationId, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {"detail": "Field: wrongDatafield not valid!"})
 
     def test_notAllowedDatafields(self):
-        url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
             "expiry": 2
         }
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(self.url + "/" + self.applicationId, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {"detail": "Field: applicationId not valid!"})
 
     def test_emptyData(self):
-        url = '/api/admin/applications/' + self.applicationId
-        data = ""
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(self.url + "/" + self.applicationId, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(response.data, {"detail": "No data provided!"})
 
     def test_correctInput(self):
-        url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 2,
             "challengeId": 1,
             "expiry": 99999999999999
         }
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(self.url + "/" + self.applicationId, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Application.objects.count(), 1)
 
@@ -117,27 +107,26 @@ class test_editApplication(APITestCase):
                          json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
 
     def test_nonExistingStatus(self):
-        url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 123123,
             "challengeId": 1,
             "extendDays": 2
         }
-        response = self.client.put(url, data, format='json')
+        response = self.client.put(self.url + "/" + self.applicationId, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
         self.assertNotEqual(Application.objects.get().status, 123123)
-
         self.assertEqual(response.data, {"detail": "Invalid status!"})
+
     def test_nonExistingChallengeId(self):
-        url = '/api/admin/applications/' + self.applicationId
         data = {
             "applicationStatus": 2,
             "challengeId": 123123,
             "extendDays": 2
         }
-        response = self.client.put(url, data, format='json')
+        
+        response = self.client.put(self.url + "/" + self.applicationId, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
 
         self.assertNotEqual(Application.objects.get().challengeId, 123123)
         self.assertEqual(response.data, {"detail": "Passed Challenge ID does not exist!"})
