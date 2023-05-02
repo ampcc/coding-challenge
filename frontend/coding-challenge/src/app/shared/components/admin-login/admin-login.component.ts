@@ -45,7 +45,7 @@ export class AdminLoginComponent {
     } else {
       this.backendService.loginAdmin(username, password);
 
-      // TODO: Validate response of loginAdmin instead of minuteson clock
+      // TODO: Validate response of loginAdmin instead of minutes on clock
       const d = new Date();
       let m = d.getMinutes();
 
