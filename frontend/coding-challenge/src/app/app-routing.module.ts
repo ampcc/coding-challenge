@@ -7,16 +7,27 @@ import { AdminLoginComponent } from './shared/components/admin-login/admin-login
 import { AdminApplicationsComponent } from './shared/components/admin-applications/admin-applications.component';
 import { AdminChallengesComponent } from './shared/components/admin-challenges/admin-challenges.component';
 import { AdminPasswordComponent } from './shared/components/admin-password/admin-password.component';
+import { DefaultComponent } from './shared/components/default/default.component';
+import { ForbiddenComponent } from './shared/components/errors/forbidden/forbidden.component';
+import { NotFoundComponent } from './shared/components/errors/not-found/not-found.component';
+import { GoneComponent } from './shared/components/errors/gone/gone.component';
+import { UnauthorizedComponent } from './shared/components/errors/unauthorized/unauthorized.component';
+import { InternalErrorComponent } from './shared/components/errors/internal-error/internal-error.component';
 
 const routes: Routes = [
   { path: 'start', component: StartComponent },
   { path: 'challenge', component: ChallengeComponent },
   { path: 'admin', component: AdminComponent },
-  { path: 'challenge', component: ChallengeComponent },
   { path: 'admin_login', component: AdminLoginComponent },
   { path: 'admin_applications', component: AdminApplicationsComponent },
   { path: 'admin_challenges', component: AdminChallengesComponent },
   { path: 'admin_password', component: AdminPasswordComponent },
+  { path: 'application', component: DefaultComponent },
+  { path: 'forbidden', component: ForbiddenComponent },
+  { path: 'notFound', component: NotFoundComponent },
+  { path: 'gone', component: GoneComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: 'internalError', component: InternalErrorComponent },
 ];
 
 @NgModule({

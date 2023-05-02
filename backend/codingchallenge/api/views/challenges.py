@@ -61,10 +61,36 @@ class AdminChallengesView(APIView):
     
     # /api/admin/challenges/<challengeId>
     def put(self, request, *args, **kwargs):
-        challenge = Challenge.objects.filter(id=self.kwargs["challengeId"]).first()
-        serialized_challenge = json.loads(serializers.serialize("json", [challenge]))[0]
+        try:
+            challenge = Challenge.objects.get(id=self.kwargs["challengeId"])
+            serialized_challenge = json.loads(serializers.serialize("json", [challenge]))[0]
+        except Challenge.DoesNotExist:
+            return Response(jsonMessages.errorJsonResponse("No object found for given challengeId."), status=status.HTTP_404_NOT_FOUND)
+        except Challenge.MultipleObjectsReturned:
+            return Response(jsonMessages.errorJsonResponse("There have been found multiple challenges for the given challengeId. " +
+                                                           "This should never be the case."), status=status.HTTP_409_CONFLICT)
 
-        for key in request.data.keys():
+        # check for valid body arguments
+        keys_of_request = request.data.keys()
+        both_arguments_in_body = "challengeHeading" in keys_of_request and "challengeText" in keys_of_request
+        either_argument_in_body = "challengeHeading" in keys_of_request or "challengeText" in keys_of_request
+        if not keys_of_request:
+            # no update values passed in body
+            serializer = GetChallengeSerializer(challenge)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        elif len(keys_of_request) > 2:
+            # passed too many arguments
+            return Response(jsonMessages.errorJsonResponse("Passed too many arguments in body. " +
+                                                           "Only 'challengeHeading' and 'challengeText' are permitted."),
+                                                           status=status.HTTP_400_BAD_REQUEST)
+        elif len(keys_of_request) == 2 and not both_arguments_in_body or \
+             len(keys_of_request) == 1 and not either_argument_in_body:
+            # passed two arguments but at least one is not permitted or
+            # passed one argument which is not permitted
+            return Response(jsonMessages.errorJsonResponse("Only 'challengeHeading' and 'challengeText' are permitted."),
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        for key in keys_of_request:
             serialized_challenge["fields"][key] = request.data[key]
         
         serializer = GetChallengeSerializer(challenge, data=serialized_challenge["fields"])
@@ -75,12 +101,17 @@ class AdminChallengesView(APIView):
 
     # /api/admin/challenges/<challengeId>
     def delete(self, request, *args, **kwargs):
-        challenge = Challenge.objects.filter(id=self.kwargs["challengeId"]).first()
         try:
-            challenge.delete()
-            return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
-        except:
-            return Response(jsonMessages.errorJsonResponse("Could not delete challenge " + self.kwargs["challengeId"] + "!"), status=status.HTTP_404_NOT_FOUND)
+            challenge = Challenge.objects.get(id=self.kwargs["challengeId"])
+        except Challenge.DoesNotExist:
+            return Response(jsonMessages.errorJsonResponse("No object found for given challengeId."), status=status.HTTP_404_NOT_FOUND)
+        except Challenge.MultipleObjectsReturned:
+            return Response(jsonMessages.errorJsonResponse("There have been found multiple challenges for the given challengeId. " +
+                                                           "This should never be the case."), status=status.HTTP_409_CONFLICT)
+        
+        Challenge.delete(challenge)
+        return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
+
 
 
 # endpoint: /api/application/challenges/<applicationId>
@@ -93,39 +124,28 @@ class ApplicationChallengesView(APIView):
     def get(self, request, *args, **kwargs):
         """
         get the challenge of the specified application
-            required arguments:
-                applicationId
-
             returns:
                 id
                 challengeHeader
                 challengeText
         """
+        applicationId = request.user.username
 
-        user = User.objects.get(username = request.user.username)
+        user = User.objects.get(username = applicationId)
 
         try:
-            applicationId = self.kwargs["applicationId"]
-            if applicationId != user.username:
-                return Response(jsonMessages.errorJsonResponse("Wrong pair of token and applicationId provided!"), status=status.HTTP_403_FORBIDDEN)
-            
+            application = Application.objects.get(applicationId=applicationId)
             try:
-                application = Application.objects.get(applicationId=applicationId)
-                try:
-                    challengeOfSpecificApplication = Challenge.objects.get(id=application.challengeId)
-                    serializer = GetChallengeSerializer(challengeOfSpecificApplication, many=False)
-                    return Response(serializer.data, status=status.HTTP_200_OK)
-                
-                except Challenge.DoesNotExist:
-                    return Response(jsonMessages.errorJsonResponse("The applications challenge can not be found!"), status=status.HTTP_404_NOT_FOUND)  
-                except Challenge.MultipleObjectsReturned:
-                    return Response(jsonMessages.errorJsonResponse("Multiple challenges with the same id exist!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-                
-            except Application.DoesNotExist:
-                return Response(jsonMessages.errorJsonResponse("The referenced application can not be found!"), status=status.HTTP_404_NOT_FOUND)
-            except Application.MultipleObjectsReturned:
-                return Response(jsonMessages.errorJsonResponse("Multiple applications with the same id exist!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        except KeyError:
-            return Response(jsonMessages.errorJsonResponse("Parameter applicationId is missing!"), status=status.HTTP_400_BAD_REQUEST)
-
+                challengeOfSpecificApplication = Challenge.objects.get(id=application.challengeId)
+                serializer = GetChallengeSerializer(challengeOfSpecificApplication, many=False)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            
+            except Challenge.DoesNotExist:
+                return Response(jsonMessages.errorJsonResponse("The applications challenge can not be found!"), status=status.HTTP_404_NOT_FOUND)  
+            except Challenge.MultipleObjectsReturned:
+                return Response(jsonMessages.errorJsonResponse("Multiple challenges with the same id exist!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+        except Application.DoesNotExist:
+            return Response(jsonMessages.errorJsonResponse("The referenced application can not be found!"), status=status.HTTP_404_NOT_FOUND)
+        except Application.MultipleObjectsReturned:
+            return Response(jsonMessages.errorJsonResponse("Multiple applications with the same id exist!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)

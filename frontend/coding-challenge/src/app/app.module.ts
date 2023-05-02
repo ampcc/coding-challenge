@@ -12,14 +12,23 @@ import { AdminChallengesComponent } from './shared/components/admin-challenges/a
 import { AdminPasswordComponent } from './shared/components/admin-password/admin-password.component';
 import { AdminEditComponent } from './shared/components/admin-edit/admin-edit.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UnauthorizedComponent } from './shared/components/errors/unauthorized/unauthorized.component';
+import { NotFoundComponent } from './shared/components/errors/not-found/not-found.component';
+import { GoneComponent } from './shared/components/errors/gone/gone.component';
+import { InternalErrorComponent } from './shared/components/errors/internal-error/internal-error.component';
+import { ForbiddenComponent } from './shared/components/errors/forbidden/forbidden.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultComponent,
-    AdminApplicationsComponent,
     AdminChallengesComponent,
     AdminEditComponent,
+    UnauthorizedComponent,
+    NotFoundComponent,
+    GoneComponent,
+    InternalErrorComponent,
+    ForbiddenComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,6 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatDialogModule,
     AdminLoginComponent,
     AdminPasswordComponent,
+    AdminApplicationsComponent,
     BrowserAnimationsModule
   ],
   providers: [],

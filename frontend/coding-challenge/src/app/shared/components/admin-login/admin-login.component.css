@@ -1,13 +1,14 @@
 .main_container {
-    margin-left: 15em;
+    width: 75%;
+    margin: auto;
     margin-top: 5em;
-    margin-right: 15em;
     padding-bottom: 5em;
 }
 
 h1 {
-    font-size: 4vw;
-    line-height: 4.5vw;
+    font-size: 50px;
+    line-height: 70px;
+    font-weight: 600;
 }
 
 hr {
@@ -17,10 +18,11 @@ hr {
 }
 
 .inputField {
-    width: calc(100% - 2 * 1em);
+    width: 100%;
     padding: 1em;
-    font-size: 1vw;
-    line-height: 1.5vw;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
     border: 0.1em;
     border-style: solid;
     border-radius: 0.3em;
@@ -35,14 +37,16 @@ hr {
 .heading {
     margin-top: 2em;
     margin-bottom: 0.1em;
-    font-size: 2vw;
-    line-height: 2.5vw;
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 600;
 }
 
 .error_message {
     margin-top: 0.1em;
-    font-size: 1vw;
-    line-height: 1.5vw;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
     color: red;
 }
 
@@ -52,51 +56,67 @@ hr {
 
 app-button {
     display: inline-block;
-    width: 15%;
+    width: 25%;
     margin-top: 5em;
 }
 
-@media (max-width:890px) {
-    .main_container {
-        margin-left: 10em;
-        margin-right: 10em;
+@media (min-width:2000px) {
+    h1 {
+        line-height: 100px;
+        font-size: 80px;
     }
-}
 
-@media (max-width:740px) {
-    .main_container {
-        margin-left: 5em;
-        margin-right: 5em;
+    .inputField,
+    .error_message {
+        font-size: 30px;
+        line-height: 40px;
     }
 
     .heading {
-        font-size: 3vw;
-        line-height: 3.5vw;
+        font-size: 40px;
+        line-height: 50px;
     }
 }
 
-@media (max-width:610px) {
-    .main_container {
-        margin-left: 3em;
-        margin-right: 3em;
+@media (max-width:1024px) {
+    app-button {
+        width: auto;
     }
 }
 
-@media (max-width:555px) {
-    .main_container {
-        margin-left: 1.5em;
+@media (max-width:768px) {
+    hr {
+        margin-bottom: 5em;
+    }
+
+    app-button {
         margin-top: 3em;
-        margin-right: 1.5em;
-        padding-bottom: 3em;
     }
 
     h1 {
-        font-size: 6vw;
-        line-height: 6.5vw;
+        font-size: 40px;
+        line-height: 60px;
+    }
+
+    .inputField, .error_message {
+        font-size: 16px;
+        line-height: 25px;
     }
 
     .heading {
-        font-size: 4vw;
-        line-height: 4.5vw;
+        font-size: 20px;
+        line-height: 30px;
+    }
+}
+
+@media (max-width:425px) {
+    h1 {
+        font-size: 30px;
+        line-height: 50px;
+    }
+
+    .inputField, .error_message {
+        font-size: 13px;
+        line-height: 23px;
     }
 }

@@ -13,7 +13,7 @@ import { adminLoginCreds, applicationLoginCreds } from '../shared/models/loginCr
 })
 export class BackendService {
 
-  private backendURL = "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io";
+  private backendURL = "http://localhost:8000";
 
   constructor(private http: HttpClient) { }
 
@@ -21,23 +21,23 @@ export class BackendService {
   Applicant API Calls
   -----------------------------------------------*/
 
-  public loginWithAppKey(_applicationKey: string, _applicationId: string):Observable<any>{
-    var body: applicationLoginCreds = {applicationId: _applicationId, applicationKey: _applicationKey}
-    return this.http.post(this.backendURL + "/api/application/loginWithKey", body);
+  public loginWithAppKey(_applicationKey: string):Observable<any>{
+    //var body: applicationLoginCreds = {applicationId: _applicationId, applicationKey: _applicationKey}
+    return this.http.post(this.backendURL + "/api/application/loginWithKey/" + _applicationKey,{});
   }
 
   public loginWithPassphrase(_passphrase: string): Observable<any>{
     const headers = new HttpHeaders().set('passphrase', _passphrase);
     return this.http.get(this.backendURL + "/api/application/loginWithPassphrase", {'headers': headers});
   }
-  public getStatus(_applicantToken: string, _applicationId: string): Observable<any> {
+  public getStatus(_applicantToken: string | null): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
-    return this.http.get(this.backendURL + "/api/application/getApplicationStatus/" + _applicationId, {'headers': headers});
+    return this.http.get(this.backendURL + "/api/application/getApplicationStatus", {'headers': headers});
   }
 
-  public getChallengeApp(_applicantToken: string, _applicationId: string): Observable<any>{
+  public getChallengeApp(_applicantToken: string | null, _applicantId?: string): Observable<any>{
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
-    return this.http.get(this.backendURL + "/api/application/challenges/" + _applicationId, {'headers': headers});
+    return this.http.get(this.backendURL + "/api/application/challenges/" + _applicantId, {'headers': headers});
   }
 
   public uploadChallenge(_applicantKey: string, _oS: string, _pL: string): boolean{
@@ -49,7 +49,7 @@ export class BackendService {
     return this.http.get(this.backendURL+'/api/application/submitChallenge', {'headers': headers});
   }
 
-  public startChallenge(_applicantToken: string): Observable<any> {
+  public startChallenge(_applicantToken: string|null): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
     return this.http.get(this.backendURL + "/api/application/startChallenge", {'headers': headers});
   }

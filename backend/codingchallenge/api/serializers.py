@@ -1,3 +1,5 @@
+import urllib.parse
+
 from rest_framework import serializers
 from .models import Challenge, Application
 from django.db.models import CharField
@@ -20,8 +22,8 @@ class PostApplicationSerializer(serializers.ModelSerializer):
         key = self.context.get("key")
         applicationId = self.context.get("applicationId")
         if key:
-            tmpLink = "www.amplimind.io/application?id=" + applicationId + "&key=" + key
-            return "www.amplimind.io/application?id=" + applicationId + "&key=" + key
+            tmpLink = "www.amplimind.io/application/" + urllib.parse.quote_plus(key)
+            return tmpLink
         return False
 
     class Meta:

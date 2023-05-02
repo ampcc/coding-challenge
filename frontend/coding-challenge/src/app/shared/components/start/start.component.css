@@ -1,19 +1,21 @@
 .main_container {
-    margin-left: 15em;
+    width: 75%;
+    margin: auto;
     margin-top: 5em;
-    margin-right: 15em;
     padding-bottom: 5em;
 }
 
 h1 {
-    font-size: 4vw;
-    line-height: 4.5vw;
+    font-size: 50px;
+    line-height: 70px;
+    font-weight: 600;
     margin-bottom: 1em;
 }
 
 p {
-    font-size: 2vw;
-    line-height: 2.5vw;
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 600;
 }
 
 .first_line {
@@ -25,47 +27,14 @@ app-button {
     padding-top: 4em;
 }
 
-@media (max-width:890px) {
-    .main_container {
-        margin-left: 10em;
-        margin-right: 10em;
-    }
-}
-
-@media (max-width:740px) {
-    .main_container {
-        margin-left: 5em;
-        margin-right: 5em;
-    }
-
-    p {
-        font-size: 3vw;
-        line-height: 3.5vw;
-    }
-}
-
-@media (max-width:610px) {
-    .main_container {
-        margin-left: 3em;
-        margin-right: 3em;
-    }
-}
-
-@media (max-width:555px) {
-    .main_container {
-        margin-left: 1.5em;
-        margin-top: 3em;
-        margin-right: 1.5em;
-        padding-bottom: 3em;
-    }
-
+@media (min-width:2000px) {
     h1 {
-        font-size: 6vw;
-        line-height: 6.5vw;
+        font-size: 80px;
+        line-height: 100px;
     }
 
     p {
-        font-size: 4vw;
-        line-height: 4.5vw;
+        font-size: 40px;
+        line-height: 50px;
     }
 }

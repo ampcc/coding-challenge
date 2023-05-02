@@ -1,18 +1,22 @@
 <div class="dialog_container">
-    <button id="close" (click)="closeDialog(false)">
-        <img id="close_image" src="../../../../assets/x.svg">
+    <button class="close" (click)="closeDialog(false)">
+        <img class="close_image" src="../../../../assets/x.svg">
     </button>
     <h1 mat-dialog-title>{{data.title}}</h1>
     <div mat-dialog-content *ngIf="data.description">
         <a *ngIf="data.description.link && data.description.url"
-            href={{data.description.url}}>{{data.description.link}}</a>
-        <p *ngIf="data.description.important" id="bold" [innerHTML]="data.description.important"></p>
+            href={{data.description.url}} class="link"><div class="link_text">{{data.description.link}}</div></a>
+        <p *ngIf="data.description.important" class="bold" [innerHTML]="data.description.important"></p>
+        <div *ngIf="data.image" class="image_container">
+            <img src={{data.image.source}} class="image">
+        </div>
         <p *ngIf="data.description.details" [innerHTML]="data.description.details"></p>
     </div>
-    <div mat-dialog-actions id="button_container" *ngIf="data.buttons && (data.buttons.left || data.buttons.right)">
-        <app-button *ngIf="data.buttons.left" id="left_button" title={{data.buttons.left.title}}
-            look={{data.buttons.left.look}} (click)="closeDialog(true)"></app-button>
-        <app-button *ngIf="data.buttons.right" id="right_button" title={{data.buttons.right.title}}
-            look={{data.buttons.right.look}} (click)="closeDialog(false)"></app-button>
+    <div mat-dialog-actions class="button_container" *ngIf="data.buttons && (data.buttons.left || data.buttons.right)">
+        <app-button *ngIf="data.buttons.left" class="left_button" title={{data.buttons.left.title}}
+            look={{data.buttons.left.look}} font="smaller" (click)="closeDialog(true)"></app-button>
+            <div class="spacer"></div>
+        <app-button *ngIf="data.buttons.right" class="right_button" title={{data.buttons.right.title}}
+            look={{data.buttons.right.look}} font="smaller" (click)="closeDialog(false)"></app-button>
     </div>
 </div>
