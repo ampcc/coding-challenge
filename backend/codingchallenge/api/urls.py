@@ -1,5 +1,5 @@
 # from django.conf.urls import url
-from django.urls import path, include, re_path
+from django.urls import path
 from rest_framework.authtoken.views import obtain_auth_token
 
 from .views import applications, challenges, authentication
