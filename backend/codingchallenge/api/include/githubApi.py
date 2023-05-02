@@ -47,6 +47,7 @@ class GithubApi:
 
 
     def getLinterResult(self, repoName):
+
         megalinterLog = self.gApi.get_organization('ampcc').get_repo(repoName).get_contents('megalinter-reports/megalinter.log')
         decodedLinter = megalinterLog.decoded_content.decode()
 
