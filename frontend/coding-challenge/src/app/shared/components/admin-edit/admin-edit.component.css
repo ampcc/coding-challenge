@@ -1,11 +1,132 @@
 .main_container {
-    margin-left: 15em;
+    width: 75%;
+    margin: auto;
     margin-top: 5em;
-    margin-right: 15em;
     padding-bottom: 5em;
 }
 
 h1 {
-    font-size: 4vw;
-    line-height: 4.5vw;
+    font-size: 50px;
+    line-height: 70px;
+    font-weight: 600;
+    margin-bottom: 1em;
+}
+
+.inputField {
+    width: 100%;
+    padding: 1em;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    border: 0.1em;
+    border-style: solid;
+    border-radius: 0.3em;
+    border-color: gray;
+}
+
+#description {
+    height:30vh;
+}
+
+.show_error {
+    border-color: red;
+    outline: none;
+}
+
+.heading {
+    margin-top: 1em;
+    margin-bottom: 0.1em;
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 600;
+}
+
+.error_message {
+    margin-top: 0.1em;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    color: red;
+}
+
+.no_error {
+    visibility: hidden;
+}
+
+.button_row{
+    display: inline-flex;
+    width: 100%;
+}
+
+.spacer {
+    flex: 1;
+}
+
+app-button {
+    display: inline-block;
+    width: 25%;
+    margin-top: 3em;
+}
+
+@media (min-width:2000px) {
+    h1 {
+        font-size: 80px;
+        line-height: 100px;
+    }
+
+    .inputField, .error_message {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    .heading {
+        font-size: 40px;
+        line-height: 50px;
+    }
+}
+
+@media (max-width:1440px) {
+    app-button {
+        width: 30%;
+    }
+}
+
+@media (max-width:1024px) {
+    .button_row{
+        display: block;
+    }
+
+    app-button {
+        width: 100%;
+    }
+}
+
+@media (max-width:768px) {
+    h1 {
+        font-size: 40px;
+        line-height: 60px;
+    }
+
+    .inputField, .error_message {
+        font-size: 16px;
+        line-height: 25px;
+    }
+
+    .heading {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+}
+
+@media (max-width:425px) {
+    h1 {
+        font-size: 30px;
+        line-height: 50px;
+    }
+
+    .inputField, .error_message {
+        font-size: 13px;
+        line-height: 23px;
+    }
 }
