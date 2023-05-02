@@ -114,7 +114,7 @@ class AdminChallengesView(APIView):
 
 
 
-# endpoint: /api/application/challenges/<applicationId>
+# endpoint: /api/application/challenges
 class ApplicationChallengesView(APIView):
     permission_classes = [IsAuthenticated]
 
