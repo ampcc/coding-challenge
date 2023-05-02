@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 echo "Starting the container for the angular website!\n"
 read -p "Do you want to build a new image? (This process could take a while) [Y/N]: " input
 

@@ -3,4 +3,4 @@ set /P input="Do you want to build a new image? (This process could take a while
 IF %input% == Y (
     docker build -t django-server:latest .
 ) 
-docker run --net=host --name django-server django-server:latest
+docker run -p 8000:8000 --name django-server django-server:latest

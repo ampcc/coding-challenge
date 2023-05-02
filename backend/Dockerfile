@@ -8,7 +8,10 @@ ENV PYTHONUNBUFFERED=1
 
 RUN pip install -r requirements.txt
 
-RUN chmod +x docker_intern.sh
+# RUN chmod +x docker_intern.sh
+RUN chmod +x d.sh
 
-CMD [ "./docker_intern.sh" ]
+CMD [ "./d.sh" ]
+# CMD [ "./docker_intern.sh" ]
+# CMD [ "/bin/sh", "docker_intern.sh" ]
 
