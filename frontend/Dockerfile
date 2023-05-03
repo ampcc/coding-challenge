@@ -11,6 +11,8 @@ WORKDIR /frontend
 
 COPY ./coding-challenge/ .
 
+EXPOSE 4200
+
 # Install project dependencies
 RUN npm install package.json
 
