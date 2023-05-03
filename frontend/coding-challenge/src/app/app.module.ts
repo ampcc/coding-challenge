@@ -22,7 +22,6 @@ import { ForbiddenComponent } from './shared/components/errors/forbidden/forbidd
   declarations: [
     AppComponent,
     DefaultComponent,
-    AdminChallengesComponent,
     UnauthorizedComponent,
     NotFoundComponent,
     GoneComponent,
@@ -38,6 +37,7 @@ import { ForbiddenComponent } from './shared/components/errors/forbidden/forbidd
     AdminPasswordComponent,
     AdminApplicationsComponent,
     AdminEditComponent,
+    AdminChallengesComponent,
     BrowserAnimationsModule
   ],
   providers: [],
