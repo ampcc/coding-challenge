@@ -15,10 +15,9 @@ export class DefaultComponent implements OnInit{
     this.key = "";
   }
   ngOnInit(){
-    this.route.queryParams.subscribe(params => {
-      this.key = params["key"];
-      window.sessionStorage.clear();
-    });
+    window.sessionStorage.clear();
+    this.key = this.router.url.substring(13);
+    this.key = decodeURIComponent(this.key);
     this.backendService.loginWithAppKey(this.key).subscribe(data => {
       console.log(data);
       window.sessionStorage.setItem('Auth-Token', data.token);

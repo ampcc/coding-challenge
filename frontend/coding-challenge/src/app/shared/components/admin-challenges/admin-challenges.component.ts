@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {BackendService} from 'src/app/core/backend.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -20,25 +20,35 @@ import { Challenge } from '../../models/challenge';
   encapsulation: ViewEncapsulation.None
 })
 
-export class AdminChallengesComponent {
+export class AdminChallengesComponent implements OnInit {
   challenge: Challenge;
+  private adminToken: string | null;
 
   public hideContentActiveChallenges: boolean = false;
 
   public hideFilterSelect: boolean = true;
 
-  public challengeArray: Challenge[] = [{challengeId: 0, challengeHeading: 'Challenge0',challengeText: 'rtulip68o5ezrthsgfehjzr7ik4k6ujzhrtbfdv hf,kzujtzrgrhtj'},
-                                        {challengeId: 1, challengeHeading: 'Challenge1',challengeText: 'bgdnhmjzk,uzjthrf ngjmzik6u75z6tgrfvd fhtjm,il6izjtuegfwdc fdgnhmt,il'}
+  public challengeArray: Challenge[] = [{id: 0, challengeHeading: 'Challenge0',challengeText: 'rtulip68o5ezrthsgfehjzr7ik4k6ujzhrtbfdv hf,kzujtzrgrhtj'},
+                                        {id: 1, challengeHeading: 'Challenge1',challengeText: 'bgdnhmjzk,uzjthrf ngjmzik6u75z6tgrfvd fhtjm,il6izjtuegfwdc fdgnhmt,il'}
                                        ];
- 
- 
+
+
   public constructor(private backend: BackendService, private router: Router, public dialog: MatDialog,) {
-    this.challenge = {challengeId: 0, challengeHeading: '',challengeText: ''};
+    this.challenge = {id: 0, challengeHeading: '',challengeText: ''};
+    this.adminToken = null;
   }
 
-
-  public ngOnInit(): void {
-  }
+  ngOnInit(): void {
+    // Check if Admin Token is available
+ this.adminToken = window.sessionStorage.getItem('Adm-Token');
+ if(this.adminToken === null){
+   this.router.navigateByUrl("/admin_login")
+ }else{
+   this.backend.getChallenges(this.adminToken).subscribe((response:Challenge[])=>{
+     this.challengeArray = response;
+   });
+ }
+}
 
   public changeTab(id: string): void {
     let elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
@@ -51,7 +61,7 @@ export class AdminChallengesComponent {
         elementActiveChallenge.setAttribute("style", "border-bottom: 2px solid black;");
         elementArchive.setAttribute("style", "border-bottom: none;");
         break;
-    } 
+    }
   }
 
   public showFilter(): void {
@@ -60,9 +70,9 @@ export class AdminChallengesComponent {
 
   public toggleTreeView(id: string): void {
     let element = document.getElementById(id);
-    if(element !== null && element !== undefined) {    
+    if(element !== null && element !== undefined) {
       let parentElement = element.parentElement;
-      
+
       if(parentElement !== null && parentElement !== undefined) {
         parentElement.querySelector(".nested")!.classList.toggle("active");
         element.classList.toggle("caret-down");
@@ -92,9 +102,10 @@ export class AdminChallengesComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.router.navigateByUrl("/admin_edit_challenge");
+        this.router.navigateByUrl("/admin_edit_challenge?id=" + challenge.id);
       }
     })
   }
+
 
 }
