@@ -42,7 +42,7 @@ class GithubApi:
         return self.gApi.get_organization('ampcc').get_repo(repoName).create_file(
             path=".github/workflows/megalinter.yml",
             message="added megalinter",
-            content=open('api/include/megalinter.yml', 'r').read())
+            content=open(BASE_DIR.joinpath("api/include/megalinter.yml"), 'r').read())
 
 
     def getLinterResult(self, repoName):
