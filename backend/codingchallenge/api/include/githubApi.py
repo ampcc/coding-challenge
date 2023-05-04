@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv()
 
 
@@ -12,7 +12,7 @@ class GithubApi:
     def __init__(self):
         # Add exceptions
         self.app_id = os.getenv('GH_APP_ID')
-        self.private_key = open("privateKey.pem", "r").read()
+        self.private_key = open(BASE_DIR.joinpath("privateKey.pem"), "r").read()
         self.installation_id = int(os.getenv('GH_APP_INSTALLATION_ID'))
 
         self.gApi = Github(app_auth=AppAuthentication(app_id=self.app_id, private_key=self.private_key,
