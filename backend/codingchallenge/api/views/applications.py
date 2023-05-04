@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 
 # RESTapi imports
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -45,7 +46,7 @@ class AdminApplicationsView(APIView):
         # -> call is GET Application
         if kwargs.keys():
             applicationId = self.kwargs["applicationId"]
-            application = Application.objects.filter(applicationId=applicationId).first()
+            application = Application.objects.get(applicationId=applicationId)
             try:
                 serializer = GetApplicationSerializer(application, many=False)
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -94,13 +95,13 @@ class AdminApplicationsView(APIView):
                 return Response(jsonMessages.errorJsonResponse('applicationId has the wrong length'),
                                 status=status.HTTP_400_BAD_REQUEST)
 
-            if Application.objects.all().filter(
-                    applicationId=request.data.get('applicationId')):
+            if Application.objects.filter(
+                    applicationId=request.data.get('applicationId')).exists():
                 return Response(jsonMessages.errorJsonResponse('ApplicationId already in use'),
                                 status=status.HTTP_409_CONFLICT)
 
             if 'challengeId' in request.data:
-                if Challenge.objects.filter(id=request.data.get('challengeId')):
+                if Challenge.objects.filter(id=request.data.get('challengeId')).exists():
                     challengeId = request.data.get('challengeId')
                 else:
                     return Response(jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"),
@@ -143,8 +144,10 @@ class AdminApplicationsView(APIView):
         serializer = GetApplicationSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-
-            applications = Application.objects.filter(applicationId=request.data.get('applicationId')).first()
+            try:
+                applications = Application.objects.get(applicationId=request.data.get('applicationId'))
+            except (KeyError, DoesNotExist):
+                return Response("Application not found!", status=status.HTTP_404_NOT_FOUND)
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
                                                                                           "applicationId": request.data.get(
                                                                                               'applicationId')})
@@ -167,13 +170,10 @@ class AdminApplicationsView(APIView):
         allowedFields = ['applicationStatus', 'challengeId', 'expiry']
 
         try:
-            application = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
+            application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
-            if not application:
-                raise TypeError
-
-        except (KeyError, TypeError):
-            return Response(jsonMessages.errorJsonResponse('applicationId not found'), status=status.HTTP_404_NOT_FOUND)
+        except (KeyError, ObjectDoesNotExist):
+            return Response(jsonMessages.errorJsonResponse('Application not found'), status=status.HTTP_404_NOT_FOUND)
 
         serialized_application = json.loads(serializers.serialize("json", [application]))[0]
 
@@ -189,7 +189,7 @@ class AdminApplicationsView(APIView):
                             return Response(jsonMessages.errorJsonResponse("Invalid status!"),
                                             status=status.HTTP_400_BAD_REQUEST)
                     if key == allowedFields[1]:
-                        if Challenge.objects.filter(id=request.data.get(key)):
+                        if Challenge.objects.filter(id=request.data.get(key)).exists():
                             serialized_application['fields']['challengeId'] = request.data.get(key)
                         else:
                             return Response(jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"),
@@ -225,12 +225,9 @@ class AdminApplicationsView(APIView):
                 applicationId
         """
         try:
-            application = Application.objects.filter(applicationId=self.kwargs["applicationId"]).first()
+            application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
-            if not application:
-                raise TypeError
-
-        except(KeyError, TypeError):
+        except(KeyError, TypeError, ObjectDoesNotExist):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status=status.HTTP_404_NOT_FOUND)
 
         application.delete()
@@ -288,7 +285,7 @@ class UploadApplicationView(APIView):
             required arguments:
                 dataZip
         """
-        user = User.objects.filter(username=request.user.username).first()
+        user = User.objects.get(username=request.user.username)
 
         if user.application.status < Application.Status.IN_REVIEW:
 
@@ -322,7 +319,7 @@ class SubmitApplicationView(APIView):
 
     def put(self, request, *args, **kwargs):
 
-        user = User.objects.filter(username=request.user.username).first()
+        user = User.objects.get(username=request.user.username)
         if user.application.status < Application.Status.IN_REVIEW:
             user.application.submission = time.time()
             user.application.status = Application.Status.IN_REVIEW
@@ -340,8 +337,8 @@ class StatusApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = User.objects.filter(username=request.user.username).first()
-        application = Application.objects.filter(applicationId=user.username).first()
+        user = User.objects.get(username=request.user.username)
+        application = Application.objects.get(applicationId=user.username)
         serializer = GetApplicationStatus(application, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -350,7 +347,7 @@ class StartChallengeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = User.objects.filter(username=request.user.username).first()
+        user = User.objects.get(username=request.user.username)
 
         if user.application.status >= Application.Status.CHALLENGE_STARTED:
             return Response(
@@ -372,7 +369,7 @@ class StartChallengeView(APIView):
             user.application.expiry = time.time() + expirySettings.daysToFinishSinceChallengeStart * 24 * 60 * 60
             user.application.status = Application.Status.CHALLENGE_STARTED
         try:
-            challenge = Challenge.objects.filter(id=request.user.application.challengeId).first()
+            challenge = Challenge.objects.get(id=request.user.application.challengeId)
 
             # saves applicationStatus and new expiration date
             user.application.save()
