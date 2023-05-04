@@ -294,46 +294,27 @@ class UploadApplicationView(APIView):
 
             repoName = f'{user.application.applicationId}_{user.application.challengeId}'
 
-            self.gApi.createRepo(repoName, 'to be defined')
-
             raw_file = request.data['file']
             file_obj = ZipFile(raw_file)
 
+            user.application.submission = time.time()
+            #user.application.status = Application.Status.IN_REVIEW
+            user.application.githubRepo = repoName
+            user.application.save()
+
+            self.gApi.createRepo(repoName, 'to be defined')
             for path in file_obj.namelist():
                 if not path.endswith('/'):
                     self.gApi.pushFile(repoName, path, file_obj.read(path))
 
             self.gApi.addLinter(repoName)
 
-            user.application.submission = time.time()
-            user.application.status = Application.Status.IN_REVIEW
-            user.application.githubRepo = repoName
-            user.application.save()
-
             return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
         else:
             return Response(
                 jsonMessages.errorJsonResponse("challenge has already been submitted"),
                 status=status.HTTP_400_BAD_REQUEST)
-
-### endpoint: /api/submitApplication
-class SubmitApplicationView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def put(self, request, *args, **kwargs):
-
-        user = User.objects.get(username=request.user.username)
-        if user.application.status < Application.Status.IN_REVIEW:
-            user.application.submission = time.time()
-            user.application.status = Application.Status.IN_REVIEW
-            user.application.save()
-            return Response({"success": "true"})
-        else:
-            return Response(
-                jsonMessages.errorJsonResponse("Can not submit challenge! The challenge has already been submitted!"),
-                status=status.HTTP_400_BAD_REQUEST)
-
-
+                
 # Implementation of GET Application Status
 ### endpoint: /api/getApplicationStatus
 class StatusApplicationView(APIView):
