@@ -144,7 +144,7 @@ class AdminApplicationsView(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            applications = Application.objects.get(applicationId=request.data.get('applicationId'))
+            applications = Application.objects.filter(applicationId=request.data.get('applicationId')).first()
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
                                                                                           "applicationId": request.data.get(
                                                                                               'applicationId')})
@@ -288,7 +288,7 @@ class UploadApplicationView(APIView):
             required arguments:
                 dataZip
         """
-        user = User.objects.get(username=request.user.username)
+        user = User.objects.filter(username=request.user.username).first()
 
         if user.application.status < Application.Status.IN_REVIEW:
 
@@ -322,7 +322,7 @@ class SubmitApplicationView(APIView):
 
     def put(self, request, *args, **kwargs):
 
-        user = User.objects.get(username=request.user.username)
+        user = User.objects.filter(username=request.user.username).first()
         if user.application.status < Application.Status.IN_REVIEW:
             user.application.submission = time.time()
             user.application.status = Application.Status.IN_REVIEW
@@ -340,7 +340,7 @@ class StatusApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = User.objects.get(username=request.user.username)
+        user = User.objects.filter(username=request.user.username).first()
         application = Application.objects.filter(applicationId=user.username).first()
         serializer = GetApplicationStatus(application, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -350,7 +350,7 @@ class StartChallengeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = User.objects.get(username=request.user.username)
+        user = User.objects.filter(username=request.user.username).first()
 
         if user.application.status >= Application.Status.CHALLENGE_STARTED:
             return Response(
@@ -372,7 +372,7 @@ class StartChallengeView(APIView):
             user.application.expiry = time.time() + expirySettings.daysToFinishSinceChallengeStart * 24 * 60 * 60
             user.application.status = Application.Status.CHALLENGE_STARTED
         try:
-            challenge = Challenge.objects.get(id=request.user.application.challengeId)
+            challenge = Challenge.objects.filter(id=request.user.application.challengeId).first()
 
             # saves applicationStatus and new expiration date
             user.application.save()
