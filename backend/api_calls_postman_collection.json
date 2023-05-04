@@ -1,0 +1,1320 @@
+{
+	"info": {
+		"_postman_id": "a130a390-1422-42df-95bd-c796cbfeabdf",
+		"name": "mock-server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "login with Key",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/application/loginWithKey/gAAAAABkU39LBkMnJq8dzVX2voejHUWWch1AJbzKxEbNzVgWJgFbgFXgLmZGgOJCzbOPH8S2URFBNmZHEppvwFdHJBulaJIoN9GUu7L0OLZVsd1xurEQhXU%3D",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"application",
+								"loginWithKey",
+								"gAAAAABkU39LBkMnJq8dzVX2voejHUWWch1AJbzKxEbNzVgWJgFbgFXgLmZGgOJCzbOPH8S2URFBNmZHEppvwFdHJBulaJIoN9GUu7L0OLZVsd1xurEQhXU%3D"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "login with Key",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/loginWithKey",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"application",
+										"loginWithKey"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"token\": \"62ce30b676d95ef439af5e4d84f9161034c67c4a\"\n}"
+						}
+					]
+				},
+				{
+					"name": "start Challenge",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/application/startChallenge",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"application",
+								"startChallenge"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "start Challenge",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 62ce30b676d95ef439af5e1d84f9161034c67c4a",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/startChallenge",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"application",
+										"startChallenge"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"challengeHeading\": \"heading 1\",\n    \"challengeText\": \"text1\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Application Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/application/getApplicationStatus",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"application",
+								"getApplicationStatus"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get Application Status",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/getApplicationStatus/{{applicationId}}",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"application",
+										"getApplicationStatus",
+										"{{applicationId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"applicationId\": \"TASC1219\",\n    \"challengeId\": 1,\n    \"operatingSystem\": \"\",\n    \"programmingLanguage\": \"\",\n    \"expiry\": 1683994226.586763,\n    \"submission\": 0.0,\n    \"status\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Challenge",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/application/challenges",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"application",
+								"challenges"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get Challenge",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/challenges/{{applicationId}}",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"application",
+										"challenges",
+										"{{applicationId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"challengeHeading\": \"heading 1\",\n    \"challengeText\": \"text1\"\n}"
+						}
+					]
+				},
+				{
+					"name": "upload Challenge",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "attatchment; filename=file.zip",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/Users/marcodaum/Desktop/Archiv.zip"
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/application/uploadChallenge",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"application",
+								"uploadChallenge"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "upload Challenge",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token",
+										"type": "text"
+									},
+									{
+										"key": "Content-Disposition",
+										"value": "attatchment; filename=file.zip",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/application/uploadChallenge",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"application",
+										"uploadChallenge"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\":\"true\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "login Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "login Admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/login",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"token\": \"62cv30b676d95ef439af5e1d84f9161034c67c4a\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\" : \"admin\",\n    \"newPassword\" : \"[newPassword]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/changePassword",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"changePassword"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change Password",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"oldPassword\" : \"admin\",\n    \"newPassword\" : \"1!v%6SDV/$\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/changePassword",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"changePassword"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"success\": \"true\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Application",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/applications/user1234",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"applications",
+								"user1234"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get Application",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/applications/{{applicationId}}",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"applications",
+										"{{applicationId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"applicationId\": \"user1234\",\n    \"challengeId\": 1,\n    \"operatingSystem\": \"\",\n    \"programmingLanguage\": \"\",\n    \"expiry\": 1682075511.035268,\n    \"submission\": 0.0,\n    \"githubRepo\": \"\",\n    \"status\": 0,\n    \"created\": 1681902711.03698,\n    \"modified\": 1681902711.036989,\n    \"user\": 2\n}"
+						}
+					]
+				},
+				{
+					"name": "get Applications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/applications",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"applications"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get Applications",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/applications?applicationStatus",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"applications"
+									],
+									"query": [
+										{
+											"key": "applicationStatus",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "[\n    {\n        \"applicationId\": \"user1234\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682075511.035268,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1681902711.03698,\n        \"modified\": 1681902711.036989,\n        \"user\": 2\n    },\n    {\n        \"applicationId\": \"user1236\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682075974.823958,\n        \"submission\": 1681905531.913571,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1681903174.825456,\n        \"modified\": 1681905531.914732,\n        \"user\": 3\n    },\n    {\n        \"applicationId\": \"user1112\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682109971.738266,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1681937171.745266,\n        \"modified\": 1681937171.745266,\n        \"user\": 5\n    },\n    {\n        \"applicationId\": \"1234567c\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682415899.009565,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1681983899.011322,\n        \"modified\": 1681983899.01133,\n        \"user\": 6\n    },\n    {\n        \"applicationId\": \"q23456qv\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682702517.571715,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1682270517.573191,\n        \"modified\": 1682270517.573199,\n        \"user\": 9\n    },\n    {\n        \"applicationId\": \"q23456qw\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682702522.186105,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1682270522.187067,\n        \"modified\": 1682270522.187074,\n        \"user\": 10\n    },\n    {\n        \"applicationId\": \"q23456qe\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682702528.101416,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1682270528.102408,\n        \"modified\": 1682270528.102414,\n        \"user\": 11\n    },\n    {\n        \"applicationId\": \"q23456qt\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682702591.650407,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1682270591.651691,\n        \"modified\": 1682270591.651697,\n        \"user\": 12\n    },\n    {\n        \"applicationId\": \"q23456as\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682498395.08493,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1682325595.086579,\n        \"modified\": 1682325595.086587,\n        \"user\": 13\n    },\n    {\n        \"applicationId\": \"q23456ab\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1682498400.394484,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 0,\n        \"created\": 1682325600.395432,\n        \"modified\": 1682325600.395439,\n        \"user\": 14\n    },\n    {\n        \"applicationId\": \"TASC1219\",\n        \"challengeId\": 1,\n        \"operatingSystem\": \"\",\n        \"programmingLanguage\": \"\",\n        \"expiry\": 1e+20,\n        \"submission\": 0.0,\n        \"githubRepo\": \"\",\n        \"status\": 3,\n        \"created\": 1683128422.643656,\n        \"modified\": 1683128484.311115,\n        \"user\": 15\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "create Application",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"applicationId\" : \"TASC1210\",\n    \"challengeId\" : 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/applications",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"applications"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create Application",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"applicationId\" : \"TASC1219\",\n    \"challengeId\" : 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/applications",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"applications"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"applicationId\": \"TASC1219\",\n    \"created\": 1683128422.643656,\n    \"status\": 0,\n    \"expiry\": 1683992422.532589,\n    \"tmpLink\": \"www.amplimind.io/application/gAAAAABkUoBm5u2MwZ5VVAmXiWRyGHCspMIZEEyLbPpQikXYZKgmkUPqjvq-aGqOuJXHQrPp2HBWKkTvptQvk-mxkd-7F1W9ibKhReGW5SOH7pPLbq7O4aQ%3D\"\n}"
+						}
+					]
+				},
+				{
+					"name": "edit Application",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"applicationStatus\": 3,\n    \"challengeId\": 1,\n    \"expiry\": 1230918203981029380192801392\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/applications/TASC1219",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"applications",
+								"TASC1219"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "edit Application",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"applicationStatus\" : 2,\n    \"challengeId\" : 4,\n    \"extendDays\" : 5    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/applications/{{applicationId}}",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"applications",
+										"{{applicationId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"applicationId\": \"TASC1219\",\n    \"challengeId\": 1,\n    \"operatingSystem\": \"\",\n    \"programmingLanguage\": \"\",\n    \"expiry\": 1e+20,\n    \"submission\": 0.0,\n    \"githubRepo\": \"\",\n    \"status\": 3,\n    \"created\": 1683128422.643656,\n    \"modified\": 1683128484.311115,\n    \"user\": 15\n}"
+						}
+					]
+				},
+				{
+					"name": "delete Application",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/applications/TASC1219",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"applications",
+								"TASC1219"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete Application",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/applications/{{applicationId}}",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"applications",
+										"{{applicationId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\":\"true\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Result",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/applications/results/TASC1210",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"applications",
+								"results",
+								"TASC1210"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get Result",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/applications/results/{{applicationId}}",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"applications",
+										"results",
+										"{{applicationId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"content\":\"+----SUMMARY----+------------+---------------+-------+-------+--------+--------------+\\n| Descriptor    | Linter     | Mode          | Files | Fixed | Errors | Elapsed time |\\n+---------------+------------+---------------+-------+-------+--------+--------------+\\n| ✅ ACTION     | actionlint | list_of_files |     1 |       |      0 |        1.47s |\\n| ✅ COPYPASTE  | jscpd      | project       |   n/a |       |      0 |        1.05s |\\n| ✅ PYTHON     | bandit     | list_of_files |     1 |       |      0 |         1.3s |\\n| ◬ PYTHON      | black      | list_of_files |     1 |       |      1 |        0.79s |\\n| ✅ PYTHON     | flake8     | list_of_files |     1 |       |      0 |        0.56s |\\n| ✅ PYTHON     | isort      | list_of_files |     1 |       |      0 |        0.14s |\\n| ✅ PYTHON     | mypy       | list_of_files |     1 |       |      0 |        1.54s |\\n| ✅ PYTHON     | pylint     | list_of_files |     1 |       |      0 |        1.58s |\\n| ❌ PYTHON     | pyright    | list_of_files |     1 |       |      1 |        5.63s |\\n| ✅ PYTHON     | ruff       | list_of_files |     1 |       |      0 |        0.03s |\\n| ✅ REPOSITORY | checkov    | project       |   n/a |       |      0 |       12.97s |\\n| ❌ REPOSITORY | devskim    | project       |   n/a |       |     90 |        1.82s |\\n| ✅ REPOSITORY | dustilock  | project       |   n/a |       |      0 |        0.02s |\\n| ✅ REPOSITORY | gitleaks   | project       |   n/a |       |      0 |        0.14s |\\n| ✅ REPOSITORY | git_diff   | project       |   n/a |       |      0 |         0.0s |\\n| ✅ REPOSITORY | secretlint | project       |   n/a |       |      0 |        1.21s |\\n| ✅ REPOSITORY | syft       | project       |   n/a |       |      0 |        0.17s |\\n| ✅ REPOSITORY | trivy      | project       |   n/a |       |      0 |         6.0s |\\n| ❌ SPELL      | cspell     | list_of_files |     3 |       |      4 |        3.44s |\\n| ✅ SPELL      | misspell   | list_of_files |     2 |       |      0 |        0.04s |\\n| ◬ YAML        | prettier   | list_of_files |     1 |       |      1 |         0.4s |\\n| ✅ YAML       | v8r        | list_of_files |     1 |       |      0 |        2.04s |\\n| ❌ YAML       | yamllint   | list_of_files |     1 |       |      1 |         0.2s |\\n+---------------+------------+---------------+-------+-------+--------+--------------+\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Challenge",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/challenges/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"challenges",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get Challenge",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 648f5cad595ae411e2427997c469caaf74c1cce3",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/challenges/{{challengeId}}?Authorization",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"challenges",
+										"{{challengeId}}"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "get Challenges",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/challenges",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"challenges"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get Challenges",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/challenges",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"challenges"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "[\n    {\n        \"challengeId\" : \"0\",\n        \"challengeHeading\" : \"Reverse String\",\n        \"challengeText\" : \"Implement a function that reverses a string ...\"\n    },\n    {\n        \"challengeId\" : \"1\",\n        \"challengeHeading\" : \"Pascal's triangle\",\n        \"challengeText\" : \"Implement a function that prints the Pascal's triangle to a height of n ...\"\n    },\n    {\n        \"challengeId\" : \"2\",\n        \"challengeHeading\" : \"Scaled output\",\n        \"challengeText\" : \"Print a number in '*' ...\"\n    },\n    {\n        \"challengeId\" : \"3\",\n        \"challengeHeading\" : \"Dijkstra algorithm\",\n        \"challengeText\" : \"Implement the dijkstra algorithm ...\"\n    },\n    {\n        \"challengeId\" : \"4\",\n        \"challengeHeading\" : \"Binarysearch\",\n        \"challengeText\" : \"Implement the binary-search-algorithm ...\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "create Challenge",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"challengeHeading\" : \"test\",\n    \"challengeText\" : \"testTex123t\"    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/challenges",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"challenges"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create Challenge",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"challengeHeading\" : \"Binarysearch\",\n    \"challengeText\" : \"Implement the binary-search-algorithm ...\"\n}"
+								},
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/challenges",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"challenges"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"challengeId\" : \"4\",\n    \"challengeHeading\" : \"Binarysearch\",\n    \"challengeText\" : \"Implement the binary-search-algorithm ...\"\n}"
+						}
+					]
+				},
+				{
+					"name": "edit Challenge",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"challengeHeading\" : \"[challengeHeading]\",\n    \"challengeText\" : \"[challengeText]\"    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/challenges/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"challenges",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "edit Challenge",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"challengeHeading\" : \"Binarysearch\",\n    \"challengeText\" : \"Implement the binary-search-algorithm ...\"\n}"
+								},
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/challenges/{{challengeId}}",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"challenges",
+										"{{challengeId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"challengeId\" : \"4\",\n    \"challengeHeading\" : \"Binarysearch\",\n    \"challengeText\" : \"Implement the binary-search-algorithm ...\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete Challenge",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/admin/challenges/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"challenges",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete Challenge",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/challenges/{{challengeId}}",
+									"protocol": "https",
+									"host": [
+										"46022e70-68be-4fbf-a4d1-441852e186b1",
+										"mock",
+										"pstmn",
+										"io"
+									],
+									"path": [
+										"api",
+										"admin",
+										"challenges",
+										"{{challengeId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\":\"true\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://a73d0e83-72bb-4cc6-b03d-7bb3e288836a.mock.pstmn.io"
+		}
+	]
+}
