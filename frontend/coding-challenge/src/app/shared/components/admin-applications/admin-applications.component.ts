@@ -68,6 +68,7 @@ export class AdminApplicationsComponent {
           }
         });
         this.filteredApplicantsArray = this.applicantsArray;
+        this.filteredArchivArray = this.archivArray;
       });
     const challengeInfos = this.backend.getChallenges(this.adminToken)
         .subscribe((data: Challenge[]) => {
