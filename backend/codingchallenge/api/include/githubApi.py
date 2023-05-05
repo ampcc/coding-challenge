@@ -60,4 +60,12 @@ class GithubApi:
 
         cleanSummary = linterSummary[0:linterEndIndex:1]
 
+        # replacing symbols and added padding for correct spacing
+        # check
+        cleanSummary = cleanSummary.replace(u"\u2705",u"\u2713" + " ")
+        # cross
+        cleanSummary = cleanSummary.replace(u"\u274c",u"\u2715" + " ")
+        # question mark
+        cleanSummary = cleanSummary.replace(u"\u25EC",u"\u2047" + " ")
+
         return cleanSummary
