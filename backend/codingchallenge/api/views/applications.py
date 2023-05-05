@@ -231,14 +231,14 @@ class AdminApplicationsView(APIView):
                 raise TypeError
 
         except(KeyError, TypeError):
-            return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status=status.HTTP_404_NOT_FOUND)
+            return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
+                            status=status.HTTP_404_NOT_FOUND)
 
         application.delete()
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
 
 class AdminResultApplicationView(APIView):
-
     permission_classes = [IsAuthenticated]
 
     gApi = GithubApi()
@@ -260,17 +260,20 @@ class AdminResultApplicationView(APIView):
                 raise TypeError
 
         except(KeyError, TypeError):
-            return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status=status.HTTP_404_NOT_FOUND)
+            return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
+                            status=status.HTTP_404_NOT_FOUND)
 
         if application.githubRepo:
             repoName = application.githubRepo
+
         else:
             return Response(
                 jsonMessages.errorJsonResponse("Can not find repo"),
                 status=status.HTTP_400_BAD_REQUEST)
 
+        return Response({'githubUrl': self.gApi.getRepoUrl(repoName),
+                         'content': self.gApi.getLinterResult(repoName)}, status=status.HTTP_200_OK)
 
-        return Response({'content': self.gApi.getLinterResult(repoName)}, status=status.HTTP_200_OK)
 
 class UploadApplicationView(APIView):
     permission_classes = [IsAuthenticated]
@@ -298,7 +301,7 @@ class UploadApplicationView(APIView):
             file_obj = ZipFile(raw_file)
 
             user.application.submission = time.time()
-            #user.application.status = Application.Status.IN_REVIEW
+            # user.application.status = Application.Status.IN_REVIEW
             user.application.githubRepo = repoName
             user.application.save()
 
@@ -314,7 +317,8 @@ class UploadApplicationView(APIView):
             return Response(
                 jsonMessages.errorJsonResponse("challenge has already been submitted"),
                 status=status.HTTP_400_BAD_REQUEST)
-                
+
+
 # Implementation of GET Application Status
 ### endpoint: /api/getApplicationStatus
 class StatusApplicationView(APIView):
