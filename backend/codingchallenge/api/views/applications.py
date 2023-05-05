@@ -275,15 +275,15 @@ class AdminResultApplicationView(APIView):
                          'content': self.gApi.getLinterResult(repoName)}, status=status.HTTP_200_OK)
 
 
-class UploadApplicationView(APIView):
+class UploadSolutionView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [FileUploadParser]
 
     gApi = GithubApi()
 
-    # 18. Upload Challenge
-    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-challenge
-    # /api/application/uploadChallenge
+    # 18. Upload Solution
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
+    # /api/application/uploadSolution
     # Todo: Test Cases for this method
     def post(self, request, *args, **kwargs):
         """
@@ -315,7 +315,7 @@ class UploadApplicationView(APIView):
             return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
         else:
             return Response(
-                jsonMessages.errorJsonResponse("challenge has already been submitted"),
+                jsonMessages.errorJsonResponse("solution has already been submitted"),
                 status=status.HTTP_400_BAD_REQUEST)
 
 
