@@ -13,6 +13,7 @@ import { Challenge } from '../../models/challenge';
 import { Application } from '../../models/application';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import * as JSZip from 'jszip';
 
 @Component({
   standalone: true,
@@ -61,7 +62,7 @@ export class ChallengeComponent implements OnInit {
 
 
   public constructor(private backend: BackendService, public dialog: MatDialog, private router: Router) {
-    this.applicant = { applicationId: "", applicationKey: "", challengeId: 0, expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%" };
+    this.applicant = { applicationId: "", applicationKey: "", challengeId: 0, expiry: 0, githubRepo: "", operatingSystem: "", programmingLanguage: "", status: 0, submission: 0, passphrase: "a4Xz!5T%" };
     this.applicationToken = null;
   }
 
@@ -76,10 +77,10 @@ export class ChallengeComponent implements OnInit {
       // Get the current Status
       this.backend.getStatus(this.applicationToken).subscribe((response) => {
         this.applicant = {
-          applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiryDate: response.expiry, githubRepoURL: "",
-          operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submissionDate: 0, status: response.progress
+          applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiry: response.expiry, githubRepo: "",
+          operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submission: 0, status: response.progress
         };
-        this.time = this.calcRemainingTime(new Date().getTime() / 1000, this.applicant.expiryDate);
+        this.time = this.backend.calcRemainingTime(new Date().getTime(), this.applicant.expiry);
       }, (error: HttpErrorResponse) => {
         switch (error.status) {
           case 401:
@@ -97,7 +98,7 @@ export class ChallengeComponent implements OnInit {
         }
       }, () => {
         // Get the Challenge
-        this.backend.getChallengeApp(this.applicationToken, this.applicant.applicationId).subscribe((response) => {
+        this.backend.getChallengeApp(this.applicationToken).subscribe((response) => {
           this.challengeText = response.challengeText;
           this.heading = response.challengeHeading;
         }, (error: HttpErrorResponse) => {
@@ -188,7 +189,7 @@ export class ChallengeComponent implements OnInit {
         title: 'Info: File structure',
         description: {
           important: 'Please pay attention to the following folder structure when uploading:',
-          details: 'project.zip -> project -> src -> ...'
+          details: 'All source files have to be directly under the .zip file! <br><pre>YourCode.zip <br>├── src1.java <br>├── src2.py <br>├── src3.c <br>└── ....'
         },
       },
     });
@@ -224,15 +225,34 @@ export class ChallengeComponent implements OnInit {
 
         element.setAttribute("style", "border-color:red; ");
       } else {
+        this.checkUploadedZipContent(files[0]);
         this.hideMsgFileUplod = true;
-        this.fileArray.push(files[0]);
-
         element.setAttribute("style", "border-color:lightgrey;");
       }
     }
   }
 
+public checkUploadedZipContent(file:File): void{
+  var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
+  const jsZip = require('jszip');
+  var result = true;
+  jsZip.loadAsync(file).then((zip: any) => {
+    Object.keys(zip.files).forEach((filename) => {
+      if(filename.endsWith("/") || filename.endsWith("\\")){
+        result = false;
+      }
+    })
+    if(result){
+      this.fileArray.push(file);
+    }else {
+      this.hideMsgFileUplod = false;
+      this.msgFileUplod = 'The file ' + file.name + ' has the wrong folder structure';
+      element.setAttribute("style", "border-color:red; ");
+      this.openDialogInfo();
+    }
+  })
 
+}
 
   public deleteFile(index: number): void {
     let deletedElement = this.fileArray[index];
@@ -330,16 +350,5 @@ export class ChallengeComponent implements OnInit {
       this.backend.uploadChallenge("Token" + this.applicant.applicationKey, resultOs, resultPl);
       this.backend.submitChallenge("Token " + this.applicant.applicationKey);
     }
-  }
-
-  private calcRemainingTime(_currentTime: number, _expiryTime: number): string {
-    var timeDelta = _expiryTime - _currentTime;
-    console.log(_expiryTime + ";" + _currentTime + ";" + timeDelta);
-    const days = Math.floor(timeDelta / (3600 * 24));
-    timeDelta -= days * 3600 * 24;
-    const hours = Math.floor(timeDelta / (3600));
-    timeDelta -= hours * 3600;
-    const minutes = Math.floor(timeDelta / (60))
-    return days + " days " + hours + " hours " + minutes + " minutes";
   }
 }

@@ -2,11 +2,13 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import {BackendService} from 'src/app/core/backend.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
-import {NgFor, NgIf} from '@angular/common';
+import {NgFor, NgIf, formatDate} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Challenge } from '../../models/challenge';
 import { Application } from '../../models/application';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -24,41 +26,56 @@ import { Application } from '../../models/application';
 export class AdminApplicationsComponent {
   challenge: Challenge;
   applicant: Application;
+  private adminToken: string|null;
 
   public hideContentActiveChallenges: boolean = false;
   public hideContentArchiv: boolean = true;
 
   public hideFilterSelect: boolean = true;
 
-  public challengeArray: Challenge[] = [{challengeId: 0, challengeHeading: 'Challenge0',challengeText: 'xxx'},
-                                        {challengeId: 1, challengeHeading: 'Challenge1',challengeText: 'xxx'}
-                                       ];
-  public applicantsArray: Application[] = [{applicationId: "sdfs0", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}, 
-                                           {applicationId: "dgtertxc", applicationKey:"", challengeId: 1 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 3, submissionDate: 23456, passphrase: "a4Xz!5T%"}
-                                          ];
-  public archivArray: Application[] = [{applicationId: "sdfs0", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"}, 
-                                       {applicationId: "dgtertxc", applicationKey:"", challengeId: 1 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 234234, passphrase: "a4Xz!5T%"}
-                                      ];
+  public challengeArray: Challenge[] = [];
+  private challengeFilter: number[] = [];
+  private statusFilter: string[] = [];
+  public applicantsArray: Application[] = [];
+  public filteredApplicantsArray: Application[] = [];
+  public archivArray: Application[] = [];
+  public filteredArchivArray: Application[] = [];
 
   public hideSubmissionDate: boolean = false;
   public hideTimeLimit: boolean = false;
 
- 
- 
-  public constructor(private backend: BackendService, public dialog: MatDialog,) {
-    this.challenge = {challengeId: 0, challengeHeading: '',challengeText: ''};
-    this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiryDate: 0, githubRepoURL: "", operatingSystem: "", programmingLanguage: "", status: 0, submissionDate: 0, passphrase: "a4Xz!5T%"};
+
+
+  public constructor(private backend: BackendService, public dialog: MatDialog,public router: Router) {
+    this.challenge = {id: 0, challengeHeading: '',challengeText: ''};
+    this.adminToken = null;
+    this.applicant = {applicationId: "", applicationKey:"", challengeId: 0 , expiry: 0, githubRepo: "", operatingSystem: "", programmingLanguage: "", status: 0, submission: 0, passphrase: "a4Xz!5T%"};
   }
 
 
   public ngOnInit(): void {
-    const challengeInfos = this.backend.getChallengeApp("Token " + this.applicant.applicationKey, this.applicant.applicationId.toString())
-        .subscribe((data) => this.challenge = {
-          challengeId: data.challenge.challengeId,
-          challengeHeading: data.challenge.challengeHeading,
-          challengeText: data.challenge.challengeText
+       // Check if Admin Token is available
+    this.adminToken = window.sessionStorage.getItem('Adm-Token');
+    if(this.adminToken === null){
+      this.router.navigateByUrl("/admin_login")
+    }else{
+      this.backend.getApplications(this.adminToken).subscribe((response)=>{
+        response.forEach((element: Application) => {
+          if(element.status <= 3){
+            this.applicantsArray.push(element);
+          }else if(element.status === 5){
+            this.archivArray.push(element);
+          }
+        });
+        this.filteredApplicantsArray = this.applicantsArray;
+        this.filteredArchivArray = this.archivArray;
+      });
+    const challengeInfos = this.backend.getChallenges(this.adminToken)
+        .subscribe((data: Challenge[]) => {
+          this.challengeArray = data;
         });
   }
+}
 
   public changeTab(id: string): void {
     let elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
@@ -79,7 +96,7 @@ export class AdminApplicationsComponent {
         elementActiveChallenge.setAttribute("style", "border-bottom: none;");
         elementArchive.setAttribute("style", "border-bottom: 2px solid black;");
         break;
-    } 
+    }
   }
 
   public showFilter(): void {
@@ -88,9 +105,9 @@ export class AdminApplicationsComponent {
 
   public toggleTreeView(id: string): void {
     let element = document.getElementById(id);
-    if(element !== null && element !== undefined) {    
+    if(element !== null && element !== undefined) {
       let parentElement = element.parentElement;
-      
+
       if(parentElement !== null && parentElement !== undefined) {
         parentElement.querySelector(".nested")!.classList.toggle("active");
         element.classList.toggle("caret-down");
@@ -98,12 +115,70 @@ export class AdminApplicationsComponent {
     }
   }
 
-  public checkboxChallengeChange(): void {
-
+  private updateFilteredArchiveArray(): void{
+    if(this.challengeFilter.length === 0){
+      this.filteredArchivArray = this.archivArray;
+    }else{
+      this.filteredArchivArray = [];
+      this.archivArray.forEach((app) => {
+        if(this.challengeFilter.some(e => e === app.challengeId)){
+          this.filteredArchivArray.push(app);
+        }
+      });
+    }
   }
 
-  public checkboxStatusChange(): void {
+  private updateFilteredApplicantArray():void{
+    if(this.challengeFilter.length === 0 && this.statusFilter.length === 0){
+      this.filteredApplicantsArray = this.applicantsArray;
+      this.filteredArchivArray = this.archivArray;
+    }else if(this.challengeFilter.length !== 0 && this.statusFilter.length === 0){
+      this.filteredApplicantsArray = [];
+      this.applicantsArray.forEach((app) => {
+        if(this.challengeFilter.some(e => e === app.challengeId)){
+          this.filteredApplicantsArray.push(app);
+        }
+      });
+    }else if (this.challengeFilter.length === 0 && this.statusFilter.length !== 0){
+      this.filteredApplicantsArray = [];
+      this.applicantsArray.forEach((app) => {
+        const statusText = this.getStatusText(app.status).replaceAll(" ", "_");
+        if(this.statusFilter.some(e => e === statusText)){
+          this.filteredApplicantsArray.push(app);
+        }
+      });
+    }else {
+      this.filteredApplicantsArray = [];
+      this.applicantsArray.forEach((app) => {
+        if(this.challengeFilter.some(e => e === app.challengeId)){
+          const statusText = this.getStatusText(app.status).replaceAll(" ", "_");
+          if(this.statusFilter.some(e => e === statusText)){
+            this.filteredApplicantsArray.push(app);
+          }
+        }
+      });
+  }
+}
 
+  public checkboxChallengeChange(values: any): void {
+    const challId: number = +values.currentTarget.id.substring(9);
+    if(this.challengeFilter.some(e => e === challId)){
+      this.challengeFilter.splice(this.challengeFilter.findIndex(e => e === challId), 1);
+    }else {
+      this.challengeFilter.push(challId);
+    }
+    this.updateFilteredApplicantArray();
+    this.updateFilteredArchiveArray();
+  }
+
+  public checkboxStatusChange(values: any): void {
+    const status: string = values.currentTarget.id;
+    if(this.statusFilter.some(e => e === status)){
+      this.statusFilter.splice(this.statusFilter.findIndex(e => e === status), 1);
+    }else {
+      this.statusFilter.push(status);
+    }
+    this.updateFilteredApplicantArray();
   }
 
   public checkboxTimeLimitChange(): void {
@@ -111,7 +186,7 @@ export class AdminApplicationsComponent {
   }
 
   public getChallengeHeading(challengeId: number): string {
-    let elementHeading = this.challengeArray.find(element => element.challengeId === challengeId)?.challengeHeading;
+    let elementHeading = this.challengeArray.find(element => element.id === challengeId)?.challengeHeading;
 
     if(elementHeading === undefined) {
       return 'Error: Challenge not found';
@@ -137,9 +212,9 @@ export class AdminApplicationsComponent {
         this.hideSubmissionDate = false;
         this.hideTimeLimit= true;
         return 'uploaded';
-      case 4: 
+      case 4:
         this.hideSubmissionDate = true;
-        this.hideTimeLimit= false;  
+        this.hideTimeLimit= false;
         return 'not submitted in time';
       case 5:
         this.hideSubmissionDate = false;
@@ -150,18 +225,19 @@ export class AdminApplicationsComponent {
         this.hideTimeLimit= true;
         return 'given status is unknown: ' + status;
     }
-    
+
   }
 
-  public getTimeLimit(app: Application): number {
-    return 2;
+  public getTimeLimit(app: Application): string {
+    return this.backend.calcRemainingTime(new Date().getTime(), app.expiry);
   }
 
   public getSubmissionDateText(submissionDate: number): string {
+
     if(submissionDate === 0 || submissionDate === null || submissionDate === undefined) {
       return 'not uploaded in time';
     }
-    return '' + submissionDate;
+    return '' + formatDate(Math.floor(submissionDate*1000), "dd.MM.yyyy hh:mm","en-US");
   };
 
 
@@ -171,8 +247,8 @@ export class AdminApplicationsComponent {
       data: {
         title: 'Applicant ' + application.applicationId,
         description: {
-          important: 'Open Project on GitHub',
-          details: 'Test'
+          important: "<a href='" + application.githubRepo + "'>Open Project on GitHub</a>",
+          details: 'TODO: getResult'
         },
         buttons: {
           left: { title: 'Archive', look: 'primary' },
@@ -180,6 +256,32 @@ export class AdminApplicationsComponent {
         }
       },
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.backend.editApplication(this.adminToken, application.applicationId, 5)
+        .subscribe((result) =>{
+          var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+          this.applicantsArray.splice(index, 1);
+          this.archivArray.push(application);
+        }, (error: HttpErrorResponse) => {
+          switch (error.status) {
+            case 401:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/unauthorized");
+              break;
+            case 404:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/notFound");
+              break;
+            default:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/internalError");
+              break;
+          }
+        });
+      }
+    })
   }
 
   public openDialogArchiv(application: Application): void {
@@ -188,11 +290,10 @@ export class AdminApplicationsComponent {
       data: {
         title: 'Applicant ' + application.applicationId,
         description: {
-          important: 'Open Project on GitHub',
-          details: 'Test'
+          important: "<a href='" + application.githubRepo + "'>Open Project on GitHub</a>",
+          details: 'TODO: getResult'
         },
         buttons: {
-          left: { title: 'Archive', look: 'primary' },
           right: { title: 'Cancel', look: 'secondary' }
         }
       },

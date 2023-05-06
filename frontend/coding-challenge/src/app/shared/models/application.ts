@@ -5,8 +5,8 @@ export interface Application {
   challengeId: number;
   operatingSystem: string;
   programmingLanguage: string;
-  expiryDate: number;
-  submissionDate: number;
-  githubRepoURL: string;
+  expiry: number;
+  submission: number;
+  githubRepo: string;
   status: number;
 }

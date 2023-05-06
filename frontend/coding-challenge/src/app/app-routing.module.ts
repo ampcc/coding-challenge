@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'admin_password', component: AdminPasswordComponent },
   { path: 'admin_edit_challenge', component: AdminEditComponent },
   { path: 'application', component: DefaultComponent },
+  { path: 'application/:key', component: DefaultComponent },
   { path: 'forbidden', component: ForbiddenComponent },
   { path: 'notFound', component: NotFoundComponent },
   { path: 'gone', component: GoneComponent },

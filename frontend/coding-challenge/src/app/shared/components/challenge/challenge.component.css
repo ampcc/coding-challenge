@@ -28,7 +28,7 @@ h2 {
     font-weight: 400;
     line-height: 24px;
     align-items: center;
-    
+
     padding-top: 16px;
     padding-bottom: 14px;
 }
@@ -55,6 +55,7 @@ h2 {
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 16px;
+    white-space: pre-line;
 }
 
 /* Style div for Upload */
@@ -82,9 +83,9 @@ h2 {
 
 .form-select {
     width: 60%;
-    margin-left: auto; 
+    margin-left: auto;
     margin-right: 0;
-    
+
 }
 
 .form-select:focus {
@@ -98,7 +99,7 @@ h2 {
 
 #programmingLanguage, #operatingSystem {
     float: left;
-    margin-left: 0; 
+    margin-left: 0;
     margin-right: auto;
 }
 
@@ -109,7 +110,7 @@ h2 {
 .inputOther{
     margin-top: 20px;
     width: 60%;
-    margin-left: auto; 
+    margin-left: auto;
     margin-right: 0;
 }
 
@@ -122,18 +123,18 @@ h2 {
     padding: 10px;
     padding-left: 20px;
     padding-right: 20px;
-    margin-left: 0; 
+    margin-left: 0;
     margin-right: auto;
 }
 
 
 /* Drag and Drop Field */
-.question-circle {  
+.question-circle {
     margin: 0;
     margin-top: 0.5cm;
 }
 
-.question-circle:hover {  
+.question-circle:hover {
     cursor: pointer;
 }
 
@@ -217,7 +218,7 @@ h2 {
 
 .folder {
     float: left;
-    margin-left: 0; 
+    margin-left: 0;
     margin-right: auto;
     padding: 10px;
 }
@@ -266,7 +267,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-} 
+}
 
 .textSuccess {
     font-size: 25px;
@@ -280,7 +281,7 @@ h2 {
 }
 
 
-/* Responsive Webdesign */ 
+/* Responsive Webdesign */
 @media screen and (min-width: 2000px) {
     h2 {
         font-size: 80px;

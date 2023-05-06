@@ -56,8 +56,7 @@ export class AppComponent {
     // If the user confirmed the logout, he gets navigated to the login page
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // TODO: Logout for admin
-
+        window.sessionStorage.clear();
         this.router.navigate(['/admin_login']);
       }
     })
