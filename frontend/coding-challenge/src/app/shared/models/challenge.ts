@@ -1,5 +1,5 @@
 export interface Challenge {
-  challengeId?: number;
+  id?: number;
   challengeHeading: string;
   challengeText: string;
 }

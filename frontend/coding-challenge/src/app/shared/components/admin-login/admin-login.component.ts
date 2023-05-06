@@ -4,6 +4,7 @@ import { BackendService } from 'src/app/core/backend.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-login',
@@ -43,20 +44,31 @@ export class AdminLoginComponent {
         this.showPasswordError = true;
       }
     } else {
-      this.backendService.loginAdmin(username, password);
-
-      // TODO: Validate response of loginAdmin instead of minutes on clock
-      const d = new Date();
-      let m = d.getMinutes();
-
-      if ((m % 2) == 1) {
-        this.usernameError = 'Wrong login initials. Please try again!';
-        this.passwordError = 'Wrong login initials. Please try again!';
-        this.showUsernameError = true;
-        this.showPasswordError = true;
-      } else {
-        this.router.navigate(['/admin_applications']);
-      }
+      this.backendService.loginAdmin(username, password).subscribe((response) => {
+        window.sessionStorage.setItem('Adm-Token', response.token);
+        this.router.navigateByUrl("/admin_applications")
+      },(error: HttpErrorResponse) => {
+        switch(error.status){
+          case 400:
+            this.usernameError = 'Wrong username or password';
+            this.showUsernameError = true;
+            this.passwordError = 'Wrong username or password';
+            this.showPasswordError = true;
+            break;
+          case 401:
+            this.usernameError = 'Wrong username or password';
+            this.showUsernameError = true;
+            this.passwordError = 'Wrong username or password';
+            this.showPasswordError = true;
+            break;
+          case 404:
+            this.router.navigateByUrl("/notFound");
+            break;
+          default:
+            this.router.navigateByUrl("/internalError");
+            break;
+          }
+      });
     }
   }
 }

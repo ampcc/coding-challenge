@@ -31,7 +31,7 @@
                 <div class="filter">
                     <div>
                         <label (click)="showFilter()" id="labelFilter">
-                            Filter 
+                            Filter
                             <img src="../../../../assets/funnel.svg" class="funnel">
                         </label>
                     </div>
@@ -44,7 +44,7 @@
                             <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
                             <ul class="nested" >
                                 <li *ngFor="let challenge of challengeArray">
-                                    <input type="checkbox" class="challengeFilterElement" id="challenge{{challenge.challengeId}}" (change)="checkboxChallengeChange()" value="challenge{{challenge.challengeId}}" />
+                                    <input type="checkbox" class="challengeFilterElement" id="challenge{{challenge.id}}" (change)="checkboxChallengeChange($event)" value="challenge{{challenge.id}}" />
                                     <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
                                 </li>
                             </ul>
@@ -53,18 +53,18 @@
                             <span class="caret" id="caret2" (click)="toggleTreeView('caret2')">Status</span>
                             <ul class="nested">
                                 <li>
-                                    <input type="checkbox" id="uploaded" (change)="checkboxStatusChange()"
+                                    <input type="checkbox" id="uploaded" (change)="checkboxStatusChange($event)"
                                         value="uploaded" />
                                     <span class="tree_checkbox_label"> uploaded</span>
                                 </li>
                                 <li>
-                                    <input type="checkbox" id="not_uploaded_yet" (change)="checkboxStatusChange()"
+                                    <input type="checkbox" id="not_uploaded_yet" (change)="checkboxStatusChange($event)"
                                         value="not_uploaded_yet" />
                                     <span class="tree_checkbox_label"> not uploaded yet</span>
                                 </li>
                                 <li>
-                                    <input type="checkbox" id="not_uploaded_in_time"
-                                        (change)="checkboxStatusChange()" value="not_uploaded_in_time" />
+                                    <input type="checkbox" id="not_submitted_in_time"
+                                        (change)="checkboxStatusChange($event)" value="not_uploaded_in_time" />
                                     <span class="tree_checkbox_label"> not submitted in time</span>
                                 </li>
                             </ul>
@@ -107,15 +107,15 @@
 
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
                 <div class="list" id="list_applicants">
-                    <div class="single_applicant" *ngFor="let app of applicantsArray; let i = index">
+                    <div class="single_applicant" *ngFor="let app of filteredApplicantsArray; let i = index">
                         <div class="text_elements">
                             <h4 class="applicantId">
                                 {{app.applicationId}}
                             </h4>
                             <span><b>Challenge:</b> {{getChallengeHeading(app.challengeId)}}</span>
                             <span><b>Status:</b> {{getStatusText(app.status)}}</span>
-                            <span [hidden]="hideSubmissionDate"><b>Submission date:</b> {{getSubmissionDateText(app.submissionDate)}}</span>
-                            <span [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}} days</span>
+                            <span [hidden]="hideSubmissionDate"><b>Submission date:</b> {{getSubmissionDateText(app.submission)}}</span>
+                            <span [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}}</span>
                         </div>
                         <div class="btn_position">
                             <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details" (click)="openDialogActiveChallenges(app)">Details</button>
@@ -127,16 +127,16 @@
 
             <div [hidden]="hideContentArchiv" class="contentArchiv">
                 <div class="list" id="list_archiv">
-                    <div class="single_archiv" *ngFor="let archiv of archivArray; let i = index">
+                    <div class="single_archiv" *ngFor="let archiv of filteredArchivArray; let i = index">
                         <div class="text_elements">
                             <h4 class="applicantId">
                                 {{archiv.applicationId}}
                             </h4>
                             <span><b>Challenge:</b> {{getChallengeHeading(archiv.challengeId)}}</span>
-                            <span><b>Submission date:</b> {{getSubmissionDateText(archiv.submissionDate)}}</span>
+                            <span><b>Submission date:</b> {{getSubmissionDateText(archiv.submission)}}</span>
                         </div>
                         <div class="btn_position">
-                            <button *ngIf="getSubmissionDateText(archiv.submissionDate) !== 'not uploaded in time'" class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
+                            <button *ngIf="getSubmissionDateText(archiv.submission) !== 'not uploaded in time'" class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
                         </div>
                     </div>
                 </div>

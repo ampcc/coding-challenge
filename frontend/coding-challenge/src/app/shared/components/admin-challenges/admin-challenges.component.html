@@ -40,8 +40,8 @@
                         <ul class="nested">
                             <li *ngFor="let challenge of challengeArray">
                                 <input type="checkbox" class="challengeFilterElement"
-                                    id="challenge{{challenge.challengeId}}" (change)="checkboxChallengeChange()"
-                                    value="challenge{{challenge.challengeId}}" />
+                                    id="challenge{{challenge.id}}" (change)="checkboxChallengeChange()"
+                                    value="challenge{{challenge.id}}" />
                                 <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
                             </li>
                         </ul>
