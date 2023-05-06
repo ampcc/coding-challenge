@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { BackendService } from 'src/app/core/backend.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-password',
@@ -16,10 +17,11 @@ import { CommonModule } from '@angular/common';
     CommonModule,
   ]
 })
-export class AdminPasswordComponent {
+export class AdminPasswordComponent implements OnInit {
   oldPassword: string = '';
   newPassword: string = '';
   confirmPassword: string = '';
+  private adminToken: string | null;
 
   oldPasswordError: string = 'Error';
   newPasswordError: string = 'Error';
@@ -31,7 +33,16 @@ export class AdminPasswordComponent {
 
   mustContain = new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?])');
 
-  constructor(private router: Router, private backendService: BackendService) { }
+  constructor(private router: Router, private backendService: BackendService) {
+    this.adminToken = null;
+  }
+
+ngOnInit(): void {
+  this.adminToken = window.sessionStorage.getItem('Adm-Token');
+  if(this.adminToken === null){
+    this.router.navigateByUrl("/admin_login")
+  }
+}
 
   // If new password, old password, or confirm password are empty, error messages are shown underneath the corresponding text fields
   // Otherwise it is checked, whether the old password is correct and whether the new password contains at least eight letters including at least one uppercase letter, one lowercase letter, one number, and one special character
@@ -55,13 +66,6 @@ export class AdminPasswordComponent {
         this.showConfirmPasswordError = true;
       }
     } else {
-      const d = new Date();
-      let m = d.getMinutes();
-      // TODO: Check if old password is correct, if so continue 
-      if ((m % 2) == 1) {
-        this.oldPasswordError = 'Wrong password. Please try again!';
-        this.showOldPasswordError = true;
-      }
       if (newP.length < 8) {
         this.newPasswordError = 'Password must contain at least eight characters!';
         this.showNewPasswordError = true;
@@ -74,8 +78,29 @@ export class AdminPasswordComponent {
         this.showNewPasswordError = true;
         this.showConfirmPasswordError = true;
       } else {
-        // TODO: Set new password for admin
-        this.router.navigate(['/admin_applications']);
+        this.backendService.changePassword(this.adminToken, oldP, newP).subscribe((response) => {
+          this.router.navigate(['/admin_applications']);
+        }, (error: HttpErrorResponse) => {
+          switch (error.status) {
+            case 401:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/unauthorized");
+              break;
+            case 403:
+              this.oldPasswordError = 'Wrong password. Please try again!';
+              this.showOldPasswordError = true;
+              break;
+            case 404:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/notFound");
+              break;
+            default:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/internalError");
+              break;
+          }
+        });
+
       }
 
     }

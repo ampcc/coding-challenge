@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { BackendService } from 'src/app/core/backend.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Challenge } from '../../models/challenge';
 
 @Component({
   selector: 'app-admin-edit',
@@ -19,8 +20,10 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class AdminEditComponent {
+  private adminToken: string | null;
   name: string = '';
   description: string = '';
+  id = 0;
 
   nameError: string = 'Error';
   descriptionError: string = 'Error';
@@ -28,13 +31,38 @@ export class AdminEditComponent {
   showNameError: boolean = false;
   showDescriptionError: boolean = false;
 
-  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService) { }
+  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService, private route:ActivatedRoute) {
+    this.adminToken = null;
+  }
 
   public ngOnInit(): void {
-    // TODO: backend get challenge and enter in text fields
-
-    this.name = 'Test';
-    this.description = 'This is just a test to see if the text fields get filled in correctly';
+    this.adminToken = window.sessionStorage.getItem('Adm-Token');
+    if(this.adminToken === null){
+      this.router.navigateByUrl("/admin_login")
+    }
+    this.route.queryParams.subscribe((params) => {
+      this.id = params["id"];
+    });
+      this.backendService.getChallengeAdm(this.adminToken, this.id).subscribe((response) => {
+        console.log(response)
+        this.name = response.challengeHeading;
+        this.description = response.challengeText;
+      }, (error) => {
+        switch (error.status) {
+          case 403:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/forbidden");
+            break;
+          case 404:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/notFound");
+            break;
+          default:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/internalError");
+            break;
+        }
+      });
   }
 
   // When name or description are empty, error messges appear underneath the text fields
@@ -59,10 +87,26 @@ export class AdminEditComponent {
         this.showDescriptionError = true;
       }
     } else {
-      // TODO: edit Challenge in Backend based on information in name and description
-
-      // If successful navigate back to Challenges
-      this.router.navigate(['/admin_challenges']);
+      var tempChallenge: Challenge = {id: this.id, challengeHeading: this.name, challengeText: this.description};
+      this.backendService.editChallenge(this.adminToken, tempChallenge).subscribe((response) => {
+        // If successful navigate back to Challenges
+        this.router.navigate(['/admin_challenges']);
+      }, (error) => {
+        switch (error.status) {
+          case 403:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/forbidden");
+            break;
+          case 404:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/notFound");
+            break;
+          default:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/internalError");
+            break;
+        }
+      });
     }
   }
 
@@ -80,9 +124,24 @@ export class AdminEditComponent {
     // If the dialog is closed and the result is true, the user decided to delete challenge, the backend deletes the challenge and the user is navigated to Challenges
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // TODO: delete challenge in backend
-
-        this.router.navigate(['/admin_challenges']);
+        this.backendService.deleteChallenge(this.adminToken, this.id).subscribe(() => {
+          this.router.navigate(['/admin_challenges']);
+        }, (error) => {
+          switch (error.status) {
+            case 403:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/forbidden");
+              break;
+            case 404:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/notFound");
+              break;
+            default:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/internalError");
+              break;
+          }
+        });
       }
     })
   }

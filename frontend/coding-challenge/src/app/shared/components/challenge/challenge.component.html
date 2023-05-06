@@ -13,7 +13,7 @@
         <div class="heading">
             <h2>Coding Challenge Platform</h2>
         </div>
-        
+
         <div class="remaining_time">
             <p id="time"><b>Remaining Time:</b> {{time}}</p>
         </div>
@@ -32,7 +32,7 @@
                     Upload
                 </label>
             </div>
-            
+
             <div [hidden]="hideContentIntro" class="text_intro" id="text">
                 Hi applicant,
                 <br>
@@ -89,7 +89,7 @@
 
             <div [hidden]="hideContentChallenge" class="text_challenge" id="text">
                 <b>{{heading}}</b>
-                <br>
+                <br><br>
                 {{challengeText}}
             </div>
 
@@ -146,13 +146,13 @@
                                 <input type="file" id="fileHandler" name="file" accept=".zip"
                                     (change)="uploadFileHandler($event)"/>
 
-                                
+
                                 <div class="textDragnDrop">
                                     <label class="dropFileHeader"> Upload file here or drag file </label>
 
                                     <img src="../../../../assets/upload.svg" class="picUpload">
 
-                                    <label class="infoDropFile"> 
+                                    <label class="infoDropFile">
                                         We accept file in .zip format, maximum size is 50 MB
                                     </label>
                                 </div>
