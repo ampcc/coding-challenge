@@ -148,7 +148,7 @@ class AdminApplicationsView(APIView):
         if serializer.is_valid():
             serializer.save()
             try:
-                applications = Application.objects.get(applicationId=self.kwargs["applicationId"])
+                applications = Application.objects.get(applicationId=request.data.get('applicationId'))
             except (KeyError, ObjectDoesNotExist):
                 return Response("Application not found!", status=status.HTTP_404_NOT_FOUND)
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
