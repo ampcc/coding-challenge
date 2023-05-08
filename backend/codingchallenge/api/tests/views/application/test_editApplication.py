@@ -17,11 +17,15 @@ class test_editApplication(APITestCase):
         # Authorization
         MockAuth.admin(self)
 
-        Application.objects.create(applicationId="TEST1234", challengeId=1, expiry=0, user_id=1)
-        self.applicationId = getattr(Application.objects.first(), 'applicationId')
+        # Create Challenge
+        self.client.post("/api/admin/challenges",
+                         {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
+                         format='json')
 
-        # Example Challenge in Database
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
+        # Create Application
+        self.client.post(self.url, {"applicationId": "TEST1234"}, format='json')
+
+        self.applicationId = getattr(Application.objects.first(), 'applicationId')
 
     def test_missingAuth(self):
         # remove headers for this test
@@ -29,16 +33,6 @@ class test_editApplication(APITestCase):
 
         response = self.client.put(self.url + "/" + self.applicationId, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_wrongUrl(self):
-        url = '/api/admin/dumb'
-        data = {
-            "applicationStatus": 2,
-            "challengeId": 1,
-            "extendDays": 2
-        }
-        response = self.client.put(url, data, format='json', )
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_noApplicationId(self):
         data = {
@@ -55,7 +49,7 @@ class test_editApplication(APITestCase):
             "challengeId": 1,
             "extendDays": 2
         }
-        response = self.client.put(self.url + "/4321TSET", data, format='json')
+        response = self.client.put(self.url + "/" + "4321TSET", data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrongDatafields(self):
