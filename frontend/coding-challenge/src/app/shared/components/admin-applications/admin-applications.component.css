@@ -166,7 +166,7 @@ li {
 .text_elements {
     display: flex;
     flex-direction: column;
-    
+
 }
 
 h4 {
@@ -193,6 +193,11 @@ span {
     padding: 10px;
     font-weight: 400;
     font-size: 18px;
+}
+
+.resultLinting {
+  white-space: initial;
+  font-size:12px;
 }
 
 

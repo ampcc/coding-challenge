@@ -76,6 +76,10 @@ export class ChallengeComponent implements OnInit {
 
       // Get the current Status
       this.backend.getStatus(this.applicationToken).subscribe((response) => {
+        if(response.status >= 2) {
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/gone");
+        }
         this.applicant = {
           applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiry: response.expiry, githubRepo: "",
           operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submission: 0, status: response.progress
@@ -189,7 +193,8 @@ export class ChallengeComponent implements OnInit {
         title: 'Info: File structure',
         description: {
           important: 'Please pay attention to the following folder structure when uploading:',
-          details: 'All source files have to be directly under the .zip file! <br><pre>YourCode.zip <br>├── src1.java <br>├── src2.py <br>├── src3.c <br>└── ....'
+          details: 'The Projectfolder has to be directly under the .zip File and the Readme File has to be inside the Projectfolder!'
+           + ' <br> <br><pre>YourCode.zip <br>└── ProjectFolder/ <br>    ├── src/ <br>    ├── data/ <br>    ├── test/ <br>    ├── ReadMe.md <br>    └── ....'
         },
       },
     });

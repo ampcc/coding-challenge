@@ -246,13 +246,12 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       this.resultOfLinting = response.content;
-      application.githubRepo = response.repoUrl;
       let dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Applicant ' + application.applicationId,
           description: {
-            important: "<a href='" + application.githubRepo + "' target='_blank'>Open Project on GitHub</a>",
-            details: "<p style='white-space: pre-line'>" + this.resultOfLinting + "</p>"
+            important: "<a href='https://github.com/ampcc/" + application.githubRepo + "' target='_blank'>Open Project on GitHub</a>",
+            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
           },
           buttons: {
             left: { title: 'Archive', look: 'primary' },
@@ -290,17 +289,20 @@ export class AdminApplicationsComponent {
 
   public openDialogArchiv(application: Application): void {
     DialogComponent.name;
-    let dialogRef = this.dialog.open(DialogComponent, {
-      data: {
-        title: 'Applicant ' + application.applicationId,
-        description: {
-          important: "<a href='https://github.com/ampcc/" + application.githubRepo + "' target='_blank'>Open Project on GitHub</a>",
-          details: 'TODO: getResult'
+    this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
+      this.resultOfLinting = response.content;
+      let dialogRef = this.dialog.open(DialogComponent, {
+        data: {
+          title: 'Applicant ' + application.applicationId,
+          description: {
+            important: "<a href='https://github.com/ampcc/" + application.githubRepo + "' target='_blank'>Open Project on GitHub</a>",
+            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+          },
+          buttons: {
+            right: { title: 'Cancel', look: 'secondary' }
+          }
         },
-        buttons: {
-          right: { title: 'Cancel', look: 'secondary' }
-        }
-      },
+      });
     });
   }
 }
