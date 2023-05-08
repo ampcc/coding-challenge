@@ -293,6 +293,8 @@ class UploadSolutionView(APIView):
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
     # /api/application/uploadSolution
     # Todo: Test Cases for this method
+    # Todo: Add OS and Programming Language in Body
+    # Todo: Change Status when Uploaded
     def post(self, request, *args, **kwargs):
         """
         post Challenge with
