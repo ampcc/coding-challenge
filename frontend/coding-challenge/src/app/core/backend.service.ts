@@ -122,7 +122,7 @@ export class BackendService {
     return this.http.get(this.backendURL + "/api/admin/challenges", {'headers': headers});
   }
 
-  public createChallenge(_adminToken: string, _challenge: Challenge): Observable<any> {
+  public createChallenge(_adminToken: string | null, _challenge: Challenge): Observable<any> {
     var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     var body = {challenge:{challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText}};
     return this.http.post(this.backendURL + "/api/admin/challenges", body, {'headers': headers});

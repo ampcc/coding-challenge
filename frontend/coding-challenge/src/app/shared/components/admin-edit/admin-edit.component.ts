@@ -28,21 +28,34 @@ export class AdminEditComponent {
   nameError: string = 'Error';
   descriptionError: string = 'Error';
 
+  successMessage: string = 'added';
+  pageName: string = 'Add';
+
   showNameError: boolean = false;
   showDescriptionError: boolean = false;
 
-  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService, private route:ActivatedRoute) {
+  successfulEdit: boolean = false;
+  editPage: boolean = false;
+
+  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService, private route: ActivatedRoute) {
     this.adminToken = null;
   }
 
   public ngOnInit(): void {
     this.adminToken = window.sessionStorage.getItem('Adm-Token');
-    if(this.adminToken === null){
-      this.router.navigateByUrl("/admin_login")
+    if (this.adminToken === null) {
+      this.router.navigateByUrl("/admin_login");
     }
     this.route.queryParams.subscribe((params) => {
-      this.id = params["id"];
+      // TODO: Check if this codeis correct and works
+      if (params["id"] != null) {
+        this.id = params["id"];
+        this.editPage = true;
+        this.successMessage = 'edited';
+        this.pageName = 'Edit';
+      }
     });
+    if (this.editPage) {
       this.backendService.getChallengeAdm(this.adminToken, this.id).subscribe((response) => {
         console.log(response)
         this.name = response.challengeHeading;
@@ -63,6 +76,7 @@ export class AdminEditComponent {
             break;
         }
       });
+    }
   }
 
   // When name or description are empty, error messges appear underneath the text fields
@@ -87,26 +101,57 @@ export class AdminEditComponent {
         this.showDescriptionError = true;
       }
     } else {
-      var tempChallenge: Challenge = {id: this.id, challengeHeading: this.name, challengeText: this.description};
-      this.backendService.editChallenge(this.adminToken, tempChallenge).subscribe((response) => {
-        // If successful navigate back to Challenges
-        this.router.navigate(['/admin_challenges']);
-      }, (error) => {
-        switch (error.status) {
-          case 403:
-            window.sessionStorage.clear();
-            this.router.navigateByUrl("/forbidden");
-            break;
-          case 404:
-            window.sessionStorage.clear();
-            this.router.navigateByUrl("/notFound");
-            break;
-          default:
-            window.sessionStorage.clear();
-            this.router.navigateByUrl("/internalError");
-            break;
-        }
-      });
+      // TODO: Check if this codeis correct and works
+      if (this.editPage) {
+        var tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description };
+        this.backendService.editChallenge(this.adminToken, tempChallenge).subscribe((response) => {
+          // If successful navigate back to Challenges
+          this.successfulEdit = true;
+          setTimeout(() => {
+            this.router.navigate(['/admin_challenges']);
+          }, 1500);
+        }, (error) => {
+          switch (error.status) {
+            case 403:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/forbidden");
+              break;
+            case 404:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/notFound");
+              break;
+            default:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/internalError");
+              break;
+          }
+        });
+      } else {
+        // TODO: Check if createChallenge works without id
+        var tempChallenge: Challenge = { challengeHeading: this.name, challengeText: this.description };
+        this.backendService.createChallenge(this.adminToken, tempChallenge).subscribe((response) => {
+          // If successful navigate to Challenges
+          this.successfulEdit = true;
+          setTimeout(() => {
+            this.router.navigate(['/admin_challenges']);
+          }, 1500);
+        }, (error) => {
+          switch (error.status) {
+            case 403:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/forbidden");
+              break;
+            case 404:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/notFound");
+              break;
+            default:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/internalError");
+              break;
+          }
+        });
+      }
     }
   }
 
