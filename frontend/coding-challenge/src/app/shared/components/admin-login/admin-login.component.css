@@ -12,7 +12,7 @@ h1 {
 }
 
 hr {
-    margin-bottom: 7em;
+    margin-bottom: 5em;
     background-color: gray;
     height: 0.1em;
 }
@@ -35,7 +35,7 @@ hr {
 }
 
 .heading {
-    margin-top: 2em;
+    margin-top: 1.5em;
     margin-bottom: 0.1em;
     font-size: 30px;
     line-height: 40px;
@@ -57,13 +57,17 @@ hr {
 app-button {
     display: inline-block;
     width: 25%;
-    margin-top: 5em;
+    margin-top: 3em;
 }
 
 @media (min-width:2000px) {
     h1 {
         line-height: 100px;
         font-size: 80px;
+    }
+
+    hr {
+        margin-bottom: 7em;
     }
 
     .inputField,
@@ -73,8 +77,13 @@ app-button {
     }
 
     .heading {
+        margin-top: 2em;
         font-size: 40px;
         line-height: 50px;
+    }
+
+    app-button {
+        margin-top: 5em;
     }
 }
 
@@ -85,20 +94,13 @@ app-button {
 }
 
 @media (max-width:768px) {
-    hr {
-        margin-bottom: 5em;
-    }
-
-    app-button {
-        margin-top: 3em;
-    }
-
     h1 {
         font-size: 40px;
         line-height: 60px;
     }
 
-    .inputField, .error_message {
+    .inputField,
+    .error_message {
         font-size: 16px;
         line-height: 25px;
     }
@@ -115,7 +117,8 @@ app-button {
         line-height: 50px;
     }
 
-    .inputField, .error_message {
+    .inputField,
+    .error_message {
         font-size: 13px;
         line-height: 23px;
     }
