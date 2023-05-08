@@ -59,6 +59,8 @@ export class AppComponent {
           right: { title: 'Cancel', look: 'secondary' }
         }
       },
+      maxHeight: '85vh',
+      minWidth: '30vw',
     });
 
     // If the user confirmed the logout, he gets navigated to the login page

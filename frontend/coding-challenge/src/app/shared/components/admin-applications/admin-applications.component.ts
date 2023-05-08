@@ -41,6 +41,12 @@ export class AdminApplicationsComponent {
   public archivArray: Application[] = [];
   public filteredArchivArray: Application[] = [];
 
+  public possibleChallengesArray: Challenge[] = [];
+  public newChallengesArray: [{
+    id?: number,
+    heading: string
+  }?] = [];
+
   public hideSubmissionDate: boolean = false;
   public hideTimeLimit: boolean = false;
 
@@ -62,7 +68,7 @@ export class AdminApplicationsComponent {
       this.backend.getApplications(this.adminToken).subscribe((response) => {
         response.forEach((element: Application) => {
           if (element.status <= 3) {
-            this.applicantsArray.push(element);
+            this.applicantsArray.push(this.applicant);
           } else if (element.status === 5) {
             this.archivArray.push(element);
           }
@@ -256,10 +262,90 @@ export class AdminApplicationsComponent {
         }
       },
       maxHeight: '85vh',
+      minWidth: '30vw',
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
+        this.backend.editApplication(this.adminToken, application.applicationId, 5)
+          .subscribe((result) => {
+            var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+            this.applicantsArray.splice(index, 1);
+            this.archivArray.push(application);
+          }, (error: HttpErrorResponse) => {
+            switch (error.status) {
+              case 401:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/unauthorized");
+                break;
+              case 404:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/notFound");
+                break;
+              default:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/internalError");
+                break;
+            }
+          });
+      }
+    })
+  }
+
+  public openExtendDialogActiveChallenges(application: Application): void {
+    // TODO: Check if dialog opens correctly displaying all possible challenges
+    DialogComponent.name;
+    this.backend.getChallenges(this.adminToken).subscribe((response: Challenge[]) => {
+      this.possibleChallengesArray = response;
+    });
+    for (var i = 0; i < this.possibleChallengesArray.length; i++) {
+      if (this.possibleChallengesArray[i].id != application.challengeId) {
+        this.newChallengesArray.push({
+          id: this.possibleChallengesArray[i].id,
+          heading: this.possibleChallengesArray[i].challengeHeading
+        });
+      }
+    }
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Applicant ' + application.applicationId,
+        description: {
+          extend: true,
+          challenges: this.newChallengesArray,
+        },
+        buttons: {
+          left: { title: 'Commit Changes', look: 'primary' },
+          middle: { title: 'Archive', look: 'secondary' },
+          right: { title: 'Cancel', look: 'secondary' }
+        }
+      },
+      maxHeight: '85vh',
+      minWidth: '30vw',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // TODO: Test if time limitgets successfully expired
+      if (result.s && result.s == 1) {
+        this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
+          .subscribe((result) => {
+          }, (error: HttpErrorResponse) => {
+            switch (error.status) {
+              case 401:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/unauthorized");
+                break;
+              case 404:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/notFound");
+                break;
+              default:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/internalError");
+                break;
+            }
+          });
+      }
+      if (result == 2) {
         this.backend.editApplication(this.adminToken, application.applicationId, 5)
           .subscribe((result) => {
             var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
@@ -299,6 +385,7 @@ export class AdminApplicationsComponent {
         }
       },
       maxHeight: '85vh',
+      minWidth: '30vw',
     });
   }
 }

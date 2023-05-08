@@ -193,6 +193,7 @@ export class ChallengeComponent implements OnInit {
         },
       },
       maxHeight: '85vh',
+      minWidth: '30vw',
     });
   }
 

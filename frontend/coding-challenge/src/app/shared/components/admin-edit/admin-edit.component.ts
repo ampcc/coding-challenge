@@ -167,6 +167,7 @@ export class AdminEditComponent {
         }
       },
       maxHeight: '85vh',
+      minWidth: '30vw',
     });
 
     // If the dialog is closed and the result is true, the user decided to delete challenge, the backend deletes the challenge and the user is navigated to Challenges

@@ -10,8 +10,41 @@
         </a>
         <p *ngIf="data.description.important" class="bold" [innerHTML]="data.description.important"></p>
         <p *ngIf="data.description.details" [innerHTML]="data.description.details"></p>
-        <div *ngIf="data.images" class="image_container">
-            <img *ngFor="let image of data.images" src={{image}} class="image">
+
+        <div *ngIf="data.description.extend" class="extend_container">
+            <div class="extend_line">
+                <p class="inline_text">Days to expand with:</p>
+                <div class="spacer"></div>
+                <input [(ngModel)]="days" class="input" type="number" min="1" step="1" max="21"
+                    [ngClass]="{'show_error': this.daysError}"/>
+            </div>
+            <div class="extend_line">
+                <div class="spacer"></div>
+                <p class="error_message" [ngClass]="{'hidden': !this.daysError}">Please enter a number between 1 and 21
+                </p>
+            </div>
+        </div>
+
+        <div>
+            <div class="selector">
+                <p class="inline_text">New Challenge:</p>
+                <div class="spacer"></div>
+                <select *ngIf="data.description.challenges" class="input" [ngClass]="{'show_error': this.challengeError}" id="dropdown">
+                    <option selected="selected" value="none">Random</option>
+                    <option *ngFor="let challenge of data.description.challenges" value="{{challenge.id}}">
+                        {{challenge.heading}}
+                    </option>
+                </select>
+            </div>
+            <div class="extend_line">
+                <div class="spacer"></div>
+                <p class="error_message" [ngClass]="{'hidden': !this.challengeError}">Please select a new Challenge
+                </p>
+            </div>
+        </div>
+
+        <div *ngIf="data.description.images" class="image_container">
+            <img *ngFor="let image of data.description.images" src={{image}} class="image">
         </div>
     </div>
     <div mat-dialog-actions class="button_container" *ngIf="data.buttons"

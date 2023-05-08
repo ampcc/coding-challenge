@@ -117,7 +117,7 @@ export class BackendService {
     return this.http.get(this.backendURL + "/api/admin/challenges/" + _challengeId, {'headers': headers});
   }
 
-  public getChallenges(_adminToken: string): Observable<any> {
+  public getChallenges(_adminToken: string | null): Observable<any> {
     var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.get(this.backendURL + "/api/admin/challenges", {'headers': headers});
   }

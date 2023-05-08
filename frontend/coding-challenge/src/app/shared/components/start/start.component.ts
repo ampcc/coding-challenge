@@ -20,16 +20,16 @@ export class StartComponent implements OnInit {
     this.applicationToken = null;
   }
   ngOnInit(): void {
-    // this.applicationToken = window.sessionStorage.getItem('Auth-Token');
-    // if (this.applicationToken === null) {
-    //   this.router.navigateByUrl("/unauthorized")
-    // } else {
-    //   this.backendService.getStatus(this.applicationToken).subscribe((response) => {
-    //     if (response.status === 1) {
-    //       this.router.navigateByUrl("/challenge");
-    //     }
-    //   });
-    // }
+    this.applicationToken = window.sessionStorage.getItem('Auth-Token');
+    if (this.applicationToken === null) {
+      this.router.navigateByUrl("/unauthorized")
+    } else {
+      this.backendService.getStatus(this.applicationToken).subscribe((response) => {
+        if (response.status === 1) {
+          this.router.navigateByUrl("/challenge");
+        }
+      });
+    }
   }
 
   tryToStartChallenge() {
@@ -73,6 +73,7 @@ export class StartComponent implements OnInit {
         }
       },
       maxHeight: '85vh',
+      minWidth: '30vw',
     });
 
     // If the dialog is closed and the result is true, the user decided to start the challenge, the backend starts the challenge and the user is navigated to the challenge page
