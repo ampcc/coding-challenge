@@ -260,10 +260,7 @@ class AdminResultApplicationView(APIView):
         try:
             application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
-            if not application:
-                raise TypeError
-
-        except(KeyError, TypeError):
+        except(KeyError, ObjectDoesNotExist):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
 
