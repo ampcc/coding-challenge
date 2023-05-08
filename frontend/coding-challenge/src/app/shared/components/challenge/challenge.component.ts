@@ -236,12 +236,20 @@ public checkUploadedZipContent(file:File): void{
   var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
   const jsZip = require('jszip');
   var result = true;
+  var isSecondLayerFile = false;
   jsZip.loadAsync(file).then((zip: any) => {
-    Object.keys(zip.files).forEach((filename) => {
-      if(filename.endsWith("/") || filename.endsWith("\\")){
-        result = false;
+    Object.keys(zip.files).filter(v => v.indexOf("__MACOSX/") === -1 && v.indexOf("DS_Store") === -1).forEach((filename) => {
+      if(filename.indexOf(".") !== -1){
+        if((filename.split("/").length - 1) === 0){
+          result = false;
+        }else if((filename.split("/").length - 1) === 1){
+          isSecondLayerFile = true;
+        }
       }
     })
+    if(!isSecondLayerFile){
+      result = false;
+    }
     if(result){
       this.fileArray.push(file);
     }else {
@@ -344,11 +352,28 @@ public checkUploadedZipContent(file:File): void{
     }
 
     if (!required) {
-      alert('Success: ' + resultOs + ', ' + resultPl);
-      this.hideSuccess = false;
-      this.hideUpload = true;
-      this.backend.uploadChallenge("Token" + this.applicant.applicationKey, resultOs, resultPl);
-      this.backend.submitChallenge("Token " + this.applicant.applicationKey);
+      this.hideMsgFileUplod = false;
+      this.msgFileUplod = "Uploading File. Please Wait."
+      this.backend.uploadChallenge(this.applicationToken, resultOs, resultPl, this.fileArray[0]).subscribe((response) => {
+        this.hideSuccess = false;
+        this.hideUpload = true;
+        this.hideMsgFileUplod = true;
+      },(error) => {
+        switch (error.status) {
+          case 403:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/forbidden");
+            break;
+          case 404:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/notFound");
+            break;
+          default:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/internalError");
+            break;
+        }
+      });
     }
   }
 }
