@@ -31,7 +31,7 @@ export class AdminPasswordComponent implements OnInit {
   showNewPasswordError: boolean = false;
   showConfirmPasswordError: boolean = false;
 
-  successfulLogin: boolean = false;
+  successfulChange: boolean = false;
 
   mustContain = new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?])');
 
@@ -81,7 +81,7 @@ export class AdminPasswordComponent implements OnInit {
         this.showConfirmPasswordError = true;
       } else {
         this.backendService.changePassword(this.adminToken, oldP, newP).subscribe((response) => {
-          this.successfulLogin = true;
+          this.successfulChange = true;
           setTimeout(() => {
             this.router.navigate(['/admin_applications']);
           }, 1500);
