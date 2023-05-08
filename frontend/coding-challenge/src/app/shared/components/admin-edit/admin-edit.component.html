@@ -12,7 +12,7 @@
         [ngClass]="{'show_error': this.showDescriptionError, 'show_success': this.successfulEdit}"></textarea>
     <p class="error_message" [ngClass]="{'not_showing': !this.showDescriptionError}">{{this.descriptionError}}</p>
     <div class="button_row">
-        <app-button title="Confirm Changes" look="primary" font="normal"
+        <app-button title="{{this.buttonTitle}}" look="primary" font="normal"
             (click)="editChallenge(name, description)"></app-button>
         <div class="spacer"></div>
         <app-button *ngIf="this.editPage" title="Delete Challenge" look="delete" font="normal" (click)="deleteChallenge()"></app-button>

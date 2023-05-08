@@ -30,6 +30,7 @@ export class AdminEditComponent {
 
   successMessage: string = 'added';
   pageName: string = 'Add';
+  buttonTitle: string = 'Add Challenge';
 
   showNameError: boolean = false;
   showDescriptionError: boolean = false;
@@ -43,9 +44,9 @@ export class AdminEditComponent {
 
   public ngOnInit(): void {
     this.adminToken = window.sessionStorage.getItem('Adm-Token');
-    if (this.adminToken === null) {
-      this.router.navigateByUrl("/admin_login");
-    }
+    // if (this.adminToken === null) {
+    //   this.router.navigateByUrl("/admin_login");
+    // }
     this.route.queryParams.subscribe((params) => {
       // TODO: Check if this codeis correct and works
       if (params["id"] != null) {
@@ -53,6 +54,7 @@ export class AdminEditComponent {
         this.editPage = true;
         this.successMessage = 'edited';
         this.pageName = 'Edit';
+        this.buttonTitle = 'Confirm Changes';
       }
     });
     if (this.editPage) {
