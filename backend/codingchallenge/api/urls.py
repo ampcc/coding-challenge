@@ -23,5 +23,6 @@ urlpatterns = [
     path('application/getApplicationStatus', applications.StatusApplicationView.as_view()),
     path('application/startChallenge', applications.StartChallengeView.as_view()),
     path('application/challenges', challenges.ApplicationChallengesView.as_view()),
-    path('application/uploadChallenge', applications.UploadApplicationView.as_view()),
+
+    path('application/uploadSolution', applications.UploadSolutionView.as_view()),
 ]
