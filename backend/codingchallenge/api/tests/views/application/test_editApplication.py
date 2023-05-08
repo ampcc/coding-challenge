@@ -17,7 +17,6 @@ class test_editApplication(APITestCase):
         # Authorization
         MockAuth.admin(self)
 
-        # default url
         Application.objects.create(applicationId="TEST1234", challengeId=1, expiry=0, user_id=1)
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
 

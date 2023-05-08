@@ -15,7 +15,6 @@ class test_deleteApplication(APITestCase):
         # Authorization
         MockAuth.admin(self)
 
-        # default url
         Application.objects.create(applicationId="TEST1234", challengeId=1, expiry=0, user_id=1)
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
 
@@ -29,7 +28,7 @@ class test_deleteApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongUrl(self, mockDelete):
-        url = '/api/admin/dumb'
+        self.url = '/api/admin/dumb'
 
         self.assertEqual(Application.objects.count(), 1)
 
