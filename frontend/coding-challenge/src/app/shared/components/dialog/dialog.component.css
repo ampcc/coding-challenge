@@ -66,12 +66,18 @@ a {
 }
 
 .image {
-    height: 100%;
+    width: 60%;
+    margin: auto;
+    display: block;
 }
 
 .button_container {
     display: inline-flex;
     width: 100%;
+}
+
+.block {
+    display: block;
 }
 
 .spacer {
@@ -80,12 +86,18 @@ a {
 
 app-button {
     display: inline-block;
-    width: 40%;
     margin-top: 3em;
 }
 
-@media (min-width:2000px) {
+.triple, .single {
+    width: 100%;
+}
 
+.double {
+    width: 40%;
+}
+
+@media (min-width:2000px) {
     p {
         font-size: 30px;
         line-height: 40px;
@@ -99,7 +111,7 @@ app-button {
 }
 
 @media (max-width:1024px) {
-    app-button {
+    .double {
         width: 49%;
     }
 
@@ -130,7 +142,7 @@ app-button {
         width: 100%;
     }
 
-    app-button {
+    .double {
         width: 100%;
     }
 }

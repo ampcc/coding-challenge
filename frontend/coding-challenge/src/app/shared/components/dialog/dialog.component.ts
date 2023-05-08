@@ -1,16 +1,23 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ButtonComponent } from '../button/button.component';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css'],
   standalone: true,
-  imports: [ButtonComponent, NgIf]
+  imports: [
+    ButtonComponent,
+    CommonModule
+  ]
 })
 export class DialogComponent {
+  oneButton: boolean = false;
+  twoButtons: boolean = false;
+  threeButtons: boolean = false;
   // The dialog element expects at least a title string
   // Apart from that it can handle a description and two buttons
   constructor(@Inject(MAT_DIALOG_DATA) public data: {
@@ -21,11 +28,13 @@ export class DialogComponent {
       important: string,
       details: string,
     },
-    image: {
-      source: string,
-    },
+    images: [string],
     buttons: {
       left: {
+        title: string,
+        look: string,
+      },
+      middle: {
         title: string,
         look: string,
       },
@@ -35,10 +44,18 @@ export class DialogComponent {
       }
     }
   },
-    public dialogRef: MatDialogRef<DialogComponent>) { }
+    public dialogRef: MatDialogRef<DialogComponent>) {
+    if (data.buttons.left && data.buttons.middle && data.buttons.right) {
+      this.threeButtons = true;
+    } else if ((data.buttons.left && data.buttons.middle) || (data.buttons.left && data.buttons.right) || (data.buttons.middle && data.buttons.right)) {
+      this.twoButtons = true;
+    } else if (data.buttons.left || data.buttons.middle || data.buttons.right) {
+      this.oneButton = true;
+    }
+  }
 
   //The Dialog can be closed with the press of a button
-  public closeDialog(state: boolean) {
+  public closeDialog(state: number) {
     this.dialogRef.close(state);
   }
 }

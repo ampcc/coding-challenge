@@ -192,6 +192,7 @@ export class ChallengeComponent implements OnInit {
           details: 'All source files have to be directly under the .zip file! <br><pre>YourCode.zip <br>├── src1.java <br>├── src2.py <br>├── src3.c <br>└── ....'
         },
       },
+      maxHeight: '85vh',
     });
   }
 
@@ -232,27 +233,27 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
-public checkUploadedZipContent(file:File): void{
-  var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
-  const jsZip = require('jszip');
-  var result = true;
-  jsZip.loadAsync(file).then((zip: any) => {
-    Object.keys(zip.files).forEach((filename) => {
-      if(filename.endsWith("/") || filename.endsWith("\\")){
-        result = false;
+  public checkUploadedZipContent(file: File): void {
+    var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
+    const jsZip = require('jszip');
+    var result = true;
+    jsZip.loadAsync(file).then((zip: any) => {
+      Object.keys(zip.files).forEach((filename) => {
+        if (filename.endsWith("/") || filename.endsWith("\\")) {
+          result = false;
+        }
+      })
+      if (result) {
+        this.fileArray.push(file);
+      } else {
+        this.hideMsgFileUplod = false;
+        this.msgFileUplod = 'The file ' + file.name + ' has the wrong folder structure';
+        element.setAttribute("style", "border-color:red; ");
+        this.openDialogInfo();
       }
     })
-    if(result){
-      this.fileArray.push(file);
-    }else {
-      this.hideMsgFileUplod = false;
-      this.msgFileUplod = 'The file ' + file.name + ' has the wrong folder structure';
-      element.setAttribute("style", "border-color:red; ");
-      this.openDialogInfo();
-    }
-  })
 
-}
+  }
 
   public deleteFile(index: number): void {
     let deletedElement = this.fileArray[index];

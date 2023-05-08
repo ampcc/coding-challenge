@@ -1,22 +1,34 @@
 <div class="dialog_container">
-    <button class="close" (click)="closeDialog(false)">
+    <button class="close" (click)="closeDialog(0)">
         <img class="close_image" src="../../../../assets/x.svg">
     </button>
     <h1 mat-dialog-title>{{data.title}}</h1>
     <div mat-dialog-content *ngIf="data.description">
-        <a *ngIf="data.description.link && data.description.url"
-            href={{data.description.url}} class="link"><div class="link_text">{{data.description.link}}</div></a>
+        <a *ngIf="data.description.link && data.description.url" href={{data.description.url}} class="link"
+            target="_blank">
+            <div class="link_text">{{data.description.link}}</div>
+        </a>
         <p *ngIf="data.description.important" class="bold" [innerHTML]="data.description.important"></p>
-        <div *ngIf="data.image" class="image_container">
-            <img src={{data.image.source}} class="image">
-        </div>
         <p *ngIf="data.description.details" [innerHTML]="data.description.details"></p>
+        <div *ngIf="data.images" class="image_container">
+            <img *ngFor="let image of data.images" src={{image}} class="image">
+        </div>
     </div>
-    <div mat-dialog-actions class="button_container" *ngIf="data.buttons && (data.buttons.left || data.buttons.right)">
-        <app-button *ngIf="data.buttons.left" class="left_button" title={{data.buttons.left.title}}
-            look={{data.buttons.left.look}} font="smaller" (click)="closeDialog(true)"></app-button>
-            <div class="spacer"></div>
-        <app-button *ngIf="data.buttons.right" class="right_button" title={{data.buttons.right.title}}
-            look={{data.buttons.right.look}} font="smaller" (click)="closeDialog(false)"></app-button>
+    <div mat-dialog-actions class="button_container" *ngIf="data.buttons"
+        [ngClass]="{'block': this.threeButtons || this.oneButton}">
+        <app-button *ngIf="data.buttons.left" class="left_button"
+            [ngClass]="{'triple': this.threeButtons, 'double': this.twoButtons, 'single': this.oneButton}"
+            title={{data.buttons.left.title}} look={{data.buttons.left.look}} font="smaller"
+            (click)="closeDialog(1)"></app-button>
+        <div class="spacer"></div>
+        <app-button *ngIf="data.buttons.middle" class="right_button"
+            [ngClass]="{'triple': this.threeButtons, 'double': this.twoButtons, 'single': this.oneButton}"
+            title={{data.buttons.middle.title}} look={{data.buttons.middle.look}} font="smaller"
+            (click)="closeDialog(2)"></app-button>
+        <div class="spacer"></div>
+        <app-button *ngIf="data.buttons.right" class="right_button"
+            [ngClass]="{'triple': this.threeButtons, 'double': this.twoButtons, 'single': this.oneButton}"
+            title={{data.buttons.right.title}} look={{data.buttons.right.look}} font="smaller"
+            (click)="closeDialog(0)"></app-button>
     </div>
 </div>

@@ -166,11 +166,12 @@ export class AdminEditComponent {
           right: { title: 'Cancel', look: 'secondary' }
         }
       },
+      maxHeight: '85vh',
     });
 
     // If the dialog is closed and the result is true, the user decided to delete challenge, the backend deletes the challenge and the user is navigated to Challenges
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result == 1) {
         this.backendService.deleteChallenge(this.adminToken, this.id).subscribe(() => {
           this.router.navigate(['/admin_challenges']);
         }, (error) => {
