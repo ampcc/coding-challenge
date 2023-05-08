@@ -37,7 +37,7 @@ class test_deleteApplication(APITestCase):
     def test_noApplicationId(self, mockDelete):
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(self.url, format='json', )
+        response = self.client.delete(self.url + "/", format='json', )
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

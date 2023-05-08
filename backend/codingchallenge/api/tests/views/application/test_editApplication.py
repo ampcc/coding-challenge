@@ -40,7 +40,7 @@ class test_editApplication(APITestCase):
             "challengeId": 1,
             "extendDays": 2
         }
-        response = self.client.put(self.url, data, format='json')
+        response = self.client.put(self.url + "/", data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrongApplicationId(self):

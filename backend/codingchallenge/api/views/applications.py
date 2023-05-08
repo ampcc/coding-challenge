@@ -294,7 +294,6 @@ class UploadSolutionView(APIView):
     # /api/application/uploadSolution
     # Todo: Test Cases for this method
     # Todo: Add OS and Programming Language in Body
-    # Todo: Change Status when Uploaded
     def post(self, request, *args, **kwargs):
         """
         post Challenge with
@@ -311,7 +310,7 @@ class UploadSolutionView(APIView):
             file_obj = ZipFile(raw_file)
 
             user.application.submission = time.time()
-            # user.application.status = Application.Status.IN_REVIEW
+            user.application.status = Application.Status.IN_REVIEW
             user.application.githubRepo = repoName
             user.application.save()
 
