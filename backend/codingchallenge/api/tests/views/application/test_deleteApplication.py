@@ -2,7 +2,7 @@ from unittest.mock import patch
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ...auth.mockAuth import MockAuth
+from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 from ....views import jsonMessages
 
