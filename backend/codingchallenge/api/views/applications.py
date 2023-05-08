@@ -264,17 +264,19 @@ class AdminResultApplicationView(APIView):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
 
-        try:
-            repoName = application.githubRepo
-
-        except AttributeError:
+        if not application.githubRepo:
             return Response(
                 jsonMessages.errorJsonResponse("Can not find repo"),
                 status=status.HTTP_400_BAD_REQUEST)
 
+        # except AttributeError:
+        #     return Response(
+        #         jsonMessages.errorJsonResponse("Can not find repo"),
+        #         status=status.HTTP_400_BAD_REQUEST)
+
         try:
-            githubUrl = self.gApi.getRepoUrl(repoName)
-            linterResult = self.gApi.getLinterResult(repoName)
+            githubUrl = self.gApi.getRepoUrl(application.githubRepo)
+            linterResult = self.gApi.getLinterResult(application.githubRepo)
 
         except GithubException:
             return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
@@ -315,7 +317,7 @@ class UploadSolutionView(APIView):
             user.application.save()
 
             try:
-                self.gApi.createRepo(repoName, 'to be defined') # TODO: description auslagern
+                self.gApi.createRepo(repoName, 'to be defined')  # TODO: description auslagern
 
                 for path in file_obj.namelist():
                     if not path.endswith('/'):

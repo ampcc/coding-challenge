@@ -53,12 +53,11 @@ class GithubApi:
 
     def getLinterLog(self, repoName):
         return self.gApi.get_organization(self.githubOrg).get_repo(repoName).get_contents(
-            'megalinter-reports/megalinter.log')
+            'megalinter-reports/megalinter.log').decoded_content.decode()
 
     def getLinterResult(self, repoName):
 
-        megalinterLog = self.getLinterLog(repoName)
-        decodedLinter = megalinterLog.decoded_content.decode()
+        decodedLinter = self.getLinterLog(repoName)
 
         # ----SUMMARY ----
         linterStartIndex = decodedLinter.find("+----SUMMARY----")
@@ -73,7 +72,7 @@ class GithubApi:
         # cross
         cleanSummary = cleanSummary.replace(u"\u274c",u"\u2715" + " ")
         # question mark
-        cleanSummary = cleanSummary.replace(u"\u25EC",u"\u2047" + " ")
+        cleanSummary = cleanSummary.replace(u"\u25EC",u"\u2047")
 
         return cleanSummary
 
