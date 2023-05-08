@@ -187,9 +187,6 @@ export class AdminApplicationsComponent {
     this.updateFilteredApplicantArray();
   }
 
-  public checkboxTimeLimitChange(): void {
-
-  }
 
   public getChallengeHeading(challengeId: number): string {
     let elementHeading = this.challengeArray.find(element => element.id === challengeId)?.challengeHeading;
@@ -244,7 +241,7 @@ export class AdminApplicationsComponent {
       return 'not uploaded in time';
     }
     return '' + formatDate(Math.floor(submissionDate * 1000), "dd.MM.yyyy HH:mm", "en-US");
-  };
+  }
 
 
   public openDialogActiveChallenges(application: Application): void {
