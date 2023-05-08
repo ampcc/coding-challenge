@@ -34,7 +34,7 @@ class GithubApi:
         return True
 
     def deleteRepo(self, repoName):
-        self.gApi.get_organization(self.githubOrg).get_repo(repoName).delete()
+        return self.gApi.get_organization(self.githubOrg).get_repo(repoName).delete()
 
 
     # def pushFiles(self):
@@ -51,9 +51,13 @@ class GithubApi:
             content=open(BASE_DIR.joinpath("api/include/megalinter.yml"), 'r').read())
 
 
+    def getLinterLog(self, repoName):
+        return self.gApi.get_organization(self.githubOrg).get_repo(repoName).get_contents(
+            'megalinter-reports/megalinter.log')
+
     def getLinterResult(self, repoName):
 
-        megalinterLog = self.gApi.get_organization(self.githubOrg).get_repo(repoName).get_contents('megalinter-reports/megalinter.log')
+        megalinterLog = self.getLinterLog(repoName)
         decodedLinter = megalinterLog.decoded_content.decode()
 
         # ----SUMMARY ----
@@ -72,3 +76,4 @@ class GithubApi:
         cleanSummary = cleanSummary.replace(u"\u25EC",u"\u2047" + " ")
 
         return cleanSummary
+
