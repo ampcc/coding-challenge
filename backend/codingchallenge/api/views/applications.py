@@ -148,8 +148,8 @@ class AdminApplicationsView(APIView):
         if serializer.is_valid():
             serializer.save()
             try:
-                applications = Application.objects.get(applicationId=request.data.get('applicationId'))
-            except (KeyError, DoesNotExist):
+                applications = Application.objects.get(applicationId=self.kwargs["applicationId"])
+            except (KeyError, ObjectDoesNotExist):
                 return Response("Application not found!", status=status.HTTP_404_NOT_FOUND)
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
                                                                                           "applicationId": request.data.get(
@@ -230,7 +230,7 @@ class AdminApplicationsView(APIView):
         try:
             application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
-        except(KeyError, TypeError):
+        except(KeyError, TypeError, ObjectDoesNotExist):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
 
