@@ -14,6 +14,7 @@ mockRepoUrl = "https://github.com/dummy/url"
 mockLinterLog = open(BASE_DIR.joinpath("api/tests/mock/mockMegalinter.log")).read()
 
 
+# patch is used to bypass the default githubApi and to raplace the following methods with mock data
 @patch('api.include.githubApi.GithubApi.getLinterLog', return_value=mockLinterLog)
 @patch('api.include.githubApi.GithubApi.getRepoUrl', return_value=mockRepoUrl)
 class test_getResult(APITestCase):
