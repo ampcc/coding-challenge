@@ -35,6 +35,9 @@ ENCRYPTION_KEY = os.getenv('ENCRYPTION_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Set this variable if you dont want to use the Github API
+OFFLINE_USE = True
+
 ALLOWED_HOSTS = []
 
 # Application definition
