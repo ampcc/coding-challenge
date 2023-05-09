@@ -43,7 +43,42 @@ h2 {
 
 #tab_archiv {
     margin-left: 24px;
-    ;
+}
+
+
+/* style search bar */
+.search_bar {
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.mb-4 {
+    margin-bottom: 0 !important; 
+}
+
+#input_search_bar {  
+    border-radius: 5px;  
+}
+
+.form-control {
+    font-size: 16px;
+}
+  
+.form-control:focus {  
+  box-shadow: none;  
+}  
+
+.form-control::placeholder {    
+  color: rgba(0, 0, 0, 0.15);  
+}  
+
+#button-addon5 {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.15);
+    margin-left: 2px;
 }
 
 
@@ -55,8 +90,10 @@ h2 {
 
 .filter {
     display: inline-block;
-    margin: auto;
+    margin-top: auto;
+    margin-bottom: auto;
     margin-right: 0;
+    margin-left: 20px;
     /* z-index: 1; */
 }
 
@@ -201,7 +238,8 @@ span {
     .tabs,
     #labelFilter,
     .caret,
-    .tree_checkbox_label
+    .tree_checkbox_label,
+    .form-control
     {
         font-size: 25px;
     }
@@ -214,7 +252,8 @@ span {
         font-size: 30px;
     }
 
-    .funnel {
+    .funnel,
+    .search {
         width: 25px;
         height: 25px;
     }
@@ -228,4 +267,6 @@ span {
     }
 }
 
-@media screen and (max-width: 768px) {}
+@media screen and (max-width: 850px) {
+    /* responsive design for the tab bar */
+}
