@@ -31,8 +31,11 @@ class GithubApi:
 
     def createRepo(self, repoName, repoDescription):
         self.gApi.get_organization(self.githubOrg).create_repo(name=repoName, description=repoDescription, private=True)
-
         return True
+
+    def deleteRepo(self, repoName):
+        self.gApi.get_organization(self.githubOrg).get_repo(repoName).delete()
+
 
     # def pushFiles(self):
     def pushFile(self, repoName, path, file):
