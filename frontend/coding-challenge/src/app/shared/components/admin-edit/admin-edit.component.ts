@@ -44,9 +44,9 @@ export class AdminEditComponent {
 
   public ngOnInit(): void {
     this.adminToken = window.sessionStorage.getItem('Adm-Token');
-    // if (this.adminToken === null) {
-    //   this.router.navigateByUrl("/admin_login");
-    // }
+    if (this.adminToken === null) {
+      this.router.navigateByUrl("/admin_login");
+    }
     this.route.queryParams.subscribe((params) => {
       // TODO: Check if this codeis correct and works
       if (params["id"] != null) {
@@ -103,7 +103,7 @@ export class AdminEditComponent {
         this.showDescriptionError = true;
       }
     } else {
-      // TODO: Check if this codeis correct and works
+      // TODO: Check if this code is correct and works
       if (this.editPage) {
         var tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description };
         this.backendService.editChallenge(this.adminToken, tempChallenge).subscribe((response) => {
