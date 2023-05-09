@@ -76,6 +76,10 @@ export class ChallengeComponent implements OnInit {
 
       // Get the current Status
       this.backend.getStatus(this.applicationToken).subscribe((response) => {
+        if(response.status >= 2) {
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/gone");
+        }
         this.applicant = {
           applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiry: response.expiry, githubRepo: "",
           operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submission: 0, status: response.progress
@@ -189,7 +193,8 @@ export class ChallengeComponent implements OnInit {
         title: 'Info: File structure',
         description: {
           important: 'Please pay attention to the following folder structure when uploading:',
-          details: 'All source files have to be directly under the .zip file! <br><pre>YourCode.zip <br>├── src1.java <br>├── src2.py <br>├── src3.c <br>└── ....'
+          details: 'The Projectfolder has to be directly under the .zip File and the Readme File has to be inside the Projectfolder!'
+           + ' <br> <br><pre>YourCode.zip <br>└── ProjectFolder/ <br>    ├── src/ <br>    ├── data/ <br>    ├── test/ <br>    ├── ReadMe.md <br>    └── ....'
         },
       },
       maxHeight: '85vh',
@@ -234,25 +239,33 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
-  public checkUploadedZipContent(file: File): void {
-    var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
-    const jsZip = require('jszip');
-    var result = true;
-    jsZip.loadAsync(file).then((zip: any) => {
-      Object.keys(zip.files).forEach((filename) => {
-        if (filename.endsWith("/") || filename.endsWith("\\")) {
+public checkUploadedZipContent(file:File): void{
+  var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
+  const jsZip = require('jszip');
+  var result = true;
+  var isSecondLayerFile = false;
+  jsZip.loadAsync(file).then((zip: any) => {
+    Object.keys(zip.files).filter(v => v.indexOf("__MACOSX/") === -1 && v.indexOf("DS_Store") === -1).forEach((filename) => {
+      if(filename.indexOf(".") !== -1){
+        if((filename.split("/").length - 1) === 0){
           result = false;
+        }else if((filename.split("/").length - 1) === 1){
+          isSecondLayerFile = true;
         }
-      })
-      if (result) {
-        this.fileArray.push(file);
-      } else {
-        this.hideMsgFileUplod = false;
-        this.msgFileUplod = 'The file ' + file.name + ' has the wrong folder structure';
-        element.setAttribute("style", "border-color:red; ");
-        this.openDialogInfo();
       }
     })
+    if(!isSecondLayerFile){
+      result = false;
+    }
+    if(result){
+      this.fileArray.push(file);
+    }else {
+      this.hideMsgFileUplod = false;
+      this.msgFileUplod = 'The file ' + file.name + ' has the wrong folder structure';
+      element.setAttribute("style", "border-color:red; ");
+      this.openDialogInfo();
+    }
+  })
 
   }
 
@@ -346,11 +359,28 @@ export class ChallengeComponent implements OnInit {
     }
 
     if (!required) {
-      alert('Success: ' + resultOs + ', ' + resultPl);
-      this.hideSuccess = false;
-      this.hideUpload = true;
-      this.backend.uploadChallenge("Token" + this.applicant.applicationKey, resultOs, resultPl);
-      this.backend.submitChallenge("Token " + this.applicant.applicationKey);
+      this.hideMsgFileUplod = false;
+      this.msgFileUplod = "Uploading File. Please Wait."
+      this.backend.uploadChallenge(this.applicationToken, resultOs, resultPl, this.fileArray[0]).subscribe((response) => {
+        this.hideSuccess = false;
+        this.hideUpload = true;
+        this.hideMsgFileUplod = true;
+      },(error) => {
+        switch (error.status) {
+          case 403:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/forbidden");
+            break;
+          case 404:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/notFound");
+            break;
+          default:
+            window.sessionStorage.clear();
+            this.router.navigateByUrl("/internalError");
+            break;
+        }
+      });
     }
   }
 }

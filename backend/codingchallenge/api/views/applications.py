@@ -227,15 +227,15 @@ class AdminApplicationsView(APIView):
         try:
             application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
-        except(KeyError, TypeError, ObjectDoesNotExist):
-            return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status=status.HTTP_404_NOT_FOUND)
+        except(KeyError, TypeError):
+            return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
+                            status=status.HTTP_404_NOT_FOUND)
 
         application.delete()
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
 
 class AdminResultApplicationView(APIView):
-
     permission_classes = [IsAuthenticated]
 
     gApi = GithubApi()
@@ -257,27 +257,30 @@ class AdminResultApplicationView(APIView):
                 raise TypeError
 
         except(KeyError, TypeError):
-            return Response(jsonMessages.errorJsonResponse("Application ID not found!"), status=status.HTTP_404_NOT_FOUND)
+            return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
+                            status=status.HTTP_404_NOT_FOUND)
 
         if application.githubRepo:
             repoName = application.githubRepo
+
         else:
             return Response(
                 jsonMessages.errorJsonResponse("Can not find repo"),
                 status=status.HTTP_400_BAD_REQUEST)
 
+        return Response({'githubUrl': self.gApi.getRepoUrl(repoName),
+                         'content': self.gApi.getLinterResult(repoName)}, status=status.HTTP_200_OK)
 
-        return Response({'content': self.gApi.getLinterResult(repoName)}, status=status.HTTP_200_OK)
 
-class UploadApplicationView(APIView):
+class UploadSolutionView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [FileUploadParser]
 
     gApi = GithubApi()
 
-    # 18. Upload Challenge
-    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-challenge
-    # /api/application/uploadChallenge
+    # 18. Upload Solution
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
+    # /api/application/uploadSolution
     # Todo: Test Cases for this method
     def post(self, request, *args, **kwargs):
         """
@@ -295,7 +298,7 @@ class UploadApplicationView(APIView):
             file_obj = ZipFile(raw_file)
 
             user.application.submission = time.time()
-            #user.application.status = Application.Status.IN_REVIEW
+            # user.application.status = Application.Status.IN_REVIEW
             user.application.githubRepo = repoName
             user.application.save()
 
@@ -309,9 +312,10 @@ class UploadApplicationView(APIView):
             return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
         else:
             return Response(
-                jsonMessages.errorJsonResponse("challenge has already been submitted"),
+                jsonMessages.errorJsonResponse("solution has already been submitted"),
                 status=status.HTTP_400_BAD_REQUEST)
-                
+
+
 # Implementation of GET Application Status
 ### endpoint: /api/getApplicationStatus
 class StatusApplicationView(APIView):

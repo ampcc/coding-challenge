@@ -40,6 +40,7 @@ export class AdminApplicationsComponent {
   public filteredApplicantsArray: Application[] = [];
   public archivArray: Application[] = [];
   public filteredArchivArray: Application[] = [];
+  public resultOfLinting: String = "";
 
   public possibleChallengesArray: Challenge[] = [];
   public newChallengesArray: [{
@@ -61,26 +62,26 @@ export class AdminApplicationsComponent {
 
   public ngOnInit(): void {
     // Check if Admin Token is available
-    this.adminToken = window.sessionStorage.getItem('Adm-Token');
-    if (this.adminToken === null) {
-      this.router.navigateByUrl("/admin_login")
-    } else {
-      this.backend.getApplications(this.adminToken).subscribe((response) => {
-        response.forEach((element: Application) => {
-          if (element.status <= 3) {
-            this.applicantsArray.push(this.applicant);
-          } else if (element.status === 5) {
-            this.archivArray.push(element);
-          }
-        });
-        this.filteredApplicantsArray = this.applicantsArray;
-        this.filteredArchivArray = this.archivArray;
-      });
-      const challengeInfos = this.backend.getChallenges(this.adminToken)
-        .subscribe((data: Challenge[]) => {
-          this.challengeArray = data;
-        });
-    }
+    // this.adminToken = window.sessionStorage.getItem('Adm-Token');
+    // if (this.adminToken === null) {
+    //   this.router.navigateByUrl("/admin_login")
+    // } else {
+    //   this.backend.getApplications(this.adminToken).subscribe((response) => {
+    //     response.forEach((element: Application) => {
+    //       if (element.status <= 3) {
+    this.applicantsArray.push(this.applicant);
+    //       } else if (element.status === 5) {
+    //         this.archivArray.push(element);
+    //       }
+    //     });
+    this.filteredApplicantsArray = this.applicantsArray;
+    //     this.filteredArchivArray = this.archivArray;
+    //   });
+    //   const challengeInfos = this.backend.getChallenges(this.adminToken)
+    //     .subscribe((data: Challenge[]) => {
+    //       this.challengeArray = data;
+    //     });
+    // }
   }
 
   public changeTab(id: string): void {
@@ -243,52 +244,56 @@ export class AdminApplicationsComponent {
     if (submissionDate === 0 || submissionDate === null || submissionDate === undefined) {
       return 'not uploaded in time';
     }
-    return '' + formatDate(Math.floor(submissionDate * 1000), "dd.MM.yyyy hh:mm", "en-US");
+    return '' + formatDate(Math.floor(submissionDate * 1000), "dd.MM.yyyy HH:mm", "en-US");
   };
 
 
   public openDialogActiveChallenges(application: Application): void {
     DialogComponent.name;
-    let dialogRef = this.dialog.open(DialogComponent, {
-      data: {
-        title: 'Applicant ' + application.applicationId,
-        description: {
-          important: "<a href='" + application.githubRepo + "'>Open Project on GitHub</a>",
-          details: 'TODO: getResult'
+    this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
+      this.resultOfLinting = response.content;
+      let dialogRef = this.dialog.open(DialogComponent, {
+        data: {
+          title: 'Applicant ' + application.applicationId,
+          description: {
+            link: 'Open Project on GitHub',
+            url: 'https://github.com/ampcc/' + application.githubRepo,
+            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+          },
+          buttons: {
+            left: { title: 'Archive', look: 'primary' },
+            right: { title: 'Cancel', look: 'secondary' }
+          }
         },
-        buttons: {
-          left: { title: 'Archive', look: 'primary' },
-          right: { title: 'Cancel', look: 'secondary' }
-        }
-      },
-      maxHeight: '85vh',
-      minWidth: '30vw',
-    });
+        maxHeight: '85vh',
+        minWidth: '30vw',
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == 1) {
-        this.backend.editApplication(this.adminToken, application.applicationId, 5)
-          .subscribe((result) => {
-            var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
-            this.applicantsArray.splice(index, 1);
-            this.archivArray.push(application);
-          }, (error: HttpErrorResponse) => {
-            switch (error.status) {
-              case 401:
-                window.sessionStorage.clear();
-                this.router.navigateByUrl("/unauthorized");
-                break;
-              case 404:
-                window.sessionStorage.clear();
-                this.router.navigateByUrl("/notFound");
-                break;
-              default:
-                window.sessionStorage.clear();
-                this.router.navigateByUrl("/internalError");
-                break;
-            }
-          });
-      }
+      dialogRef.afterClosed().subscribe(result => {
+        if (result == 1) {
+          this.backend.editApplication(this.adminToken, application.applicationId, 5)
+            .subscribe((result) => {
+              var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+              this.applicantsArray.splice(index, 1);
+              this.archivArray.push(application);
+            }, (error: HttpErrorResponse) => {
+              switch (error.status) {
+                case 401:
+                  window.sessionStorage.clear();
+                  this.router.navigateByUrl("/unauthorized");
+                  break;
+                case 404:
+                  window.sessionStorage.clear();
+                  this.router.navigateByUrl("/notFound");
+                  break;
+                default:
+                  window.sessionStorage.clear();
+                  this.router.navigateByUrl("/internalError");
+                  break;
+              }
+            });
+        }
+      })
     })
   }
 
@@ -322,7 +327,6 @@ export class AdminApplicationsComponent {
       maxHeight: '85vh',
       minWidth: '30vw',
     });
-
     dialogRef.afterClosed().subscribe(result => {
       // TODO: Test if time limit gets successfully expanded
       if (result.s && result.s == 1) {
@@ -369,23 +373,28 @@ export class AdminApplicationsComponent {
           });
       }
     })
-  }
+  };
+
 
   public openDialogArchiv(application: Application): void {
     DialogComponent.name;
-    let dialogRef = this.dialog.open(DialogComponent, {
-      data: {
-        title: 'Applicant ' + application.applicationId,
-        description: {
-          important: "<a href='" + application.githubRepo + "'>Open Project on GitHub</a>",
-          details: 'TODO: getResult'
+    this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
+      this.resultOfLinting = response.content;
+      let dialogRef = this.dialog.open(DialogComponent, {
+        data: {
+          title: 'Applicant ' + application.applicationId,
+          description: {
+            link: 'Open Project on GitHub',
+            url: 'https://github.com/ampcc/' + application.githubRepo,
+            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+          },
+          buttons: {
+            right: { title: 'Cancel', look: 'secondary' }
+          }
         },
-        buttons: {
-          right: { title: 'Cancel', look: 'secondary' }
-        }
-      },
-      maxHeight: '85vh',
-      minWidth: '30vw',
+        maxHeight: '85vh',
+        minWidth: '30vw',
+      });
     });
   }
 }
