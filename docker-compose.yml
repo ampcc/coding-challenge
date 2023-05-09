@@ -1,0 +1,9 @@
+services:
+  server:
+    build: ./backend/
+    ports:
+      - "8000:8000"
+  web:
+    build: ./frontend/
+    ports:
+      - "4200:4200"

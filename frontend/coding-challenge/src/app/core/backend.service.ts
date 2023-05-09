@@ -41,8 +41,13 @@ export class BackendService {
     return this.http.get(this.backendURL + "/api/application/challenges", {'headers': headers});
   }
 
-  public uploadChallenge(_applicantKey: string, _oS: string, _pL: string): boolean{
-    return true;
+  public uploadChallenge(_applicationToken: string | null, _oS: string, _pL: string, _zipFile: File): Observable<any>{
+    const headers = new HttpHeaders().set('Authorization', "Token " + _applicationToken)
+                                     .set('Content-Disposition', "attatchment; filename=" + _zipFile.name);
+    const body = new FormData();
+    body.append('dataZip', _zipFile);
+    console.log(body);
+    return this.http.post(this.backendURL + '/api/application/uploadChallenge', body, {'headers': headers});
   }
 
   public submitChallenge(_applicationToken: string): Observable<any>{
@@ -107,7 +112,7 @@ export class BackendService {
     return this.http.delete(this.backendURL + "/api/admin/applications/" + _applicationId, {'headers': headers});
   }
 
-  public getResult(_adminToken: string, _applicationId: string): Observable<any> {
+  public getResult(_adminToken: string | null, _applicationId: string): Observable<any> {
     var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.get(this.backendURL + "/api/admin/applications/results/" + _applicationId, {'headers': headers});
   }

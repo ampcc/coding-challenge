@@ -37,6 +37,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+APPEND_SLASH = False
+
 # Application definition
 INSTALLED_APPS = [
     'corsheaders',
@@ -146,3 +148,16 @@ REST_FRAMEWORK = {
 #CORS Response
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "content-disposition",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]

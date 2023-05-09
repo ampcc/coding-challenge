@@ -27,6 +27,9 @@ export class StartComponent implements OnInit {
       this.backendService.getStatus(this.applicationToken).subscribe((response) => {
         if (response.status === 1) {
           this.router.navigateByUrl("/challenge");
+        }else if(response.status >= 2){
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/gone");
         }
       });
     }

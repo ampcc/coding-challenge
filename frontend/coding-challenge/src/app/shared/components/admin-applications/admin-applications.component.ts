@@ -40,6 +40,7 @@ export class AdminApplicationsComponent {
   public filteredApplicantsArray: Application[] = [];
   public archivArray: Application[] = [];
   public filteredArchivArray: Application[] = [];
+  public resultOfLinting: String = "";
 
   public hideSubmissionDate: boolean = false;
   public hideTimeLimit: boolean = false;
@@ -237,66 +238,71 @@ export class AdminApplicationsComponent {
     if(submissionDate === 0 || submissionDate === null || submissionDate === undefined) {
       return 'not uploaded in time';
     }
-    return '' + formatDate(Math.floor(submissionDate*1000), "dd.MM.yyyy hh:mm","en-US");
+    return '' + formatDate(Math.floor(submissionDate*1000), "dd.MM.yyyy HH:mm","en-US");
   };
 
 
   public openDialogActiveChallenges(application: Application): void {
     DialogComponent.name;
-    let dialogRef = this.dialog.open(DialogComponent, {
-      data: {
-        title: 'Applicant ' + application.applicationId,
-        description: {
-          important: "<a href='" + application.githubRepo + "'>Open Project on GitHub</a>",
-          details: 'TODO: getResult'
-        },
-        buttons: {
-          left: { title: 'Archive', look: 'primary' },
-          right: { title: 'Cancel', look: 'secondary' }
-        }
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.backend.editApplication(this.adminToken, application.applicationId, 5)
-        .subscribe((result) =>{
-          var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
-          this.applicantsArray.splice(index, 1);
-          this.archivArray.push(application);
-        }, (error: HttpErrorResponse) => {
-          switch (error.status) {
-            case 401:
-              window.sessionStorage.clear();
-              this.router.navigateByUrl("/unauthorized");
-              break;
-            case 404:
-              window.sessionStorage.clear();
-              this.router.navigateByUrl("/notFound");
-              break;
-            default:
-              window.sessionStorage.clear();
-              this.router.navigateByUrl("/internalError");
-              break;
+    this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
+      this.resultOfLinting = response.content;
+      let dialogRef = this.dialog.open(DialogComponent, {
+        data: {
+          title: 'Applicant ' + application.applicationId,
+          description: {
+            important: "<a href='https://github.com/ampcc/" + application.githubRepo + "' target='_blank'>Open Project on GitHub</a>",
+            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+          },
+          buttons: {
+            left: { title: 'Archive', look: 'primary' },
+            right: { title: 'Cancel', look: 'secondary' }
           }
-        });
-      }
-    })
+        },
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.backend.editApplication(this.adminToken, application.applicationId, 5)
+          .subscribe((result) =>{
+            var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+            this.applicantsArray.splice(index, 1);
+            this.archivArray.push(application);
+          }, (error: HttpErrorResponse) => {
+            switch (error.status) {
+              case 401:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/unauthorized");
+                break;
+              case 404:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/notFound");
+                break;
+              default:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/internalError");
+                break;
+            }
+          });
+        }
+      })
+    });
   }
 
   public openDialogArchiv(application: Application): void {
     DialogComponent.name;
-    let dialogRef = this.dialog.open(DialogComponent, {
-      data: {
-        title: 'Applicant ' + application.applicationId,
-        description: {
-          important: "<a href='" + application.githubRepo + "'>Open Project on GitHub</a>",
-          details: 'TODO: getResult'
+    this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
+      this.resultOfLinting = response.content;
+      let dialogRef = this.dialog.open(DialogComponent, {
+        data: {
+          title: 'Applicant ' + application.applicationId,
+          description: {
+            important: "<a href='https://github.com/ampcc/" + application.githubRepo + "' target='_blank'>Open Project on GitHub</a>",
+            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+          },
+          buttons: {
+            right: { title: 'Cancel', look: 'secondary' }
+          }
         },
-        buttons: {
-          right: { title: 'Cancel', look: 'secondary' }
-        }
-      },
+      });
     });
   }
 }
