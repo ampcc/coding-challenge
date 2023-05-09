@@ -24,16 +24,23 @@
                     </label>
                 </div>
 
-                <div class="filter">
+                
+                    <button class="btn btn-dark add" id="add_button" (click)="addChallenge()">
+                        Add 
+                        <img src="../../../../assets/plus-lg.svg" class="plus">
+                    </button>               
+                
+
+                <!-- <div class="filter">
                     <div>
                         <label (click)="showFilter()" id="labelFilter">
                             Filter
                             <img src="../../../../assets/funnel.svg" class="funnel">
                         </label>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
+            <!-- <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
                 <ul id="myUL">
                     <li id="last_tree">
                         <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
@@ -48,7 +55,7 @@
                     </li>
                 </ul>
                 <button class="btn btn-dark apply_button">Apply</button>
-            </div>
+            </div> -->
 
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
                 <div class="list" id="list_challenges">
