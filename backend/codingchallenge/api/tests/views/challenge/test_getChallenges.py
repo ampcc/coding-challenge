@@ -6,7 +6,7 @@ from ....models.challenge import Challenge
 
 
 class test_getChallenges(APITestCase):
-    url = '/api/admin/challenges'
+    url = '/api/admin/challenges/'
 
     def setUp(self):
         # Authorization
@@ -37,7 +37,7 @@ class test_getChallenges(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongUrl(self):
-        url = '/api/admin/super_cool_challenges'
+        url = '/api/admin/super_cool_challenges/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

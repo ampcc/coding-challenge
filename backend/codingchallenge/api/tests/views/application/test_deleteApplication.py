@@ -7,7 +7,7 @@ from ....views import jsonMessages
 
 
 class test_deleteApplication(APITestCase):
-    url = '/api/admin/applications'
+    url = '/api/admin/applications/'
 
     def setUp(self):
         # Authorization
@@ -22,12 +22,12 @@ class test_deleteApplication(APITestCase):
         self.client.credentials()
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(self.url + "/" + self.applicationId, format='json')
+        response = self.client.delete(self.url + self.applicationId, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongUrl(self):
-        url = '/api/admin/dumb'
+        url = '/api/admin/dumb/'
 
         self.assertEqual(Application.objects.count(), 1)
 
@@ -45,14 +45,14 @@ class test_deleteApplication(APITestCase):
     def test_wrongApplicationId(self):
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(self.url + "/4321TSET", format='json', )
+        response = self.client.delete(self.url + "4321TSET", format='json', )
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_correctInput(self):
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(self.url + "/" + self.applicationId)
+        response = self.client.delete(self.url + self.applicationId)
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, jsonMessages.successJsonResponse())
