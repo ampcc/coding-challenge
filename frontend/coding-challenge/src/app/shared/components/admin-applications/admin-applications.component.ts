@@ -62,26 +62,26 @@ export class AdminApplicationsComponent {
 
   public ngOnInit(): void {
     // Check if Admin Token is available
-    // this.adminToken = window.sessionStorage.getItem('Adm-Token');
-    // if (this.adminToken === null) {
-    //   this.router.navigateByUrl("/admin_login")
-    // } else {
-    //   this.backend.getApplications(this.adminToken).subscribe((response) => {
-    //     response.forEach((element: Application) => {
-    //       if (element.status <= 3) {
+    this.adminToken = window.sessionStorage.getItem('Adm-Token');
+    if (this.adminToken === null) {
+      this.router.navigateByUrl("/admin_login")
+    } else {
+      this.backend.getApplications(this.adminToken).subscribe((response) => {
+        response.forEach((element: Application) => {
+          if (element.status <= 3) {
     this.applicantsArray.push(this.applicant);
-    //       } else if (element.status === 5) {
-    //         this.archivArray.push(element);
-    //       }
-    //     });
+          } else if (element.status === 5) {
+            this.archivArray.push(element);
+          }
+        });
     this.filteredApplicantsArray = this.applicantsArray;
-    //     this.filteredArchivArray = this.archivArray;
-    //   });
-    //   const challengeInfos = this.backend.getChallenges(this.adminToken)
-    //     .subscribe((data: Challenge[]) => {
-    //       this.challengeArray = data;
-    //     });
-    // }
+        this.filteredArchivArray = this.archivArray;
+      });
+      const challengeInfos = this.backend.getChallenges(this.adminToken)
+        .subscribe((data: Challenge[]) => {
+          this.challengeArray = data;
+        });
+    }
   }
 
   public changeTab(id: string): void {
