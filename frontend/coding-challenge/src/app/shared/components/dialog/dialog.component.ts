@@ -68,7 +68,7 @@ export class DialogComponent {
     }
   }
 
-  //The Dialog can be closed with the press of a button
+  // The Dialog can be closed with the press of a button
   public closeDialog(state: number) {
     if (this.data.description.extend && state == 1) {
       var response;
