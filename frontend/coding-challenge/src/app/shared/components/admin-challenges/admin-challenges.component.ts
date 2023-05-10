@@ -65,7 +65,7 @@ export class AdminChallengesComponent implements OnInit {
   }
 
   public addChallenge(): void {
-    this.router.navigateByUrl("/admin_edit_challenge?id=1");
+    this.router.navigateByUrl("/admin_edit_challenge");
   }
 
 
