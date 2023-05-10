@@ -40,6 +40,9 @@ export class AdminApplicationsComponent {
   public filteredApplicantsArray: Application[] = [];
   public archivArray: Application[] = [];
   public filteredArchivArray: Application[] = [];
+
+  public searchContent: String = "";
+
   public resultOfLinting: String = "";
 
   public newChallengesArray: [{
@@ -105,6 +108,14 @@ export class AdminApplicationsComponent {
     }
   }
 
+  public search(): void {
+    this.searchContent = (<HTMLInputElement>document.getElementById("input_search_bar")).value;
+    this.searchContent = this.searchContent.trim();
+    console.log('searchContent: ' + this.searchContent);
+    this.updateFilteredApplicantArray();
+    this.updateFilteredArchiveArray();
+  }
+
   public showFilter(): void {
     this.hideFilterSelect = !this.hideFilterSelect;
   }
@@ -131,6 +142,10 @@ export class AdminApplicationsComponent {
           this.filteredArchivArray.push(app);
         }
       });
+    }
+
+    if(this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
+      this.filteredArchivArray = this.filteredArchivArray.filter(element => element.applicationId === this.searchContent);
     }
   }
 
@@ -163,6 +178,10 @@ export class AdminApplicationsComponent {
           }
         }
       });
+    }
+
+    if(this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
+      this.filteredApplicantsArray = this.filteredApplicantsArray.filter(element => element.applicationId === this.searchContent);
     }
   }
 
