@@ -83,14 +83,12 @@ export class DialogComponent {
       } else {
         expiryTime = new Date().getTime() + (this.days * 24 * 60 * 60 * 1000);
       }
-      if (this.data.description.challenges) {
         this.challenge = (<HTMLSelectElement>document.getElementById('dropdown')).value;
-        if (this.challenge = '') {
+        if (this.challenge === '') {
           this.challengeError = true;
-        } else if (this.challenge='none') {
+        } else if (this.challenge ==='none') {
           this.challenge = undefined;
         }
-      }
       if (!this.daysError && !this.challengeError) {
         response = {
           s: state,
