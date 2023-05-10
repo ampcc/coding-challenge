@@ -2,11 +2,11 @@ from unittest.mock import patch
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ...auth.mockAuth import MockAuth
+from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 from ....views import jsonMessages
 
-
+# patch is used to bypass the default githubApi and to raplace the following method with mock data
 @patch('api.include.githubApi.GithubApi.deleteRepo', autospec=True)
 class test_deleteApplication(APITestCase):
     url = '/api/admin/applications/'
@@ -15,8 +15,14 @@ class test_deleteApplication(APITestCase):
         # Authorization
         MockAuth.admin(self)
 
-        # default url
-        Application.objects.create(applicationId="TEST1234", challengeId=1, expiry=0, user_id=1)
+        # Create Challenge
+        self.client.post("/api/admin/challenges",
+                         {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
+                         format='json')
+
+        # Create Application
+        self.client.post(self.url, {"applicationId": "TEST1234"}, format='json')
+
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
 
     def test_missingAuth(self, mockDelete):
@@ -28,27 +34,17 @@ class test_deleteApplication(APITestCase):
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
-    def test_wrongUrl(self, mockDelete):
-        url = '/api/admin/dumb'
-
-        self.assertEqual(Application.objects.count(), 1)
-
-        response = self.client.delete(self.url, format='json')
-        self.assertEqual(Application.objects.count(), 1)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
     def test_noApplicationId(self, mockDelete):
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(self.url, format='json', )
+        response = self.client.delete(self.url + "/", format='json', )
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrongApplicationId(self, mockDelete):
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(self.url + "4321TSET", format='json', )
+        response = self.client.delete(self.url + "/" + "4321TSET", format='json', )
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

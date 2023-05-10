@@ -260,24 +260,23 @@ class AdminResultApplicationView(APIView):
         try:
             application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
-            if not application:
-                raise TypeError
-
-        except(KeyError, TypeError):
+        except(KeyError, ObjectDoesNotExist):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
 
-        try:
-            repoName = application.githubRepo
-
-        except AttributeError:
+        if not application.githubRepo:
             return Response(
                 jsonMessages.errorJsonResponse("Can not find repo"),
                 status=status.HTTP_400_BAD_REQUEST)
 
+        # except AttributeError:
+        #     return Response(
+        #         jsonMessages.errorJsonResponse("Can not find repo"),
+        #         status=status.HTTP_400_BAD_REQUEST)
+
         try:
-            githubUrl = self.gApi.getRepoUrl(repoName)
-            linterResult = self.gApi.getLinterResult(repoName)
+            githubUrl = self.gApi.getRepoUrl(application.githubRepo)
+            linterResult = self.gApi.getLinterResult(application.githubRepo)
 
         except GithubException:
             return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
@@ -296,6 +295,7 @@ class UploadSolutionView(APIView):
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
     # /api/application/uploadSolution
     # Todo: Test Cases for this method
+    # Todo: Add OS and Programming Language in Body
     def post(self, request, *args, **kwargs):
         """
         post Challenge with
@@ -310,7 +310,7 @@ class UploadSolutionView(APIView):
 
             raw_file = request.data['file']
             file_obj = ZipFile(raw_file)
-            
+
             try:
                 correctZipped = False
                 filteredPathList = []

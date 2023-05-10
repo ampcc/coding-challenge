@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 from ....models.challenge import Challenge
 
-from ...auth.mockAuth import MockAuth
+from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 from ....views import jsonMessages
 from ....serializers import GetApplicationSerializer

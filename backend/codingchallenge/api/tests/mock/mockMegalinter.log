@@ -1,0 +1,655 @@
+----------------------------------------------------------------------------------------------------
+------------------------------------ MegaLinter, by OX Security ------------------------------------
+----------------------------------------------------------------------------------------------------
+ - Image Creation Date: 2023-04-03T18:43:32Z
+ - Image Revision: 93700f8c21c59ea784a32abe23896e49e54463b8
+ - Image Version: v6.22.2
+----------------------------------------------------------------------------------------------------
+The MegaLinter documentation can be found at:
+ - https://megalinter.io/6.22.2
+----------------------------------------------------------------------------------------------------
+::group::MegaLinter initialization (expand for details)
+GITHUB_REPOSITORY: ampcc/A1234567_1
+GITHUB_REF: refs/heads/main
+GITHUB_RUN_ID: 4914660926
+
+
+[Activation] EDITORCONFIG_EDITORCONFIG_CHECKER has been set inactive, as none of these files has been found: ['.editorconfig']
+[Activation] JAVASCRIPT_ES has been set inactive, as none of these files has been found: ['.eslintrc.json', '.eslintrc.yml', '.eslintrc.yaml', '.eslintrc.js', '.eslintrc.cjs', 'package.json:eslintConfig']
+[Activation] JSON_NPM_PACKAGE_JSON_LINT has been set inactive, as none of these files has been found: ['package.json']
+[Activation] JSX_ESLINT has been set inactive, as none of these files has been found: ['.eslintrc.json', '.eslintrc.yml', '.eslintrc.yaml', '.eslintrc.js', '.eslintrc.cjs', 'package.json:eslintConfig']
+[Activation] KUBERNETES_HELM has been set inactive, as none of these files has been found: ['Chart.yml', 'Chart.yaml']
+[Activation] REPOSITORY_GOODCHECK has been set inactive, as none of these files has been found: ['goodcheck.yml']
+[SemgrepLinter] Deactivated because no ruleset has been defined
+[Activation] SPELL_PROSELINT has been set inactive, as none of these files has been found: ['.proselintrc', 'proselint/config.json']
+[Activation] SQL_SQLFLUFF has been set inactive, as none of these files has been found: ['.sqlfluff']
+[Activation] SWIFT_SWIFTLINT has been set inactive, as none of these files has been found: ['.swiftlint.yml']
+[Activation] TSX_ESLINT has been set inactive, as none of these files has been found: ['.eslintrc.json', '.eslintrc.yml', '.eslintrc.yaml', '.eslintrc.js', '.eslintrc.cjs', 'package.json:eslintConfig']
+[Activation] TYPESCRIPT_ES has been set inactive, as none of these files has been found: ['.eslintrc.json', '.eslintrc.yml', '.eslintrc.yaml', '.eslintrc.js', '.eslintrc.cjs', 'package.json:eslintConfig']
+MARKDOWN_REMARK_LINT has been temporary disabled in MegaLinter, please use a previous MegaLinter version or wait for the next one !
+Skipped linters: ANSIBLE_ANSIBLE_LINT, EDITORCONFIG_EDITORCONFIG_CHECKER, JAVASCRIPT_ES, JAVASCRIPT_PRETTIER, JSON_NPM_PACKAGE_JSON_LINT, JSX_ESLINT, KUBERNETES_HELM, KUBERNETES_KUBECONFORM, KUBERNETES_KUBEVAL, MARKDOWN_REMARK_LINT, REPOSITORY_GOODCHECK, REPOSITORY_SEMGREP, SALESFORCE_SFDX_SCANNER_APEX, SALESFORCE_SFDX_SCANNER_AURA, SALESFORCE_SFDX_SCANNER_LWC, SPELL_PROSELINT, SQL_SQLFLUFF, SWIFT_SWIFTLINT, TSX_ESLINT, TYPESCRIPT_ES, TYPESCRIPT_PRETTIER
+To receive reports as email, please set variable EMAIL_REPORTER_EMAIL
+::endgroup::
+::group::MegaLinter now collects the files to analyse (expand for details)
+Listing all files in directory [/github/workspace], then filter with:
+- File extensions: , .R, .RMD, .Rmd, .bash, .bicep, .c, .c++, .cc, .cdxml, .clj, .cljc, .cljs, .coffee, .cpp, .cs, .css, .cu, .cuh, .cxx, .dart, .dash, .edn, .env, .feature, .go, .gradle, .graphql, .groovy, .gvy, .h, .h++, .hcl, .hh, .hpp, .htm, .html, .hxx, .java, .js, .json, .json5, .jsonc, .ksh, .kt, .kts, .lua, .md, .nf, .p6, .php, .pl, .pl6, .pm, .pm6, .pp, .proto, .ps1, .ps1xml, .psd1, .psm1, .psrc, .pssc, .py, .r, .raku, .rakumod, .rakutest, .rb, .rs, .rst, .saas, .scala, .scss, .sh, .smk, .sql, .t, .tex, .tf, .ts, .vb, .xml, .yaml, .yml
+- File names (regex): Dockerfile, Jenkinsfile, Makefile, Snakefile
+- Excluding .gitignored files [0]: 
+Kept [15] files on [16] found files
+
++----MATCHING LINTERS-----+------------+----------------+------------+
+| Descriptor | Linter     | Criteria   | Matching files | Format/Fix |
++------------+------------+------------+----------------+------------+
+| PYTHON     | pylint     | .py        | 12             | no         |
+| PYTHON     | black      | .py        | 12             | no         |
+| PYTHON     | flake8     | .py        | 12             | no         |
+| PYTHON     | isort      | .py        | 12             | no         |
+| PYTHON     | bandit     | .py        | 12             | no         |
+| PYTHON     | mypy       | .py        | 12             | no         |
+| PYTHON     | pyright    | .py        | 12             | no         |
+| PYTHON     | ruff       | .py        | 12             | no         |
+| ACTION     | actionlint | .yml|.yaml | 1              | no         |
+| COPYPASTE  | jscpd      |            | project        | no         |
+| REPOSITORY | checkov    |            | project        | no         |
+| REPOSITORY | devskim    |            | project        | no         |
+| REPOSITORY | dustilock  |            | project        | no         |
+| REPOSITORY | git_diff   |            | project        | no         |
+| REPOSITORY | gitleaks   |            | project        | no         |
+| REPOSITORY | secretlint |            | project        | no         |
+| REPOSITORY | syft       |            | project        | no         |
+| REPOSITORY | trivy      |            | project        | no         |
+| SPELL      | misspell   |            | 15             | no         |
+| SPELL      | cspell     |            | 15             | no         |
+| YAML       | prettier   | .yml|.yaml | 1              | no         |
+| YAML       | yamllint   | .yml|.yaml | 1              | no         |
+| YAML       | v8r        | .yml|.yaml | 1              | no         |
++------------+------------+------------+----------------+------------+
+::endgroup::
+Unable to get number of errors with regex_sum and Found ([0-9]+) error
+::group::[31m❌ Linted [PYTHON] files with [mypy]: Found 1 error(s) - (0.33s)[0m (expand for details)
+- Using [mypy v1.1.1] https://megalinter.io/6.22.2/descriptors/python_mypy
+- MegaLinter key: [PYTHON_MYPY]
+- Rules config: [.mypy.ini]
+- Number of files analyzed: [12]
+--Error detail:
+Neuer Ordner is not a valid Python package name
+
+::endgroup::
+::group::[32m✅ Linted [COPYPASTE] files with [jscpd] successfully - (1.08s)[0m (expand for details)
+- Using [jscpd v3.5.4] https://megalinter.io/6.22.2/descriptors/copypaste_jscpd
+- MegaLinter key: [COPYPASTE_JSCPD]
+- Rules config: [.jscpd.json]
+::endgroup::
+::group::[32m✅ Linted [REPOSITORY] files with [devskim] successfully - (0.93s)[0m (expand for details)
+- Using [devskim v0.7.104] https://megalinter.io/6.22.2/descriptors/repository_devskim
+- MegaLinter key: [REPOSITORY_DEVSKIM]
+- Rules config: identified by [devskim]
+::endgroup::
+::group::[32m✅ Linted [REPOSITORY] files with [gitleaks] successfully - (0.15s)[0m (expand for details)
+- Using [gitleaks v8.16.1] https://megalinter.io/6.22.2/descriptors/repository_gitleaks
+- MegaLinter key: [REPOSITORY_GITLEAKS]
+- Rules config: [.gitleaks.toml]
+::endgroup::
+::group::[32m✅ Linted [YAML] files with [v8r] successfully - (2.4s)[0m (expand for details)
+- Using [v8r v1.0.0] https://megalinter.io/6.22.2/descriptors/yaml_v8r
+- MegaLinter key: [YAML_V8R]
+- Rules config: identified by [v8r]
+- Number of files analyzed: [1]
+::endgroup::
+::group::[31m❌ Linted [PYTHON] files with [pyright]: Found 9 error(s) - (6.43s)[0m (expand for details)
+- Using [pyright v1.1.301] https://megalinter.io/6.22.2/descriptors/python_pyright
+- MegaLinter key: [PYTHON_PYRIGHT]
+- Rules config: identified by [pyright]
+- Number of files analyzed: [12]
+--Error detail:
+
+added 1 package, and audited 2 packages in 3s
+
+found 0 vulnerabilities
+No configuration file found.
+No pyproject.toml file found.
+Assuming Python platform Linux
+Searching for source files
+Found 6 source files
+pyright 1.1.301
+/github/workspace/Neuer Ordner/admin.py
+  /github/workspace/Neuer Ordner/admin.py:1:6 - error: Import "django.contrib" could not be resolved (reportMissingImports)
+/github/workspace/Neuer Ordner/osdflksjf/apps.py
+  /github/workspace/Neuer Ordner/osdflksjf/apps.py:1:6 - error: Import "django.apps" could not be resolved (reportMissingImports)
+/github/workspace/Neuer Ordner/osdflksjf/options.py
+  /github/workspace/Neuer Ordner/osdflksjf/options.py:1:6 - error: Import "rest_framework.metadata" could not be resolved (reportMissingImports)
+/github/workspace/Neuer Ordner/osdflksjf/serializers.py
+  /github/workspace/Neuer Ordner/osdflksjf/serializers.py:3:6 - error: Import "rest_framework" could not be resolved (reportMissingImports)
+  /github/workspace/Neuer Ordner/osdflksjf/serializers.py:4:6 - error: Import ".models" could not be resolved (reportMissingImports)
+  /github/workspace/Neuer Ordner/osdflksjf/serializers.py:5:6 - error: Import "django.db.models" could not be resolved (reportMissingImports)
+/github/workspace/Neuer Ordner/urls.py
+  /github/workspace/Neuer Ordner/urls.py:2:6 - error: Import "django.urls" could not be resolved (reportMissingImports)
+  /github/workspace/Neuer Ordner/urls.py:3:6 - error: Import "rest_framework.authtoken.views" could not be resolved (reportMissingImports)
+  /github/workspace/Neuer Ordner/urls.py:5:6 - error: Import ".views" could not be resolved (reportMissingImports)
+9 errors, 0 warnings, 0 informations 
+Completed in 1.654sec
+WARNING: there is a new pyright version available (v1.1.301 -> v1.1.306).
+Please install the new version or set PYRIGHT_PYTHON_FORCE_VERSION to `latest`
+
+
+::endgroup::
+::group::[31m❌ Linted [PYTHON] files with [pylint]: Found 15 error(s) - (2.06s)[0m (expand for details)
+- Using [pylint v2.17.2] https://megalinter.io/6.22.2/descriptors/python_pylint
+- MegaLinter key: [PYTHON_PYLINT]
+- Rules config: [.pylintrc]
+- Number of files analyzed: [12]
+--Error detail:
+pylint: Command line or configuration file:1: UserWarning: Specifying exception names in the overgeneral-exceptions option without module name is deprecated and support for it will be removed in pylint 3.0. Use fully qualified name (maybe 'builtins.Exception' ?) instead.
+************* Module .___init__
+__MACOSX/Neuer Ordner/.___init__.py:1:0: E0001: Parsing failed: 'invalid or missing encoding declaration for '/github/workspace/__MACOSX/Neuer Ordner/.___init__.py'' (syntax-error)
+************* Module ._admin
+__MACOSX/Neuer Ordner/._admin.py:1:0: E0001: Parsing failed: 'invalid or missing encoding declaration for '/github/workspace/__MACOSX/Neuer Ordner/._admin.py'' (syntax-error)
+************* Module ._urls
+__MACOSX/Neuer Ordner/._urls.py:1:0: E0001: Parsing failed: 'invalid or missing encoding declaration for '/github/workspace/__MACOSX/Neuer Ordner/._urls.py'' (syntax-error)
+************* Module ._apps
+__MACOSX/Neuer Ordner/osdflksjf/._apps.py:1:0: E0001: Parsing failed: 'invalid or missing encoding declaration for '/github/workspace/__MACOSX/Neuer Ordner/osdflksjf/._apps.py'' (syntax-error)
+************* Module ._options
+__MACOSX/Neuer Ordner/osdflksjf/._options.py:1:0: E0001: Parsing failed: 'invalid or missing encoding declaration for '/github/workspace/__MACOSX/Neuer Ordner/osdflksjf/._options.py'' (syntax-error)
+************* Module ._serializers
+__MACOSX/Neuer Ordner/osdflksjf/._serializers.py:1:0: E0001: Parsing failed: 'invalid or missing encoding declaration for '/github/workspace/__MACOSX/Neuer Ordner/osdflksjf/._serializers.py'' (syntax-error)
+************* Module Neuer Ordner.admin
+Neuer Ordner/admin.py:1:0: E0401: Unable to import 'django.contrib' (import-error)
+************* Module apps
+Neuer Ordner/osdflksjf/apps.py:1:0: E0401: Unable to import 'django.apps' (import-error)
+************* Module options
+Neuer Ordner/osdflksjf/options.py:1:0: E0401: Unable to import 'rest_framework.metadata' (import-error)
+************* Module serializers
+Neuer Ordner/osdflksjf/serializers.py:3:0: E0401: Unable to import 'rest_framework' (import-error)
+Neuer Ordner/osdflksjf/serializers.py:4:0: E0402: Attempted relative import beyond top-level package (relative-beyond-top-level)
+Neuer Ordner/osdflksjf/serializers.py:5:0: E0401: Unable to import 'django.db.models' (import-error)
+************* Module Neuer Ordner.urls
+Neuer Ordner/urls.py:2:0: E0401: Unable to import 'django.urls' (import-error)
+Neuer Ordner/urls.py:3:0: E0401: Unable to import 'rest_framework.authtoken.views' (import-error)
+Neuer Ordner/urls.py:5:0: E0401: Unable to import 'Neuer Ordner.views' (import-error)
+
+::endgroup::
+::group::[32m✅ Linted [REPOSITORY] files with [trivy] successfully - (4.86s)[0m (expand for details)
+- Using [trivy v0.39.0] https://megalinter.io/6.22.2/descriptors/repository_trivy
+- MegaLinter key: [REPOSITORY_TRIVY]
+- Rules config: identified by [trivy]
+::endgroup::
+::group::[33m✅ Linted [PYTHON] files with [black]: Found 1 non blocking error(s) - (0.72s)[0m (expand for details)
+- Using [black v23.3.0] https://megalinter.io/6.22.2/descriptors/python_black
+- MegaLinter key: [PYTHON_BLACK]
+- Rules config: [pyproject.toml]
+- Number of files analyzed: [12]
+--Error detail:
+--- /github/workspace/Neuer Ordner/osdflksjf/apps.py	2023-05-08 11:38:36.665609 +0000
++++ /github/workspace/Neuer Ordner/osdflksjf/apps.py	2023-05-08 11:38:57.276950 +0000
+@@ -1,6 +1,6 @@
+ from django.apps import AppConfig
+ 
+ 
+ class ApiConfig(AppConfig):
+-    default_auto_field = 'django.db.models.BigAutoField'
+-    name = 'api'
++    default_auto_field = "django.db.models.BigAutoField"
++    name = "api"
+would reformat /github/workspace/Neuer Ordner/osdflksjf/apps.py
+--- /github/workspace/Neuer Ordner/osdflksjf/options.py	2023-05-08 11:38:36.665609 +0000
++++ /github/workspace/Neuer Ordner/osdflksjf/options.py	2023-05-08 11:38:57.292383 +0000
+@@ -1,12 +1,14 @@
+ from rest_framework.metadata import BaseMetadata
++
+ 
+ class MinimalMetadata(BaseMetadata):
+     """
+     Don't include field and other information for `OPTIONS` requests.
+     Just return the name and description.
+     """
++
+     def determine_metadata(self, request, view):
+         return {
+-            'name': view.get_view_name(),
+-            'description': view.get_view_description()
+-        }
+\ No newline at end of file
++            "name": view.get_view_name(),
++            "description": view.get_view_description(),
++        }
+would reformat /github/workspace/Neuer Ordner/osdflksjf/options.py
+--- /github/workspace/Neuer Ordner/osdflksjf/serializers.py	2023-05-08 11:38:36.665609 +0000
++++ /github/workspace/Neuer Ordner/osdflksjf/serializers.py	2023-05-08 11:38:57.340786 +0000
+@@ -2,20 +2,34 @@
+ 
+ from rest_framework import serializers
+ from .models import Challenge, Application
+ from django.db.models import CharField
+ 
++
+ class GetChallengeSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = Challenge
+         fields = ["id", "challengeHeading", "challengeText"]
+ 
++
+ class GetApplicationSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = Application
+-        fields = ["applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission", "githubRepo",
+-                  "status", "created", "modified", "user"]
++        fields = [
++            "applicationId",
++            "challengeId",
++            "operatingSystem",
++            "programmingLanguage",
++            "expiry",
++            "submission",
++            "githubRepo",
++            "status",
++            "created",
++            "modified",
++            "user",
++        ]
++
+ 
+ class PostApplicationSerializer(serializers.ModelSerializer):
+     tmpLink = serializers.SerializerMethodField()
+ 
+     def get_tmpLink(self, obj):
+@@ -30,9 +44,18 @@
+         model = Application
+         tmpLink = CharField()
+ 
+         fields = ["applicationId", "created", "status", "expiry", "tmpLink"]
+ 
++
+ class GetApplicationStatus(serializers.ModelSerializer):
+     class Meta:
+         model = Application
+-        fields = ["applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission", "status"]
+\ No newline at end of file
++        fields = [
++            "applicationId",
++            "challengeId",
++            "operatingSystem",
++            "programmingLanguage",
++            "expiry",
++            "submission",
++            "status",
++        ]
+would reformat /github/workspace/Neuer Ordner/osdflksjf/serializers.py
+error: cannot format /github/workspace/__MACOSX/Neuer Ordner/.___init__.py: invalid or missing encoding declaration
+error: cannot format /github/workspace/__MACOSX/Neuer Ordner/._admin.py: invalid or missing encoding declaration
+error: cannot format /github/workspace/__MACOSX/Neuer Ordner/._urls.py: invalid or missing encoding declaration
+error: cannot format /github/workspace/__MACOSX/Neuer Ordner/osdflksjf/._apps.py: invalid or missing encoding declaration
+error: cannot format /github/workspace/__MACOSX/Neuer Ordner/osdflksjf/._options.py: invalid or missing encoding declaration
+--- /github/workspace/Neuer Ordner/urls.py	2023-05-08 11:38:36.665609 +0000
++++ /github/workspace/Neuer Ordner/urls.py	2023-05-08 11:38:57.374608 +0000
+@@ -6,23 +6,37 @@
+ 
+ 
+ # Endpoint Definition
+ 
+ urlpatterns = [
+-    path('admin/login', obtain_auth_token),
+-    
+-    path('admin/applications/', applications.AdminApplicationsView.as_view()),
+-    path('admin/changePassword', authentication.AdminChangePassword.as_view()),
+-
+-    path('admin/applications/<applicationId>', applications.AdminApplicationsView.as_view(), name="applicationId"),
+-    path('admin/applications/results/<applicationId>', applications.AdminResultApplicationView.as_view(), name="applicationId"),
+-
+-    path('admin/challenges/', challenges.AdminChallengesView.as_view()),
+-    path('admin/challenges/<challengeId>', challenges.AdminChallengesView.as_view(), name="challengeId"),
+-
+-    path('application/loginWithKey/<key>', authentication.KeyAuthentication.as_view(), name="key"),
+-    path('application/getApplicationStatus', applications.StatusApplicationView.as_view()),
+-    path('application/submitChallenge', applications.SubmitApplicationView.as_view()),
+-    path('application/startChallenge', applications.StartChallengeView.as_view()),
+-    path('application/challenges', challenges.ApplicationChallengesView.as_view()),
+-    path('application/uploadChallenge', applications.UploadApplicationView.as_view()),
++    path("admin/login", obtain_auth_token),
++    path("admin/applications/", applications.AdminApplicationsView.as_view()),
++    path("admin/changePassword", authentication.AdminChangePassword.as_view()),
++    path(
++        "admin/applications/<applicationId>",
++        applications.AdminApplicationsView.as_view(),
++        name="applicationId",
++    ),
++    path(
++        "admin/applications/results/<applicationId>",
++        applications.AdminResultApplicationView.as_view(),
++        name="applicationId",
++    ),
++    path("admin/challenges/", challenges.AdminChallengesView.as_view()),
++    path(
++        "admin/challenges/<challengeId>",
++        challenges.AdminChallengesView.as_view(),
++        name="challengeId",
++    ),
++    path(
++        "application/loginWithKey/<key>",
++        authentication.KeyAuthentication.as_view(),
++        name="key",
++    ),
++    path(
++        "application/getApplicationStatus", applications.StatusApplicationView.as_view()
++    ),
++    path("application/submitChallenge", applications.SubmitApplicationView.as_view()),
++    path("application/startChallenge", applications.StartChallengeView.as_view()),
++    path("application/challenges", challenges.ApplicationChallengesView.as_view()),
++    path("application/uploadChallenge", applications.UploadApplicationView.as_view()),
+ ]
+would reformat /github/workspace/Neuer Ordner/urls.py
+error: cannot format /github/workspace/__MACOSX/Neuer Ordner/osdflksjf/._serializers.py: invalid or missing encoding declaration
+
+Oh no! 💥 💔 💥
+4 files would be reformatted, 2 files would be left unchanged, 6 files would fail to reformat.
+
+::endgroup::
+::group::[31m❌ Linted [PYTHON] files with [flake8]: Found 43 error(s) - (0.41s)[0m (expand for details)
+- Using [flake8 v6.0.0] https://megalinter.io/6.22.2/descriptors/python_flake8
+- MegaLinter key: [PYTHON_FLAKE8]
+- Rules config: [.flake8]
+- Number of files analyzed: [12]
+--Error detail:
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/checker.py", line 81, in _mp_run
+    ).run_checks()
+      ^^^^^^^^^^^^
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/checker.py", line 524, in run_checks
+    self.run_ast_checks()
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/checker.py", line 416, in run_ast_checks
+    ast = self.processor.build_ast()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/processor.py", line 218, in build_ast
+    return ast.parse("".join(self.lines))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/ast.py", line 50, in parse
+    return compile(source, filename, mode, flags,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: source code string cannot contain null bytes
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/venvs/flake8/bin/flake8", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/main/cli.py", line 23, in main
+    app.run(argv)
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/main/application.py", line 198, in run
+    self._run(argv)
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/main/application.py", line 187, in _run
+    self.run_checks()
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/main/application.py", line 103, in run_checks
+    self.file_checker_manager.run()
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/checker.py", line 234, in run
+    self.run_parallel()
+  File "/venvs/flake8/lib/python3.11/site-packages/flake8/checker.py", line 203, in run_parallel
+    self.results = list(pool.imap_unordered(_mp_run, self.filenames))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/multiprocessing/pool.py", line 873, in next
+    raise value
+ValueError: source code string cannot contain null bytes
+
+::endgroup::
+::group::[32m✅ Linted [PYTHON] files with [bandit] successfully - (0.89s)[0m (expand for details)
+- Using [bandit v1.7.5] https://megalinter.io/6.22.2/descriptors/python_bandit
+- MegaLinter key: [PYTHON_BANDIT]
+- Rules config: [.bandit.yml]
+- Number of files analyzed: [12]
+::endgroup::
+::group::[32m✅ Linted [ACTION] files with [actionlint] successfully - (0.02s)[0m (expand for details)
+- Using [actionlint v1.6.23] https://megalinter.io/6.22.2/descriptors/action_actionlint
+- MegaLinter key: [ACTION_ACTIONLINT]
+- Rules config: identified by [actionlint]
+- Number of files analyzed: [1]
+::endgroup::
+::group::[32m✅ Linted [REPOSITORY] files with [dustilock] successfully - (0.02s)[0m (expand for details)
+- Using [dustilock v1.2.0] https://megalinter.io/6.22.2/descriptors/repository_dustilock
+- MegaLinter key: [REPOSITORY_DUSTILOCK]
+- Rules config: identified by [dustilock]
+::endgroup::
+::group::[32m✅ Linted [REPOSITORY] files with [secretlint] successfully - (0.91s)[0m (expand for details)
+- Using [secretlint v6.2.3] https://megalinter.io/6.22.2/descriptors/repository_secretlint
+- MegaLinter key: [REPOSITORY_SECRETLINT]
+- Rules config: [.secretlintrc.json]
+- Ignore file: [.secretlintignore]
+::endgroup::
+::group::[32m✅ Linted [REPOSITORY] files with [syft] successfully - (0.16s)[0m (expand for details)
+- Using [syft v0.76.0] https://megalinter.io/6.22.2/descriptors/repository_syft
+- MegaLinter key: [REPOSITORY_SYFT]
+- Rules config: identified by [syft]
+::endgroup::
+::group::[32m✅ Linted [SPELL] files with [misspell] successfully - (0.04s)[0m (expand for details)
+- Using [misspell v0.3.4] https://megalinter.io/6.22.2/descriptors/spell_misspell
+- MegaLinter key: [SPELL_MISSPELL]
+- Rules config: identified by [misspell]
+- Number of files analyzed: [15]
+::endgroup::
+::group::[32m✅ Linted [REPOSITORY] files with [checkov] successfully - (14.82s)[0m (expand for details)
+- Using [checkov v2.3.149] https://megalinter.io/6.22.2/descriptors/repository_checkov
+- MegaLinter key: [REPOSITORY_CHECKOV]
+- Rules config: [.checkov.yml]
+::endgroup::
+::group::[33m✅ Linted [YAML] files with [prettier]: Found 1 non blocking error(s) - (0.54s)[0m (expand for details)
+- Using [prettier v2.8.7] https://megalinter.io/6.22.2/descriptors/yaml_prettier
+- MegaLinter key: [YAML_PRETTIER]
+- Rules config: identified by [prettier]
+- Number of files analyzed: [1]
+--Error detail:
+Checking formatting...
+[warn] .github/workflows/megalinter.yml
+[warn] Code style issues found in the above file. Forgot to run Prettier?
+
+::endgroup::
+::group::[31m❌ Linted [SPELL] files with [cspell]: Found 19 error(s) - (5.14s)[0m (expand for details)
+- Using [cspell v6.31.1] https://megalinter.io/6.22.2/descriptors/spell_cspell
+- MegaLinter key: [SPELL_CSPELL]
+- Rules config: identified by [cspell]
+- Number of files analyzed: [16]
+--Error detail:
+ 1/15 ./__MACOSX/._Neuer Ordner 827.89ms
+ 2/15 ./__MACOSX/Neuer Ordner/.___init__.py 293.34ms
+ 3/15 ./__MACOSX/Neuer Ordner/._admin.py 13.91ms
+ 4/15 ./__MACOSX/Neuer Ordner/._urls.py 2.69ms
+ 5/15 ./__MACOSX/Neuer Ordner/osdflksjf/._apps.py 2.63ms
+ 6/15 ./__MACOSX/Neuer Ordner/osdflksjf/._options.py 2.41ms
+ 7/15 ./__MACOSX/Neuer Ordner/osdflksjf/._serializers.py 2.49ms
+ 8/15 ./.github/workflows/megalinter.yml 944.35ms X
+/github/workspace/.github/workflows/megalinter.yml:63:15     - Unknown word (Endbug)     -- uses: Endbug/add-and-commit@v9
+	 Suggestions: [Ending, Endue, Bedbug, Redbug, Enugu]
+/github/workspace/.github/workflows/megalinter.yml:65:25     - Unknown word (Megalint)   -- #author_name: Megalint Bot
+	 Suggestions: [Megalinter, MegaLinter, Megalith, Megabit, Metaling]
+ 9/15 ./b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt 353.50ms X
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:2:19      - Unknown word (Neuer)      -- github workspace Neuer Ordner DS Store
+	 Suggestions: [Neuter, Ne'er, Neper, Never, Newer]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:2:25      - Unknown word (Ordner)     -- github workspace Neuer Ordner DS Store
+	 Suggestions: [Order, Ordure, Rodney, Rodder, Rodger]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:3:19      - Unknown word (Neuer)      -- github workspace Neuer Ordner init
+	 Suggestions: [Neuter, Ne'er, Neper, Never, Newer]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:3:25      - Unknown word (Ordner)     -- github workspace Neuer Ordner init
+	 Suggestions: [Order, Ordure, Rodney, Rodder, Rodger]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:4:19      - Unknown word (Neuer)      -- github workspace Neuer Ordner admin
+	 Suggestions: [Neuter, Ne'er, Neper, Never, Newer]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:4:25      - Unknown word (Ordner)     -- github workspace Neuer Ordner admin
+	 Suggestions: [Order, Ordure, Rodney, Rodder, Rodger]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:5:19      - Unknown word (Neuer)      -- github workspace Neuer Ordner osdflksjf apps
+	 Suggestions: [Neuter, Ne'er, Neper, Never, Newer]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:5:25      - Unknown word (Ordner)     -- github workspace Neuer Ordner osdflksjf apps
+	 Suggestions: [Order, Ordure, Rodney, Rodder, Rodger]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:5:32      - Unknown word (osdflksjf)  -- workspace Neuer Ordner osdflksjf apps
+	 Suggestions: []
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:6:19      - Unknown word (Neuer)      -- github workspace Neuer Ordner osdflksjf options
+	 Suggestions: [Neuter, Ne'er, Neper, Never, Newer]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:6:25      - Unknown word (Ordner)     -- github workspace Neuer Ordner osdflksjf options
+	 Suggestions: [Order, Ordure, Rodney, Rodder, Rodger]
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:6:32      - Unknown word (osdflksjf)  -- workspace Neuer Ordner osdflksjf options
+	 Suggestions: []
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:7:32      - Unknown word (osdflksjf)  -- workspace Neuer Ordner osdflksjf serializers
+	 Suggestions: []
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:13:39     - Unknown word (osdflksjf)  -- MACOSX Neuer Ordner osdflksjf apps
+	 Suggestions: []
+/github/workspace/b7d96954-a368-48b2-b698-74e3cb7cb9e5-megalinter_file_names_cspell.txt:14:39     - Unknown word (osdflksjf)  -- MACOSX Neuer Ordner osdflksjf options
+	 Suggestions: []
+10/15 ./Neuer Ordner/__init__.py 2.36ms
+11/15 ./Neuer Ordner/admin.py 3.40ms
+12/15 ./Neuer Ordner/osdflksjf/apps.py 4.34ms
+13/15 ./Neuer Ordner/osdflksjf/options.py 14.50ms
+14/15 ./Neuer Ordner/osdflksjf/serializers.py 340.95ms X
+/github/workspace/Neuer Ordner/osdflksjf/serializers.py:25:28     - Unknown word (amplimind)  -- tmpLink = "www.amplimind.io/application/" + urllib
+	 Suggestions: [amplified, amplifier, amplifies, amplifying]
+15/15 ./Neuer Ordner/urls.py 408.49ms X
+/github/workspace/Neuer Ordner/urls.py:3:21      - Unknown word (authtoken)  -- from rest_framework.authtoken.views import obtain
+	 Suggestions: [authored, authkey, autotoxin, auto_open, outspoken]
+CSpell: Files checked: 15, Issues found: 19 in 4 files
+
+::endgroup::
+::group::[31m❌ Linted [YAML] files with [yamllint]: Found 1 error(s) - (0.28s)[0m (expand for details)
+- Using [yamllint v1.30.0] https://megalinter.io/6.22.2/descriptors/yaml_yamllint
+- MegaLinter key: [YAML_YAMLLINT]
+- Rules config: [.yamllint.yml]
+- Number of files analyzed: [1]
+--Error detail:
+::group::/github/workspace/.github/workflows/megalinter.yml
+::warning file=/github/workspace/.github/workflows/megalinter.yml,line=3,col=1::3:1 [document-start] missing document start "---"
+::warning file=/github/workspace/.github/workflows/megalinter.yml,line=5,col=1::5:1 [truthy] truthy value should be one of [false, true]
+::warning file=/github/workspace/.github/workflows/megalinter.yml,line=65,col=12::65:12 [comments] missing starting space in comment
+::warning file=/github/workspace/.github/workflows/megalinter.yml,line=66,col=12::66:12 [comments] missing starting space in comment
+::warning file=/github/workspace/.github/workflows/megalinter.yml,line=67,col=12::67:12 [comments] missing starting space in comment
+::warning file=/github/workspace/.github/workflows/megalinter.yml,line=68,col=12::68:12 [comments] missing starting space in comment
+::warning file=/github/workspace/.github/workflows/megalinter.yml,line=69,col=12::69:12 [comments] missing starting space in comment
+::error file=/github/workspace/.github/workflows/megalinter.yml,line=71,col=31::71:31 [new-line-at-end-of-file] no new line character at the end of file
+::endgroup::
+
+
+::endgroup::
+::group::[31m❌ Linted [PYTHON] files with [ruff]: Found 15 error(s) - (0.07s)[0m (expand for details)
+- Using [ruff v0.0.260] https://megalinter.io/6.22.2/descriptors/python_ruff
+- MegaLinter key: [PYTHON_RUFF]
+- Rules config: [.ruff.toml]
+- Number of files analyzed: [12]
+--Error detail:
+error: Failed to lint __MACOSX/Neuer Ordner/osdflksjf/._serializers.py: stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+error: Failed to lint __MACOSX/Neuer Ordner/osdflksjf/._options.py: stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+error: Failed to lint __MACOSX/Neuer Ordner/osdflksjf/._apps.py: stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+error: Failed to lint __MACOSX/Neuer Ordner/._urls.py: stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+error: Failed to lint __MACOSX/Neuer Ordner/._admin.py: stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+error: Failed to lint __MACOSX/Neuer Ordner/.___init__.py: stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+Neuer Ordner/admin.py:1:28: F401 [*] `django.contrib.admin` imported but unused
+Neuer Ordner/osdflksjf/serializers.py:15:89: E501 Line too long (129 > 88 characters)
+Neuer Ordner/osdflksjf/serializers.py:23:9: F841 [*] Local variable `applicationId` is assigned to but never used
+Neuer Ordner/osdflksjf/serializers.py:38:89: E501 Line too long (125 > 88 characters)
+Neuer Ordner/urls.py:16:89: E501 Line too long (115 > 88 characters)
+Neuer Ordner/urls.py:17:89: E501 Line too long (128 > 88 characters)
+Neuer Ordner/urls.py:20:89: E501 Line too long (105 > 88 characters)
+Neuer Ordner/urls.py:22:89: E501 Line too long (99 > 88 characters)
+Neuer Ordner/urls.py:23:89: E501 Line too long (91 > 88 characters)
+__MACOSX/Neuer Ordner/.___init__.py:1:1: E902 stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+__MACOSX/Neuer Ordner/._admin.py:1:1: E902 stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+__MACOSX/Neuer Ordner/._urls.py:1:1: E902 stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+__MACOSX/Neuer Ordner/osdflksjf/._apps.py:1:1: E902 stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+__MACOSX/Neuer Ordner/osdflksjf/._options.py:1:1: E902 stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+__MACOSX/Neuer Ordner/osdflksjf/._serializers.py:1:1: E902 stream did not contain valid UTF-8
+  Caused by: stream did not contain valid UTF-8
+Found 15 errors.
+[*] 2 potentially fixable with the --fix option.
+
+::endgroup::
+::group::[33m✅ Linted [PYTHON] files with [isort]: Found 3 non blocking error(s) - (0.17s)[0m (expand for details)
+- Using [isort v5.12.0] https://megalinter.io/6.22.2/descriptors/python_isort
+- MegaLinter key: [PYTHON_ISORT]
+- Rules config: [.isort.cfg]
+- Number of files analyzed: [12]
+--Error detail:
+ERROR: /github/workspace/Neuer Ordner/osdflksjf/options.py Imports are incorrectly sorted and/or formatted.
+ERROR: /github/workspace/Neuer Ordner/osdflksjf/serializers.py Imports are incorrectly sorted and/or formatted.
+ERROR: /github/workspace/Neuer Ordner/urls.py Imports are incorrectly sorted and/or formatted.
+--- /github/workspace/Neuer Ordner/osdflksjf/options.py:before	2023-05-08 11:38:36.665609
++++ /github/workspace/Neuer Ordner/osdflksjf/options.py:after	2023-05-08 11:39:07.811458
+@@ -1,4 +1,5 @@
+ from rest_framework.metadata import BaseMetadata
++
+ 
+ class MinimalMetadata(BaseMetadata):
+     """
+--- /github/workspace/Neuer Ordner/osdflksjf/serializers.py:before	2023-05-08 11:38:36.665609
++++ /github/workspace/Neuer Ordner/osdflksjf/serializers.py:after	2023-05-08 11:39:07.813875
+@@ -1,8 +1,10 @@
+ import urllib.parse
+ 
++from django.db.models import CharField
+ from rest_framework import serializers
+-from .models import Challenge, Application
+-from django.db.models import CharField
++
++from .models import Application, Challenge
++
+ 
+ class GetChallengeSerializer(serializers.ModelSerializer):
+     class Meta:
+--- /github/workspace/Neuer Ordner/urls.py:before	2023-05-08 11:38:36.665609
++++ /github/workspace/Neuer Ordner/urls.py:after	2023-05-08 11:39:07.816447
+@@ -2,8 +2,7 @@
+ from django.urls import path
+ from rest_framework.authtoken.views import obtain_auth_token
+ 
+-from .views import applications, challenges, authentication
+-
++from .views import applications, authentication, challenges
+ 
+ # Endpoint Definition
+ 
+
+::endgroup::
+::group::[32m✅ Linted [REPOSITORY] files with [git_diff] successfully - (0.01s)[0m (expand for details)
+- Using [git_diff v2.38.4] https://megalinter.io/6.22.2/descriptors/repository_git_diff
+- MegaLinter key: [REPOSITORY_GIT_DIFF]
+- Rules config: identified by [git_diff]
+::endgroup::
+
++----SUMMARY----+------------+---------------+-------+-------+--------+--------------+
+| Descriptor    | Linter     | Mode          | Files | Fixed | Errors | Elapsed time |
++---------------+------------+---------------+-------+-------+--------+--------------+
+| ✅ ACTION     | actionlint | list_of_files |     1 |       |      0 |        0.02s |
+| ✅ COPYPASTE  | jscpd      | project       |   n/a |       |      0 |        1.08s |
+| ✅ PYTHON     | bandit     | list_of_files |    12 |       |      0 |        0.89s |
+| ◬ PYTHON      | black      | list_of_files |    12 |       |      1 |        0.72s |
+| ❌ PYTHON     | flake8     | list_of_files |    12 |       |     43 |        0.41s |
+| ◬ PYTHON      | isort      | list_of_files |    12 |       |      3 |        0.17s |
+| ❌ PYTHON     | mypy       | list_of_files |    12 |       |      1 |        0.33s |
+| ❌ PYTHON     | pylint     | list_of_files |    12 |       |     15 |        2.06s |
+| ❌ PYTHON     | pyright    | list_of_files |    12 |       |      9 |        6.43s |
+| ❌ PYTHON     | ruff       | list_of_files |    12 |       |     15 |        0.07s |
+| ✅ REPOSITORY | checkov    | project       |   n/a |       |      0 |       14.82s |
+| ✅ REPOSITORY | devskim    | project       |   n/a |       |      0 |        0.93s |
+| ✅ REPOSITORY | dustilock  | project       |   n/a |       |      0 |        0.02s |
+| ✅ REPOSITORY | gitleaks   | project       |   n/a |       |      0 |        0.15s |
+| ✅ REPOSITORY | git_diff   | project       |   n/a |       |      0 |        0.01s |
+| ✅ REPOSITORY | secretlint | project       |   n/a |       |      0 |        0.91s |
+| ✅ REPOSITORY | syft       | project       |   n/a |       |      0 |        0.16s |
+| ✅ REPOSITORY | trivy      | project       |   n/a |       |      0 |        4.86s |
+| ❌ SPELL      | cspell     | list_of_files |    16 |       |     19 |        5.14s |
+| ✅ SPELL      | misspell   | list_of_files |    15 |       |      0 |        0.04s |
+| ◬ YAML        | prettier   | list_of_files |     1 |       |      1 |        0.54s |
+| ✅ YAML       | v8r        | list_of_files |     1 |       |      0 |         2.4s |
+| ❌ YAML       | yamllint   | list_of_files |     1 |       |      1 |        0.28s |
++---------------+------------+---------------+-------+-------+--------+--------------+
+
+[34mYou could have same capabilities but better runtime performances if you use a MegaLinter flavor:[0m
+- [python] oxsecurity/megalinter/flavors/python@v6.22.2 (59 linters) https://megalinter.io/6.22.2/flavors/python/
+

@@ -3,7 +3,7 @@ import time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ...auth.mockAuth import MockAuth
+from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 from ....models.challenge import Challenge
 from ....views import jsonMessages

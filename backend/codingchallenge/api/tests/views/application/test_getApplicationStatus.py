@@ -2,7 +2,7 @@ import json
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ...auth.mockAuth import MockAuth
+from ...mock.mockAuth import MockAuth
 from ....models.challenge import Challenge
 from ....serializers import GetApplicationStatus
 from ....models.application import Application
