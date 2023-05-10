@@ -15,7 +15,11 @@ ENV PYTHONUNBUFFERED=1
 # Expose the port used by the application
 EXPOSE 8000
 
+RUN apk add libpq-dev
+# RUN apk add python3-dev
+
 RUN pip install -r requirements.txt
+# RUN pip install psycopg2-binary
 
 RUN dos2unix docker_intern.sh
 RUN chmod +x docker_intern.sh

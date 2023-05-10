@@ -1,8 +1,14 @@
 services:
+  database:
+    build: ./database/
+    ports: 
+      - "5432:5432"
   server:
     build: ./backend/
     ports:
       - "8000:8000"
+    depends_on:
+      - database
   web:
     build: ./frontend/
     ports:
