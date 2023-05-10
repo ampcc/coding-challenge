@@ -269,4 +269,28 @@ span {
 
 @media screen and (max-width: 850px) {
     /* responsive design for the tab bar */
+    .icon {
+        display: block;
+        position: absolute;
+        right: 12.5%;
+        top: 9.15cm;
+    }
 }
+
+@media screen and (max-width: 725px) {
+    .search_bar {
+        max-width: 50%;
+    }
+}
+
+/* @media screen and (max-width: 643px) {
+    .search_bar {
+        width: 4cm;
+    }
+}
+
+@media screen and (max-width: 643px) {
+    .icon {
+        top: 10.15cm;
+    }
+} */
