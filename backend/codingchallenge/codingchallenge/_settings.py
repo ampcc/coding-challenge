@@ -23,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # A .env file for the secret key is needed, to keep it private while using a public repository
-# Due to the way that python handles relative paths, the .env file must be located a folder above
+# Due to the way that python handles relative paths, the .env file must be located a folder above 
 # (even though the relative path may say otherwise)
 # --> That is the folder the start command for the django project is executed in
-# --> In python all relative paths are interpreted from the folder which is open in the terminal
-
+# --> In python all relative paths are interpreted from the folder which is open in the terminal 
+ 
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 ENCRYPTION_KEY = os.getenv('ENCRYPTION_KEY')
@@ -36,8 +36,6 @@ ENCRYPTION_KEY = os.getenv('ENCRYPTION_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-APPEND_SLASH = False
 
 # Application definition
 INSTALLED_APPS = [
@@ -89,12 +87,8 @@ WSGI_APPLICATION = 'codingchallenge.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'amplimind',
-        'USER': 'amplimind',
-        'PASSWORD': 'admin',
-        'HOST': '0.0.0.0',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -149,19 +143,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# CORS Response
+#CORS Response
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "content-disposition",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
