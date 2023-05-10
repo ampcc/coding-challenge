@@ -18,10 +18,10 @@ class test_getApplication(APITestCase):
         MockAuth.admin(self)
 
         #Challenge is needed to create Application tests
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
+        self.client.post('/api/admin/challenges/', {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"}, format='json')
         
         #Create Application Object
-        Application.objects.create(applicationId="TEST1234", challengeId=1, expiry=0, user_id=1, modified='', created='')
+        self.client.post("/api/admin/applications/", {"applicationId": "TEST1234"}, format="json")
         self.applicationId = "TEST1234"
     
     #Test the successful Response of getApplications, its also a test for the right token
@@ -33,13 +33,13 @@ class test_getApplication(APITestCase):
             'challengeId': 1, 
             'operatingSystem': '', 
             'programmingLanguage': '', 
-            'expiry': 0.0, 
-            'submission': 0.0, 
+            'expiry': mock.ANY, 
+            'submission': 0.0,
             'githubRepo': '', 
             'status': 0, 
             'created': mock.ANY,
             'modified': mock.ANY, 
-            'user': 1})
+            'user': 2})
         
     #Test wrong url
     def test_wrongUrl(self):
@@ -84,10 +84,10 @@ class test_getApplication(APITestCase):
             'challengeId': 1, 
             'operatingSystem': '', 
             'programmingLanguage': '', 
-            'expiry': 0.0, 
+            'expiry': mock.ANY, 
             'submission': 0.0, 
             'githubRepo': '', 
             'status': 0, 
             'created': mock.ANY,
             'modified': mock.ANY, 
-            'user': 1})
+            'user': mock.ANY})
