@@ -31,18 +31,20 @@ export class AdminPasswordComponent implements OnInit {
   showNewPasswordError: boolean = false;
   showConfirmPasswordError: boolean = false;
 
+  successfulChange: boolean = false;
+
   mustContain = new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?])');
 
   constructor(private router: Router, private backendService: BackendService) {
     this.adminToken = null;
   }
 
-ngOnInit(): void {
-  this.adminToken = window.sessionStorage.getItem('Adm-Token');
-  if(this.adminToken === null){
-    this.router.navigateByUrl("/admin_login")
+  ngOnInit(): void {
+    this.adminToken = window.sessionStorage.getItem('Adm-Token');
+    if(this.adminToken === null){
+      this.router.navigateByUrl("/admin_login")
+    }
   }
-}
 
   // If new password, old password, or confirm password are empty, error messages are shown underneath the corresponding text fields
   // Otherwise it is checked, whether the old password is correct and whether the new password contains at least eight letters including at least one uppercase letter, one lowercase letter, one number, and one special character
@@ -79,7 +81,10 @@ ngOnInit(): void {
         this.showConfirmPasswordError = true;
       } else {
         this.backendService.changePassword(this.adminToken, oldP, newP).subscribe((response) => {
-          this.router.navigate(['/admin_applications']);
+          this.successfulChange = true;
+          setTimeout(() => {
+            this.router.navigate(['/admin_applications']);
+          }, 1500);
         }, (error: HttpErrorResponse) => {
           switch (error.status) {
             case 401:
@@ -100,7 +105,6 @@ ngOnInit(): void {
               break;
           }
         });
-
       }
 
     }

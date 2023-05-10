@@ -197,6 +197,8 @@ export class ChallengeComponent implements OnInit {
            + ' <br> <br><pre>YourCode.zip <br>└── ProjectFolder/ <br>    ├── src/ <br>    ├── data/ <br>    ├── test/ <br>    ├── ReadMe.md <br>    └── ....'
         },
       },
+      maxHeight: '85vh',
+      minWidth: '30vw',
     });
   }
 
@@ -265,7 +267,7 @@ public checkUploadedZipContent(file:File): void{
     }
   })
 
-}
+  }
 
   public deleteFile(index: number): void {
     let deletedElement = this.fileArray[index];

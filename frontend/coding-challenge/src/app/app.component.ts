@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './shared/components/dialog/dialog.component';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart, NavigationCancel } from '@angular/router';
 import { BackendService } from 'src/app/core/backend.service';
 
 @Component({
@@ -21,7 +21,11 @@ export class AppComponent {
   // Check whether the logout button and sitenavigation should be displayed
   constructor(private dialog: MatDialog, private backendService: BackendService, private router: Router) {
     this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
+      if (event instanceof NavigationStart || event instanceof NavigationEnd || event instanceof NavigationCancel) {
+        this.adminPage = false;
+        this.adminApplicants = false;
+        this.adminChallenges = false;
+        this.adminPassword = false;
         if (event.url.includes('admin')) {
           this.link = '/admin_login';
           if (!event.url.includes('login')) {
@@ -51,6 +55,8 @@ export class AppComponent {
           right: { title: 'Cancel', look: 'secondary' }
         }
       },
+      maxHeight: '85vh',
+      minWidth: '30vw',
     });
 
     // If the user confirmed the logout, he gets navigated to the login page
