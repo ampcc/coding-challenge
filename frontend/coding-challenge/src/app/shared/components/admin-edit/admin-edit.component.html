@@ -1,18 +1,21 @@
-<div class="main_container">
-    <h1>Coding Challenge: Edit Challenge</h1>
+<div class="alert" [ngClass]="{'not_showing': !this.successfulEdit}">Challenge was succesfullly {{this.successMessage}}!</div>
+<div [ngClass]="{'in_background': this.successfulEdit}"></div>
+<div class="main_container" [ngClass]="{'not_clickable': this.successfulEdit}">
+    <h1>Coding Challenge: {{this.pageName}} Challenge</h1>
     <p class="heading">Name</p>
     <input class="inputField" type="text" placeholder="Please enter a challenge name" [(ngModel)]="name"
-        [ngClass]="{'show_error': this.showNameError}">
-    <p class="error_message" [ngClass]="{'no_error': !this.showNameError}">{{this.nameError}}</p>
+        [ngClass]="{'show_error': this.showNameError, 'show_success': this.successfulEdit}">
+    <p class="error_message" [ngClass]="{'not_showing': !this.showNameError}">{{this.nameError}}</p>
     <p class="heading">Description</p>
-    <textarea class="inputField" id="description" type="textarea" placeholder="Please enter a challenge description" [(ngModel)]="description"
-        [ngClass]="{'show_error': this.showDescriptionError}"></textarea>
-    <p class="error_message" [ngClass]="{'no_error': !this.showDescriptionError}">{{this.descriptionError}}</p>
+    <textarea class="inputField" id="description" type="textarea" placeholder="Please enter a challenge description"
+        [(ngModel)]="description"
+        [ngClass]="{'show_error': this.showDescriptionError, 'show_success': this.successfulEdit}"></textarea>
+    <p class="error_message" [ngClass]="{'not_showing': !this.showDescriptionError}">{{this.descriptionError}}</p>
     <div class="button_row">
-        <app-button title="Confirm Changes" look="primary" font="normal"
+        <app-button title="{{this.buttonTitle}}" look="primary" font="normal"
             (click)="editChallenge(name, description)"></app-button>
         <div class="spacer"></div>
-        <app-button title="Delete Challenge" look="delete" font="normal" (click)="deleteChallenge()"></app-button>
+        <app-button *ngIf="this.editPage" title="Delete Challenge" look="delete" font="normal" (click)="deleteChallenge()"></app-button>
         <div class="spacer"></div>
         <app-button title="Cancel" look="secondary" font="normal" (click)="cancel()"></app-button>
     </div>

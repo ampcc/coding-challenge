@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a130a390-1422-42df-95bd-c796cbfeabdf",
+		"_postman_id": "4ed7eb03-83aa-4c37-8be7-234888fbe287",
 		"name": "mock-server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -46,7 +46,7 @@
 									"formdata": []
 								},
 								"url": {
-									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/loginWithKey",
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/loginWithKey/gAAAAABkU39LBkMnJq8dzVX2voejHUWWch1AJbzKxEbNzVgWJgFbgFXgLmZGgOJCzbOPH8S2URFBNmZHEppvwFdHJBulaJIoN9GUu7L0OLZVsd1xurEQhXU%3D",
 									"protocol": "https",
 									"host": [
 										"46022e70-68be-4fbf-a4d1-441852e186b1",
@@ -57,7 +57,8 @@
 									"path": [
 										"api",
 										"application",
-										"loginWithKey"
+										"loginWithKey",
+										"gAAAAABkU39LBkMnJq8dzVX2voejHUWWch1AJbzKxEbNzVgWJgFbgFXgLmZGgOJCzbOPH8S2URFBNmZHEppvwFdHJBulaJIoN9GUu7L0OLZVsd1xurEQhXU%3D"
 									]
 								}
 							},
@@ -80,7 +81,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/application/startChallenge",
+							"raw": "http://127.0.0.1:8000/api/application/startChallenge/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -92,7 +93,8 @@
 							"path": [
 								"api",
 								"application",
-								"startChallenge"
+								"startChallenge",
+								""
 							]
 						}
 					},
@@ -109,7 +111,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/startChallenge",
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/startChallenge/",
 									"protocol": "https",
 									"host": [
 										"46022e70-68be-4fbf-a4d1-441852e186b1",
@@ -120,7 +122,8 @@
 									"path": [
 										"api",
 										"application",
-										"startChallenge"
+										"startChallenge",
+										""
 									]
 								}
 							},
@@ -143,7 +146,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/application/getApplicationStatus",
+							"raw": "http://127.0.0.1:8000/api/application/getApplicationStatus/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -155,7 +158,8 @@
 							"path": [
 								"api",
 								"application",
-								"getApplicationStatus"
+								"getApplicationStatus",
+								""
 							]
 						}
 					},
@@ -172,7 +176,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/getApplicationStatus/{{applicationId}}",
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/getApplicationStatus/",
 									"protocol": "https",
 									"host": [
 										"46022e70-68be-4fbf-a4d1-441852e186b1",
@@ -184,7 +188,7 @@
 										"api",
 										"application",
 										"getApplicationStatus",
-										"{{applicationId}}"
+										""
 									]
 								}
 							},
@@ -210,7 +214,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/application/challenges",
+							"raw": "http://127.0.0.1:8000/api/application/challenges/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -222,7 +226,8 @@
 							"path": [
 								"api",
 								"application",
-								"challenges"
+								"challenges",
+								""
 							]
 						}
 					},
@@ -239,7 +244,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/challenges/{{applicationId}}",
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/application/challenges/",
 									"protocol": "https",
 									"host": [
 										"46022e70-68be-4fbf-a4d1-441852e186b1",
@@ -251,7 +256,7 @@
 										"api",
 										"application",
 										"challenges",
-										"{{applicationId}}"
+										""
 									]
 								}
 							},
@@ -287,7 +292,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/application/uploadChallenge",
+							"raw": "http://127.0.0.1:8000/api/application/uploadChallenge/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -299,7 +304,8 @@
 							"path": [
 								"api",
 								"application",
-								"uploadChallenge"
+								"uploadChallenge",
+								""
 							]
 						}
 					},
@@ -321,7 +327,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/application/uploadChallenge",
+									"raw": "http://127.0.0.1:8000/api/application/uploadChallenge/",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -333,7 +339,8 @@
 									"path": [
 										"api",
 										"application",
-										"uploadChallenge"
+										"uploadChallenge",
+										""
 									]
 								}
 							},
@@ -377,7 +384,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/admin/login",
+							"raw": "http://127.0.0.1:8000/api/admin/login/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -389,7 +396,8 @@
 							"path": [
 								"api",
 								"admin",
-								"login"
+								"login",
+								""
 							]
 						}
 					},
@@ -415,7 +423,7 @@
 									]
 								},
 								"url": {
-									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/login",
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/login/",
 									"protocol": "https",
 									"host": [
 										"46022e70-68be-4fbf-a4d1-441852e186b1",
@@ -426,7 +434,8 @@
 									"path": [
 										"api",
 										"admin",
-										"login"
+										"login",
+										""
 									]
 								}
 							},
@@ -458,7 +467,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/admin/changePassword",
+							"raw": "http://127.0.0.1:8000/api/admin/changePassword/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -470,7 +479,8 @@
 							"path": [
 								"api",
 								"admin",
-								"changePassword"
+								"changePassword",
+								""
 							]
 						}
 					},
@@ -496,7 +506,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/admin/changePassword",
+									"raw": "http://127.0.0.1:8000/api/admin/changePassword/",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -508,12 +518,13 @@
 									"path": [
 										"api",
 										"admin",
-										"changePassword"
+										"changePassword",
+										""
 									]
 								}
 							},
 							"_postman_previewlanguage": "json",
-							"header": null,
+							"header": [],
 							"cookie": [],
 							"body": "{\n    \"success\": \"true\"\n}"
 						}
@@ -596,7 +607,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/admin/applications",
+							"raw": "http://127.0.0.1:8000/api/admin/applications/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -608,7 +619,8 @@
 							"path": [
 								"api",
 								"admin",
-								"applications"
+								"applications",
+								""
 							]
 						}
 					},
@@ -674,7 +686,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/admin/applications",
+							"raw": "http://127.0.0.1:8000/api/admin/applications/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -686,7 +698,8 @@
 							"path": [
 								"api",
 								"admin",
-								"applications"
+								"applications",
+								""
 							]
 						}
 					},
@@ -712,7 +725,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/admin/applications",
+									"raw": "http://127.0.0.1:8000/api/admin/applications/",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -724,12 +737,13 @@
 									"path": [
 										"api",
 										"admin",
-										"applications"
+										"applications",
+										""
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
 							"body": "{\n    \"applicationId\": \"TASC1219\",\n    \"created\": 1683128422.643656,\n    \"status\": 0,\n    \"expiry\": 1683992422.532589,\n    \"tmpLink\": \"www.amplimind.io/application/gAAAAABkUoBm5u2MwZ5VVAmXiWRyGHCspMIZEEyLbPpQikXYZKgmkUPqjvq-aGqOuJXHQrPp2HBWKkTvptQvk-mxkd-7F1W9ibKhReGW5SOH7pPLbq7O4aQ%3D\"\n}"
 						}
@@ -996,7 +1010,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/admin/challenges/{{challengeId}}?Authorization",
+									"raw": "http://127.0.0.1:8000/api/admin/challenges/{{challengeId}}",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1010,19 +1024,13 @@
 										"admin",
 										"challenges",
 										"{{challengeId}}"
-									],
-									"query": [
-										{
-											"key": "Authorization",
-											"value": null
-										}
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
-							"header": null,
+							"_postman_previewlanguage": "Text",
+							"header": [],
 							"cookie": [],
-							"body": null
+							"body": ""
 						}
 					]
 				},
@@ -1038,7 +1046,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/admin/challenges",
+							"raw": "http://127.0.0.1:8000/api/admin/challenges/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1050,7 +1058,8 @@
 							"path": [
 								"api",
 								"admin",
-								"challenges"
+								"challenges",
+								""
 							]
 						}
 					},
@@ -1067,7 +1076,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/challenges",
+									"raw": "https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io/api/admin/challenges/",
 									"protocol": "https",
 									"host": [
 										"46022e70-68be-4fbf-a4d1-441852e186b1",
@@ -1078,7 +1087,8 @@
 									"path": [
 										"api",
 										"admin",
-										"challenges"
+										"challenges",
+										""
 									]
 								}
 							},
@@ -1110,7 +1120,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/admin/challenges",
+							"raw": "http://127.0.0.1:8000/api/admin/challenges/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1122,7 +1132,8 @@
 							"path": [
 								"api",
 								"admin",
-								"challenges"
+								"challenges",
+								""
 							]
 						}
 					},

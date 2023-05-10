@@ -148,7 +148,7 @@ class AdminApplicationsView(APIView):
         if serializer.is_valid():
             serializer.save()
             try:
-                applications = Application.objects.get(applicationId=request.data.get('applicationId'))
+                applications = Application.objects.get(applicationId=self.kwargs["applicationId"])
             except (KeyError, ObjectDoesNotExist):
                 return Response("Application not found!", status=status.HTTP_404_NOT_FOUND)
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
@@ -230,7 +230,7 @@ class AdminApplicationsView(APIView):
         try:
             application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
-        except(KeyError, TypeError, ObjectDoesNotExist):
+        except(KeyError, TypeError, Application.DoesNotExist):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
 
@@ -317,7 +317,7 @@ class UploadSolutionView(APIView):
             user.application.save()
 
             try:
-                self.gApi.createRepo(repoName, 'to be defined')  # TODO: description auslagern
+                self.gApi.createRepo(repoName, 'to be defined') # TODO: description auslagern
 
                 for path in file_obj.namelist():
                     if not path.endswith('/'):

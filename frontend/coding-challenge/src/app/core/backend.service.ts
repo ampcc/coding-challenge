@@ -29,30 +29,35 @@ export class BackendService {
 
   public loginWithPassphrase(_passphrase: string): Observable<any>{
     const headers = new HttpHeaders().set('passphrase', _passphrase);
-    return this.http.get(this.backendURL + "/api/application/loginWithPassphrase", {'headers': headers});
+    return this.http.get(this.backendURL + "/api/application/loginWithPassphrase/", {'headers': headers});
   }
   public getStatus(_applicantToken: string | null): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
-    return this.http.get(this.backendURL + "/api/application/getApplicationStatus", {'headers': headers});
+    return this.http.get(this.backendURL + "/api/application/getApplicationStatus/", {'headers': headers});
   }
 
   public getChallengeApp(_applicantToken: string | null): Observable<any>{
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
-    return this.http.get(this.backendURL + "/api/application/challenges", {'headers': headers});
+    return this.http.get(this.backendURL + "/api/application/challenges/", {'headers': headers});
   }
 
-  public uploadChallenge(_applicantKey: string, _oS: string, _pL: string): boolean{
-    return true;
+  public uploadChallenge(_applicationToken: string | null, _oS: string, _pL: string, _zipFile: File): Observable<any>{
+    const headers = new HttpHeaders().set('Authorization', "Token " + _applicationToken)
+                                     .set('Content-Disposition', "attatchment; filename=" + _zipFile.name);
+    const body = new FormData();
+    body.append('dataZip', _zipFile);
+    console.log(body);
+    return this.http.post(this.backendURL + '/api/application/uploadChallenge/', body, {'headers': headers});
   }
 
   public submitChallenge(_applicationToken: string): Observable<any>{
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicationToken);
-    return this.http.get(this.backendURL+'/api/application/submitChallenge', {'headers': headers});
+    return this.http.get(this.backendURL+'/api/application/submitChallenge/', {'headers': headers});
   }
 
   public startChallenge(_applicantToken: string|null): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
-    return this.http.get(this.backendURL + "/api/application/startChallenge", {'headers': headers});
+    return this.http.get(this.backendURL + "/api/application/startChallenge/", {'headers': headers});
   }
 
 
@@ -63,13 +68,13 @@ export class BackendService {
 
   public loginAdmin(_username: string, _password: string): Observable<any>{
     var body: adminLoginCreds = {username: _username, password: _password};
-    return this.http.post(this.backendURL + "/api/admin/login", body);
+    return this.http.post(this.backendURL + "/api/admin/login/", body);
   }
 
   public changePassword(_adminToken: string | null, _oldPassword: string, _newPassword: string): Observable<any> {
     var body = {"oldPassword": _oldPassword, "newPassword": _newPassword};
     var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
-    return this.http.put(this.backendURL + "/api/admin/changePassword", body, {'headers': headers});
+    return this.http.put(this.backendURL + "/api/admin/changePassword/", body, {'headers': headers});
   }
 
   public getApplication(_adminToken: string|null, _applicationId: string): Observable<any>{
@@ -80,10 +85,10 @@ export class BackendService {
   public getApplications(_adminToken: string, _applicationStatus?: number): Observable<any>{
     var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     if(typeof _applicationStatus === 'undefined'){
-      return this.http.get(this.backendURL + "/api/admin/applications", {'headers': headers});
+      return this.http.get(this.backendURL + "/api/admin/applications/", {'headers': headers});
     }else {
       const params = new HttpParams().set('applicationStatus', _applicationStatus);
-      return this.http.get(this.backendURL + "/api/admin/applications", {'headers': headers, params:params});
+      return this.http.get(this.backendURL + "/api/admin/applications/", {'headers': headers, params:params});
     }
   }
 
@@ -97,7 +102,7 @@ export class BackendService {
       Object.assign(body, {challengeId: _challengeId});
     }
     if(typeof _extendDays !== 'undefined'){
-      Object.assign(body, {extendDays: _extendDays});
+      Object.assign(body, {expiry: _extendDays});
     }
     return this.http.put(this.backendURL + "/api/admin/applications/" + _applicationId, body, {'headers': headers});
   }
@@ -107,7 +112,7 @@ export class BackendService {
     return this.http.delete(this.backendURL + "/api/admin/applications/" + _applicationId, {'headers': headers});
   }
 
-  public getResult(_adminToken: string, _applicationId: string): Observable<any> {
+  public getResult(_adminToken: string | null, _applicationId: string): Observable<any> {
     var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.get(this.backendURL + "/api/admin/applications/results/" + _applicationId, {'headers': headers});
   }
@@ -117,15 +122,15 @@ export class BackendService {
     return this.http.get(this.backendURL + "/api/admin/challenges/" + _challengeId, {'headers': headers});
   }
 
-  public getChallenges(_adminToken: string): Observable<any> {
+  public getChallenges(_adminToken: string | null): Observable<any> {
     var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
-    return this.http.get(this.backendURL + "/api/admin/challenges", {'headers': headers});
+    return this.http.get(this.backendURL + "/api/admin/challenges/", {'headers': headers});
   }
 
-  public createChallenge(_adminToken: string, _challenge: Challenge): Observable<any> {
+  public createChallenge(_adminToken: string | null, _challenge: Challenge): Observable<any> {
     var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
-    var body = {challenge:{challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText}};
-    return this.http.post(this.backendURL + "/api/admin/challenges", body, {'headers': headers});
+    var body = {challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText};
+    return this.http.post(this.backendURL + "/api/admin/challenges/", body, {'headers': headers});
   }
 
   public editChallenge(_adminToken: string | null, _challenge: Challenge): Observable<any> {

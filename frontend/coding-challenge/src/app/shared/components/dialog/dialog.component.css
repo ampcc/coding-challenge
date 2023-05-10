@@ -36,7 +36,7 @@ a {
     text-decoration: underline;
 }
 
-.link_text{
+.link_text {
     margin-bottom: 1em;
 }
 
@@ -60,18 +60,81 @@ a {
     filter: invert(75%);
 }
 
+.extend_container {
+    display: block;
+}
+
+.extend_line {
+    display: inline-flex;
+    width: 100%;
+}
+
+.error_message {
+    margin-top: 0;
+    font-size: 16px;
+    line-height: 25px;
+    font-weight: 600;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.selector {
+    display: inline-flex;
+    width: 100%;
+}
+
+.input {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+    padding: 1em;
+    width: 50%;
+    border: 0.1em;
+    border-style: solid;
+    border-radius: 0.3em;
+}
+
+.input:hover {
+    cursor: pointer;
+}
+
+.inline_text {
+    margin: auto;
+}
+
+.show_error {
+    border-color: red;
+    outline: none;
+}
+
+.error_message {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+    margin-top: 0.3em;
+    color: red;
+}
+
 .image_container {
     width: 100%;
     margin: auto;
 }
 
 .image {
-    height: 100%;
+    width: 60%;
+    margin: auto;
+    display: block;
 }
 
 .button_container {
     display: inline-flex;
     width: 100%;
+}
+
+.block {
+    display: block;
 }
 
 .spacer {
@@ -80,13 +143,23 @@ a {
 
 app-button {
     display: inline-block;
-    width: 40%;
     margin-top: 3em;
+}
+
+.triple,
+.single {
+    width: 100%;
+}
+
+.double {
+    width: 40%;
 }
 
 @media (min-width:2000px) {
 
-    p {
+    p,
+    .input,
+    .error_message {
         font-size: 30px;
         line-height: 40px;
     }
@@ -99,7 +172,7 @@ app-button {
 }
 
 @media (max-width:1024px) {
-    app-button {
+    .double {
         width: 49%;
     }
 
@@ -114,7 +187,9 @@ app-button {
         line-height: 50px;
     }
 
-    p {
+    p,
+    .input,
+    .error_message {
         font-size: 16px;
         line-height: 25px;
     }
@@ -130,7 +205,7 @@ app-button {
         width: 100%;
     }
 
-    app-button {
+    .double {
         width: 100%;
     }
 }

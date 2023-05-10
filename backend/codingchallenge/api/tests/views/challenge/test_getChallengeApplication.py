@@ -10,7 +10,7 @@ from ....views import jsonMessages
 
 
 class test_getChallengeApplication(APITestCase):
-    url = "/api/application/challenges"
+    url = "/api/application/challenges/"
 
     def setUp(self):
         # Authorization

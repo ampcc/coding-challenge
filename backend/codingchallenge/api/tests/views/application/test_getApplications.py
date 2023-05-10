@@ -11,7 +11,7 @@ from ....serializers import GetApplicationSerializer
 from django.core import serializers
 
 class test_getApplications(APITestCase):
-    url = '/api/admin/applications'
+    url = '/api/admin/applications/'
     
     def setUp(self):
         # Authorization as admin
@@ -37,7 +37,7 @@ class test_getApplications(APITestCase):
     #Test wrong url
     def test_wrongUrl(self):
         #Define wrong url for the test
-        wrongUrl = '/api/admin/appppplications'
+        wrongUrl = '/api/admin/appppplications/'
         response = self.client.get(wrongUrl, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

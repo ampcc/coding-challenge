@@ -6,7 +6,7 @@ from ....models.challenge import Challenge
 from ....views import jsonMessages
 
 class test_deleteChallengeAdmin(APITestCase):
-    url = "/api/admin/challenges"
+    url = "/api/admin/challenges/"
     
     def setUp(self):
         # Authorization
@@ -15,11 +15,11 @@ class test_deleteChallengeAdmin(APITestCase):
         Challenge.objects.create(challengeHeading="Test", challengeText="Text of challenge...")
 
     def test_defaultRequest(self):
-        response = self.client.delete(self.url + "/1")
+        response = self.client.delete(self.url + "1")
         self.assertEqual(response.data, jsonMessages.successJsonResponse())
 
     def test_tryDeleteOnNonexistentChallenge(self):
-        response = self.client.delete(self.url + "/2")
+        response = self.client.delete(self.url + "2")
         self.assertEqual(response.data, jsonMessages.errorJsonResponse("No object found for given challengeId."),
                          status.HTTP_404_NOT_FOUND)
     

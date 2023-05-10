@@ -9,7 +9,7 @@ from ....views import jsonMessages
 # patch is used to bypass the default githubApi and to raplace the following method with mock data
 @patch('api.include.githubApi.GithubApi.deleteRepo', autospec=True)
 class test_deleteApplication(APITestCase):
-    url = '/api/admin/applications'
+    url = '/api/admin/applications/'
 
     def setUp(self):
         # Authorization
@@ -30,7 +30,7 @@ class test_deleteApplication(APITestCase):
         self.client.credentials()
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(self.url + "/" + self.applicationId, format='json')
+        response = self.client.delete(self.url + self.applicationId, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -51,7 +51,7 @@ class test_deleteApplication(APITestCase):
     def test_correctInput(self, mockDelete):
         self.assertEqual(Application.objects.count(), 1)
 
-        response = self.client.delete(self.url + "/" + self.applicationId)
+        response = self.client.delete(self.url + self.applicationId)
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, jsonMessages.successJsonResponse())

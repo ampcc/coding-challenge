@@ -10,7 +10,7 @@ from ....models.application import Application
 #Test for GET ApplicationStatus and LoginWithKey
 #This test needs a User Object with an user token so its also tests loginWithKey
 class test_getApplicationStatus(APITestCase):
-    url = "/api/application/getApplicationStatus"
+    url = "/api/application/getApplicationStatus/"
 
     def setUp(self):
         # Authorization
@@ -18,7 +18,7 @@ class test_getApplicationStatus(APITestCase):
 
         # create application to be able to log a user in
         Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
-        self.response_key_url = self.client.post("/api/admin/applications", {"applicationId": "TEST1234"}, format="json")
+        self.response_key_url = self.client.post("/api/admin/applications/", {"applicationId": "TEST1234"}, format="json")
         index_last_dash = self.response_key_url.data["tmpLink"].rfind("/") + 1
         self.key = self.response_key_url.data["tmpLink"][index_last_dash:]
 
@@ -36,7 +36,7 @@ class test_getApplicationStatus(APITestCase):
     #Test wrong url
     def test_wrongUrl(self):
         #Define wrong url for the test
-        wrongUrl = '/api/admin/appppplications'
+        wrongUrl = '/api/admin/appppplications/'
         response = self.client.get(wrongUrl, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

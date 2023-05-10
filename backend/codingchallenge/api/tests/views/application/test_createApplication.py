@@ -12,7 +12,7 @@ from ....views import expirySettings
 import unittest.mock as mock
 
 class test_createApplication(APITestCase):
-    url = '/api/admin/applications'
+    url = '/api/admin/applications/'
 
     def setUp(self):
         # Authorization
@@ -37,7 +37,7 @@ class test_createApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_wrongUrl(self):
-        url = '/api/admin/dumb'
+        url = '/api/admin/dumb/'
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,

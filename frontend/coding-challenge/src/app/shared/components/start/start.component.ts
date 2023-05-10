@@ -27,6 +27,9 @@ export class StartComponent implements OnInit {
       this.backendService.getStatus(this.applicationToken).subscribe((response) => {
         if (response.status === 1) {
           this.router.navigateByUrl("/challenge");
+        }else if(response.status >= 2){
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/gone");
         }
       });
     }
@@ -72,11 +75,13 @@ export class StartComponent implements OnInit {
           right: { title: 'Cancel', look: 'secondary' }
         }
       },
+      maxHeight: '85vh',
+      minWidth: '30vw',
     });
 
     // If the dialog is closed and the result is true, the user decided to start the challenge, the backend starts the challenge and the user is navigated to the challenge page
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result == 1) {
         this.tryToStartChallenge();
       }
     })

@@ -11,7 +11,7 @@ from ....serializers import GetApplicationSerializer
 
 
 class test_getApplication(APITestCase):
-    url = '/api/admin/applications'
+    url = '/api/admin/applications/'
 
     def setUp(self):
         # Authorization
@@ -26,7 +26,7 @@ class test_getApplication(APITestCase):
     
     #Test the successful Response of getApplications, its also a test for the right token
     def test_successfulResponse(self):
-        response = self.client.get(self.url + "/" + self.applicationId, {}, format='json')
+        response = self.client.get(self.url + self.applicationId, {}, format='json')
         
         self.assertEqual(response.data, {
             'applicationId': 'TEST1234', 
@@ -51,14 +51,14 @@ class test_getApplication(APITestCase):
     def test_missingToken(self):
         #Delete token
         self.client.credentials()
-        response = self.client.get(self.url + "/" + self.applicationId, {}, format='json')
+        response = self.client.get(self.url + self.applicationId, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     #Test with invalid Token(applicant token)
     def test_invalidToken(self):
         #Give wrong token
         self.client.credentials(HTTP_AUTHORIZATION='Token 4f25709a420a92aa01cc67b091b92ac0247f168a')
-        response = self.client.get(self.url + "/" + self.applicationId, {}, format='json')
+        response = self.client.get(self.url + self.applicationId, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         
     #Test with wrong Token format
@@ -66,7 +66,7 @@ class test_getApplication(APITestCase):
         #Give wrong token
         self.client.credentials(HTTP_AUTHORIZATION='Token 8234kawsdjfas')
         #Define response
-        response = self.client.get(self.url + "/" + self.applicationId, {}, format='json')
+        response = self.client.get(self.url + self.applicationId, {}, format='json')
         #Compare defined response status code with status 401 unauthorized
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -77,7 +77,7 @@ class test_getApplication(APITestCase):
             "name": "ExampleName"
         }
         
-        response = self.client.get(self.url + "/" + self.applicationId, data)
+        response = self.client.get(self.url + self.applicationId, data)
         
         self.assertEqual(response.data, {
             'applicationId': 'TEST1234', 
