@@ -326,7 +326,7 @@ export class AdminApplicationsComponent {
     dialogRef.afterClosed().subscribe(result => {
       // TODO: Test if time limit gets successfully expanded
       if (result.s && result.s == 1) {
-        this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e/1000)
+        this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
           .subscribe((result) => {
             // Update the list of applications
             var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
