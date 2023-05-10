@@ -5,7 +5,6 @@ import string
 import sys
 import time
 import os
-import pathlib
 from zipfile import ZipFile
 
 from github import GithubException
@@ -316,7 +315,6 @@ class UploadSolutionView(APIView):
                 correctZipped = False
                 filteredPathList = []
                 for path in file_obj.namelist():
-                    p = pathlib.Path(path)
                     path_name = path[path.find('/') + 1:]
                     if '/.' not in path:
                         # file or directory is not hidden -> use it
