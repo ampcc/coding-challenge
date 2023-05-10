@@ -33,7 +33,7 @@ export class AdminChallengesComponent implements OnInit {
   ];
 
 
-  public constructor(private backend: BackendService, private router: Router, public dialog: MatDialog,) {
+  public constructor(private backend: BackendService, private router: Router, public dialog: MatDialog) {
     this.challenge = { id: 0, challengeHeading: '', challengeText: '' };
     this.adminToken = null;
   }
@@ -107,43 +107,48 @@ export class AdminChallengesComponent implements OnInit {
       if (result == 1) {
         this.router.navigateByUrl("/admin_edit_challenge?id=" + challenge.id);
       } else if (result == 2 && challenge.id != null) {
-        let dialogRefTwo = this.dialog.open(DialogComponent, {
-          data: {
-            title: 'Are you sure you want to delete the Challenge?',
-            buttons: {
-              left: { title: 'Delete', look: 'delete' },
-              right: { title: 'Cancel', look: 'secondary' }
-            }
-          },
-          maxHeight: '85vh',
-          minWidth: '30vw',
-        });
+        this.openDeleteDialog(challenge);
+      }
+    });
 
-        // If the dialog is closed and the result is true, the user decided to delete challenge, the backend deletes the challenge and the user is navigated to Challenges
-        dialogRefTwo.afterClosed().subscribe(result => {
-          if (result == 1) {
-            // TODO: Check if challenge gets properly deleted by backend
-            this.backend.deleteChallenge(this.adminToken, challenge.id!).subscribe(() => {
-              // TODO: Check if navigating is actually needed or if page automatically gets rid of deleted Challenge
-              this.router.navigate(['/admin_challenges']);
-            }, (error) => {
-              switch (error.status) {
-                case 403:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/forbidden");
-                  break;
-                case 404:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/notFound");
-                  break;
-                default:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/internalError");
-                  break;
-              }
-            });
+  }
+
+  public openDeleteDialog(challenge: Challenge): void {
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Are you sure you want to delete the Challenge?',
+        buttons: {
+          left: { title: 'Delete', look: 'delete' },
+          right: { title: 'Cancel', look: 'secondary' }
+        }
+      },
+      maxHeight: '85vh',
+      minWidth: '30vw',
+    });
+
+    // If the dialog is closed and the result is true, the user decided to delete challenge, the backend deletes the challenge and the user is navigated to Challenges
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == 1) {
+        // TODO: Check if challenge gets properly deleted by backend
+        this.backend.deleteChallenge(this.adminToken, challenge.id!).subscribe(() => {
+          // TODO: Check if navigating is actually needed or if page automatically gets rid of deleted Challenge
+          this.router.navigate(['/admin_challenges']);
+        }, (error) => {
+          switch (error.status) {
+            case 403:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/forbidden");
+              break;
+            case 404:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/notFound");
+              break;
+            default:
+              window.sessionStorage.clear();
+              this.router.navigateByUrl("/internalError");
+              break;
           }
-        })
+        });
       }
     })
   }

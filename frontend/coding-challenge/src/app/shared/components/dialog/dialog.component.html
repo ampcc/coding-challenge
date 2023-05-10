@@ -13,7 +13,7 @@
 
         <div *ngIf="data.description.extend" class="extend_container">
             <div class="extend_line">
-                <p class="inline_text">Days to expand with:</p>
+                <p class="inline_text">Days to extend with:</p>
                 <div class="spacer"></div>
                 <input [(ngModel)]="days" class="input" type="number" min="1" step="1" max="21"
                     [ngClass]="{'show_error': this.daysError}" />
@@ -25,11 +25,11 @@
             </div>
         </div>
 
-        <div>
+        <div *ngIf="data.description.challenges">
             <div class="selector">
                 <p class="inline_text">New Challenge:</p>
                 <div class="spacer"></div>
-                <select *ngIf="data.description.challenges" class="input"
+                <select class="input"
                     [ngClass]="{'show_error': this.challengeError}" id="dropdown">
                     <option selected="selected" value="none">Random</option>
                     <option *ngFor="let challenge of data.description.challenges" value="{{challenge.id}}">

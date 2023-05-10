@@ -42,7 +42,6 @@ export class AdminApplicationsComponent {
   public filteredArchivArray: Application[] = [];
   public resultOfLinting: String = "";
 
-  public possibleChallengesArray: Challenge[] = [];
   public newChallengesArray: [{
     id?: number,
     heading: string
@@ -300,14 +299,11 @@ export class AdminApplicationsComponent {
   public openExtendDialogActiveChallenges(application: Application): void {
     // TODO: Check if dialog opens correctly displaying all possible challenges (except the one previously given) in dropdown
     DialogComponent.name;
-    this.backend.getChallenges(this.adminToken).subscribe((response: Challenge[]) => {
-      this.possibleChallengesArray = response;
-    });
-    for (var i = 0; i < this.possibleChallengesArray.length; i++) {
-      if (this.possibleChallengesArray[i].id != application.challengeId) {
+    for (var i = 0; i < this.challengeArray.length; i++) {
+      if (this.challengeArray[i].id != application.challengeId) {
         this.newChallengesArray.push({
-          id: this.possibleChallengesArray[i].id,
-          heading: this.possibleChallengesArray[i].challengeHeading
+          id: this.challengeArray[i].id,
+          heading: this.challengeArray[i].challengeHeading
         });
       }
     }

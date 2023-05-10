@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgZone } from '@angular/core';
 
 
 @Component({
@@ -58,7 +59,7 @@ export class DialogComponent {
       }
     }
   },
-    public dialogRef: MatDialogRef<DialogComponent>) {
+    public dialogRef: MatDialogRef<DialogComponent>, private ngZone: NgZone) {
     if (data.buttons.left && data.buttons.middle && data.buttons.right) {
       this.threeButtons = true;
     } else if ((data.buttons.left && data.buttons.middle) || (data.buttons.left && data.buttons.right) || (data.buttons.middle && data.buttons.right)) {
@@ -70,7 +71,8 @@ export class DialogComponent {
 
   // The Dialog can be closed with the press of a button
   public closeDialog(state: number) {
-    if (this.data.description.extend && state == 1) {
+    if (this.data.description && this.data.description.extend && state == 1) {
+      console.log('T');
       var response;
       var expiryTime;
       this.daysError = false;

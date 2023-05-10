@@ -15,7 +15,6 @@ export class AppComponent {
   sitenavClosed = true;
   adminApplicants = false;
   adminChallenges = false;
-  adminEdit = false;
   adminPassword = false;
   link = '/start';
 
@@ -26,7 +25,6 @@ export class AppComponent {
         this.adminPage = false;
         this.adminApplicants = false;
         this.adminChallenges = false;
-        this.adminEdit = false;
         this.adminPassword = false;
         if (event.url.includes('admin')) {
           this.link = '/admin_login';
@@ -38,8 +36,6 @@ export class AppComponent {
               this.adminApplicants = true;
             } else if (event.url.includes('challenges')) {
               this.adminChallenges = true;
-            } else if (event.url.includes('edit')) {
-              this.adminEdit = true;
             } else if (event.url.includes('password')) {
               this.adminPassword = true;
             }
