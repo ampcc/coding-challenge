@@ -2,10 +2,12 @@ import json
 import random
 import secrets
 import string
+import sys
 import time
 import os
 from zipfile import ZipFile
 
+from github import GithubException
 from django.conf import settings
 from cryptography.fernet import Fernet
 from rest_framework.parsers import FileUploadParser
@@ -35,6 +37,7 @@ from ..include.githubApi import GithubApi
 class AdminApplicationsView(APIView):
     # grant permission only for admin user
     permission_classes = [IsAdminUser]
+    gApi = GithubApi()
 
     name = "Admin Application View"
     description = "handling all requests for applications as a admin"
@@ -145,8 +148,8 @@ class AdminApplicationsView(APIView):
         if serializer.is_valid():
             serializer.save()
             try:
-                applications = Application.objects.get(applicationId=request.data.get('applicationId'))
-            except (KeyError, DoesNotExist):
+                applications = Application.objects.get(applicationId=self.kwargs["applicationId"])
+            except (KeyError, ObjectDoesNotExist):
                 return Response("Application not found!", status=status.HTTP_404_NOT_FOUND)
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
                                                                                           "applicationId": request.data.get(
@@ -227,9 +230,14 @@ class AdminApplicationsView(APIView):
         try:
             application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
-        except(KeyError, TypeError):
+        except(KeyError, TypeError, Application.DoesNotExist):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            self.gApi.deleteRepo(application.githubRepo)
+        except GithubException:
+            return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
 
         application.delete()
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
@@ -237,7 +245,6 @@ class AdminApplicationsView(APIView):
 
 class AdminResultApplicationView(APIView):
     permission_classes = [IsAuthenticated]
-
     gApi = GithubApi()
 
     # 8. Get Result
@@ -260,16 +267,23 @@ class AdminResultApplicationView(APIView):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
 
-        if application.githubRepo:
+        try:
             repoName = application.githubRepo
 
-        else:
+        except AttributeError:
             return Response(
                 jsonMessages.errorJsonResponse("Can not find repo"),
                 status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'githubUrl': self.gApi.getRepoUrl(repoName),
-                         'content': self.gApi.getLinterResult(repoName)}, status=status.HTTP_200_OK)
+        try:
+            githubUrl = self.gApi.getRepoUrl(repoName)
+            linterResult = self.gApi.getLinterResult(repoName)
+
+        except GithubException:
+            return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
+
+        return Response({'githubUrl': githubUrl,
+                         'content': linterResult}, status=status.HTTP_200_OK)
 
 
 class UploadSolutionView(APIView):
@@ -302,12 +316,17 @@ class UploadSolutionView(APIView):
             user.application.githubRepo = repoName
             user.application.save()
 
-            self.gApi.createRepo(repoName, 'to be defined')
-            for path in file_obj.namelist():
-                if not path.endswith('/'):
-                    self.gApi.pushFile(repoName, path, file_obj.read(path))
+            try:
+                self.gApi.createRepo(repoName, 'to be defined') # TODO: description auslagern
 
-            self.gApi.addLinter(repoName)
+                for path in file_obj.namelist():
+                    if not path.endswith('/'):
+                        self.gApi.pushFile(repoName, path, file_obj.read(path))
+
+                self.gApi.addLinter(repoName)
+
+            except GithubException:
+                return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
 
             return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
         else:

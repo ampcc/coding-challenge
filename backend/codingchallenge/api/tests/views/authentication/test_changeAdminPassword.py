@@ -12,7 +12,7 @@ from ....views import expirySettings
 import unittest.mock as mock
 
 class test_changeAdminPassword(APITestCase):
-    url = '/api/admin/changePassword'
+    url = '/api/admin/changePassword/'
 
     def setUp(self):
         # Authorization
