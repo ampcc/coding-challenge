@@ -18,7 +18,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/application/loginWithKey/gAAAAABkU39LBkMnJq8dzVX2voejHUWWch1AJbzKxEbNzVgWJgFbgFXgLmZGgOJCzbOPH8S2URFBNmZHEppvwFdHJBulaJIoN9GUu7L0OLZVsd1xurEQhXU%3D",
+							"raw": "http://127.0.0.1:8000/api/application/loginWithKey/gAAAAABkW6AqaQt8Dgd1UXPJukzdioeFysJQFgRaQ2RNrGPdrvRX0KVy7bvgGNEuydlL73AP6j1U2Sdkd5b6I93v_Ipx2ED4gRFIfjXYzakUbuxON6xJhqk%3D",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -31,7 +31,7 @@
 								"api",
 								"application",
 								"loginWithKey",
-								"gAAAAABkU39LBkMnJq8dzVX2voejHUWWch1AJbzKxEbNzVgWJgFbgFXgLmZGgOJCzbOPH8S2URFBNmZHEppvwFdHJBulaJIoN9GUu7L0OLZVsd1xurEQhXU%3D"
+								"gAAAAABkW6AqaQt8Dgd1UXPJukzdioeFysJQFgRaQ2RNrGPdrvRX0KVy7bvgGNEuydlL73AP6j1U2Sdkd5b6I93v_Ipx2ED4gRFIfjXYzakUbuxON6xJhqk%3D"
 							]
 						}
 					},
@@ -270,7 +270,7 @@
 					]
 				},
 				{
-					"name": "upload Challenge",
+					"name": "upload Solution",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -288,11 +288,11 @@
 						"body": {
 							"mode": "file",
 							"file": {
-								"src": "/Users/marcodaum/Desktop/Archiv.zip"
+								"src": "/Users/marcodaum/Desktop/Projektname1.zip"
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/application/uploadChallenge/",
+							"raw": "http://127.0.0.1:8000/api/application/uploadSolution/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -304,14 +304,14 @@
 							"path": [
 								"api",
 								"application",
-								"uploadChallenge",
+								"uploadSolution",
 								""
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "upload Challenge",
+							"name": "upload Solution",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -327,7 +327,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://127.0.0.1:8000/api/application/uploadChallenge/",
+									"raw": "http://127.0.0.1:8000/api/application/uploadSolution/",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -339,7 +339,7 @@
 									"path": [
 										"api",
 										"application",
-										"uploadChallenge",
+										"uploadSolution",
 										""
 									]
 								}
@@ -678,7 +678,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"applicationId\" : \"TASC1210\",\n    \"challengeId\" : 1\n}",
+							"raw": "{\n    \"applicationId\" : \"TASC1218\",\n    \"challengeId\" : 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -770,7 +770,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/admin/applications/TASC1219",
+							"raw": "http://127.0.0.1:8000/api/admin/application",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -782,8 +782,7 @@
 							"path": [
 								"api",
 								"admin",
-								"applications",
-								"TASC1219"
+								"application"
 							]
 						}
 					},
