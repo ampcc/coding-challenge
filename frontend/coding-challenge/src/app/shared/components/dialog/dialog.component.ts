@@ -24,6 +24,11 @@ export class DialogComponent {
   daysError: boolean = false;
   challengeError: boolean = false;
 
+  daysErrorText: string = 'Please select at least a new Challenge or time limit!';
+  challengeErrorText: string = 'Please select at least a new Challenge or time limit!';
+
+  noOtherChallenges: boolean = false;
+
   oneButton: boolean = false;
   twoButtons: boolean = false;
   threeButtons: boolean = false;
@@ -71,24 +76,48 @@ export class DialogComponent {
 
   // The Dialog can be closed with the press of a button
   public closeDialog(state: number) {
-    if (this.data.description && this.data.description.extend && state == 1) {
-      console.log('T');
+    if (this.data.description && (this.data.description.extend || this.data.description.challenges) && state == 1) {
       var response;
       var expiryTime;
       this.daysError = false;
       this.challengeError = false;
+      this.noOtherChallenges = false;
 
-      if (this.days < 1 || this.days > 21) {
-        this.daysError = true;
-      } else {
-        expiryTime = new Date().getTime() + (this.days * 24 * 60 * 60 * 1000);
-      }
-        this.challenge = (<HTMLSelectElement>document.getElementById('dropdown')).value;
-        if (this.challenge === '') {
-          this.challengeError = true;
-        } else if (this.challenge ==='none') {
-          this.challenge = undefined;
+      if (this.data.description.extend) {
+        if (this.days > 21) {
+          this.daysErrorText = 'Please enter a number between 1 and 21 or 0!';
+          this.daysError = true;
+        } else if (this.days < 1) {
+          expiryTime = undefined;
+        } else {
+          expiryTime = new Date().getTime() + (this.days * 24 * 60 * 60);
         }
+      }
+
+      if (this.data.description.challenges) {
+        this.challenge = (<HTMLSelectElement>document.getElementById('dropdown')).value;
+        if (this.challenge === '' || this.challenge === 'none') {
+          this.challenge = undefined;
+        } else if (this.challenge === 'random') {
+          console.log(this.data.description.challenges);
+          if (this.data.description.challenges[0] === undefined) {
+            this.challenge = undefined;
+            this.noOtherChallenges = true;
+          } else {
+            this.challenge = this.data.description.challenges[Math.floor(Math.random() * (this.data.description.challenges.length))].id;
+          }
+        }
+        if (this.days == 0 && this.challenge === undefined) {
+          this.challengeError = true;
+          if (this.noOtherChallenges) {
+            this.challengeErrorText = 'Unfortunately there are no other Challenges available!';
+          } else {
+            this.daysErrorText = 'Please select at least a new Challenge or time limit!';
+            this.challengeErrorText = 'Please select at least a new Challenge or time limit!';
+            this.daysError = true;
+          }
+        }
+      }
       if (!this.daysError && !this.challengeError) {
         response = {
           s: state,

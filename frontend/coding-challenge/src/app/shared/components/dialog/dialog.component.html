@@ -20,7 +20,7 @@
             </div>
             <div class="extend_line">
                 <div class="spacer"></div>
-                <p class="error_message" [ngClass]="{'hidden': !this.daysError}">Please enter a number between 1 and 21
+                <p class="error_message" [ngClass]="{'hidden': !this.daysError}">{{this.daysErrorText}}
                 </p>
             </div>
         </div>
@@ -31,7 +31,8 @@
                 <div class="spacer"></div>
                 <select class="input"
                     [ngClass]="{'show_error': this.challengeError}" id="dropdown">
-                    <option selected="selected" value="none">Random</option>
+                    <option selected="selected" value="none">None</option>
+                    <option value="random">Random</option>
                     <option *ngFor="let challenge of data.description.challenges" value="{{challenge.id}}">
                         {{challenge.heading}}
                     </option>
@@ -39,7 +40,7 @@
             </div>
             <div class="extend_line">
                 <div class="spacer"></div>
-                <p class="error_message" [ngClass]="{'hidden': !this.challengeError}">Please select a new Challenge
+                <p class="error_message" [ngClass]="{'hidden': !this.challengeError}">{{this.challengeErrorText}}
                 </p>
             </div>
         </div>
