@@ -69,7 +69,7 @@ class AdminApplicationsView(APIView):
 
     # 4. Create Application
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#4-create-application
-    # /api/admin/applications
+    # /api/admin/applications/
     def post(self, request, *args, **kwargs):
         """
         create Application with
@@ -148,9 +148,9 @@ class AdminApplicationsView(APIView):
         if serializer.is_valid():
             serializer.save()
             try:
-                applications = Application.objects.get(applicationId=self.kwargs["applicationId"])
+                applications = Application.objects.get(applicationId=request.data.get('applicationId'))
             except (KeyError, ObjectDoesNotExist):
-                return Response("Application not found!", status=status.HTTP_404_NOT_FOUND)
+                return Response(jsonMessages.errorJsonResponse("Application not found!"), status=status.HTTP_404_NOT_FOUND)
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
                                                                                           "applicationId": request.data.get(
                                                                                               'applicationId')})
@@ -311,22 +311,36 @@ class UploadSolutionView(APIView):
             raw_file = request.data['file']
             file_obj = ZipFile(raw_file)
 
+            try:
+                correctZipped = False
+                filteredPathList = []
+                for path in file_obj.namelist():
+                    path_name = path[path.find('/') + 1:]
+                    if '/.' not in path:
+                        # file or directory is not hidden -> use it
+                        if not '/' in path_name and not path_name == "":
+                            # there is at least one file inside the root folder
+                            correctZipped = True
+                        filteredPathList.append(path)
+
+                if not correctZipped:
+                    return Response(jsonMessages.errorJsonResponse("The data does not match the required structure inside of the zipfile!"), status=status.HTTP_406_NOT_ACCEPTABLE)
+                else:
+                    self.gApi.createRepo(repoName, 'to be defined') # TODO: description auslagern
+
+                for path in filteredPathList:
+                    if not path.endswith('/'):
+                        self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
+
+
+                self.gApi.addLinter(repoName)
+            except GithubException:
+                return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
+            
             user.application.submission = time.time()
             user.application.status = Application.Status.IN_REVIEW
             user.application.githubRepo = repoName
             user.application.save()
-
-            try:
-                self.gApi.createRepo(repoName, 'to be defined') # TODO: description auslagern
-
-                for path in file_obj.namelist():
-                    if not path.endswith('/'):
-                        self.gApi.pushFile(repoName, path, file_obj.read(path))
-
-                self.gApi.addLinter(repoName)
-
-            except GithubException:
-                return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
 
             return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
         else:

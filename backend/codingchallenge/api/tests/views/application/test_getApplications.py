@@ -18,7 +18,7 @@ class test_getApplications(APITestCase):
         MockAuth.admin(self)
         
         #Challenge is needed to create Application tests
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
+        self.client.post('/api/admin/challenges/', {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"}, format='json')
         
         # Example Application for the tests, will be deleted after passing the test
         self.client.post(self.url, {"applicationId" : "TEST1234"}, format='json')
