@@ -26,7 +26,7 @@ class test_getResult(APITransactionTestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges",
+        self.client.post("/api/admin/challenges/",
                          {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
                          format='json')
 
@@ -60,6 +60,7 @@ class test_getResult(APITransactionTestCase):
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    # Todo: should be implemented soon
     # def test_wrongStatus(self, mockGetRepoUrl, mockGetLinterLog):
     #     self.application.status = Application.Status.CHALLENGE_STARTED
     #     self.application.save()
@@ -67,6 +68,7 @@ class test_getResult(APITransactionTestCase):
     #     response = self.client.get(self.url + self.applicationId, format='json')
     #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    # Todo: should be implemented soon
     # def test_linterNotFinished(self, mockGetRepoUrl, mockGetLinterLog):
     #     # MagicMock.
     #

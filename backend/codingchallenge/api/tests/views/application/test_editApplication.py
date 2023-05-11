@@ -17,7 +17,7 @@ class test_editApplication(APITransactionTestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges",
+        self.client.post("/api/admin/challenges/",
                          {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
                          format='json')
 
