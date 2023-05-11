@@ -64,25 +64,30 @@ export class AdminChallengesComponent implements OnInit {
     }
   }
 
-  public showFilter(): void {
-    this.hideFilterSelect = !this.hideFilterSelect;
+  public addChallenge(): void {
+    this.router.navigateByUrl("/admin_edit_challenge");
   }
 
-  public toggleTreeView(id: string): void {
-    let element = document.getElementById(id);
-    if (element !== null && element !== undefined) {
-      let parentElement = element.parentElement;
 
-      if (parentElement !== null && parentElement !== undefined) {
-        parentElement.querySelector(".nested")!.classList.toggle("active");
-        element.classList.toggle("caret-down");
-      }
-    }
-  }
+  // public showFilter(): void {
+  //   this.hideFilterSelect = !this.hideFilterSelect;
+  // }
 
-  public checkboxChallengeChange(): void {
+  // public toggleTreeView(id: string): void {
+  //   let element = document.getElementById(id);
+  //   if(element !== null && element !== undefined) {
+  //     let parentElement = element.parentElement;
 
-  }
+  //     if(parentElement !== null && parentElement !== undefined) {
+  //       parentElement.querySelector(".nested")!.classList.toggle("active");
+  //       element.classList.toggle("caret-down");
+  //     }
+  //   }
+  // }
+
+  // public checkboxChallengeChange(): void {
+
+  // }
 
 
   public openDialogActiveChallenges(challenge: Challenge): void {
