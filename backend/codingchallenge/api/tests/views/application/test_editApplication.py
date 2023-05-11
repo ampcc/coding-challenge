@@ -18,7 +18,7 @@ class test_editApplication(APITestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges",
+        self.client.post("/api/admin/challenges/",
                          {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
                          format='json')
 
@@ -117,10 +117,9 @@ class test_editApplication(APITestCase):
             "challengeId": 123123,
             "extendDays": 2
         }
-        
+
         response = self.client.put(self.url + self.applicationId, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
 
         self.assertNotEqual(Application.objects.get().challengeId, 123123)
         self.assertEqual(response.data, {"detail": "Passed Challenge ID does not exist!"})

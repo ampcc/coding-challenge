@@ -18,7 +18,7 @@ mockLinterLog = open(BASE_DIR.joinpath("api/tests/mock/mockMegalinter.log")).rea
 @patch('api.include.githubApi.GithubApi.getLinterLog', return_value=mockLinterLog)
 @patch('api.include.githubApi.GithubApi.getRepoUrl', return_value=mockRepoUrl)
 class test_getResult(APITestCase):
-    applicationUrl = "/api/admin/applications"
+    applicationUrl = "/api/admin/applications/"
     url = '/api/admin/applications/results/'
 
     def setUp(self):
@@ -26,7 +26,7 @@ class test_getResult(APITestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges",
+        self.client.post("/api/admin/challenges/",
                          {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
                          format='json')
 
