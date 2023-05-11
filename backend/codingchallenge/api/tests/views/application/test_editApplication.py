@@ -1,16 +1,15 @@
 import json
-import time
 
 from django.core import serializers
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
-from ....models.challenge import Challenge
 
 
-class test_editApplication(APITestCase):
+class test_editApplication(APITransactionTestCase):
+    reset_sequences = True
     url = '/api/admin/applications/'
 
     def setUp(self):
@@ -26,6 +25,13 @@ class test_editApplication(APITestCase):
         self.client.post(self.url, {"applicationId": "TEST1234"}, format='json')
 
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
+
+        from django.contrib.auth.models import User
+
+        print(Application.objects.count())
+        print(User.objects.count())
+        print(User.objects.first())
+        print(getattr(User.objects.first(), "id"))
 
     def test_missingAuth(self):
         # remove headers for this test

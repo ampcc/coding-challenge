@@ -1,13 +1,12 @@
-from os import getcwd
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from pathlib import Path
+from unittest.mock import patch
+
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 
 from ...mock.mockAuth import MockAuth
-from ....include.githubApi import GithubApi
 from ....models.application import Application
-from ....views import jsonMessages
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 mockRepoUrl = "https://github.com/dummy/url"
@@ -17,8 +16,9 @@ mockLinterLog = open(BASE_DIR.joinpath("api/tests/mock/mockMegalinter.log")).rea
 # patch is used to bypass the default githubApi and to raplace the following methods with mock data
 @patch('api.include.githubApi.GithubApi.getLinterLog', return_value=mockLinterLog)
 @patch('api.include.githubApi.GithubApi.getRepoUrl', return_value=mockRepoUrl)
-class test_getResult(APITestCase):
-    applicationUrl = "/api/admin/applications/"
+class test_getResult(APITransactionTestCase):
+    reset_sequences = True
+    applicationUrl = "/api/admin/applications"
     url = '/api/admin/applications/results/'
 
     def setUp(self):

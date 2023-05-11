@@ -1,6 +1,7 @@
 from unittest.mock import patch
+
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
@@ -9,7 +10,8 @@ from ....views import jsonMessages
 
 # patch is used to bypass the default githubApi and to raplace the following method with mock data
 @patch('api.include.githubApi.GithubApi.deleteRepo', autospec=True)
-class test_deleteApplication(APITestCase):
+class test_deleteApplication(APITransactionTestCase):
+    reset_sequences = True
     url = '/api/admin/applications/'
 
     def setUp(self):
