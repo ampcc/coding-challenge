@@ -6,6 +6,7 @@ from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 from ....views import jsonMessages
 
+
 # patch is used to bypass the default githubApi and to raplace the following method with mock data
 @patch('api.include.githubApi.GithubApi.deleteRepo', autospec=True)
 class test_deleteApplication(APITestCase):
@@ -16,7 +17,7 @@ class test_deleteApplication(APITestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges",
+        self.client.post("/api/admin/challenges/",
                          {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
                          format='json')
 
