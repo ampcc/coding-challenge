@@ -1,11 +1,6 @@
 # **coding-challenge by amplimind and THI**
 *Insert logos here*
 
-## **Table of contents**
-1. [Idea behind the project] (#ideaProject)
-
-
-<a name="ideaProject"></a>
 ## **Idea behind the project**
 This project aims to provide a web-based solution for ampliminds application process.\
 For that, a group of 12 computer science students from the THI work as main developer under the guidance of amplimind.\
