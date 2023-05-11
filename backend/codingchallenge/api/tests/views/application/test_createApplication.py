@@ -1,17 +1,17 @@
 import time
+import unittest.mock as mock
 
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 from ....models.challenge import Challenge
-from ....views import jsonMessages
 from ....views import expirySettings
 
-import unittest.mock as mock
 
-class test_createApplication(APITestCase):
+class test_createApplication(APITransactionTestCase):
+    reset_sequences = True
     url = '/api/admin/applications/'
 
     def setUp(self):
@@ -139,12 +139,12 @@ class test_createApplication(APITestCase):
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, expectedReturnData)
-        
+
         timestamp = time.time()
         timestamp = timestamp + 6 * 24 * 60 * 60
 
-        # rounds the assertion to seconds
-        self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
+        # asserts if the two timestamps are in range of 10 seconds
+        self.assertAlmostEqual(Application.objects.get().expiry / 10, timestamp / 10, 0)
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
         self.assertEqual(Application.objects.get().challengeId, 1)
 

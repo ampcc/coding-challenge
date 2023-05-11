@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+import sys
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -87,10 +88,16 @@ WSGI_APPLICATION = 'codingchallenge.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
+#AWS-Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'amplimind',
+        'USER': 'postgres',
+        'PASSWORD': 'hSWi365HSY4e9$m',
+        'HOST': 'amplimindcodingchallenge.c8pfluxipxie.eu-north-1.rds.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
