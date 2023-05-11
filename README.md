@@ -26,7 +26,7 @@ You will need the following files:
 - A **.env** file 
 - A **privateKey.pem** file
 
-Both files need to be in the **coding-challenge/backend/codingchallenge** directory
+Both files need to be in the **coding-challenge/backend/codingchallenge/** directory
 
 ### **4.1 The .env file**
 The .env file must have the following structure:\
@@ -68,3 +68,6 @@ You have the following options to deploy the software on your local machine:
    **E.g.** You are working on the frontend and don't want to install python and django for the backend. Then you can start the backend container and don't need to install anything.\
    To simplify the handling of the container, start and stop scripts (**.sh** for Linux/MacOS and **.bat** for Windows) are available in the frontend and backend directory.\
    If you want more control on which images/container you want to keep, how you want to start the container, etc. you can always use the **Docker Desktop** GUI.
+
+## **6. Additional information**
+For more detailed information on the projekt, visit the corresponding [wiki] (https://github.com/ampcc/coding-challenge/wiki).
