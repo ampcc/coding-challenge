@@ -70,4 +70,4 @@ You have the following options to deploy the software on your local machine:
    If you want more control on which images/container you want to keep, how you want to start the container, etc. you can always use the **Docker Desktop** GUI.
 
 ## **6. Additional information**
-For more detailed information on the projekt, visit the corresponding [wiki] (https://github.com/ampcc/coding-challenge/wiki).
+For more detailed information on the projekt, visit the corresponding [wiki](https://github.com/ampcc/coding-challenge/wiki).
