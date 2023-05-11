@@ -279,7 +279,8 @@ class AdminResultApplicationView(APIView):
             linterResult = self.gApi.getLinterResult(application.githubRepo)
 
         except GithubException:
-            return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
+            response, statusCode = jsonMessages.errorGithubJsonResponse(sys.exception())
+            return Response(response, status=statusCode)
 
         return Response({'githubUrl': githubUrl,
                          'content': linterResult}, status=status.HTTP_200_OK)
