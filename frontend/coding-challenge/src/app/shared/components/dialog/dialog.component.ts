@@ -90,7 +90,7 @@ export class DialogComponent {
         } else if (this.days < 1) {
           expiryTime = undefined;
         } else {
-          expiryTime = new Date().getTime() + (this.days * 24 * 60 * 60);
+          expiryTime = (new Date().getTime() / 1000) + (this.days * 24 * 60 * 60);
         }
       }
 

@@ -137,7 +137,8 @@ export class AdminChallengesComponent implements OnInit {
         // TODO: Check if challenge gets properly deleted by backend
         this.backend.deleteChallenge(this.adminToken, challenge.id!).subscribe(() => {
           // TODO: Check if navigating is actually needed or if page automatically gets rid of deleted Challenge
-          this.router.navigate(['/admin_challenges']);
+          var index = this.challengeArray.findIndex(chal => chal.id === challenge.id);
+          this.challengeArray.splice(index, 1);
         }, (error) => {
           switch (error.status) {
             case 403:

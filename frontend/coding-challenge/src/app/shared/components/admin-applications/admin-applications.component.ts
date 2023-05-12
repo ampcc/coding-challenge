@@ -299,6 +299,7 @@ export class AdminApplicationsComponent {
   public openExtendDialogActiveChallenges(application: Application): void {
     // TODO: Check if dialog opens correctly displaying all possible challenges (except the one previously given) in dropdown
     DialogComponent.name;
+    this.newChallengesArray = [];
     for (var i = 0; i < this.challengeArray.length; i++) {
       if (this.challengeArray[i].id != application.challengeId) {
         this.newChallengesArray.push({
@@ -326,6 +327,7 @@ export class AdminApplicationsComponent {
     dialogRef.afterClosed().subscribe(result => {
       // TODO: Test if time limit gets successfully expanded
       if (result.s && result.s == 1) {
+        //console.log(result.e)
         this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
           .subscribe((result) => {
             // Update the list of applications
