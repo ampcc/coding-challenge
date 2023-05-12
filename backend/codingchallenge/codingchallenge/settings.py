@@ -95,7 +95,7 @@ DATABASES = {
         'NAME': 'amplimind',
         'USER': 'amplimind',
         'PASSWORD': 'admin',
-        'HOST': '0.0.0.0',
+        'HOST': 'database',
         'PORT': '5432'
     }
 }
