@@ -47,7 +47,7 @@ export class BackendService {
     const body = new FormData();
     body.append('dataZip', _zipFile);
     console.log(body);
-    return this.http.post(this.backendURL + '/api/application/uploadChallenge/', body, {'headers': headers});
+    return this.http.post(this.backendURL + '/api/application/uploadSolution/', body, {'headers': headers});
   }
 
   public submitChallenge(_applicationToken: string): Observable<any>{
