@@ -229,6 +229,14 @@ span {
 }
 
 
+.options {
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
 /* Responsive Webdesign */
 @media screen and (min-width: 2000px) {
     h2 {
@@ -267,30 +275,30 @@ span {
     }
 }
 
-@media screen and (max-width: 850px) {
-    /* responsive design for the tab bar */
-    .icon {
-        display: block;
-        position: absolute;
+@media screen and (max-width: 840px) {
+    .tab_list {
+        display: inline-block;
+    }
+
+    .options {
+        display: flex;
+        margin-top: 9px;
+        margin-bottom: 9px;
+        margin-left: auto;
+        margin-right: 0;
+        float: right;
+    }
+
+    #filterTree {
         right: 12.5%;
-        top: 9.15cm;
+        top: 12.76cm;
     }
 }
 
-@media screen and (max-width: 725px) {
-    .search_bar {
-        max-width: 50%;
+ @media screen and (max-width: 636px) {
+    #filterTree {
+        right: 12.5%;
+        top: 14.36cm;
     }
 }
 
-/* @media screen and (max-width: 643px) {
-    .search_bar {
-        width: 4cm;
-    }
-}
-
-@media screen and (max-width: 643px) {
-    .icon {
-        top: 10.15cm;
-    }
-} */
