@@ -1,2 +1,2 @@
 # Explicitly .sh files need to have native line endings, to work with docker container
-*.sh text eol=lf
+./backend/*.sh text eol=lf
