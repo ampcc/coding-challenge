@@ -17,93 +17,74 @@
 
         <div class="view_tab">
             <div class="tab_list">
-                <div>
+                <div class="tab_selection">
                     <label class="tabs" id="tab_active_challenges" for="tab-1"
                         (click)="changeTab('tab_active_challenges')">
                         Active Applications
                     </label>
 
                     <label class="tabs" id="tab_archiv" for="tab-2" (click)="changeTab('tab_archiv')">
-                        Archiv
+                        Archive
                     </label>
                 </div>
 
-                <div class="filter">
-                    <div>
-                        <label (click)="showFilter()" id="labelFilter">
-                            Filter
-                            <img src="../../../../assets/funnel.svg" class="funnel">
-                        </label>
+                <div class="options">
+                    <form action="" class="search_bar">
+                        <div class="input-group mb-4">
+                            <input type="search" placeholder="Search for application ..."
+                                aria-describedby="button-addon5" class="form-control" id="input_search_bar">
+                            <div class="input-group-append">
+                                <button id="button-addon5" type="submit" class="btn btn-primary" (click)="search()">
+                                    <img src="../../../../assets/search.svg" class="search">
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="filter icon">
+                        <div>
+                            <label (click)="showFilter()" id="labelFilter">
+                                Filter
+                                <img src="../../../../assets/funnel.svg" class="funnel">
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- <div class="filter" id="filterTree"> -->
-                <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
-                    <ul id="myUL">
-                        <li class="tree">
-                            <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
-                            <ul class="nested" >
-                                <li *ngFor="let challenge of challengeArray">
-                                    <input type="checkbox" class="challengeFilterElement" id="challenge{{challenge.id}}" (change)="checkboxChallengeChange($event)" value="challenge{{challenge.id}}" />
-                                    <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
-                                </li>
-                            </ul>
-                        </li>
-                        <li [hidden]="hideContentActiveChallenges" class="tree">
-                            <span class="caret" id="caret2" (click)="toggleTreeView('caret2')">Status</span>
-                            <ul class="nested">
-                                <li>
-                                    <input type="checkbox" id="uploaded" (change)="checkboxStatusChange($event)"
-                                        value="uploaded" />
-                                    <span class="tree_checkbox_label"> uploaded</span>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="not_uploaded_yet" (change)="checkboxStatusChange($event)"
-                                        value="not_uploaded_yet" />
-                                    <span class="tree_checkbox_label"> not uploaded yet</span>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="not_submitted_in_time"
-                                        (change)="checkboxStatusChange($event)" value="not_uploaded_in_time" />
-                                    <span class="tree_checkbox_label"> not submitted in time</span>
-                                </li>
-                            </ul>
-                        </li>
-                        <li [hidden]="hideContentActiveChallenges" id="last_tree">
-                            <span class="caret" id="caret3" (click)="toggleTreeView('caret3')">Time Limit</span>
-                            <ul class="nested">
-                                <li>
-                                    <input type="checkbox" id="three_day" (change)="checkboxTimeLimitChange()"
-                                        value="three_day" />
-                                    <span class="tree_checkbox_label"> 3 days</span>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="two_day" (change)="checkboxTimeLimitChange()"
-                                        value="two_day" />
-                                    <span class="tree_checkbox_label"> 2 days</span>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="one_day" (change)="checkboxTimeLimitChange()"
-                                        value="one_day" />
-                                    <span class="tree_checkbox_label"> 1 day</span>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="expired" (change)="checkboxTimeLimitChange()"
-                                        value="expired" />
-                                    <span class="tree_checkbox_label"> expired</span>
-                                </li>
-                                <!-- optional: if we include the possibility to extend the time limit  -->
-                                <!-- <li>
-                                    <input type="checkbox" id="expired" (change)="checkboxTimeLimitChange()"
-                                        value="expired" />
-                                    <span class="tree_checkbox_label"> other</span>
-                                </li> -->
-                            </ul>
-                        </li>
-                    </ul>
-                    <button class="btn btn-dark apply_button">Apply</button>
-                </div>
-            <!-- </div> -->
+            <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
+                <ul id="myUL">
+                    <li id="first_tree">
+                        <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
+                        <ul class="nested">
+                            <li *ngFor="let challenge of challengeArray">
+                                <input type="checkbox" class="challengeFilterElement" id="challenge{{challenge.id}}"
+                                    (change)="checkboxChallengeChange($event)" value="challenge{{challenge.id}}" />
+                                <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li [hidden]="hideContentActiveChallenges" class="tree">
+                        <span class="caret" id="caret2" (click)="toggleTreeView('caret2')">Status</span>
+                        <ul class="nested">
+                            <li>
+                                <input type="checkbox" id="uploaded" (change)="checkboxStatusChange($event)"
+                                    value="uploaded" />
+                                <span class="tree_checkbox_label"> uploaded</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="not_uploaded_yet" (change)="checkboxStatusChange($event)"
+                                    value="not_uploaded_yet" />
+                                <span class="tree_checkbox_label"> not uploaded yet</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="not_submitted_in_time"
+                                    (change)="checkboxStatusChange($event)" value="not_uploaded_in_time" />
+                                <span class="tree_checkbox_label"> not submitted in time</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
                 <div class="list" id="list_applicants">
@@ -114,12 +95,15 @@
                             </h4>
                             <span><b>Challenge:</b> {{getChallengeHeading(app.challengeId)}}</span>
                             <span><b>Status:</b> {{getStatusText(app.status)}}</span>
-                            <span [hidden]="hideSubmissionDate"><b>Submission date:</b> {{getSubmissionDateText(app.submission)}}</span>
+                            <span [hidden]="hideSubmissionDate"><b>Submission date:</b>
+                                {{getSubmissionDateText(app.submission)}}</span>
                             <span [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}}</span>
                         </div>
                         <div class="btn_position">
-                            <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details" (click)="openDialogActiveChallenges(app)">Details</button>
-                            <button *ngIf="getStatusText(app.status) != 'uploaded'" class="btn btn-dark details" (click)="openExtendDialogActiveChallenges(app)">Edit</button>
+                            <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details"
+                                (click)="openDialogActiveChallenges(app)">Details</button>
+                            <button *ngIf="getStatusText(app.status) != 'uploaded'" class="btn btn-dark details"
+                                (click)="openExtendDialogActiveChallenges(app)">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -137,7 +121,8 @@
                             <span><b>Submission date:</b> {{getSubmissionDateText(archiv.submission)}}</span>
                         </div>
                         <div class="btn_position">
-                            <button *ngIf="getSubmissionDateText(archiv.submission) !== 'not uploaded in time'" class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
+                            <button *ngIf="getSubmissionDateText(archiv.submission) !== 'not uploaded in time'"
+                                class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
                         </div>
                     </div>
                 </div>

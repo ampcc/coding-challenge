@@ -43,7 +43,42 @@ h2 {
 
 #tab_archiv {
     margin-left: 24px;
-    ;
+}
+
+
+/* style search bar */
+.search_bar {
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.mb-4 {
+    margin-bottom: 0 !important; 
+}
+
+#input_search_bar {  
+    border-radius: 5px;  
+}
+
+.form-control {
+    font-size: 16px;
+}
+  
+.form-control:focus {  
+  box-shadow: none;  
+}  
+
+.form-control::placeholder {    
+  color: rgba(0, 0, 0, 0.15);  
+}  
+
+#button-addon5 {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.15);
+    margin-left: 2px;
 }
 
 
@@ -55,8 +90,10 @@ h2 {
 
 .filter {
     display: inline-block;
-    margin: auto;
+    margin-top: auto;
+    margin-bottom: auto;
     margin-right: 0;
+    margin-left: 20px;
     /* z-index: 1; */
 }
 
@@ -92,7 +129,8 @@ li {
 }
 
 .tree {
-    border-bottom: 1px solid lightgrey;
+    border-top: 1px solid lightgrey;
+    padding: 5px;
 }
 
 .tree_checkbox_label {
@@ -100,9 +138,8 @@ li {
     font-size: 16px;
 }
 
-#last_tree,
-.tree {
-    margin-bottom: 5px;
+#first_tree {
+    border-top: none;
     padding: 5px;
 }
 
@@ -134,15 +171,6 @@ li {
     display: block;
 }
 
-.btn.btn-dark.apply_button {
-    height: auto;
-    width: auto;
-    font-size: 16px;
-    text-align: center;
-    padding: 5px;
-    padding-left: 20px;
-    padding-right: 20px;
-}
 
 /* style lists */
 .list {
@@ -201,6 +229,14 @@ span {
 }
 
 
+.options {
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
 /* Responsive Webdesign */
 @media screen and (min-width: 2000px) {
     h2 {
@@ -210,7 +246,8 @@ span {
     .tabs,
     #labelFilter,
     .caret,
-    .tree_checkbox_label
+    .tree_checkbox_label,
+    .form-control
     {
         font-size: 25px;
     }
@@ -223,15 +260,10 @@ span {
         font-size: 30px;
     }
 
-    .funnel {
+    .funnel,
+    .search {
         width: 25px;
         height: 25px;
-    }
-
-    .btn.btn-dark.apply_button
-     {
-        font-size: 22px;
-        width: 120px;
     }
 
     .btn.btn-dark.details {
@@ -243,4 +275,30 @@ span {
     }
 }
 
-@media screen and (max-width: 768px) {}
+@media screen and (max-width: 840px) {
+    .tab_list {
+        display: inline-block;
+    }
+
+    .options {
+        display: flex;
+        margin-top: 9px;
+        margin-bottom: 9px;
+        margin-left: auto;
+        margin-right: 0;
+        float: right;
+    }
+
+    #filterTree {
+        right: 12.5%;
+        top: 12.76cm;
+    }
+}
+
+ @media screen and (max-width: 636px) {
+    #filterTree {
+        right: 12.5%;
+        top: 14.36cm;
+    }
+}
+
