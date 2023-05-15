@@ -15,6 +15,8 @@ services:
     build: ./backend/
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/backend
     depends_on:
       database:
         condition: service_healthy
@@ -22,5 +24,7 @@ services:
     build: ./frontend/
     ports:
       - "4200:4200"
+    volumes:
+      - ./frontend/coding-challenge:/frontend
     depends_on:
       - server

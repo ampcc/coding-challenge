@@ -1,0 +1,5 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Explicitly ,sh files need to have native line endings, to work with docker container
+*.sh text
