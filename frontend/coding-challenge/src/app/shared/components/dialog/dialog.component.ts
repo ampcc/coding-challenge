@@ -65,13 +65,15 @@ export class DialogComponent {
     }
   },
     public dialogRef: MatDialogRef<DialogComponent>, private ngZone: NgZone) {
-    if (data.buttons.left && data.buttons.middle && data.buttons.right) {
-      this.threeButtons = true;
-    } else if ((data.buttons.left && data.buttons.middle) || (data.buttons.left && data.buttons.right) || (data.buttons.middle && data.buttons.right)) {
-      this.twoButtons = true;
-    } else if (data.buttons.left || data.buttons.middle || data.buttons.right) {
-      this.oneButton = true;
-    }
+      if (data.buttons) {
+        if (data.buttons.left && data.buttons.middle && data.buttons.right) {
+          this.threeButtons = true;
+        } else if ((data.buttons.left && data.buttons.middle) || (data.buttons.left && data.buttons.right) || (data.buttons.middle && data.buttons.right)) {
+          this.twoButtons = true;
+        } else if (data.buttons.left || data.buttons.middle || data.buttons.right) {
+          this.oneButton = true;
+        }
+      }
   }
 
   // The Dialog can be closed with the press of a button
