@@ -224,9 +224,9 @@ span {
 }
 
 .resultLinting {
-    white-space: initial;
-    font-size: 12px;
-    line-height: 12px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 14px;
     white-space: pre-wrap;
 }
 
@@ -273,6 +273,13 @@ span {
         padding: 10px;
         font-weight: 400;
         font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .resultLinting {
+        font-size: 12px;
+        line-height: 12px;
     }
 }
 

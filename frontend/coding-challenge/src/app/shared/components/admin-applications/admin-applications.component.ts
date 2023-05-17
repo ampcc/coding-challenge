@@ -267,9 +267,9 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     console.log(application)
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
-      console.log(response)
-      console.log(JSON.stringify(response.content));
-      this.resultOfLinting = JSON.stringify(response.content).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
+      this.resultOfLinting = response.content;
+      JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
+      this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
       let dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Applicant ' + application.applicationId,
@@ -401,6 +401,8 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       this.resultOfLinting = response.content;
+      JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
+      this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
       let dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Applicant ' + application.applicationId,
