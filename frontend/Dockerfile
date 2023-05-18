@@ -11,9 +11,6 @@ WORKDIR /frontend
 
 COPY ./coding-challenge/ .
 
-# Expose the port used by the application
-EXPOSE 4200
-
 # Install project dependencies
 RUN npm install package.json
 
