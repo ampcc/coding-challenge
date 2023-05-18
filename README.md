@@ -2,18 +2,16 @@
 ![thi&amplimind_logo](./readme_assets/cc_logos.png)
 
 ## **Table of contents**
-- [**coding-challenge by amplimind and THI**](#coding-challenge-by-amplimind-and-thi)
-  - [**Table of contents**](#table-of-contents)
-  - [**1. Idea behind the project**](#1-idea-behind-the-project)
-  - [**2. SW-Architecture**](#2-sw-architecture)
-  - [**3. Used technologies**](#3-used-technologies)
-  - [**4. About the projects secrets**](#4-about-the-projects-secrets)
-    - [**4.1 The .env file**](#41-the-env-file)
-    - [**4.2 The privateKey.pem file**](#42-the-privatekeypem-file)
-  - [**5. Local deployment**](#5-local-deployment)
-    - [**5.1 Prerequisites**](#51-prerequisites)
-    - [**5.2 Options for local deployment**](#52-options-for-local-deployment)
-  - [**6. Additional information**](#6-additional-information)
+- [**1. Idea behind the project**](#1-idea-behind-the-project)
+- [**2. SW-Architecture**](#2-sw-architecture)
+- [**3. Used technologies**](#3-used-technologies)
+- [**4. About the projects secrets**](#4-about-the-projects-secrets)
+  - [**4.1 The .env file**](#41-the-env-file)
+  - [**4.2 The privateKey.pem file**](#42-the-privatekeypem-file)
+- [**5. Local deployment**](#5-local-deployment)
+  - [**5.1 Prerequisites**](#51-prerequisites)
+  - [**5.2 Options for local deployment**](#52-options-for-local-deployment)
+- [**6. Additional information**](#6-additional-information)
 
 
 ## **1. Idea behind the project**
