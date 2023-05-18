@@ -1,17 +1,19 @@
 # **coding-challenge by amplimind and THI**
-*Insert logos here*
+![thi&amplimind_logo](./readme_assets/cc_logos.png)
 
 ## **Table of contents**
-- [**1. Idea behind the project**](#1-idea-behind-the-project)
-- [**2. SW-Architecture**](#2-sw-architecture)
-- [**3. Used technologies**](#3-used-technologies)
-- [**4. About the projects secrets**](#4-about-the-projects-secrets)
-  - [**4.1 The .env file**](#41-the-env-file)
-  - [**4.2 The privateKey.pem file**](#42-the-privatekeypem-file)
-- [**5. Local deployment**](#5-local-deployment)
-  - [**5.1 Prerequisites**](#51-prerequisites)
-  - [**5.2 Options for local deployment**](#52-options-for-local-deployment)
-- [**6. Additional information**](#6-additional-information)
+- [**coding-challenge by amplimind and THI**](#coding-challenge-by-amplimind-and-thi)
+  - [**Table of contents**](#table-of-contents)
+  - [**1. Idea behind the project**](#1-idea-behind-the-project)
+  - [**2. SW-Architecture**](#2-sw-architecture)
+  - [**3. Used technologies**](#3-used-technologies)
+  - [**4. About the projects secrets**](#4-about-the-projects-secrets)
+    - [**4.1 The .env file**](#41-the-env-file)
+    - [**4.2 The privateKey.pem file**](#42-the-privatekeypem-file)
+  - [**5. Local deployment**](#5-local-deployment)
+    - [**5.1 Prerequisites**](#51-prerequisites)
+    - [**5.2 Options for local deployment**](#52-options-for-local-deployment)
+  - [**6. Additional information**](#6-additional-information)
 
 
 ## **1. Idea behind the project**
@@ -68,20 +70,21 @@ When you are on **Windows** or **MacOS**, you only can install **Docker Desktop*
 When you are on **Linux**, you can either install the **Docker Engine** directly or the whole **Docker Desktop**. Which one you want to use is up to you.
 
 ### **5.2 Options for local deployment**
-You have the following options to deploy the software on your local machine:
-1. **Start the project as a whole**\
-   Use `docker compose up` in the root directory to start all container at once in the same network.\
-   When you want to stop the container, use `docker compose down`.\
-   While running, the container are accessible at the following addresses:
-   - **Frontend:** 0.0.0.0:4200
-   - **Backend:** 0.0.0.0:8000
-   - **Database:** 0.0.0.0:5432
+docker-compose is used to deploy the project.\
+To start the container, use `docker compose up` in the root directory.\
+To stop the container, use `docker compose down`.\
+While running, the container are accessible at the following addresses:
+- **Frontend:** 0.0.0.0:4200
+- **Backend:** 0.0.0.0:8000
+- **Database:** 0.0.0.0:5432
 
-2. **Start the container separately**\
-   This option is intended for when you are working on the projekt and don't want to install every technology needed.\
-   **E.g.** You are working on the frontend and don't want to install python and django for the backend. Then you can start the backend container and don't need to install anything.\
-   To simplify the handling of the container, start and stop scripts (**.sh** for Linux/MacOS and **.bat** for Windows) are available in the frontend and backend directory.\
-   If you want more control on which images/container you want to keep, how you want to start the container, etc. you can always use the **Docker Desktop** GUI.
+When you edit the source code while the container are running, all changes are directly transfered inside the container. Therefor, you won't need to restart the container or even install any resources.\
+This is the prefered way for the development.\
+\
+If, for whatever reason, you want to start the container separately, you'll need to change the settings.py in the backend to connect to the outdated sqlite3 database. Whether the container will work is not guaranteed.\
+The frontend container on the other hand can be started with almost no downsides.\
+\
+If you only want to work on the backend and also don't want to use docker-compose, you will need to change the settings.py file too. On top of that, you will need to [setup a virtual environment](https://github.com/ampcc/coding-challenge/wiki/Virual-Environment-Setup) in order maintain compability.
 
 ## **6. Additional information**
 For more detailed information on the projekt, visit the corresponding [wiki](https://github.com/ampcc/coding-challenge/wiki).
