@@ -1,5 +1,4 @@
 **/env
 **/db.sqlite
-**/_settings.py
 **/__pycache__
 **/.git
