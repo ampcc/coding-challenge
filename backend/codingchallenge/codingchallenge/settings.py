@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'codingchallenge.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'amplimind',
+        'NAME': 'coding-challenge',
         'USER': 'amplimind',
         'PASSWORD': 'admin',
         'HOST': 'database',
