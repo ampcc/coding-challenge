@@ -1,3 +1,5 @@
+volumes:
+  node_modules:
 services:
   database:
     build: ./database/
@@ -26,5 +28,6 @@ services:
       - "4200:4200"
     volumes:
       - ./frontend/coding-challenge:/frontend
+      - node_modules:/frontend/node_modules
     depends_on:
       - server
