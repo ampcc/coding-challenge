@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --poll 500",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "watch": "ng build --watch --poll 500 --configuration development",
     "test": "ng test"
   },
   "private": true,
@@ -23,6 +23,7 @@
     "bootstrap": "^5.3.0-alpha3",
     "bootstrap-icons": "^1.10.4",
     "jszip": "^3.10.1",
+    "package.json": "^2.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
