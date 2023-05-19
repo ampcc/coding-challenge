@@ -361,11 +361,12 @@ export class ChallengeComponent implements OnInit {
     }
 
     if (!required) {
-      this.hideMsgFileUplod = false;
-      this.msgFileUplod = "Uploading File. Please Wait."
+      this.hideUpload = true;
+      this.hideLoading = false;
       this.backend.uploadChallenge(this.applicationToken, resultOs, resultPl, this.fileArray[0]).subscribe((response) => {
         this.hideSuccess = false;
         this.hideUpload = true;
+        this.hideLoading = true;
         this.hideMsgFileUplod = true;
       }, (error) => {
         switch (error.status) {
