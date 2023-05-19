@@ -56,24 +56,24 @@ h2 {
 }
 
 .mb-4 {
-    margin-bottom: 0 !important; 
+    margin-bottom: 0 !important;
 }
 
-#input_search_bar {  
-    border-radius: 5px;  
+#input_search_bar {
+    border-radius: 5px;
 }
 
 .form-control {
     font-size: 16px;
 }
-  
-.form-control:focus {  
-  box-shadow: none;  
-}  
 
-.form-control::placeholder {    
-  color: rgba(0, 0, 0, 0.15);  
-}  
+.form-control:focus {
+    box-shadow: none;
+}
+
+.form-control::placeholder {
+    color: rgba(0, 0, 0, 0.15);
+}
 
 #button-addon5 {
     background-color: rgba(0, 0, 0, 0.15);
@@ -224,8 +224,10 @@ span {
 }
 
 .resultLinting {
-  white-space: initial;
-  font-size:12px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 14px;
+    white-space: pre-wrap;
 }
 
 
@@ -247,8 +249,7 @@ span {
     #labelFilter,
     .caret,
     .tree_checkbox_label,
-    .form-control
-    {
+    .form-control {
         font-size: 25px;
     }
 
@@ -275,6 +276,13 @@ span {
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .resultLinting {
+        font-size: 12px;
+        line-height: 12px;
+    }
+}
+
 @media screen and (max-width: 840px) {
     .tab_list {
         display: inline-block;
@@ -295,10 +303,9 @@ span {
     }
 }
 
- @media screen and (max-width: 636px) {
+@media screen and (max-width: 636px) {
     #filterTree {
         right: 12.5%;
         top: 14.36cm;
     }
 }
-

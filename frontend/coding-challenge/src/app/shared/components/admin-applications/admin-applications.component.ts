@@ -265,12 +265,16 @@ export class AdminApplicationsComponent {
 
   public openDialogActiveChallenges(application: Application): void {
     DialogComponent.name;
+    console.log(application)
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       this.resultOfLinting = response.content;
+      JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
+      this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
       let dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Applicant ' + application.applicationId,
           description: {
+            important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
             link: 'Open Project on GitHub',
             url: 'https://github.com/ampcc/' + application.githubRepo,
             details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
@@ -313,7 +317,6 @@ export class AdminApplicationsComponent {
   }
 
   public openExtendDialogActiveChallenges(application: Application): void {
-    // TODO: Check if dialog opens correctly displaying all possible challenges (except the one previously given) in dropdown
     DialogComponent.name;
     this.newChallengesArray = [];
     for (var i = 0; i < this.challengeArray.length; i++) {
@@ -341,9 +344,7 @@ export class AdminApplicationsComponent {
       minWidth: '30vw',
     });
     dialogRef.afterClosed().subscribe(result => {
-      // TODO: Test if time limit gets successfully expanded
       if (result.s && result.s == 1) {
-        //console.log(result.e)
         this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
           .subscribe((result) => {
             // Update the list of applications
@@ -400,10 +401,13 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       this.resultOfLinting = response.content;
+      JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
+      this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
       let dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Applicant ' + application.applicationId,
           description: {
+            important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
             link: 'Open Project on GitHub',
             url: 'https://github.com/ampcc/' + application.githubRepo,
             details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
