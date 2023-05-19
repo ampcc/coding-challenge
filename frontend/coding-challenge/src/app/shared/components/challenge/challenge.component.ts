@@ -5,6 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { DialogComponent } from '../dialog/dialog.component';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -22,7 +23,8 @@ import * as JSZip from 'jszip';
     MatInputModule,
     MatFormFieldModule,
     NgFor,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   selector: 'app-challenge',
   templateUrl: './challenge.component.html',
@@ -34,9 +36,9 @@ export class ChallengeComponent implements OnInit {
   applicant: Application;
   private applicationToken: string | null;
 
-  public time: string = '2 days 4 hours 35 minutes';
-  public heading: string = 'Lorem ipsum';
-  public challengeText: string = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+  public time: string = 'No data available!';
+  public heading: string = 'No data available!';
+  public challengeText: string = 'No data available!';
 
   public hideContentIntro: boolean = false;
   public hideContentChallenge: boolean = true;
@@ -46,6 +48,7 @@ export class ChallengeComponent implements OnInit {
   public hideOpSys: boolean = true;
   public hideSuccess: boolean = true;
   public hideUpload: boolean = false;
+  public hideLoading: boolean = true;
 
   public msgProgLang: string = '';
   public msgOpSys: string = '';
