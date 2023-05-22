@@ -10,7 +10,9 @@ from ....models.application import Application
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 mockRepoUrl = "https://github.com/dummy/url"
-mockLinterLog = open(BASE_DIR.joinpath("api/tests/mock/mockMegalinter.log")).read()
+
+mockLinterPath = BASE_DIR.joinpath(Path("api/tests/mock/mockMegalinter.log"))
+mockLinterLog = open(mockLinterPath, "r", encoding="utf8").read()
 
 
 # patch is used to bypass the default githubApi and to raplace the following methods with mock data
@@ -18,7 +20,7 @@ mockLinterLog = open(BASE_DIR.joinpath("api/tests/mock/mockMegalinter.log")).rea
 @patch('api.include.githubApi.GithubApi.getRepoUrl', return_value=mockRepoUrl)
 class test_getResult(APITransactionTestCase):
     reset_sequences = True
-    applicationUrl = "/api/admin/applications"
+    applicationUrl = "/api/admin/applications/"
     url = '/api/admin/applications/results/'
 
     def setUp(self):
