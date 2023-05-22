@@ -27,13 +27,14 @@ export class AdminLoginComponent {
   showUsernameError: boolean = false;
   showPasswordError: boolean = false;
 
+  // The Admin Login Component is used to log an admin in with his correct username and password
   constructor(private router: Router, private backendService: BackendService) { }
 
-  // When username or password are empty, error messges appear underneath the text fields
-  // Otherwise teh backend is called to try and log the admin in. Depending on the reponse the logged in admin gets navigated to the applications page or error messages are shown
+  // Tries to log the user in with username and password by calling the backend function
   login(username: string, password: string): void {
     this.showUsernameError = false;
     this.showPasswordError = false;
+    // When username or password are empty, error messges appear underneath the empty text fields
     if (username == '' || password == '') {
       if (username == '') {
         this.usernameError = 'Please enter an username!';
@@ -44,11 +45,14 @@ export class AdminLoginComponent {
         this.showPasswordError = true;
       }
     } else {
+      // The backend is called to try and log the admin in
+      // When the login is successful the user gets navigated to the applications page
       this.backendService.loginAdmin(username, password).subscribe((response) => {
         window.sessionStorage.setItem('Adm-Token', response.token);
         this.router.navigateByUrl("/admin_applications")
-      },(error: HttpErrorResponse) => {
-        switch(error.status){
+      }, (error: HttpErrorResponse) => {
+        // If an error occurs error messages get displayed or the user gets redirected to one of the error pages, depending on the error code
+        switch (error.status) {
           case 400:
             this.usernameError = 'Wrong username or password';
             this.showUsernameError = true;
@@ -67,7 +71,7 @@ export class AdminLoginComponent {
           default:
             this.router.navigateByUrl("/internalError");
             break;
-          }
+        }
       });
     }
   }

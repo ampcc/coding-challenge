@@ -19,7 +19,7 @@ a {
     flex: 1;
 }
 
-/* Header */
+/* Style for header */
 .toolbar {
     top: 0;
     width: 100%;
@@ -63,7 +63,7 @@ a {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Sidenavigation */
+/* Style for sidenavigation */
 .sitenav {
     width: 20%;
     position: fixed;
@@ -139,7 +139,7 @@ a {
     min-height: calc(100vh - 80px);
 }
 
-/* Footer */
+/* Style for footer */
 .footer {
     height: 80px;
     width: 100%;

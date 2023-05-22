@@ -184,9 +184,8 @@ export class DialogComponent {
         };
         this.dialogRef.close(response);
       }
-
-      // If dialog was not used to extend an applications time or change the challenge the just the number used to close will be returned
     } else {
+      // If dialog was not used to extend an applications time or change the challenge the just the number used to close will be returned
       this.dialogRef.close(state);
     }
   }

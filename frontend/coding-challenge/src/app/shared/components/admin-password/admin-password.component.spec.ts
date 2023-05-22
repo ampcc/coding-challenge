@@ -3,6 +3,7 @@ import { AdminPasswordComponent } from './admin-password.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
+// Test if Admin Password Component works properly
 describe('AdminPasswordComponent', () => {
   let component: AdminPasswordComponent;
   let fixture: ComponentFixture<AdminPasswordComponent>;
@@ -25,6 +26,7 @@ describe('AdminPasswordComponent', () => {
     fixture.detectChanges();
   });
 
+  // Check if component can be created
   it('should create', () => {
     expect(component).toBeTruthy();
   });

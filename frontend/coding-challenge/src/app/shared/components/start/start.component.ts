@@ -91,7 +91,7 @@ export class StartComponent implements OnInit {
       minWidth: '30vw',
     });
 
-    // Checkss if the dialog is closed and the result is 1 (the user decided to start the challenge)
+    // Checks if the dialog is closed and the result is 1 (the user decided to start the challenge)
     // In that case the backend tries to start the challenge
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
