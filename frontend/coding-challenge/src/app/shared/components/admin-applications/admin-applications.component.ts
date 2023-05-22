@@ -24,8 +24,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 
 export class AdminApplicationsComponent {
-  challenge: Challenge;
-  applicant: Application;
+  // challenge: Challenge;
+  // applicant: Application;
   private adminToken: string | null;
 
   public hideContentActiveChallenges: boolean = false;
@@ -56,9 +56,9 @@ export class AdminApplicationsComponent {
 
 
   public constructor(private backend: BackendService, public dialog: MatDialog, public router: Router) {
-    this.challenge = { id: 0, challengeHeading: '', challengeText: '' };
+    // this.challenge = { id: 0, challengeHeading: '', challengeText: '' };
     this.adminToken = null;
-    this.applicant = { applicationId: "", applicationKey: "", challengeId: 0, expiry: 0, githubRepo: "", operatingSystem: "", programmingLanguage: "", status: 0, submission: 0, passphrase: "a4Xz!5T%" };
+    // this.applicant = { applicationId: "", applicationKey: "", challengeId: 0, expiry: 0, githubRepo: "", operatingSystem: "", programmingLanguage: "", status: 0, submission: 0, passphrase: "a4Xz!5T%" };
   }
 
 
@@ -90,6 +90,10 @@ export class AdminApplicationsComponent {
     }
   }
 
+  /**
+   * 
+   * @param id 
+   */
   public changeTab(id: string): void {
     let elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
     let elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
@@ -112,6 +116,9 @@ export class AdminApplicationsComponent {
     }
   }
 
+  /**
+   * 
+   */
   public search(): void {
     this.searchContent = (<HTMLInputElement>document.getElementById("input_search_bar")).value;
     this.searchContent = this.searchContent.trim();
@@ -120,10 +127,17 @@ export class AdminApplicationsComponent {
     this.updateFilteredArchiveArray();
   }
 
+  /**
+   * 
+   */
   public showFilter(): void {
     this.hideFilterSelect = !this.hideFilterSelect;
   }
 
+  /**
+   * 
+   * @param id 
+   */
   public toggleTreeView(id: string): void {
     let element = document.getElementById(id);
     if (element !== null && element !== undefined) {
@@ -136,6 +150,10 @@ export class AdminApplicationsComponent {
     }
   }
   // Method to update the display of archived Application when filter is in use
+
+  /**
+   * 
+   */
   private updateFilteredArchiveArray(): void {
     if (this.challengeFilter.length === 0) {
       this.filteredArchivArray = this.archivArray;
@@ -154,6 +172,9 @@ export class AdminApplicationsComponent {
   }
 
   // Method to update the display of active Application when filter is in use
+  /**
+   * 
+   */
   private updateFilteredApplicantArray(): void {
     if (this.challengeFilter.length === 0 && this.statusFilter.length === 0) {
       this.filteredApplicantsArray = this.applicantsArray;
@@ -190,6 +211,10 @@ export class AdminApplicationsComponent {
     }
   }
 
+  /**
+   * 
+   * @param values 
+   */
   public checkboxChallengeChange(values: any): void {
     const challId: number = +values.currentTarget.id.substring(9);
     if (this.challengeFilter.some(e => e === challId)) {
@@ -201,6 +226,10 @@ export class AdminApplicationsComponent {
     this.updateFilteredArchiveArray();
   }
 
+  /**
+   * 
+   * @param values 
+   */
   public checkboxStatusChange(values: any): void {
     const status: string = values.currentTarget.id;
     if (this.statusFilter.some(e => e === status)) {
@@ -211,7 +240,11 @@ export class AdminApplicationsComponent {
     this.updateFilteredApplicantArray();
   }
 
-
+  /**
+   * 
+   * @param challengeId 
+   * @returns 
+   */
   public getChallengeHeading(challengeId: number): string {
     let elementHeading = this.challengeArray.find(element => element.id === challengeId)?.challengeHeading;
 
@@ -221,6 +254,11 @@ export class AdminApplicationsComponent {
     return elementHeading;
   }
 
+  /**
+   * 
+   * @param status 
+   * @returns 
+   */
   public getStatusText(status: number): string {
     switch (status) {
       case 0:
@@ -255,10 +293,20 @@ export class AdminApplicationsComponent {
 
   }
 
+  /**
+   * 
+   * @param app 
+   * @returns 
+   */
   public getTimeLimit(app: Application): string {
     return this.backend.calcRemainingTime(new Date().getTime(), app.expiry);
   }
 
+  /**
+   * 
+   * @param submissionDate 
+   * @returns 
+   */
   public getSubmissionDateText(submissionDate: number): string {
 
     if (submissionDate === 0 || submissionDate === null || submissionDate === undefined) {
@@ -267,7 +315,10 @@ export class AdminApplicationsComponent {
     return '' + formatDate(Math.floor(submissionDate * 1000), "dd.MM.yyyy HH:mm", "en-US");
   }
 
-
+  /**
+   * 
+   * @param application 
+   */
   public openDialogActiveChallenges(application: Application): void {
     DialogComponent.name;
     console.log(application)
@@ -326,6 +377,10 @@ export class AdminApplicationsComponent {
   }
 
   // Tries to open a dialog to extend the time limit of an application or select a new challenge
+  /**
+   * 
+   * @param application 
+   */
   public openExtendDialogActiveChallenges(application: Application): void {
     DialogComponent.name;
     // Array of possible new challenges gets filled with all existing challenges except the one already assigned to the user
@@ -415,7 +470,10 @@ export class AdminApplicationsComponent {
     })
   };
 
-
+  /**
+   * 
+   * @param application 
+   */
   public openDialogArchiv(application: Application): void {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {

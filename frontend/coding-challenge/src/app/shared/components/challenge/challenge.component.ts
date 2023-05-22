@@ -129,7 +129,10 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
-
+  /**
+   * 
+   * @param id 
+   */
   public changeTab(id: string): void {
     let elementIntro = <HTMLLabelElement>document.getElementById('tab_intro');
     let elementChallenge = <HTMLLabelElement>document.getElementById('tab_challenge');
@@ -167,7 +170,9 @@ export class ChallengeComponent implements OnInit {
 
   }
 
-
+  /**
+   * 
+   */
   public selectionProgLang(): void {
     let selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
 
@@ -178,7 +183,9 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
-
+  /**
+   * 
+   */
   public selectionOpSys(): void {
     var selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
 
@@ -189,7 +196,9 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
-
+  /**
+   * 
+   */
   public openDialogInfo(): void {
     DialogComponent.name;
     let dialogRef = this.dialog.open(DialogComponent, {
@@ -206,7 +215,10 @@ export class ChallengeComponent implements OnInit {
     });
   }
 
-
+  /**
+   * 
+   * @param event 
+   */
   public uploadFileHandler(event: Event): any {
     var files = (event.target as HTMLInputElement).files;
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
@@ -242,8 +254,13 @@ export class ChallengeComponent implements OnInit {
       }
     }
   }
-// Method to check the uploaded File structure in the frontend
-  public checkUploadedZipContent(file: File): void {
+
+  // Method to check the uploaded File structure in the frontend
+  /**
+   * 
+   * @param file 
+   */
+  public checkUploadedZipContent(file: File): void{
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
     const jsZip = require('jszip');
     var result = true;
@@ -271,9 +288,12 @@ export class ChallengeComponent implements OnInit {
         this.openDialogInfo();
       }
     })
-
   }
 
+  /**
+   * 
+   * @param index 
+   */
   public deleteFile(index: number): void {
     let deletedElement = this.fileArray[index];
 
@@ -282,6 +302,11 @@ export class ChallengeComponent implements OnInit {
     });
   }
 
+  /**
+   * 
+   * @param size 
+   * @returns 
+   */
   public formatBytes(size: any): String {
     if (size >= 1073741824) { size = (size / 1073741824).toFixed(2) + " GB"; }
     else if (size >= 1048576) { size = (size / 1048576).toFixed(2) + " MB"; }
@@ -289,7 +314,9 @@ export class ChallengeComponent implements OnInit {
     return size;
   }
 
-
+  /**
+   * 
+   */
   public submitChallenge(): void {
     let required = false;
     let resultPl = this.pl;
