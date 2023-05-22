@@ -316,7 +316,7 @@ class UploadSolutionView(APIView):
             try:
                 file_obj = ZipFile(raw_file)
             except:
-                return Response(jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting"), status=status.HTTP_400_BAD_REQUEST)
+                return Response(jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting."), status=status.HTTP_400_BAD_REQUEST)
 
             try:
                 correctZipped = False
