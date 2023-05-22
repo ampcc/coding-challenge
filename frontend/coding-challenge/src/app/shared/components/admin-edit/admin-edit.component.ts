@@ -48,7 +48,6 @@ export class AdminEditComponent {
       this.router.navigateByUrl("/admin_login");
     }
     this.route.queryParams.subscribe((params) => {
-      // TODO: Check if this codeis correct and works
       if (params["id"] != null) {
         this.id = params["id"];
         this.editPage = true;
@@ -103,7 +102,6 @@ export class AdminEditComponent {
         this.showDescriptionError = true;
       }
     } else {
-      // TODO: Check if this code is correct and works
       if (this.editPage) {
         var tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description };
         this.backendService.editChallenge(this.adminToken, tempChallenge).subscribe((response) => {
@@ -129,7 +127,6 @@ export class AdminEditComponent {
           }
         });
       } else {
-        // TODO: Check if createChallenge works without id
         var tempChallenge: Challenge = { challengeHeading: this.name, challengeText: this.description };
         this.backendService.createChallenge(this.adminToken, tempChallenge).subscribe((response) => {
           // If successful navigate to Challenges

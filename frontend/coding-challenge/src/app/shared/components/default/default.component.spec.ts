@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DefaultComponent } from './default.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DefaultComponent', () => {
   let component: DefaultComponent;
@@ -8,9 +10,17 @@ describe('DefaultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DefaultComponent ]
-    })
-    .compileComponents();
+      providers: [
+        HttpClient,
+        MatDialog
+      ],
+      declarations: [DefaultComponent],
+      imports: [
+        HttpClientModule,
+        MatDialogModule,
+        RouterTestingModule
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DefaultComponent);
     component = fixture.componentInstance;

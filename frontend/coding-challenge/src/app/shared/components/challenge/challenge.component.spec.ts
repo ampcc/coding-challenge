@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ChallengeComponent } from './challenge.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 describe('ChallengeComponent', () => {
   let component: ChallengeComponent;
@@ -8,9 +9,16 @@ describe('ChallengeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChallengeComponent ]
-    })
-    .compileComponents();
+      providers: [
+        HttpClient,
+        MatDialog
+      ],
+      imports: [
+        ChallengeComponent,
+        HttpClientModule,
+        MatDialogModule
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ChallengeComponent);
     component = fixture.componentInstance;
