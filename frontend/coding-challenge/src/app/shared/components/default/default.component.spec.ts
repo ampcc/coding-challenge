@@ -4,6 +4,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 
+// Test if Default Component works properly
 describe('DefaultComponent', () => {
   let component: DefaultComponent;
   let fixture: ComponentFixture<DefaultComponent>;
@@ -27,6 +28,7 @@ describe('DefaultComponent', () => {
     fixture.detectChanges();
   });
 
+  // Check if component can be created
   it('should create', () => {
     expect(component).toBeTruthy();
   });

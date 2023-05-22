@@ -144,7 +144,7 @@ export class AdminApplicationsComponent {
       });
     }
 
-    if(this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
+    if (this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
       this.filteredArchivArray = this.filteredArchivArray.filter(element => element.applicationId === this.searchContent);
     }
   }
@@ -180,7 +180,7 @@ export class AdminApplicationsComponent {
       });
     }
 
-    if(this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
+    if (this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
       this.filteredApplicantsArray = this.filteredApplicantsArray.filter(element => element.applicationId === this.searchContent);
     }
   }
@@ -288,6 +288,9 @@ export class AdminApplicationsComponent {
         minWidth: '30vw',
       });
 
+      // If the dialog is closed and the result is 1 (the user decided to archive an application), the backend tries to edit the application
+      // If this action was successful the application immediately gets moved to archive
+      // Otherwise the user gets navigated to an error page depending on the error code
       dialogRef.afterClosed().subscribe(result => {
         if (result == 1) {
           this.backend.editApplication(this.adminToken, application.applicationId, 5)
@@ -316,8 +319,10 @@ export class AdminApplicationsComponent {
     })
   }
 
+  // Tries to open a dialog to extend the time limit of an application or select a new challenge
   public openExtendDialogActiveChallenges(application: Application): void {
     DialogComponent.name;
+    // Array of possible new challenges gets filled with all existing challenges except the one already assigned to the user
     this.newChallengesArray = [];
     for (var i = 0; i < this.challengeArray.length; i++) {
       if (this.challengeArray[i].id != application.challengeId) {
@@ -327,6 +332,8 @@ export class AdminApplicationsComponent {
         });
       }
     }
+
+    // Opns dialog to let admin expand time limit or select new challenge
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Applicant ' + application.applicationId,
@@ -343,6 +350,9 @@ export class AdminApplicationsComponent {
       maxHeight: '85vh',
       minWidth: '30vw',
     });
+
+    // If the dialog was closed with result 1 (the user commited changes), the backend tries to edit the application accordingly and immediately updates the list
+    // If an error occurrs, the user gets redireced to one of the error pages
     dialogRef.afterClosed().subscribe(result => {
       if (result.s && result.s == 1) {
         this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
@@ -370,6 +380,9 @@ export class AdminApplicationsComponent {
             }
           });
       }
+
+      // If the dialog was closed with result 2 (the user archived an application), the backend archives the application accordingly and updates the list
+      // If an error occurrs, the user gets redireced to one of the error pages
       if (result == 2) {
         this.backend.editApplication(this.adminToken, application.applicationId, 5)
           .subscribe((result) => {

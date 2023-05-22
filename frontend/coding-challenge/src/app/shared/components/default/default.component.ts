@@ -8,13 +8,16 @@ import { BackendService } from 'src/app/core/backend.service';
   templateUrl: './default.component.html',
   styleUrls: ['./default.component.css']
 })
-export class DefaultComponent implements OnInit{
+export class DefaultComponent implements OnInit {
   private key: string;
 
-  constructor(private backendService: BackendService, private route: ActivatedRoute, private router: Router){
+  constructor(private backendService: BackendService, private route: ActivatedRoute, private router: Router) {
     this.key = "";
   }
-  ngOnInit(){
+
+  // Navigates back to start page after login an apllicant in with his key
+  // If an error occurs the user instead gets navigated to one of the error pages
+  ngOnInit() {
     window.sessionStorage.clear();
     this.key = this.router.url.substring(13);
     this.key = decodeURIComponent(this.key);
@@ -22,8 +25,8 @@ export class DefaultComponent implements OnInit{
       console.log(data);
       window.sessionStorage.setItem('Auth-Token', data.token);
       this.router.navigateByUrl("/start");
-    },(error: HttpErrorResponse) => {
-      switch(error.status){
+    }, (error: HttpErrorResponse) => {
+      switch (error.status) {
         case 401:
           this.router.navigateByUrl("/unauthorized");
           break;
@@ -36,7 +39,7 @@ export class DefaultComponent implements OnInit{
         default:
           this.router.navigateByUrl("/internalError");
           break;
-        }
+      }
     });
   }
 

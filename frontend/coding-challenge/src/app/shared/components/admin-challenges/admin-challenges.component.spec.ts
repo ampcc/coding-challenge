@@ -3,6 +3,7 @@ import { AdminChallengesComponent } from './admin-challenges.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
+// Test if Admin Challenges Component works properly
 describe('AdminChallengesComponent', () => {
   let component: AdminChallengesComponent;
   let fixture: ComponentFixture<AdminChallengesComponent>;
@@ -25,6 +26,7 @@ describe('AdminChallengesComponent', () => {
     fixture.detectChanges();
   });
 
+  // Check if component can be created
   it('should create', () => {
     expect(component).toBeTruthy();
   });
