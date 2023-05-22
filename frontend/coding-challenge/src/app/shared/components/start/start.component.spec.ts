@@ -3,6 +3,7 @@ import { StartComponent } from './start.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
+// Test if Start Component works properly
 describe('StartComponent', () => {
   let component: StartComponent;
   let fixture: ComponentFixture<StartComponent>;
@@ -25,6 +26,7 @@ describe('StartComponent', () => {
     fixture.detectChanges();
   });
 
+  // Check if component can be created
   it('should create', () => {
     expect(component).toBeTruthy();
   });

@@ -3,6 +3,7 @@ import { DialogComponent } from './dialog.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
+// Test if Dialog Component works properly
 describe('DialogComponent', () => {
   let component: DialogComponent;
   let fixture: ComponentFixture<DialogComponent>;
@@ -28,6 +29,7 @@ describe('DialogComponent', () => {
     fixture.detectChanges();
   });
 
+  // Check if component can be created
   it('should create', () => {
     expect(component).toBeTruthy();
   });

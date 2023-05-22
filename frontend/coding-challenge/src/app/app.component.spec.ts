@@ -4,7 +4,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 
-describe('StartComponent', () => {
+// Test if App Component works properly
+describe('AppComponent', () => {
     let component: AppComponent;
     let fixture: ComponentFixture<AppComponent>;
 
@@ -27,6 +28,7 @@ describe('StartComponent', () => {
         fixture.detectChanges();
     });
 
+    // Check if component can be created
     it('should create', () => {
         expect(component).toBeTruthy();
     });

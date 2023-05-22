@@ -7,5 +7,5 @@
     <p class="heading">Password</p>
     <input class="inputField" type="password" placeholder="Please enter your password" [(ngModel)]="password" [ngClass]="{'show_error': this.showPasswordError}">
     <p class="error_message" [ngClass]="{'no_error': !this.showPasswordError}">{{this.passwordError}}</p>
-    <app-button title="Login" look="primary" font="big" (click)="login(username, password)"></app-button>
+    <app-button title="Login" look="primary" (click)="login(username, password)"></app-button>
 </div>

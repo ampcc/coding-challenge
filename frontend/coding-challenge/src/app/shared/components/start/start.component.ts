@@ -14,16 +14,25 @@ import { HttpErrorResponse } from '@angular/common/http';
   imports: [ButtonComponent]
 })
 
+// Start component is used when applicant first opens his unique link
+// He is then prompted to start the coding challenge on the click of a button
+// After the button is pressed a dialog shows up to ask the user for another confirmation to start the challenge
 export class StartComponent implements OnInit {
   private applicationToken: string | null;
+
   constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService) {
     this.applicationToken = null;
   }
+
+  // Check for proper authentication token
+  // If no token is provided the user gets redirected to the unauthorized page
   ngOnInit(): void {
     this.applicationToken = window.sessionStorage.getItem('Auth-Token');
     if (this.applicationToken === null) {
       this.router.navigateByUrl("/unauthorized")
     } else {
+      // If the user already started the challenge he gets redirected to the challenge page
+      // If the user already uploaded his solution he instead gets redirected to the gone page
       this.backendService.getStatus(this.applicationToken).subscribe((response) => {
         if (response.status === 1) {
           this.router.navigateByUrl("/challenge");
@@ -35,6 +44,9 @@ export class StartComponent implements OnInit {
     }
   }
 
+  // Tries to start the challenge by calling the corresponding backend function with the useres authentication token
+  // Only when this is successful the user gets navigated to the challenge page
+  // If an error occurs the user gets redirected to one of the error pages, depending on the error code
   tryToStartChallenge() {
     this.backendService.startChallenge(this.applicationToken).subscribe((data) => {
       console.log(data);
@@ -61,7 +73,7 @@ export class StartComponent implements OnInit {
     });
   }
 
-  // Dialog to ask the user to confirm that he wants to start the challenge gets displayed
+  // Opens dialog to ask the user for confirmation to start the challenge
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
@@ -79,7 +91,8 @@ export class StartComponent implements OnInit {
       minWidth: '30vw',
     });
 
-    // If the dialog is closed and the result is true, the user decided to start the challenge, the backend starts the challenge and the user is navigated to the challenge page
+    // Checkss if the dialog is closed and the result is 1 (the user decided to start the challenge)
+    // In that case the backend tries to start the challenge
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
         this.tryToStartChallenge();

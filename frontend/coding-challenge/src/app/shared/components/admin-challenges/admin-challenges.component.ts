@@ -134,9 +134,7 @@ export class AdminChallengesComponent implements OnInit {
     // If the dialog is closed and the result is true, the user decided to delete challenge, the backend deletes the challenge and the user is navigated to Challenges
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
-        // TODO: Check if challenge gets properly deleted by backend
         this.backend.deleteChallenge(this.adminToken, challenge.id!).subscribe(() => {
-          // TODO: Check if navigating is actually needed or if page automatically gets rid of deleted Challenge
           var index = this.challengeArray.findIndex(chal => chal.id === challenge.id);
           this.challengeArray.splice(index, 1);
         }, (error) => {
@@ -158,6 +156,4 @@ export class AdminChallengesComponent implements OnInit {
       }
     })
   }
-
-
 }

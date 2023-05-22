@@ -1,10 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgZone } from '@angular/core';
-
 
 @Component({
   selector: 'app-dialog',
@@ -33,8 +31,49 @@ export class DialogComponent {
   twoButtons: boolean = false;
   threeButtons: boolean = false;
 
-  // The dialog element expects at least a title string
-  // Apart from that it can handle a description and two buttons
+  // The dialog element expects at least a title as string
+  // Additionally it can be used with a description including important informations, further details, a link, and one or more images
+  // The dialog can also provide a dropdown for challenges when they are given and the extend flag is set to true
+  // This also leads to a field for selecting days to extend with showing up
+  // There's an additional option to add up o three buttons
+
+  // Can be used like this in ts with only the title being mandatory (dialog has to be predefined as MatDialog):
+  // let dialogRef = this.dialog.open(DialogComponent, {
+  //   data: {
+  //     title: 'x',
+  //     description: {
+  //       link: 'x',
+  //       url: 'x',
+  //       important: 'x',
+  //       details: 'x',
+  //       extend: true,
+  //       challenges: [
+  //         {
+  //           id: '0',
+  //           heading: 'x'
+  //         },
+  //         {
+  //           id: '1',
+  //           heading: 'y'
+  //         },
+  //       ],
+  //       images: [
+  //         'x',
+  //         'y',
+  //       ],
+  //     },
+  //     buttons: {
+  //       left: { title: 'x', look: 'delete' },
+  //       middle: { title: 'x', look: 'primary' },
+  //       right: { title: 'x', look: 'secondary' }
+  //     }
+  //   },
+  //   maxHeight: '85vh',
+  //   minWidth: '30vw',
+  // });
+
+  // After closing the result can be accessed like this:
+  // dialogRef.afterClosed().subscribe(result => { ... })
   constructor(@Inject(MAT_DIALOG_DATA) public data: {
     title: string,
     description: {
@@ -63,32 +102,40 @@ export class DialogComponent {
         look: string
       }
     }
-  },
-    public dialogRef: MatDialogRef<DialogComponent>, private ngZone: NgZone) {
-      if (data.buttons) {
-        if (data.buttons.left && data.buttons.middle && data.buttons.right) {
-          this.threeButtons = true;
-        } else if ((data.buttons.left && data.buttons.middle) || (data.buttons.left && data.buttons.right) || (data.buttons.middle && data.buttons.right)) {
-          this.twoButtons = true;
-        } else if (data.buttons.left || data.buttons.middle || data.buttons.right) {
-          this.oneButton = true;
-        }
+  }, public dialogRef: MatDialogRef<DialogComponent>) {
+    // Checks whether any buttons exist and if so, how many
+    if (data.buttons) {
+      if (data.buttons.left && data.buttons.middle && data.buttons.right) {
+        this.threeButtons = true;
+      } else if ((data.buttons.left && data.buttons.middle) || (data.buttons.left && data.buttons.right) || (data.buttons.middle && data.buttons.right)) {
+        this.twoButtons = true;
+      } else if (data.buttons.left || data.buttons.middle || data.buttons.right) {
+        this.oneButton = true;
       }
+    }
   }
 
   // The Dialog can be closed with the press of a button
+  // It will then send back a result depending on the clicked button
   public closeDialog(state: number) {
+    // If the dialog was used to extend an applications time or change the challenge and the user wants to apply these, it is first checked if the input is correct
     if (this.data.description && (this.data.description.extend || this.data.description.challenges) && state == 1) {
       var response;
-      var expiryTime;
+      var expiryTime = undefined;
+      this.challenge = undefined;
       this.daysError = false;
       this.challengeError = false;
       this.noOtherChallenges = false;
 
+      // Check the number of days to extend with
+      // If it is between 1-21 the new expiry time gets calculated by using the current time and the number of extend days in seconds
+      // If it is 0 or lower the expiry time is set to undefined to make it possible to only change the challenge
+      // If it is higher than 21 an error message gets displayed
       if (this.data.description.extend) {
         if (this.days > 21) {
           this.daysErrorText = 'Please enter a number between 1 and 21 or 0!';
           this.daysError = true;
+          expiryTime = undefined;
         } else if (this.days < 1) {
           expiryTime = undefined;
         } else {
@@ -96,6 +143,10 @@ export class DialogComponent {
         }
       }
 
+      // Check which challenge is selected
+      // If a random one is selected a random challenge from the challenges array is used
+      // Previously it is tested if there actually are any other challenges, else an error message gets displayed
+      // If no challenge was selected the challenge is set to undefined to make it possible to only extend the days
       if (this.data.description.challenges) {
         this.challenge = (<HTMLSelectElement>document.getElementById('dropdown')).value;
         if (this.challenge === '' || this.challenge === 'none') {
@@ -105,22 +156,27 @@ export class DialogComponent {
           if (this.data.description.challenges[0] === undefined) {
             this.challenge = undefined;
             this.noOtherChallenges = true;
+            this.challengeError = true;
+            this.challengeErrorText = 'Unfortunately there are no other Challenges available!';
           } else {
             this.challenge = this.data.description.challenges[Math.floor(Math.random() * (this.data.description.challenges.length))].id;
           }
         }
-        if (this.days == 0 && this.challenge === undefined) {
-          this.challengeError = true;
-          if (this.noOtherChallenges) {
-            this.challengeErrorText = 'Unfortunately there are no other Challenges available!';
-          } else {
-            this.daysErrorText = 'Please select at least a new Challenge or time limit!';
-            this.challengeErrorText = 'Please select at least a new Challenge or time limit!';
-            this.daysError = true;
-          }
-        }
       }
-      if (!this.daysError && !this.challengeError) {
+
+      // If no time to expand with AND no new challenge is selected error messages get displayed
+      // If a new challenge was supposed to be selected, but none was available an error message is only displayed underneath the dropdown field
+      if (expiryTime === undefined && this.challenge === undefined) {
+        this.daysError = true;
+        this.challengeError = true;
+        this.daysErrorText = 'Please select at least a new Challenge or time limit!';
+        this.challengeErrorText = 'Please select at least a new Challenge or time limit!';
+        if (this.noOtherChallenges) {
+          this.daysError = false;
+          this.challengeErrorText = 'Unfortunately there are no other Challenges available!';
+        }
+        // If at least one proper selection was made the dialog returns a response including the state number, expiry time and challenge
+      } else {
         response = {
           s: state,
           e: expiryTime,
@@ -128,6 +184,8 @@ export class DialogComponent {
         };
         this.dialogRef.close(response);
       }
+
+      // If dialog was not used to extend an applications time or change the challenge the just the number used to close will be returned
     } else {
       this.dialogRef.close(state);
     }
