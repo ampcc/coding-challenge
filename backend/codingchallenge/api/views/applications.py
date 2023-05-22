@@ -338,7 +338,8 @@ class UploadSolutionView(APIView):
                 for path in filteredPathList:
                     if not path.endswith('/'):
                         self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
-
+                raw_file.seek(0)
+                self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
 
                 self.gApi.addLinter(repoName)
             except GithubException:
