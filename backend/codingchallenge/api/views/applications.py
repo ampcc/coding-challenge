@@ -310,8 +310,12 @@ class UploadSolutionView(APIView):
             repoName = f'{user.application.applicationId}_{user.application.challengeId}'
 
             raw_file = request.data['file']
-            file_obj = ZipFile(raw_file)
 
+            try:
+                file_obj = ZipFile(raw_file)
+            except:
+                return Response(jsonMessages.errorJsonResponse("Provided file is no ZipFile!"), status=status.HTTP_400_BAD_REQUEST)
+            
             try:
                 correctZipped = False
                 filteredPathList = []
@@ -332,7 +336,8 @@ class UploadSolutionView(APIView):
                 for path in filteredPathList:
                     if not path.endswith('/'):
                         self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
-
+                raw_file.seek(0)
+                self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
 
                 self.gApi.addLinter(repoName)
             except GithubException:
