@@ -130,8 +130,9 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param id 
+   * Changes the tab and shows the associated content. 
+   * This also includes dynamically setting the style of the tabs
+   * @param id The id of the tab-html element
    */
   public changeTab(id: string): void {
     let elementIntro = <HTMLLabelElement>document.getElementById('tab_intro');
@@ -171,7 +172,8 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * 
+   * Stores the selected programming language inside an attribute. 
+   * If the user selected "other" an input element is displayed for the user to type his programming language
    */
   public selectionProgLang(): void {
     let selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
@@ -184,7 +186,8 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * 
+   * Stores the selected operating system inside an attribute. 
+   * If the user selected "other" an input element is displayed for the user to type his operating system
    */
   public selectionOpSys(): void {
     var selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
@@ -197,7 +200,7 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * 
+   * Opens a modal dialog that displays instructions on which folder structure the uploaded file should have 
    */
   public openDialogInfo(): void {
     DialogComponent.name;
@@ -216,7 +219,12 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
+   * Checks if the following requirements for the file are met before calling the checkUploadedZipContent(file) method:
+   * - There is no file already uploaded
+   * - The size is smaller than 50 MB
+   * - The file hast the correct file format (.zip)
    * 
+   * If any requirements fail, an error message is displayed
    * @param event 
    */
   public uploadFileHandler(event: Event): any {
@@ -257,8 +265,8 @@ export class ChallengeComponent implements OnInit {
 
   // Method to check the uploaded File structure in the frontend
   /**
-   * 
-   * @param file 
+   * Checks whether the uploaded file has the correct folder structure. Pushes the file to the fileArray on success
+   * @param file The uploaded and compressed file
    */
   public checkUploadedZipContent(file: File): void{
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
@@ -291,8 +299,8 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param index 
+   * Deletes the currently uploaded file
+   * @param index The index of the file in the underlying fileArray
    */
   public deleteFile(index: number): void {
     let deletedElement = this.fileArray[index];
@@ -303,9 +311,9 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param size 
-   * @returns 
+   * Formates the bytes into a more adequate unit 
+   * @param size The size of the uploaded and compressed file in bytes
+   * @returns The size formatted in either KB, MB or GB
    */
   public formatBytes(size: any): String {
     if (size >= 1073741824) { size = (size / 1073741824).toFixed(2) + " GB"; }
@@ -315,7 +323,11 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * 
+   * Checks if all requirements for an successfull submit of a solution are met:
+   * - All failed requirements are highlighted and a message for the user is displayed
+   * - If all requirements are met, a call to the backend server is performed
+   * - While the user is waiting for a response, the html is switched to display an progress spinner
+   * - When the response is received, the html is once again witched to display an success image or the user gets redirected in case of any error reponse
    */
   public submitChallenge(): void {
     let required = false;
