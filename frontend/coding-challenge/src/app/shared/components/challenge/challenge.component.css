@@ -280,6 +280,8 @@ h2 {
     margin: auto;
 }
 
+
+/* Style div for progress spinner */
 #divLoading {
     margin: auto;
     width: 100%;
