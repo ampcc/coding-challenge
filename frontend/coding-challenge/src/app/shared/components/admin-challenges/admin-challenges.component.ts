@@ -21,7 +21,6 @@ import { Challenge } from '../../models/challenge';
 })
 
 export class AdminChallengesComponent implements OnInit {
-  // challenge: Challenge;
   private adminToken: string | null;
 
   public hideContentActiveChallenges: boolean = false;
@@ -32,7 +31,6 @@ export class AdminChallengesComponent implements OnInit {
 
 
   public constructor(private backend: BackendService, private router: Router, public dialog: MatDialog) {
-    // this.challenge = { id: 0, challengeHeading: '', challengeText: '' };
     this.adminToken = null;
   }
 
@@ -49,8 +47,9 @@ export class AdminChallengesComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param id 
+   * Changes the tab and shows the associated content.
+   * This also includes dynamically setting the style of the tabs.
+   * @param id The id tab-html element
    */
   public changeTab(id: string): void {
     let elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
@@ -74,8 +73,9 @@ export class AdminChallengesComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param challenge 
+   * Opens a modal dialog that displays detailed information of the challenge.
+   * On top of that, buttons for additional functionality are also displayed.
+   * @param challenge The challenge object of which information has to be shown
    */
   public openDialogActiveChallenges(challenge: Challenge): void {
     DialogComponent.name;
@@ -109,8 +109,8 @@ export class AdminChallengesComponent implements OnInit {
 
   // If a user decided to delete a challenge another dialog opens to ask for a second confirmation
   /**
-   * 
-   * @param challenge 
+   * Opens a modal dialog that asks for confirmation to delete the challenge.
+   * @param challenge The challenge object which should be deleted
    */
   public openDeleteDialog(challenge: Challenge): void {
     let dialogRef = this.dialog.open(DialogComponent, {
