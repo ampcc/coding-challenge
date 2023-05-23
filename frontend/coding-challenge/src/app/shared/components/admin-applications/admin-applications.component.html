@@ -101,9 +101,9 @@
                         </div>
                         <div class="btn_position">
                             <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details"
-                                (click)="openDialogActiveChallenges(app)">Details</button>
+                                (click)="openDialogActiveApplications(app)">Details</button>
                             <button *ngIf="getStatusText(app.status) != 'uploaded'" class="btn btn-dark details"
-                                (click)="openExtendDialogActiveChallenges(app)">Edit</button>
+                                (click)="openExtendDialogActiveApplications(app)">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                         </div>
                         <div class="btn_position">
                             <button *ngIf="getSubmissionDateText(archiv.submission) !== 'not uploaded in time'"
-                                class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
+                                class="btn btn-dark details" (click)="openDialogArchivedApplications(archiv)">Details</button>
                         </div>
                     </div>
                 </div>
