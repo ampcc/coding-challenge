@@ -309,13 +309,15 @@ class UploadSolutionView(APIView):
 
             repoName = f'{user.application.applicationId}_{user.application.challengeId}'
 
-            raw_file = request.data['file']
-
+            try:
+                raw_file = request.data['file']
+            except KeyError:
+                return Response(jsonMessages.errorJsonResponse("No file passed. Aborting."), status=status.HTTP_400_BAD_REQUEST)
             try:
                 file_obj = ZipFile(raw_file)
             except:
-                return Response(jsonMessages.errorJsonResponse("Provided file is no ZipFile!"), status=status.HTTP_400_BAD_REQUEST)
-            
+                return Response(jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting."), status=status.HTTP_400_BAD_REQUEST)
+
             try:
                 correctZipped = False
                 filteredPathList = []
