@@ -4,33 +4,27 @@ import secrets
 import string
 import sys
 import time
-import os
 from zipfile import ZipFile
 
-from github import GithubException
-from django.conf import settings
 from cryptography.fernet import Fernet
-from rest_framework.parsers import FileUploadParser
-
-# Authentication imports
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from django.conf import settings
 from django.contrib.auth.models import User
-
 # RESTapi imports
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
+from github import GithubException
 from rest_framework import status
+from rest_framework.parsers import FileUploadParser
+# Authentication imports
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from . import jsonMessages, expirySettings
-
+from ..include.githubApi import GithubApi
 from ..models import Application, Challenge
-
 from ..serializers import GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer, \
     PostApplicationSerializer
-
-from ..include.githubApi import GithubApi
 
 
 # endpoint: /api/admin/applications
@@ -150,7 +144,8 @@ class AdminApplicationsView(APIView):
             try:
                 applications = Application.objects.get(applicationId=request.data.get('applicationId'))
             except (KeyError, ObjectDoesNotExist):
-                return Response(jsonMessages.errorJsonResponse("Application not found!"), status=status.HTTP_404_NOT_FOUND)
+                return Response(jsonMessages.errorJsonResponse("Application not found!"),
+                                status=status.HTTP_404_NOT_FOUND)
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
                                                                                           "applicationId": request.data.get(
                                                                                               'applicationId')})
@@ -244,7 +239,7 @@ class AdminApplicationsView(APIView):
 
 
 class AdminResultApplicationView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     gApi = GithubApi()
 
     # 8. Get Result
@@ -325,19 +320,21 @@ class UploadSolutionView(APIView):
                         filteredPathList.append(path)
 
                 if not correctZipped:
-                    return Response(jsonMessages.errorJsonResponse("The data does not match the required structure inside of the zipfile!"), status=status.HTTP_406_NOT_ACCEPTABLE)
+                    return Response(jsonMessages.errorJsonResponse(
+                        "The data does not match the required structure inside of the zipfile!"),
+                                    status=status.HTTP_406_NOT_ACCEPTABLE)
                 else:
-                    self.gApi.createRepo(repoName, 'to be defined') # TODO: description auslagern
+                    self.gApi.createRepo(repoName,
+                                         f'This is the application of {user.application.applicationId} with the assigned challenge {user.application.challengeId}')
 
                 for path in filteredPathList:
                     if not path.endswith('/'):
                         self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
 
-
                 self.gApi.addLinter(repoName)
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
-            
+
             user.application.submission = time.time()
             user.application.status = Application.Status.IN_REVIEW
             user.application.githubRepo = repoName
