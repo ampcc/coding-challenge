@@ -11,8 +11,17 @@ from ....views import expirySettings
 
 
 class test_createApplication(APITransactionTestCase):
+    # resets sequence in postgresql database when launching setup
     reset_sequences = True
+
     url = '/api/admin/applications/'
+    expectedReturnData = {
+        "applicationId": "TEST1234",
+        "created": mock.ANY,
+        "status": 0,
+        "expiry": mock.ANY,
+        "tmpLink": mock.ANY
+    }
 
     def setUp(self):
         # Authorization
@@ -20,6 +29,8 @@ class test_createApplication(APITransactionTestCase):
 
         # Example Challenge in Database
         Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
+
+
 
     def test_missingAuth(self):
         # remove headers for this test
@@ -93,13 +104,6 @@ class test_createApplication(APITransactionTestCase):
         data = {
             "applicationId": "TEST1234",
         }
-        expectedReturnData = {
-            "applicationId": "TEST1234",
-            "created": mock.ANY,
-            "status": 0,
-            "expiry": mock.ANY,
-            "tmpLink": mock.ANY
-        }
 
         self.assertEqual(Application.objects.count(), 0)
 
@@ -110,7 +114,7 @@ class test_createApplication(APITransactionTestCase):
         self.assertIn("www.amplimind.io/application/", response.data['tmpLink'])
         # tmpLink also contains a key
         self.assertGreater(len(response.data['tmpLink']), len("www.amplimind.io/application/"))
-        self.assertEqual(expectedReturnData, response.data)
+        self.assertEqual(self.expectedReturnData, response.data)
 
         # test if challengeId is a valid random challenge from database
         challengeId = Application.objects.get().challengeId
@@ -124,21 +128,13 @@ class test_createApplication(APITransactionTestCase):
             "expiry": time.time() + 6 * 24 * 60 * 60
         }
 
-        expectedReturnData = {
-            "applicationId": "TEST1234",
-            "created": mock.ANY,
-            "status": 0,
-            "expiry": mock.ANY,
-            "tmpLink": mock.ANY
-        }
-
         self.assertEqual(Application.objects.count(), 0)
 
         response = self.client.post(self.url, data, format='json')
 
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, expectedReturnData)
+        self.assertEqual(response.data, self.expectedReturnData)
 
         timestamp = time.time()
         timestamp = timestamp + 6 * 24 * 60 * 60
@@ -153,19 +149,12 @@ class test_createApplication(APITransactionTestCase):
             "applicationId": "TEST1234",
         }
 
-        expectedReturnData = {
-            "applicationId": "TEST1234",
-            "created": mock.ANY,
-            "status": 0,
-            "expiry": mock.ANY,
-            "tmpLink": mock.ANY
-        }
         self.assertEqual(Application.objects.count(), 0)
 
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, expectedReturnData)
+        self.assertEqual(response.data, self.expectedReturnData)
 
         timestamp = time.time()
         timestamp = timestamp + expirySettings.daysUntilChallengeStart * 24 * 60 * 60
@@ -184,19 +173,13 @@ class test_createApplication(APITransactionTestCase):
             "challengeId": 1,
             "days": 2
         }
-        expectedReturnData = {
-            "applicationId": "TEST1234",
-            "created": mock.ANY,
-            "status": 0,
-            "expiry": mock.ANY,
-            "tmpLink": mock.ANY
-        }
+
         self.assertEqual(Application.objects.count(), 0)
 
         response1 = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response1.data, expectedReturnData)
+        self.assertEqual(response1.data, self.expectedReturnData)
 
         response2 = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
