@@ -97,11 +97,13 @@
                 <div [hidden]="hideUpload" id="divUpload">
                     <div class="selection-options">
                         <div class="mb-3">
-                            <label class="form-label" id="programmingLanguage"><b>Programming Language: <span style="color: red;">*</span></b></label>
+                            <label class="form-label" id="programmingLanguage"><b>Programming Language: <span
+                                        style="color: red;">*</span></b></label>
 
                             <select class="form-select" id="selectProgLang" [(ngModel)]="pl"
                                 (change)="selectionProgLang()" required>
-                                <option id="disabledOption" class="pl_option" value="default" disabled selected hidden>Programming Language</option>
+                                <option id="disabledOption" class="pl_option" value="default" disabled selected hidden>
+                                    Programming Language</option>
                                 <option class="pl_option" value="java">Java</option>
                                 <option class="pl_option" value="c">C</option>
                                 <option class="pl_option" value="python">Python</option>
@@ -119,7 +121,8 @@
 
 
                         <div class="mb-3">
-                            <label class="form-label" id="operatingSystem"><b>Operating System: <span style="color: red;">*</span></b></label>
+                            <label class="form-label" id="operatingSystem"><b>Operating System: <span
+                                        style="color: red;">*</span></b></label>
 
                             <select class="form-select" id="selectOpSys" [(ngModel)]="os" (change)="selectionOpSys()"
                                 required>
@@ -140,11 +143,12 @@
 
                     <div class="mb-3">
                         <div>
-                            <img src="../../../../assets/question-circle.svg" width="20" height="20" class="question-circle" (click)="openDialogInfo()">
+                            <img src="../../../../assets/question-circle.svg" width="20" height="20"
+                                class="question-circle" (click)="openDialogInfo()">
                             <div id="DragnDropBlock" appHandlerBundle>
                                 <!-- eventually more excepted filetypes are necessary -->
                                 <input type="file" id="fileHandler" name="file" accept=".zip"
-                                    (change)="uploadFileHandler($event)"/>
+                                    (change)="uploadFileHandler($event)" />
 
 
                                 <div class="textDragnDrop">
