@@ -15,9 +15,18 @@ class test_getChallengeAdmin(APITestCase):
         # Authorization
         MockAuth.admin(self)
 
-        # Example Challenge in Database
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
-        Challenge.objects.create(challengeHeading="TestChallenge2", challengeText="This is a second challenge")
+        # Initialize data in the database
+        challenge1 = {
+            "challengeHeading": "TestChallenge", 
+            "challengeText": "This is a Test Challenge"
+        }
+
+        challenge2 = {
+            "challengeHeading": "TestChallenge2", 
+            "challengeText": "This is a second challenge"
+        }
+        self.client.post("/api/admin/challenges/", challenge1, format='json')
+        self.client.post("/api/admin/challenges/", challenge2, format='json')
 
     def test_missingToken(self):
         # remove headers for this test
