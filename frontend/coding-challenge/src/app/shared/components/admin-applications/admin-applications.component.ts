@@ -267,7 +267,7 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     console.log(application)
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
-      // Formats linter results to display properly
+      // Formats linter results to display properly, similar to the way GitHub displays it
       this.resultOfLinting = response.content;
       JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
       this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
