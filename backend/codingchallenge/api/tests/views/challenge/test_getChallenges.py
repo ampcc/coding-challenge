@@ -47,12 +47,14 @@ class test_getChallenges(APITestCase):
         self.assertEqual(response.data, [{
             "id": 1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         }, 
         {
             "id": 2,
             "challengeHeading": "TestChallenge2",
-            "challengeText": "This is a second challenge"
+            "challengeText": "This is a second challenge",
+            "active": True
         }])
 
     def test_ignoreChallengeId(self):
@@ -64,12 +66,14 @@ class test_getChallenges(APITestCase):
         self.assertEqual(response.data, [{
             "id": 1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         }, 
         {
             "id": 2,
             "challengeHeading": "TestChallenge2",
-            "challengeText": "This is a second challenge"
+            "challengeText": "This is a second challenge",
+            "active": True
         }])
 
     def test_callNotAsAdmin(self):

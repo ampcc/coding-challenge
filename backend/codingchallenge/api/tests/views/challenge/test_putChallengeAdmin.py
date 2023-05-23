@@ -18,7 +18,8 @@ class test_putChallengeAdmin(APITestCase):
         expected_data = {
             "id": 1,
             "challengeHeading": "Test",
-            "challengeText": "Text of challenge..."
+            "challengeText": "Text of challenge...",
+            "active": True
         }
         data_heading = {
             "challengeHeading": "Another Heading"
@@ -51,7 +52,8 @@ class test_putChallengeAdmin(APITestCase):
         expected_data = {
             "id": 1,
             "challengeHeading": "Another Heading",
-            "challengeText": "Another challenge text..."
+            "challengeText": "Another challenge text...",
+            "active": True
         }
         data = {
             "challengeHeading": "Another Heading",
@@ -78,6 +80,7 @@ class test_putChallengeAdmin(APITestCase):
         response = self.client.put(self.url + "1", data, format="json")
         self.assertEqual(response.data, expected_error)   
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
     def test_faultyBodyArguments(self):
         data_too_many = {

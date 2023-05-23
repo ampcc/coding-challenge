@@ -108,8 +108,9 @@ class AdminChallengesView(APIView):
         except Challenge.MultipleObjectsReturned:
             return Response(jsonMessages.errorJsonResponse("There have been found multiple challenges for the given challengeId. " +
                                                            "This should never be the case."), status=status.HTTP_409_CONFLICT)
-        
-        Challenge.delete(challenge)
+
+        challenge.active = False
+        challenge.save()
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
 
