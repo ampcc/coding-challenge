@@ -1,3 +1,4 @@
+/* Style for whole dialog container */
 .dialog_container {
     padding: 2em;
     border: 0.12em;
@@ -6,6 +7,28 @@
     border-radius: 0.3em;
 }
 
+/* Style cross close  button */
+.close {
+    display: flex;
+    float: right;
+    background: none;
+    border: none;
+}
+
+.close:hover {
+    cursor: pointer;
+}
+
+.close_image {
+    filter: invert(60%);
+    width: 3vw;
+}
+
+.close_image:hover {
+    filter: invert(75%);
+}
+
+/* Style title */
 h1 {
     font-size: 50px;
     line-height: 70px;
@@ -13,12 +36,7 @@ h1 {
     margin-bottom: 1em;
 }
 
-p {
-    font-size: 20px;
-    line-height: 30px;
-    font-weight: 400;
-}
-
+/* Style description text and link */
 .bold,
 a {
     font-size: 30px;
@@ -40,26 +58,13 @@ a {
     margin-bottom: 1em;
 }
 
-.close {
-    display: flex;
-    float: right;
-    background: none;
-    border: none;
+.regular {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
 }
 
-.close:hover {
-    cursor: pointer;
-}
-
-.close_image {
-    filter: invert(60%);
-    width: 3vw;
-}
-
-.close_image:hover {
-    filter: invert(75%);
-}
-
+/* Style extend days elements */
 .extend_container {
     display: block;
 }
@@ -69,20 +74,32 @@ a {
     width: 100%;
 }
 
-.error_message {
-    margin-top: 0;
-    font-size: 16px;
-    line-height: 25px;
-    font-weight: 600;
+/* Style new challenge elements */
+.selector {
+    display: inline-flex;
+    width: 100%;
 }
 
+/* General style for components of extend days and new challenge */
 .hidden {
     visibility: hidden;
 }
 
-.selector {
-    display: inline-flex;
-    width: 100%;
+.show_error {
+    border-color: red;
+    outline: none;
+}
+
+.error_message {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+    margin-top: 0.3em;
+    color: red;
+}
+
+.inline_text {
+    margin: auto;
 }
 
 .input {
@@ -100,23 +117,7 @@ a {
     cursor: pointer;
 }
 
-.inline_text {
-    margin: auto;
-}
-
-.show_error {
-    border-color: red;
-    outline: none;
-}
-
-.error_message {
-    font-size: 20px;
-    line-height: 30px;
-    font-weight: 400;
-    margin-top: 0.3em;
-    color: red;
-}
-
+/* Style for images */
 .image_container {
     width: 100%;
     margin: auto;
@@ -128,6 +129,7 @@ a {
     display: block;
 }
 
+/* Style for buttons */
 .button_container {
     display: inline-flex;
     width: 100%;
@@ -141,11 +143,6 @@ a {
     flex: 1;
 }
 
-app-button {
-    display: inline-block;
-    margin-top: 3em;
-}
-
 .triple,
 .single {
     width: 100%;
@@ -155,6 +152,12 @@ app-button {
     width: 40%;
 }
 
+app-button {
+    display: inline-block;
+    margin-top: 3em;
+}
+
+/* Seperate styles for different window-width */
 @media (min-width:2000px) {
 
     p,

@@ -33,27 +33,33 @@ export class AdminPasswordComponent implements OnInit {
 
   successfulChange: boolean = false;
 
+  // Reg Expression to check if password contains at least one uppercase and lowercase letter, as well as a number an special character
   mustContain = new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?])');
 
+  // Admin Password Component can be accessed by the sidenavigation on admin pages
+  // It is used to change an admins password
   constructor(private router: Router, private backendService: BackendService) {
     this.adminToken = null;
   }
 
+  // Check for admin authentication token
+  // If no admin token exists the user gets redirected to the admin login page
   ngOnInit(): void {
     this.adminToken = window.sessionStorage.getItem('Adm-Token');
-    if(this.adminToken === null){
+    if (this.adminToken === null) {
       this.router.navigateByUrl("/admin_login")
     }
   }
 
-  // If new password, old password, or confirm password are empty, error messages are shown underneath the corresponding text fields
-  // Otherwise it is checked, whether the old password is correct and whether the new password contains at least eight letters including at least one uppercase letter, one lowercase letter, one number, and one special character
+
   // It is also checked, if the old password and the confirm password are equal
   //In case all of the above factors are true the password gets changed and the user gets navigated to the applications page
   setPassword(oldP: string, newP: string, confirmP: string): void {
     this.showOldPasswordError = false;
     this.showNewPasswordError = false;
     this.showConfirmPasswordError = false;
+
+    // If new password, old password, or confirm password are empty, error messages are shown underneath the corresponding empty text fields
     if (oldP == '' || newP == '' || confirmP == '') {
       if (oldP == '') {
         this.oldPasswordError = 'Please enter your old password!';
@@ -68,17 +74,30 @@ export class AdminPasswordComponent implements OnInit {
         this.showConfirmPasswordError = true;
       }
     } else {
+
+      // Otherwise it is checked, if the new password is at least eight letters long
+      // If that is not the case, an error message gets displayed
       if (newP.length < 8) {
         this.newPasswordError = 'Password must contain at least eight characters!';
         this.showNewPasswordError = true;
+
+        // If so, it is also checked if the password contains the predefined RegExp
+        // If it does not another error message is shown
       } else if (!this.mustContain.test(newP)) {
         this.newPasswordError = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character!';
         this.showNewPasswordError = true;
+
+        // If the new password is not the same as the confirm password an error message also displayed
       } else if (newP != confirmP) {
         this.newPasswordError = 'Passwords do not match. Please try again!';
         this.confirmPasswordError = 'Passwords do not match. Please try again!';
         this.showNewPasswordError = true;
         this.showConfirmPasswordError = true;
+
+        // Otherwise no errors were made when entering the new password
+        // Threfore the backend gets called and tries to change the users password
+        // If the change is successful the page shows positive feedback before navigating to the applications page
+        // Otherwise an error message gets displayed or the user is redirected to an error page
       } else {
         this.backendService.changePassword(this.adminToken, oldP, newP).subscribe((response) => {
           this.successfulChange = true;
@@ -110,7 +129,7 @@ export class AdminPasswordComponent implements OnInit {
     }
   }
 
-  // In case the user decides not to change the password he can cancel and gets navigated to the applications page
+  // In case the user decides not to change his password he can cancel the action and gets navigated to the applications page
   cancel(): void {
     this.router.navigate(['/admin_applications']);
   }
