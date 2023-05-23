@@ -20,7 +20,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class StartComponent implements OnInit {
   private applicationToken: string | null;
 
-  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService) {
+  constructor(public dialog: MatDialog, private router: Router, private backendService: BackendService) {
     this.applicationToken = null;
   }
 
