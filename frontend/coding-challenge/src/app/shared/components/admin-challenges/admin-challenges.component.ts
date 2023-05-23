@@ -48,7 +48,7 @@ export class AdminChallengesComponent implements OnInit {
 
   /**
    * Changes the tab and shows the associated content.
-   * This also includes dynamically setting the style of the tabs.
+   * This also includes dynamically setting the style of the tabs
    * @param id The id tab-html element
    */
   public changeTab(id: string): void {
@@ -74,7 +74,7 @@ export class AdminChallengesComponent implements OnInit {
 
   /**
    * Opens a modal dialog that displays detailed information of the challenge.
-   * On top of that, buttons for additional functionality are also displayed.
+   * On top of that, buttons for additional functionality are also displayed
    * @param challenge The challenge object of which information has to be shown
    */
   public openDialogActiveChallenges(challenge: Challenge): void {
@@ -109,7 +109,7 @@ export class AdminChallengesComponent implements OnInit {
 
   // If a user decided to delete a challenge another dialog opens to ask for a second confirmation
   /**
-   * Opens a modal dialog that asks for confirmation to delete the challenge.
+   * Opens a modal dialog that asks for confirmation to delete the challenge
    * @param challenge The challenge object which should be deleted
    */
   public openDeleteDialog(challenge: Challenge): void {
