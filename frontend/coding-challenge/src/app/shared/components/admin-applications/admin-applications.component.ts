@@ -24,8 +24,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 
 export class AdminApplicationsComponent {
-  // challenge: Challenge;
-  // applicant: Application;
   private adminToken: string | null;
 
   public hideContentActiveChallenges: boolean = false;
@@ -56,9 +54,7 @@ export class AdminApplicationsComponent {
 
 
   public constructor(private backend: BackendService, public dialog: MatDialog, public router: Router) {
-    // this.challenge = { id: 0, challengeHeading: '', challengeText: '' };
     this.adminToken = null;
-    // this.applicant = { applicationId: "", applicationKey: "", challengeId: 0, expiry: 0, githubRepo: "", operatingSystem: "", programmingLanguage: "", status: 0, submission: 0, passphrase: "a4Xz!5T%" };
   }
 
 
@@ -92,7 +88,7 @@ export class AdminApplicationsComponent {
 
   /**
    * Changes the tab and shows the associated content.
-   * This also includes dynamically setting the style of the tabs.
+   * This also includes dynamically setting the style of the tabs
    * @param id The id tab-html element
    */
   public changeTab(id: string): void {
@@ -137,7 +133,7 @@ export class AdminApplicationsComponent {
 
   /**
    * Unfolds the desired subtree and its input options.
-   * Which subtree is to be unfolded is defined by a click of the user.
+   * Which subtree is to be unfolded is defined by a click of the user
    * @param id The id of the subtree-html element
    */
   public toggleTreeView(id: string): void {
@@ -155,7 +151,7 @@ export class AdminApplicationsComponent {
 
   /**
    * Filters the archived applications by the applicationId and other parameters set by the filter.
-   * The applicationId is specified in the searchContent attribute.
+   * The applicationId is specified in the searchContent attribute
    */
   private updateFilteredArchiveArray(): void {
     if (this.challengeFilter.length === 0) {
@@ -177,7 +173,7 @@ export class AdminApplicationsComponent {
   // Method to update the display of active Application when filter is in use
   /**
    * Filters the applications by the applicationId and other parameters set by the filter.
-   * The applicationId is specified in the searchContent attribute of the class.
+   * The applicationId is specified in the searchContent attribute of the class
    */
   private updateFilteredApplicantArray(): void {
     if (this.challengeFilter.length === 0 && this.statusFilter.length === 0) {
@@ -216,7 +212,7 @@ export class AdminApplicationsComponent {
   }
 
   /**
-   * Stores the filter option for a desired challenge and updates the applications and archived aplications.
+   * Stores the filter option for a desired challenge and updates the applications and archived aplications
    * @param values The html element the user clicked on. The information for the filter is contained inside the elements id.
    */
   public checkboxChallengeChange(values: any): void {
@@ -231,7 +227,7 @@ export class AdminApplicationsComponent {
   }
 
   /**
-   * Stores the filter option for a desired status and updates the applications and archived aplications.
+   * Stores the filter option for a desired status and updates the applications and archived aplications
    * @param values The html element the user clicked on. The information for the filter is contained inside the elements id.
    */
   public checkboxStatusChange(values: any): void {
@@ -245,7 +241,7 @@ export class AdminApplicationsComponent {
   }
 
   /**
-   * Searches for the applications associated challenge and its heading.
+   * Searches for the applications associated challenge and its heading
    * @param challengeId The id of the applications challenge
    * @returns The heading of the challenge as a string
    */
@@ -259,7 +255,7 @@ export class AdminApplicationsComponent {
   }
 
   /**
-   * Maps the applications status number to the corresponding text.
+   * Maps the applications status number to the corresponding text
    * @param status The status of the application as a number
    * @returns The status of the application as a string
    */
@@ -298,7 +294,7 @@ export class AdminApplicationsComponent {
   }
 
   /**
-   * Calcutes the remaining time of the application.
+   * Calcutes the remaining time of the application
    * @param app The application object
    * @returns The remaining time of the application as a string
    */
@@ -307,7 +303,7 @@ export class AdminApplicationsComponent {
   }
 
   /**
-   * Maps the applications submission date to a formated date.
+   * Maps the applications submission date to a formated date
    * @param submissionDate The submission date of the application
    * @returns The submission date as a formatted text
    */
@@ -321,7 +317,7 @@ export class AdminApplicationsComponent {
 
   /**
    * Opens a modal dialog that displays detailed information of the active application.
-   * On top of that, buttons for additional functionality are also displayed.
+   * On top of that, buttons for additional functionality are also displayed
    * @param application The active application of which information has to be shown
    */
   public openDialogActiveApplications(application: Application): void {
@@ -383,7 +379,7 @@ export class AdminApplicationsComponent {
 
   // Tries to open a dialog to extend the time limit of an application or select a new challenge
   /**
-   * Opens a modal dialog that enables the user to edit an application.
+   * Opens a modal dialog that enables the user to edit an application
    * @param application The application which is to be edited
    */
   public openExtendDialogActiveApplications(application: Application): void {
@@ -477,7 +473,7 @@ export class AdminApplicationsComponent {
 
   /**
    * Opens a modal dialog that displays detailed information of the archived application.
-   * On top of that, buttons for additional functionality are also displayed.
+   * On top of that, buttons for additional functionality are also displayed
    * @param application The archived application of which information has to be shown
    */
   public openDialogArchivedApplications(application: Application): void {
