@@ -1,5 +1,5 @@
 from pathlib import Path
-from pathlib import Path
+from textwrap import dedent
 from unittest.mock import patch
 from django.conf import settings
 
