@@ -1,3 +1,4 @@
+/* Style button in general */
 button {
     padding: 1em;
     font-size: 20px;
@@ -15,6 +16,7 @@ button:hover {
     cursor: pointer;
 }
 
+/* Style for primary buttons */
 .primary {
     color: white;
     background-color: rgb(20, 20, 20);
@@ -25,6 +27,7 @@ button:hover {
     background-color: rgb(50, 50, 50);
 }
 
+/* Style for secondary buttons */
 .secondary {
     color: black;
     background-color: white;
@@ -35,6 +38,7 @@ button:hover {
     background-color: rgb(210, 210, 210);
 }
 
+/* Style for important buttons used to delete */
 .delete {
     color: white;
     background-color: red;
@@ -45,6 +49,7 @@ button:hover {
     background-color: rgb(255, 60, 60);
 }
 
+/* Seperate styles for different window-width */
 @media (min-width:2000px) {
     button {
         font-size: 30px;

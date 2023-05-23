@@ -108,16 +108,19 @@ export class AdminChallengesComponent implements OnInit {
       minWidth: '30vw',
     });
 
+    // Checks which button was pressed on the dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
+        // If the user wants to edit the challenge he gets navigated to the edit page
         this.router.navigateByUrl("/admin_edit_challenge?id=" + challenge.id);
       } else if (result == 2 && challenge.id != null) {
+        // If user wants to delete a challenge another dialog opens
         this.openDeleteDialog(challenge);
       }
     });
-
   }
 
+  // If a user decided to delete a challenge another dialog opens to ask for a second confirmation
   public openDeleteDialog(challenge: Challenge): void {
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
@@ -131,12 +134,12 @@ export class AdminChallengesComponent implements OnInit {
       minWidth: '30vw',
     });
 
-    // If the dialog is closed and the result is true, the user decided to delete challenge, the backend deletes the challenge and the user is navigated to Challenges
+    // If the dialog is closed and the result is 1 (the user decided to delete the challenge), the backend tries to delete the challenge
+    // If this action was successful the challenge gets immediately deleted
+    // Otherwise the user gets navigated to an error page depending on the error code
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
-        // TODO: Check if challenge gets properly deleted by backend
         this.backend.deleteChallenge(this.adminToken, challenge.id!).subscribe(() => {
-          // TODO: Check if navigating is actually needed or if page automatically gets rid of deleted Challenge
           var index = this.challengeArray.findIndex(chal => chal.id === challenge.id);
           this.challengeArray.splice(index, 1);
         }, (error) => {
@@ -158,6 +161,4 @@ export class AdminChallengesComponent implements OnInit {
       }
     })
   }
-
-
 }

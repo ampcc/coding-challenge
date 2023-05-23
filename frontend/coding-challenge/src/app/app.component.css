@@ -1,8 +1,25 @@
+/* Achieve full page height to display footer at the very bottom */
 :host {
     display: block;
     min-height: 100%;
 }
 
+/* General styling for multiple elements */
+a {
+    margin-left: 35px;
+    margin-right: 35px;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    line-height: 25px;
+    font-weight: 400;
+}
+
+.spacer {
+    flex: 1;
+}
+
+/* Style for header */
 .toolbar {
     top: 0;
     width: 100%;
@@ -14,22 +31,13 @@
     z-index: 4;
 }
 
-.spacer {
-    flex: 1;
-}
-
-a {
-    margin-left: 35px;
-    margin-right: 35px;
-    text-decoration: none;
-    color: black;
-    font-size: 16px;
-    line-height: 25px;
-    font-weight: 400;
-}
-
 .logo {
     height: 45.6px;
+}
+
+.logout {
+    height: 40px;
+    filter: invert();
 }
 
 .logout_link {
@@ -39,11 +47,6 @@ a {
 
 .logout_link:hover {
     cursor: pointer;
-}
-
-.logout {
-    height: 40px;
-    filter: invert();
 }
 
 .home {
@@ -60,7 +63,7 @@ a {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-
+/* Style for sidenavigation */
 .sitenav {
     width: 20%;
     position: fixed;
@@ -130,11 +133,13 @@ a {
     z-index: 2;
 }
 
+/* Body for displaying main the pages */
 .body {
     padding-top: 80px;
     min-height: calc(100vh - 80px);
 }
 
+/* Style for footer */
 .footer {
     height: 80px;
     width: 100%;
@@ -145,6 +150,7 @@ a {
     text-decoration: underline;
 }
 
+/* Seperate styles for different window-width */
 @media (min-width:2000px) {
     a {
         font-size: 20px;
