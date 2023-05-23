@@ -86,10 +86,9 @@ class GithubApi:
 
             # ----SUMMARY ----
             linterStartIndex = decodedLinter.find("+----SUMMARY----")
-            linterSummary = decodedLinter[linterStartIndex:-1:1]
+            linterSummary = decodedLinter[linterStartIndex:-1]
             linterEndIndex = linterSummary.find('\n\n')
-
-            cleanSummary = linterSummary[0:linterEndIndex:1]
+            cleanSummary = linterSummary[:linterEndIndex]
 
             # replacing symbols and added padding for correct spacing
             # check
@@ -97,6 +96,25 @@ class GithubApi:
             # cross
             cleanSummary = cleanSummary.replace(u"\u274c",u"\u2715" + " ")
             # question mark
-            cleanSummary = cleanSummary.replace(u"\u25EC",u"\u2047")
+    #      cleanSummary = cleanSummary.replace(u"\u25EC",u"\u2047" + " ")
+            cleanSummary = cleanSummary.replace(u"\u25EC","?" + " ")
+
+            posArray = [i for i in range (len(cleanSummary)) if cleanSummary.startswith("?", i)]
+
+
+            for i in posArray:
+                x = i+1
+
+                while cleanSummary[x].isspace():
+                    x+=1
+
+                while not cleanSummary[x].isspace():
+                    x+=1
+
+                cleanSummary = cleanSummary[:x] + cleanSummary[x+1:]
+
+            print(cleanSummary)
+
 
             return cleanSummary
+
