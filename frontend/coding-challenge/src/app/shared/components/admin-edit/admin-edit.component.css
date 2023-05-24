@@ -1,3 +1,4 @@
+/* Style for positive feedback */
 .alert {
     position: fixed;
     width: 100%;
@@ -8,13 +9,6 @@
     font-size: 16px;
     line-height: 25px;
     font-weight: 600;
-}
-
-.main_container {
-    width: 75%;
-    margin: auto;
-    margin-top: 5em;
-    padding-bottom: 5em;
 }
 
 .not_clickable {
@@ -30,6 +24,20 @@
     z-index: 2;
 }
 
+/* Style for main container to align in th middle */
+.main_container {
+    width: 75%;
+    margin: auto;
+    margin-top: 5em;
+    padding-bottom: 5em;
+}
+
+/* General styling for multiple elements */
+.not_showing {
+    visibility: hidden;
+}
+
+/* Style for title */
 h1 {
     font-size: 50px;
     line-height: 70px;
@@ -37,6 +45,7 @@ h1 {
     margin-bottom: 1em;
 }
 
+/* Style for input fields */
 .inputField {
     width: 100%;
     padding: 1em;
@@ -49,13 +58,12 @@ h1 {
     border-color: gray;
 }
 
-#description {
-    height:25vh;
-}
-
-.show_error {
-    border-color: red;
-    outline: none;
+.heading {
+    margin-top: 0.5em;
+    margin-bottom: 0.1em;
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 600;
 }
 
 .show_success {
@@ -63,12 +71,9 @@ h1 {
     outline: none;
 }
 
-.heading {
-    margin-top: 0.5em;
-    margin-bottom: 0.1em;
-    font-size: 30px;
-    line-height: 40px;
-    font-weight: 600;
+.show_error {
+    border-color: red;
+    outline: none;
 }
 
 .error_message {
@@ -79,11 +84,12 @@ h1 {
     color: red;
 }
 
-.not_showing {
-    visibility: hidden;
+#description {
+    height: 25vh;
 }
 
-.button_row{
+/* Style for button row */
+.button_row {
     display: inline-flex;
     width: 100%;
 }
@@ -98,18 +104,20 @@ app-button {
     margin-top: 2em;
 }
 
+/* Seperate styles for different window-width */
 @media (min-width:2000px) {
     .alert {
         font-size: 20px;
         line-height: 30px;
     }
-    
+
     h1 {
         font-size: 80px;
         line-height: 100px;
     }
 
-    .inputField, .error_message {
+    .inputField,
+    .error_message {
         font-size: 30px;
         line-height: 40px;
     }
@@ -127,7 +135,7 @@ app-button {
 }
 
 @media (max-width:1024px) {
-    .button_row{
+    .button_row {
         display: block;
     }
 
@@ -142,7 +150,8 @@ app-button {
         line-height: 60px;
     }
 
-    .inputField, .error_message {
+    .inputField,
+    .error_message {
         font-size: 16px;
         line-height: 25px;
     }
@@ -160,7 +169,8 @@ app-button {
         line-height: 50px;
     }
 
-    .inputField, .error_message {
+    .inputField,
+    .error_message {
         font-size: 13px;
         line-height: 23px;
     }

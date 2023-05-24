@@ -5,11 +5,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { DialogComponent } from '../dialog/dialog.component';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { Challenge } from '../../models/challenge';
 import { Application } from '../../models/application';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -23,7 +23,8 @@ import * as JSZip from 'jszip';
     MatInputModule,
     MatFormFieldModule,
     NgFor,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   selector: 'app-challenge',
   templateUrl: './challenge.component.html',
@@ -35,9 +36,9 @@ export class ChallengeComponent implements OnInit {
   applicant: Application;
   private applicationToken: string | null;
 
-  public time: string = '2 days 4 hours 35 minutes';
-  public heading: string = 'Lorem ipsum';
-  public challengeText: string = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+  public time: string = 'No data available!';
+  public heading: string = 'No data available!';
+  public challengeText: string = 'No data available!';
 
   public hideContentIntro: boolean = false;
   public hideContentChallenge: boolean = true;
@@ -47,6 +48,7 @@ export class ChallengeComponent implements OnInit {
   public hideOpSys: boolean = true;
   public hideSuccess: boolean = true;
   public hideUpload: boolean = false;
+  public hideLoading: boolean = true;
 
   public msgProgLang: string = '';
   public msgOpSys: string = '';
@@ -76,15 +78,17 @@ export class ChallengeComponent implements OnInit {
 
       // Get the current Status
       this.backend.getStatus(this.applicationToken).subscribe((response) => {
-        if(response.status >= 2) {
+        if (response.status >= 2) {
           window.sessionStorage.clear();
           this.router.navigateByUrl("/gone");
         }
+        // get all received Parameters from the response
         this.applicant = {
           applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiry: response.expiry, githubRepo: "",
           operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submission: 0, status: response.progress
         };
         this.time = this.backend.calcRemainingTime(new Date().getTime(), this.applicant.expiry);
+        // in case of errors redirect to the correct error page
       }, (error: HttpErrorResponse) => {
         switch (error.status) {
           case 401:
@@ -194,7 +198,7 @@ export class ChallengeComponent implements OnInit {
         description: {
           important: 'Please pay attention to the following folder structure when uploading:',
           details: 'The Projectfolder has to be directly under the .zip File and the Readme File has to be inside the Projectfolder!'
-           + ' <br> <br><pre>YourCode.zip <br>└── ProjectFolder/ <br>    ├── src/ <br>    ├── data/ <br>    ├── test/ <br>    ├── ReadMe.md <br>    └── ....'
+            + ' <br> <br><pre>YourCode.zip <br>└── ProjectFolder/ <br>    ├── src/ <br>    ├── data/ <br>    ├── test/ <br>    ├── ReadMe.md <br>    └── ....'
         },
       },
       maxHeight: '85vh',
@@ -238,34 +242,35 @@ export class ChallengeComponent implements OnInit {
       }
     }
   }
-
-public checkUploadedZipContent(file:File): void{
-  var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
-  const jsZip = require('jszip');
-  var result = true;
-  var isSecondLayerFile = false;
-  jsZip.loadAsync(file).then((zip: any) => {
-    Object.keys(zip.files).filter(v => v.indexOf("__MACOSX/") === -1 && v.indexOf("DS_Store") === -1).forEach((filename) => {
-      if(filename.indexOf(".") !== -1){
-        if((filename.split("/").length - 1) === 0){
-          result = false;
-        }else if((filename.split("/").length - 1) === 1){
-          isSecondLayerFile = true;
+// Method to check the uploaded File structure in the frontend
+  public checkUploadedZipContent(file: File): void {
+    var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
+    const jsZip = require('jszip');
+    var result = true;
+    var isSecondLayerFile = false;
+    // load the zip and ignore all MACOSX and DS_Store files
+    jsZip.loadAsync(file).then((zip: any) => {
+      Object.keys(zip.files).filter(v => v.indexOf("__MACOSX/") === -1 && v.indexOf("DS_Store") === -1).forEach((filename) => {
+        if (filename.indexOf(".") !== -1) {
+          if ((filename.split("/").length - 1) === 0) {
+            result = false;
+          } else if ((filename.split("/").length - 1) === 1) {
+            isSecondLayerFile = true;
+          }
         }
+      })
+      if (!isSecondLayerFile) {
+        result = false;
+      }
+      if (result) {
+        this.fileArray.push(file);
+      } else {
+        this.hideMsgFileUplod = false;
+        this.msgFileUplod = 'The file ' + file.name + ' has the wrong folder structure';
+        element.setAttribute("style", "border-color:red; ");
+        this.openDialogInfo();
       }
     })
-    if(!isSecondLayerFile){
-      result = false;
-    }
-    if(result){
-      this.fileArray.push(file);
-    }else {
-      this.hideMsgFileUplod = false;
-      this.msgFileUplod = 'The file ' + file.name + ' has the wrong folder structure';
-      element.setAttribute("style", "border-color:red; ");
-      this.openDialogInfo();
-    }
-  })
 
   }
 
@@ -359,13 +364,14 @@ public checkUploadedZipContent(file:File): void{
     }
 
     if (!required) {
-      this.hideMsgFileUplod = false;
-      this.msgFileUplod = "Uploading File. Please Wait."
+      this.hideUpload = true;
+      this.hideLoading = false;
       this.backend.uploadChallenge(this.applicationToken, resultOs, resultPl, this.fileArray[0]).subscribe((response) => {
         this.hideSuccess = false;
         this.hideUpload = true;
+        this.hideLoading = true;
         this.hideMsgFileUplod = true;
-      },(error) => {
+      }, (error) => {
         switch (error.status) {
           case 403:
             window.sessionStorage.clear();

@@ -68,7 +68,9 @@ export class AdminApplicationsComponent {
     if (this.adminToken === null) {
       this.router.navigateByUrl("/admin_login")
     } else {
+      // get all Applications
       this.backend.getApplications(this.adminToken).subscribe((response) => {
+        //if successful receive all Applications and split them into Archived and Active
         response.forEach((element: Application) => {
           if (element.status <= 3) {
             this.applicantsArray.push(element);
@@ -76,9 +78,11 @@ export class AdminApplicationsComponent {
             this.archivArray.push(element);
           }
         });
+        //only filtered Arrays are displayed
         this.filteredApplicantsArray = this.applicantsArray;
         this.filteredArchivArray = this.archivArray;
       });
+      // get all Challenges
       const challengeInfos = this.backend.getChallenges(this.adminToken)
         .subscribe((data: Challenge[]) => {
           this.challengeArray = data;
@@ -131,7 +135,7 @@ export class AdminApplicationsComponent {
       }
     }
   }
-
+  // Method to update the display of archived Application when filter is in use
   private updateFilteredArchiveArray(): void {
     if (this.challengeFilter.length === 0) {
       this.filteredArchivArray = this.archivArray;
@@ -144,11 +148,12 @@ export class AdminApplicationsComponent {
       });
     }
 
-    if(this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
+    if (this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
       this.filteredArchivArray = this.filteredArchivArray.filter(element => element.applicationId === this.searchContent);
     }
   }
 
+  // Method to update the display of active Application when filter is in use
   private updateFilteredApplicantArray(): void {
     if (this.challengeFilter.length === 0 && this.statusFilter.length === 0) {
       this.filteredApplicantsArray = this.applicantsArray;
@@ -180,7 +185,7 @@ export class AdminApplicationsComponent {
       });
     }
 
-    if(this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
+    if (this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
       this.filteredApplicantsArray = this.filteredApplicantsArray.filter(element => element.applicationId === this.searchContent);
     }
   }
@@ -267,6 +272,7 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     console.log(application)
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
+      // Formats linter results to display properly, similar to the way GitHub displays it
       this.resultOfLinting = response.content;
       JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
       this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
@@ -288,6 +294,9 @@ export class AdminApplicationsComponent {
         minWidth: '30vw',
       });
 
+      // If the dialog is closed and the result is 1 (the user decided to archive an application), the backend tries to edit the application
+      // If this action was successful the application immediately gets moved to archive
+      // Otherwise the user gets navigated to an error page depending on the error code
       dialogRef.afterClosed().subscribe(result => {
         if (result == 1) {
           this.backend.editApplication(this.adminToken, application.applicationId, 5)
@@ -316,8 +325,10 @@ export class AdminApplicationsComponent {
     })
   }
 
+  // Tries to open a dialog to extend the time limit of an application or select a new challenge
   public openExtendDialogActiveChallenges(application: Application): void {
     DialogComponent.name;
+    // Array of possible new challenges gets filled with all existing challenges except the one already assigned to the user
     this.newChallengesArray = [];
     for (var i = 0; i < this.challengeArray.length; i++) {
       if (this.challengeArray[i].id != application.challengeId) {
@@ -327,6 +338,8 @@ export class AdminApplicationsComponent {
         });
       }
     }
+
+    // Opns dialog to let admin expand time limit or select new challenge
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Applicant ' + application.applicationId,
@@ -343,6 +356,9 @@ export class AdminApplicationsComponent {
       maxHeight: '85vh',
       minWidth: '30vw',
     });
+
+    // If the dialog was closed with result 1 (the user commited changes), the backend tries to edit the application accordingly and immediately updates the list
+    // If an error occurrs, the user gets redireced to one of the error pages
     dialogRef.afterClosed().subscribe(result => {
       if (result.s && result.s == 1) {
         this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
@@ -370,6 +386,9 @@ export class AdminApplicationsComponent {
             }
           });
       }
+
+      // If the dialog was closed with result 2 (the user archived an application), the backend archives the application accordingly and updates the list
+      // If an error occurrs, the user gets redireced to one of the error pages
       if (result == 2) {
         this.backend.editApplication(this.adminToken, application.applicationId, 5)
           .subscribe((result) => {
@@ -400,6 +419,7 @@ export class AdminApplicationsComponent {
   public openDialogArchiv(application: Application): void {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
+      // Formats linter results to display properly
       this.resultOfLinting = response.content;
       JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
       this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');

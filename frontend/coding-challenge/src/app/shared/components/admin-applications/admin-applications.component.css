@@ -224,7 +224,7 @@ span {
 }
 
 .resultLinting {
-    font-family: monospace;
+    font-family: 'Jet Brains', monospace;
     font-size: 14px;
     line-height: 14px;
     white-space: pre-wrap;
