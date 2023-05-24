@@ -82,11 +82,13 @@ export class ChallengeComponent implements OnInit {
           window.sessionStorage.clear();
           this.router.navigateByUrl("/gone");
         }
+        // get all received Parameters from the response
         this.applicant = {
           applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiry: response.expiry, githubRepo: "",
           operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submission: 0, status: response.progress
         };
         this.time = this.backend.calcRemainingTime(new Date().getTime(), this.applicant.expiry);
+        // in case of errors redirect to the correct error page
       }, (error: HttpErrorResponse) => {
         switch (error.status) {
           case 401:
@@ -240,12 +242,13 @@ export class ChallengeComponent implements OnInit {
       }
     }
   }
-
+// Method to check the uploaded File structure in the frontend
   public checkUploadedZipContent(file: File): void {
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
     const jsZip = require('jszip');
     var result = true;
     var isSecondLayerFile = false;
+    // load the zip and ignore all MACOSX and DS_Store files
     jsZip.loadAsync(file).then((zip: any) => {
       Object.keys(zip.files).filter(v => v.indexOf("__MACOSX/") === -1 && v.indexOf("DS_Store") === -1).forEach((filename) => {
         if (filename.indexOf(".") !== -1) {
