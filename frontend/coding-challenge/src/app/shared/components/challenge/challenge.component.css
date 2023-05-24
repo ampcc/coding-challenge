@@ -281,6 +281,25 @@ h2 {
 }
 
 
+/* Style div for progress spinner */
+#divLoading {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+}
+
+.textLoading {
+    margin-top: 1cm;
+    font-size: 25px;
+}
+
+.progressSpinner {
+    margin: auto;
+    margin-top: 2cm;
+}
+
+
 /* Responsive Webdesign */
 @media screen and (min-width: 2000px) {
     h2 {
@@ -295,7 +314,7 @@ h2 {
         font-size: 30px;
     }
 
-    .textSuccess {
+    .textSuccess, .textLoading {
         font-size: 35px;
     }
 

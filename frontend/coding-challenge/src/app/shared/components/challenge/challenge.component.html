@@ -193,6 +193,11 @@
                         <label class="textSuccess"> We will contact you! </label>
                     </div>
                 </div>
+
+                <div [hidden]="hideLoading" id="divLoading">
+                    <label class="textLoading"><b>Uploading your solution. Please wait a moment.</b></label>
+                    <mat-progress-spinner mode="indeterminate" class="progressSpinner"></mat-progress-spinner>
+                </div>
             </div>
         </div>
     </div>
