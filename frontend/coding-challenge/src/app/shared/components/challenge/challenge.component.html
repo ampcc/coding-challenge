@@ -19,6 +19,7 @@
         </div>
 
         <div class="view_tab">
+            <!-- Tab list area with the intro, challenge, and challenge upload options -->
             <div class="tab_list">
                 <label class="tabs" id="tab_intro" for="tab-1" (click)="changeTab('tab_intro')">
                     Intro
@@ -33,6 +34,7 @@
                 </label>
             </div>
 
+            <!-- Tab content of the intro  -->
             <div [hidden]="hideContentIntro" class="text_intro" id="text">
                 Hi applicant,
                 <br>
@@ -86,16 +88,18 @@
                 Happy coding.
             </div>
 
-
+            <!-- Tab content of the challenges  -->
             <div [hidden]="hideContentChallenge" class="text_challenge" id="text">
                 <b>{{heading}}</b>
                 <br><br>
                 {{challengeText}}
             </div>
 
+            <!-- Tab content of the challenge upload  -->
             <div [hidden]="hideContentUpload" class="div_upload">
                 <div [hidden]="hideUpload" id="divUpload">
                     <div class="selection-options">
+                        <!-- Area to select the programming language -->
                         <div class="mb-3">
                             <label class="form-label" id="programmingLanguage"><b>Programming Language: <span
                                         style="color: red;">*</span></b></label>
@@ -111,15 +115,16 @@
                                 <option class="pl_option" value="other">Other</option>
                             </select>
 
-                            <div>
-                                <input [hidden]="hideProgLang" class="form-control inputOther" id="progLang" type="text"
-                                    placeholder="Other programming langugage" required>
 
-                                <div [hidden]="hideMsgProgLang" class="errorMessage">{{msgProgLang}}</div>
-                            </div>
+                            <!-- input if selected programming language is 'other' -->
+                            <input [hidden]="hideProgLang" class="form-control inputOther" id="progLang" type="text"
+                                placeholder="Other programming langugage" required>
+                            <!-- error message if no programming language is selected or none is entered  -->
+                            <div [hidden]="hideMsgProgLang" class="errorMessage">{{msgProgLang}}</div>
+
                         </div>
 
-
+                        <!-- Area to select the operating system -->
                         <div class="mb-3">
                             <label class="form-label" id="operatingSystem"><b>Operating System: <span
                                         style="color: red;">*</span></b></label>
@@ -134,17 +139,22 @@
                                 <option value="other">Other</option>
                             </select>
 
+                            <!-- input if selected operating system is 'other' -->
                             <input [hidden]="hideOpSys" class="form-control inputOther" id="opSys" type="text"
                                 placeholder="Other operating system" required>
-
+                            <!-- error message if no operating system is selected or none is entered  -->
                             <div [hidden]="hideMsgOpSys" class="errorMessage">{{msgOpSys}}</div>
                         </div>
                     </div>
 
+                    <!-- Area for uploading the finished challenge  -->
                     <div class="mb-3">
                         <div>
+                            <!-- Image to open the info of the folder structure -->
                             <img src="../../../../assets/question-circle.svg" width="20" height="20"
                                 class="question-circle" (click)="openDialogInfo()">
+
+                            <!-- Drag and drop area -->
                             <div id="DragnDropBlock" appHandlerBundle>
                                 <!-- eventually more excepted filetypes are necessary -->
                                 <input type="file" id="fileHandler" name="file" accept=".zip"
@@ -162,8 +172,10 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- error message if no file for upload is selected or the selected file has the wrong datatype or the selected file has a too large file size -->
                         <div [hidden]="hideMsgFileUplod" class="errorMessage msgFileUpload">{{msgFileUplod}}</div>
 
+                        <!-- Area to display all uploaded files -->
                         <div class="files-list">
                             <div class="single-file" *ngFor="let file of fileArray; let i = index">
                                 <div class="picntext">
@@ -187,9 +199,11 @@
                         </div>
                     </div>
 
+                    <!-- Button to submit the challenge -->
                     <button type="button" class="btn btn-dark" (click)="submitChallenge()">Submit Solution</button>
                 </div>
 
+                <!-- Tab content of the challenge upload if the challenge ist successfully uploaded -->
                 <div [hidden]="hideSuccess" id="divSuccess">
                     <div class="child">
                         <label class="textSuccess"> Your solution has been successfully uploaded </label>

@@ -15,6 +15,7 @@
         </div>
 
         <div class="view_tab">
+            <!-- Tab list area -->
             <div class="tab_list">
                 <div>
                     <label class="tabs" id="tab_active_challenges" for="tab-1"
@@ -22,13 +23,14 @@
                         Active Challenges
                     </label>
                 </div>
-
+                <!-- Button to add new challenge -->
                 <button class="btn btn-dark add" id="add_button" (click)="addChallenge()">
                     Add
                     <img src="../../../../assets/plus-lg.svg" class="plus">
                 </button>
             </div>
 
+            <!-- Tab content of active challenges  -->
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
                 <div class="list" id="list_challenges">
                     <div class="single_challenge" *ngFor="let challenge of challengeArray; let i = index">
