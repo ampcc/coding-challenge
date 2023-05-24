@@ -68,7 +68,9 @@ export class AdminApplicationsComponent {
     if (this.adminToken === null) {
       this.router.navigateByUrl("/admin_login")
     } else {
+      // get all Applications
       this.backend.getApplications(this.adminToken).subscribe((response) => {
+        //if successful receive all Applications and split them into Archived and Active
         response.forEach((element: Application) => {
           if (element.status <= 3) {
             this.applicantsArray.push(element);
@@ -76,9 +78,11 @@ export class AdminApplicationsComponent {
             this.archivArray.push(element);
           }
         });
+        //only filtered Arrays are displayed
         this.filteredApplicantsArray = this.applicantsArray;
         this.filteredArchivArray = this.archivArray;
       });
+      // get all Challenges
       const challengeInfos = this.backend.getChallenges(this.adminToken)
         .subscribe((data: Challenge[]) => {
           this.challengeArray = data;
@@ -131,7 +135,7 @@ export class AdminApplicationsComponent {
       }
     }
   }
-
+  // Method to update the display of archived Application when filter is in use
   private updateFilteredArchiveArray(): void {
     if (this.challengeFilter.length === 0) {
       this.filteredArchivArray = this.archivArray;
@@ -149,6 +153,7 @@ export class AdminApplicationsComponent {
     }
   }
 
+  // Method to update the display of active Application when filter is in use
   private updateFilteredApplicantArray(): void {
     if (this.challengeFilter.length === 0 && this.statusFilter.length === 0) {
       this.filteredApplicantsArray = this.applicantsArray;
