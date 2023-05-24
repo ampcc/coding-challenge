@@ -95,7 +95,6 @@ class GithubApi:
             # cross
             cleanSummary = cleanSummary.replace(u"\u274c", u"\u2715" + " ")
             # question mark
-            #      cleanSummary = cleanSummary.replace(u"\u25EC",u"\u2047" + " ")
             cleanSummary = cleanSummary.replace(u"\u25EC", "?" + " ")
 
             posArray = [i for i in range(len(cleanSummary)) if cleanSummary.startswith("?", i)]
