@@ -107,9 +107,9 @@ export class AdminChallengesComponent implements OnInit {
     });
   }
 
-  // If a user decided to delete a challenge another dialog opens to ask for a second confirmation
+
   /**
-   * Opens a modal dialog that asks for confirmation to delete the challenge
+   * Opens another modal dialog that asks for confirmation to delete the challenge
    * @param challenge The challenge object which should be deleted
    */
   public openDeleteDialog(challenge: Challenge): void {

@@ -147,10 +147,9 @@ export class AdminApplicationsComponent {
       }
     }
   }
-  // Method to update the display of archived Application when filter is in use
 
   /**
-   * Filters the archived applications by the applicationId and other parameters set by the filter.
+   * Filters/updates the archived applications by the applicationId and other parameters set by the filter.
    * The applicationId is specified in the searchContent attribute
    */
   private updateFilteredArchiveArray(): void {
@@ -170,9 +169,8 @@ export class AdminApplicationsComponent {
     }
   }
 
-  // Method to update the display of active Application when filter is in use
   /**
-   * Filters the applications by the applicationId and other parameters set by the filter.
+   * Filters/updates the applications by the applicationId and other parameters set by the filter.
    * The applicationId is specified in the searchContent attribute of the class
    */
   private updateFilteredApplicantArray(): void {
@@ -377,9 +375,8 @@ export class AdminApplicationsComponent {
     })
   }
 
-  // Tries to open a dialog to extend the time limit of an application or select a new challenge
   /**
-   * Opens a modal dialog that enables the user to edit an application
+   * Opens a modal dialog that enables the user to extend the time limit of an application or select a new challenge
    * @param application The application which is to be edited
    */
   public openExtendDialogActiveApplications(application: Application): void {
@@ -395,7 +392,7 @@ export class AdminApplicationsComponent {
       }
     }
 
-    // Opns dialog to let admin expand time limit or select new challenge
+    // Opens dialog to let admin expand time limit or select new challenge
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Applicant ' + application.applicationId,

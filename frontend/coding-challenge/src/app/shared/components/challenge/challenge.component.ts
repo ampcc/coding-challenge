@@ -5,7 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogComponent } from '../dialog/dialog.component';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -268,7 +268,7 @@ export class ChallengeComponent implements OnInit {
    * Checks whether the uploaded file has the correct folder structure. Pushes the file to the fileArray on success
    * @param file The uploaded and compressed file
    */
-  public checkUploadedZipContent(file: File): void{
+  public checkUploadedZipContent(file: File): void {
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
     const jsZip = require('jszip');
     var result = true;
