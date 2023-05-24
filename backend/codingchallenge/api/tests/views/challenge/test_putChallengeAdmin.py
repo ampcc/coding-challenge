@@ -12,8 +12,8 @@ class test_putChallengeAdmin(APITestCase):
         # Authorization
         MockAuth.admin(self)
 
-        Challenge.objects.create(challengeHeading="Test", challengeText="Text of challenge...")
-
+        self.client.post('/api/admin/challenges/', {"challengeHeading": "Test", "challengeText": "Text of challenge..."}, format='json')
+        
     def test_differentDataFields(self):
         expected_data = {
             "id": 1,
