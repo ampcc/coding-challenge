@@ -17,7 +17,11 @@ class test_getApplicationStatus(APITestCase):
         MockAuth.admin(self)
 
         # create application to be able to log a user in
-        Challenge.objects.create(challengeHeading="TestChallenge", challengeText="This is a Test Challenge")
+        challenge = {
+            "challengeHeading": "TestChallenge",
+            "challengeText": "This is a Test Challenge"
+        }
+        self.client.post("/api/admin/challenges/", challenge, format="json")
         self.response_key_url = self.client.post("/api/admin/applications/", {"applicationId": "TEST1234"}, format="json")
         index_last_dash = self.response_key_url.data["tmpLink"].rfind("/") + 1
         self.key = self.response_key_url.data["tmpLink"][index_last_dash:]
