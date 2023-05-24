@@ -109,14 +109,14 @@
                             <span [hidden]="hideSubmissionDate"><b>Submission date:</b>
                                 {{getSubmissionDateText(app.submission)}}</span>
                             <!-- Only shown if the challenge is not uploaded -->
-                                <span [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}}</span>
+                            <span [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}}</span>
                         </div>
                         <div class="btn_position">
                             <!-- Shown if the applicant uploaded the challenge -->
                             <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details"
                                 (click)="openDialogActiveApplications(app)">Details</button>
                             <!-- Shown if applicant hadn't uploaded the challenge and the admin wants to extend the remaining time -->
-                                <button *ngIf="getStatusText(app.status) != 'uploaded'" class="btn btn-dark details"
+                            <button *ngIf="getStatusText(app.status) != 'uploaded'" class="btn btn-dark details"
                                 (click)="openExtendDialogActiveApplications(app)">Edit</button>
                         </div>
                     </div>
@@ -137,7 +137,8 @@
                         <!-- Only shown if the challenge was uploaded -->
                         <div class="btn_position">
                             <button *ngIf="getSubmissionDateText(archiv.submission) !== 'not uploaded in time'"
-                                class="btn btn-dark details" (click)="openDialogArchivedApplications(archiv)">Details</button>
+                                class="btn btn-dark details"
+                                (click)="openDialogArchivedApplications(archiv)">Details</button>
                         </div>
                     </div>
                 </div>

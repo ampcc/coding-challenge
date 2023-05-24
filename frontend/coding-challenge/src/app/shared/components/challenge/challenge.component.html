@@ -201,7 +201,7 @@
                     <button type="button" class="btn btn-dark" (click)="submitChallenge()">Submit Solution</button>
                 </div>
 
-                <!-- Tab content of the challenge upload if the challenge ist successfully uploaded -->
+                <!-- Tab content of the challenge upload if the challenge is successfully uploaded -->
                 <div [hidden]="hideSuccess" id="divSuccess">
                     <div class="child">
                         <label class="textSuccess"> Your solution has been successfully uploaded </label>
@@ -210,6 +210,7 @@
                     </div>
                 </div>
 
+                <!-- Tab content of the challenge upload if the challenge is in uploading process -->               
                 <div [hidden]="hideLoading" id="divLoading">
                     <label class="textLoading"><b>Uploading your solution. Please wait a moment.</b></label>
                     <mat-progress-spinner mode="indeterminate" class="progressSpinner"></mat-progress-spinner>
