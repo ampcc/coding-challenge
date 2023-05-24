@@ -28,9 +28,9 @@ class test_getApplication(APITestCase):
     def test_successfulResponse(self):
         response = self.client.get(self.url + self.applicationId, {}, format='json')
         
-        self.assertEqual(response.data, {
+        testdata = {
             'applicationId': 'TEST1234', 
-            'challengeId': 1, 
+            'challengeId': 4, 
             'operatingSystem': '', 
             'programmingLanguage': '', 
             'expiry': mock.ANY, 
@@ -39,7 +39,10 @@ class test_getApplication(APITestCase):
             'status': 0, 
             'created': mock.ANY,
             'modified': mock.ANY, 
-            'user': 2})
+            'user': 8
+        }
+
+        self.assertEqual(response.data, testdata) 
         
     #Test wrong url
     def test_wrongUrl(self):
