@@ -1,5 +1,4 @@
 from pathlib import Path
-from pathlib import Path
 from unittest.mock import patch
 
 from rest_framework import status
@@ -28,9 +27,14 @@ class test_getResult(APITransactionTestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges/",
-                         {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
-                         format='json')
+        self.client.post(
+            "/api/admin/challenges/",
+            {
+                "challengeHeading": "TestChallenge",
+                "challengeText": "TestChallengeDescription"
+            },
+            format='json'
+        )
 
         # Create Application
         self.applicationId = "TEST1234"
@@ -84,5 +88,10 @@ class test_getResult(APITransactionTestCase):
 
         response = self.client.get(self.url + self.applicationId)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {'githubUrl': mockRepoUrl,
-                                         'content': mockLinterResult})
+        self.assertEqual(
+            response.data,
+            {
+                'githubUrl': mockRepoUrl,
+                'content': mockLinterResult
+            }
+        )
