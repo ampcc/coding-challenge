@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+import sys
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -31,6 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 ENCRYPTION_KEY = os.getenv('ENCRYPTION_KEY')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,12 +89,25 @@ WSGI_APPLICATION = 'codingchallenge.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+if 'test' in sys.argv:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'amplimind',
+            'USER': 'postgres',
+            'PASSWORD': DB_PASSWORD,
+            'HOST': 'amplimindcodingchallenge.c8pfluxipxie.eu-north-1.rds.amazonaws.com',
+            'PORT': '5432',
+        }
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
