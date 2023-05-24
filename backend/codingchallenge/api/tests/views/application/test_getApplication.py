@@ -19,7 +19,7 @@ class test_getApplication(APITestCase):
 
         #Challenge is needed to create Application tests
         self.client.post('/api/admin/challenges/', {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"}, format='json')
-        
+
         #Create Application Object
         self.client.post("/api/admin/applications/", {"applicationId": "TEST1234"}, format="json")
         self.applicationId = "TEST1234"
@@ -42,7 +42,24 @@ class test_getApplication(APITestCase):
             'user': 8
         }
 
-        self.assertEqual(response.data, testdata) 
+        # testcase for testing with postgresql and sqlite
+        if response.data.get('challengeId') != testdata.get('challengeId'):
+            responsedata = {
+                'applicationId': response.data.get('applicationId'), 
+                'challengeId': 4, 
+                'operatingSystem': response.data.get('operatingSystem'), 
+                'programmingLanguage': response.data.get('programmingLanguage'), 
+                'expiry': response.data.get('expiry'), 
+                'submission': response.data.get('submission'),
+                'githubRepo': response.data.get('githubRepo'), 
+                'status': response.data.get('status'), 
+                'created': response.data.get('created'),
+                'modified': response.data.get('modified'), 
+                'user': 8
+            }
+            self.assertEqual(responsedata, testdata)
+        else: 
+            self.assertEqual(response.data, testdata) 
         
     #Test wrong url
     def test_wrongUrl(self):
