@@ -88,7 +88,7 @@
                 Happy coding.
             </div>
 
-            <!-- Tab content of the challenges  -->
+            <!-- Tab content of the challenge  -->
             <div [hidden]="hideContentChallenge" class="text_challenge" id="text">
                 <b>{{heading}}</b>
                 <br><br>
@@ -116,10 +116,10 @@
                             </select>
 
 
-                            <!-- input if selected programming language is 'other' -->
+                            <!-- Input if selected programming language is 'other' -->
                             <input [hidden]="hideProgLang" class="form-control inputOther" id="progLang" type="text"
                                 placeholder="Other programming langugage" required>
-                            <!-- error message if no programming language is selected or none is entered  -->
+                            <!-- Error message if no programming language is selected or none is entered  -->
                             <div [hidden]="hideMsgProgLang" class="errorMessage">{{msgProgLang}}</div>
 
                         </div>
@@ -139,10 +139,10 @@
                                 <option value="other">Other</option>
                             </select>
 
-                            <!-- input if selected operating system is 'other' -->
+                            <!-- Input if selected operating system is 'other' -->
                             <input [hidden]="hideOpSys" class="form-control inputOther" id="opSys" type="text"
                                 placeholder="Other operating system" required>
-                            <!-- error message if no operating system is selected or none is entered  -->
+                            <!-- Error message if no operating system is selected or none is entered  -->
                             <div [hidden]="hideMsgOpSys" class="errorMessage">{{msgOpSys}}</div>
                         </div>
                     </div>
@@ -156,10 +156,8 @@
 
                             <!-- Drag and drop area -->
                             <div id="DragnDropBlock" appHandlerBundle>
-                                <!-- eventually more excepted filetypes are necessary -->
                                 <input type="file" id="fileHandler" name="file" accept=".zip"
                                     (change)="uploadFileHandler($event)" />
-
 
                                 <div class="textDragnDrop">
                                     <label class="dropFileHeader"> Upload file here or drag file </label>
@@ -172,7 +170,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- error message if no file for upload is selected or the selected file has the wrong datatype or the selected file has a too large file size -->
+                        <!-- Error message if no file for upload is selected or the selected file has the wrong datatype or the selected file has a too large file size -->
                         <div [hidden]="hideMsgFileUplod" class="errorMessage msgFileUpload">{{msgFileUplod}}</div>
 
                         <!-- Area to display all uploaded files -->
