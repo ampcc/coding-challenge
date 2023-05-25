@@ -24,8 +24,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 
 export class AdminApplicationsComponent {
-  challenge: Challenge;
-  applicant: Application;
   private adminToken: string | null;
 
   public hideContentActiveChallenges: boolean = false;
@@ -56,9 +54,7 @@ export class AdminApplicationsComponent {
 
 
   public constructor(private backend: BackendService, public dialog: MatDialog, public router: Router) {
-    this.challenge = { id: 0, challengeHeading: '', challengeText: '' };
     this.adminToken = null;
-    this.applicant = { applicationId: "", applicationKey: "", challengeId: 0, expiry: 0, githubRepo: "", operatingSystem: "", programmingLanguage: "", status: 0, submission: 0, passphrase: "a4Xz!5T%" };
   }
 
 
@@ -68,7 +64,9 @@ export class AdminApplicationsComponent {
     if (this.adminToken === null) {
       this.router.navigateByUrl("/admin_login")
     } else {
+      // get all Applications
       this.backend.getApplications(this.adminToken).subscribe((response) => {
+        //if successful receive all Applications and split them into Archived and Active
         response.forEach((element: Application) => {
           if (element.status <= 3) {
             this.applicantsArray.push(element);
@@ -76,9 +74,11 @@ export class AdminApplicationsComponent {
             this.archivArray.push(element);
           }
         });
+        //only filtered Arrays are displayed
         this.filteredApplicantsArray = this.applicantsArray;
         this.filteredArchivArray = this.archivArray;
       });
+      // get all Challenges
       const challengeInfos = this.backend.getChallenges(this.adminToken)
         .subscribe((data: Challenge[]) => {
           this.challengeArray = data;
@@ -86,6 +86,11 @@ export class AdminApplicationsComponent {
     }
   }
 
+  /**
+   * Changes the tab and shows the associated content.
+   * This also includes dynamically setting the style of the tabs
+   * @param id The id tab-html element
+   */
   public changeTab(id: string): void {
     let elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
     let elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
@@ -108,18 +113,29 @@ export class AdminApplicationsComponent {
     }
   }
 
+  /**
+   * Searches for an application by the applicationId.
+   * The applicationId is specified by the user via an input element 
+   */
   public search(): void {
     this.searchContent = (<HTMLInputElement>document.getElementById("input_search_bar")).value;
     this.searchContent = this.searchContent.trim();
-    console.log('searchContent: ' + this.searchContent);
     this.updateFilteredApplicantArray();
     this.updateFilteredArchiveArray();
   }
 
+  /**
+   * Toggles the visibility of the filter content
+   */
   public showFilter(): void {
     this.hideFilterSelect = !this.hideFilterSelect;
   }
 
+  /**
+   * Unfolds the desired subtree and its input options.
+   * Which subtree is to be unfolded is defined by a click of the user
+   * @param id The id of the subtree-html element
+   */
   public toggleTreeView(id: string): void {
     let element = document.getElementById(id);
     if (element !== null && element !== undefined) {
@@ -132,6 +148,10 @@ export class AdminApplicationsComponent {
     }
   }
 
+  /**
+   * Filters/updates the archived applications by the applicationId and other parameters set by the filter.
+   * The applicationId is specified in the searchContent attribute
+   */
   private updateFilteredArchiveArray(): void {
     if (this.challengeFilter.length === 0) {
       this.filteredArchivArray = this.archivArray;
@@ -149,6 +169,10 @@ export class AdminApplicationsComponent {
     }
   }
 
+  /**
+   * Filters/updates the applications by the applicationId and other parameters set by the filter.
+   * The applicationId is specified in the searchContent attribute of the class
+   */
   private updateFilteredApplicantArray(): void {
     if (this.challengeFilter.length === 0 && this.statusFilter.length === 0) {
       this.filteredApplicantsArray = this.applicantsArray;
@@ -185,6 +209,10 @@ export class AdminApplicationsComponent {
     }
   }
 
+  /**
+   * Stores the filter option for a desired challenge and updates the applications and archived aplications
+   * @param values The html element the user clicked on. The information for the filter is contained inside the elements id.
+   */
   public checkboxChallengeChange(values: any): void {
     const challId: number = +values.currentTarget.id.substring(9);
     if (this.challengeFilter.some(e => e === challId)) {
@@ -196,6 +224,10 @@ export class AdminApplicationsComponent {
     this.updateFilteredArchiveArray();
   }
 
+  /**
+   * Stores the filter option for a desired status and updates the applications and archived aplications
+   * @param values The html element the user clicked on. The information for the filter is contained inside the elements id.
+   */
   public checkboxStatusChange(values: any): void {
     const status: string = values.currentTarget.id;
     if (this.statusFilter.some(e => e === status)) {
@@ -206,7 +238,11 @@ export class AdminApplicationsComponent {
     this.updateFilteredApplicantArray();
   }
 
-
+  /**
+   * Searches for the applications associated challenge and its heading
+   * @param challengeId The id of the applications challenge
+   * @returns The heading of the challenge as a string
+   */
   public getChallengeHeading(challengeId: number): string {
     let elementHeading = this.challengeArray.find(element => element.id === challengeId)?.challengeHeading;
 
@@ -216,6 +252,11 @@ export class AdminApplicationsComponent {
     return elementHeading;
   }
 
+  /**
+   * Maps the applications status number to the corresponding text
+   * @param status The status of the application as a number
+   * @returns The status of the application as a string
+   */
   public getStatusText(status: number): string {
     switch (status) {
       case 0:
@@ -250,10 +291,20 @@ export class AdminApplicationsComponent {
 
   }
 
+  /**
+   * Calcutes the remaining time of the application
+   * @param app The application object
+   * @returns The remaining time of the application as a string
+   */
   public getTimeLimit(app: Application): string {
     return this.backend.calcRemainingTime(new Date().getTime(), app.expiry);
   }
 
+  /**
+   * Maps the applications submission date to a formated date
+   * @param submissionDate The submission date of the application
+   * @returns The submission date as a formatted text
+   */
   public getSubmissionDateText(submissionDate: number): string {
 
     if (submissionDate === 0 || submissionDate === null || submissionDate === undefined) {
@@ -262,8 +313,12 @@ export class AdminApplicationsComponent {
     return '' + formatDate(Math.floor(submissionDate * 1000), "dd.MM.yyyy HH:mm", "en-US");
   }
 
-
-  public openDialogActiveChallenges(application: Application): void {
+  /**
+   * Opens a modal dialog that displays detailed information of the active application.
+   * On top of that, buttons for additional functionality are also displayed
+   * @param application The active application of which information has to be shown
+   */
+  public openDialogActiveApplications(application: Application): void {
     DialogComponent.name;
     console.log(application)
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
@@ -320,8 +375,11 @@ export class AdminApplicationsComponent {
     })
   }
 
-  // Tries to open a dialog to extend the time limit of an application or select a new challenge
-  public openExtendDialogActiveChallenges(application: Application): void {
+  /**
+   * Opens a modal dialog that enables the user to extend the time limit of an application or select a new challenge
+   * @param application The application which is to be edited
+   */
+  public openExtendDialogActiveApplications(application: Application): void {
     DialogComponent.name;
     // Array of possible new challenges gets filled with all existing challenges except the one already assigned to the user
     this.newChallengesArray = [];
@@ -334,7 +392,7 @@ export class AdminApplicationsComponent {
       }
     }
 
-    // Opns dialog to let admin expand time limit or select new challenge
+    // Opens dialog to let admin expand time limit or select new challenge
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Applicant ' + application.applicationId,
@@ -410,8 +468,12 @@ export class AdminApplicationsComponent {
     })
   };
 
-
-  public openDialogArchiv(application: Application): void {
+  /**
+   * Opens a modal dialog that displays detailed information of the archived application.
+   * On top of that, buttons for additional functionality are also displayed
+   * @param application The archived application of which information has to be shown
+   */
+  public openDialogArchivedApplications(application: Application): void {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly

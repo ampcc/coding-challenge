@@ -5,6 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogComponent } from '../dialog/dialog.component';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -22,7 +23,8 @@ import * as JSZip from 'jszip';
     MatInputModule,
     MatFormFieldModule,
     NgFor,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   selector: 'app-challenge',
   templateUrl: './challenge.component.html',
@@ -34,9 +36,9 @@ export class ChallengeComponent implements OnInit {
   applicant: Application;
   private applicationToken: string | null;
 
-  public time: string = '2 days 4 hours 35 minutes';
-  public heading: string = 'Lorem ipsum';
-  public challengeText: string = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+  public time: string = 'No data available!';
+  public heading: string = 'No data available!';
+  public challengeText: string = 'No data available!';
 
   public hideContentIntro: boolean = false;
   public hideContentChallenge: boolean = true;
@@ -46,6 +48,7 @@ export class ChallengeComponent implements OnInit {
   public hideOpSys: boolean = true;
   public hideSuccess: boolean = true;
   public hideUpload: boolean = false;
+  public hideLoading: boolean = true;
 
   public msgProgLang: string = '';
   public msgOpSys: string = '';
@@ -79,11 +82,13 @@ export class ChallengeComponent implements OnInit {
           window.sessionStorage.clear();
           this.router.navigateByUrl("/gone");
         }
+        // get all received Parameters from the response
         this.applicant = {
           applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiry: response.expiry, githubRepo: "",
           operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submission: 0, status: response.progress
         };
         this.time = this.backend.calcRemainingTime(new Date().getTime(), this.applicant.expiry);
+        // in case of errors redirect to the correct error page
       }, (error: HttpErrorResponse) => {
         switch (error.status) {
           case 401:
@@ -124,7 +129,11 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
-
+  /**
+   * Changes the tab and shows the associated content. 
+   * This also includes dynamically setting the style of the tabs
+   * @param id The id of the tab-html element
+   */
   public changeTab(id: string): void {
     let elementIntro = <HTMLLabelElement>document.getElementById('tab_intro');
     let elementChallenge = <HTMLLabelElement>document.getElementById('tab_challenge');
@@ -162,7 +171,10 @@ export class ChallengeComponent implements OnInit {
 
   }
 
-
+  /**
+   * Stores the selected programming language inside an attribute. 
+   * If the user selected "other" an input element is displayed for the user to type his programming language
+   */
   public selectionProgLang(): void {
     let selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
 
@@ -173,7 +185,10 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
-
+  /**
+   * Stores the selected operating system inside an attribute. 
+   * If the user selected "other" an input element is displayed for the user to type his operating system
+   */
   public selectionOpSys(): void {
     var selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
 
@@ -184,7 +199,9 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
-
+  /**
+   * Opens a modal dialog that displays instructions on which folder structure the uploaded file should have 
+   */
   public openDialogInfo(): void {
     DialogComponent.name;
     let dialogRef = this.dialog.open(DialogComponent, {
@@ -201,7 +218,15 @@ export class ChallengeComponent implements OnInit {
     });
   }
 
-
+  /**
+   * Checks if the following requirements for the file are met before calling the checkUploadedZipContent(file) method:
+   * - There is no file already uploaded
+   * - The size is smaller than 50 MB
+   * - The file hast the correct file format (.zip)
+   * 
+   * If any requirements fail, an error message is displayed
+   * @param event 
+   */
   public uploadFileHandler(event: Event): any {
     var files = (event.target as HTMLInputElement).files;
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
@@ -238,11 +263,17 @@ export class ChallengeComponent implements OnInit {
     }
   }
 
+  // Method to check the uploaded File structure in the frontend
+  /**
+   * Checks whether the uploaded file has the correct folder structure. Pushes the file to the fileArray on success
+   * @param file The uploaded and compressed file
+   */
   public checkUploadedZipContent(file: File): void {
     var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
     const jsZip = require('jszip');
     var result = true;
     var isSecondLayerFile = false;
+    // load the zip and ignore all MACOSX and DS_Store files
     jsZip.loadAsync(file).then((zip: any) => {
       Object.keys(zip.files).filter(v => v.indexOf("__MACOSX/") === -1 && v.indexOf("DS_Store") === -1).forEach((filename) => {
         if (filename.indexOf(".") !== -1) {
@@ -265,9 +296,12 @@ export class ChallengeComponent implements OnInit {
         this.openDialogInfo();
       }
     })
-
   }
 
+  /**
+   * Deletes the currently uploaded file
+   * @param index The index of the file in the underlying fileArray
+   */
   public deleteFile(index: number): void {
     let deletedElement = this.fileArray[index];
 
@@ -276,6 +310,11 @@ export class ChallengeComponent implements OnInit {
     });
   }
 
+  /**
+   * Formates the bytes into a more adequate unit 
+   * @param size The size of the uploaded and compressed file in bytes
+   * @returns The size formatted in either KB, MB or GB
+   */
   public formatBytes(size: any): String {
     if (size >= 1073741824) { size = (size / 1073741824).toFixed(2) + " GB"; }
     else if (size >= 1048576) { size = (size / 1048576).toFixed(2) + " MB"; }
@@ -283,7 +322,13 @@ export class ChallengeComponent implements OnInit {
     return size;
   }
 
-
+  /**
+   * Checks if all requirements for an successfull submit of a solution are met:
+   * - All failed requirements are highlighted and a message for the user is displayed
+   * - If all requirements are met, a call to the backend server is performed
+   * - While the user is waiting for a response, the html is switched to display an progress spinner
+   * - When the response is received, the html is once again witched to display an success image or the user gets redirected in case of any error reponse
+   */
   public submitChallenge(): void {
     let required = false;
     let resultPl = this.pl;
@@ -358,11 +403,12 @@ export class ChallengeComponent implements OnInit {
     }
 
     if (!required) {
-      this.hideMsgFileUplod = false;
-      this.msgFileUplod = "Uploading File. Please Wait."
+      this.hideUpload = true;
+      this.hideLoading = false;
       this.backend.uploadChallenge(this.applicationToken, resultOs, resultPl, this.fileArray[0]).subscribe((response) => {
         this.hideSuccess = false;
         this.hideUpload = true;
+        this.hideLoading = true;
         this.hideMsgFileUplod = true;
       }, (error) => {
         switch (error.status) {

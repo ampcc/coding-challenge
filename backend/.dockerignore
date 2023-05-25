@@ -1,4 +1,4 @@
 **/env
-# **/db.sqlite
+**/db.sqlite
 **/__pycache__
 **/.git

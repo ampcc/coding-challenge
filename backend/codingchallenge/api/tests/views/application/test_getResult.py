@@ -1,4 +1,5 @@
 from pathlib import Path
+from textwrap import dedent
 from unittest.mock import patch
 
 from rest_framework import status
@@ -84,7 +85,34 @@ class test_getResult(APITransactionTestCase):
 
     def test_correctInput(self, mockGetRepoUrl, mockGetLinterLog):
         # ignore pep8
-        mockLinterResult = "+----SUMMARY----+------------+---------------+-------+-------+--------+--------------+\n| Descriptor    | Linter     | Mode          | Files | Fixed | Errors | Elapsed time |\n+---------------+------------+---------------+-------+-------+--------+--------------+\n| ✓  ACTION     | actionlint | list_of_files |     1 |       |      0 |        0.02s |\n| ✓  COPYPASTE  | jscpd      | project       |   n/a |       |      0 |        1.08s |\n| ✓  PYTHON     | bandit     | list_of_files |    12 |       |      0 |        0.89s |\n| ⁇ PYTHON      | black      | list_of_files |    12 |       |      1 |        0.72s |\n| ✕  PYTHON     | flake8     | list_of_files |    12 |       |     43 |        0.41s |\n| ⁇ PYTHON      | isort      | list_of_files |    12 |       |      3 |        0.17s |\n| ✕  PYTHON     | mypy       | list_of_files |    12 |       |      1 |        0.33s |\n| ✕  PYTHON     | pylint     | list_of_files |    12 |       |     15 |        2.06s |\n| ✕  PYTHON     | pyright    | list_of_files |    12 |       |      9 |        6.43s |\n| ✕  PYTHON     | ruff       | list_of_files |    12 |       |     15 |        0.07s |\n| ✓  REPOSITORY | checkov    | project       |   n/a |       |      0 |       14.82s |\n| ✓  REPOSITORY | devskim    | project       |   n/a |       |      0 |        0.93s |\n| ✓  REPOSITORY | dustilock  | project       |   n/a |       |      0 |        0.02s |\n| ✓  REPOSITORY | gitleaks   | project       |   n/a |       |      0 |        0.15s |\n| ✓  REPOSITORY | git_diff   | project       |   n/a |       |      0 |        0.01s |\n| ✓  REPOSITORY | secretlint | project       |   n/a |       |      0 |        0.91s |\n| ✓  REPOSITORY | syft       | project       |   n/a |       |      0 |        0.16s |\n| ✓  REPOSITORY | trivy      | project       |   n/a |       |      0 |        4.86s |\n| ✕  SPELL      | cspell     | list_of_files |    16 |       |     19 |        5.14s |\n| ✓  SPELL      | misspell   | list_of_files |    15 |       |      0 |        0.04s |\n| ⁇ YAML        | prettier   | list_of_files |     1 |       |      1 |        0.54s |\n| ✓  YAML       | v8r        | list_of_files |     1 |       |      0 |         2.4s |\n| ✕  YAML       | yamllint   | list_of_files |     1 |       |      1 |        0.28s |\n+---------------+------------+---------------+-------+-------+--------+--------------+"
+        mockLinterResult = dedent("""\
+            +----SUMMARY----+------------+---------------+-------+-------+--------+--------------+
+            | Descriptor    | Linter     | Mode          | Files | Fixed | Errors | Elapsed time |
+            +---------------+------------+---------------+-------+-------+--------+--------------+
+            | ✓  ACTION     | actionlint | list_of_files |     1 |       |      0 |        0.02s |
+            | ✓  COPYPASTE  | jscpd      | project       |   n/a |       |      0 |        1.08s |
+            | ✓  PYTHON     | bandit     | list_of_files |    12 |       |      0 |        0.89s |
+            | ?  PYTHON     | black      | list_of_files |    12 |       |      1 |        0.72s |
+            | ✕  PYTHON     | flake8     | list_of_files |    12 |       |     43 |        0.41s |
+            | ?  PYTHON     | isort      | list_of_files |    12 |       |      3 |        0.17s |
+            | ✕  PYTHON     | mypy       | list_of_files |    12 |       |      1 |        0.33s |
+            | ✕  PYTHON     | pylint     | list_of_files |    12 |       |     15 |        2.06s |
+            | ✕  PYTHON     | pyright    | list_of_files |    12 |       |      9 |        6.43s |
+            | ✕  PYTHON     | ruff       | list_of_files |    12 |       |     15 |        0.07s |
+            | ✓  REPOSITORY | checkov    | project       |   n/a |       |      0 |       14.82s |
+            | ✓  REPOSITORY | devskim    | project       |   n/a |       |      0 |        0.93s |
+            | ✓  REPOSITORY | dustilock  | project       |   n/a |       |      0 |        0.02s |
+            | ✓  REPOSITORY | gitleaks   | project       |   n/a |       |      0 |        0.15s |
+            | ✓  REPOSITORY | git_diff   | project       |   n/a |       |      0 |        0.01s |
+            | ✓  REPOSITORY | secretlint | project       |   n/a |       |      0 |        0.91s |
+            | ✓  REPOSITORY | syft       | project       |   n/a |       |      0 |        0.16s |
+            | ✓  REPOSITORY | trivy      | project       |   n/a |       |      0 |        4.86s |
+            | ✕  SPELL      | cspell     | list_of_files |    16 |       |     19 |        5.14s |
+            | ✓  SPELL      | misspell   | list_of_files |    15 |       |      0 |        0.04s |
+            | ?  YAML       | prettier   | list_of_files |     1 |       |      1 |        0.54s |
+            | ✓  YAML       | v8r        | list_of_files |     1 |       |      0 |         2.4s |
+            | ✕  YAML       | yamllint   | list_of_files |     1 |       |      1 |        0.28s |
+            +---------------+------------+---------------+-------+-------+--------+--------------+""")
 
         response = self.client.get(self.url + self.applicationId)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
