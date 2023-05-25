@@ -6,6 +6,7 @@ import sys
 import time
 import os
 from zipfile import ZipFile
+from threading import Thread
 
 from github import GithubException
 from django.conf import settings
@@ -268,6 +269,9 @@ class AdminResultApplicationView(APIView):
             return Response(
                 jsonMessages.errorJsonResponse("Can not find repo"),
                 status=status.HTTP_400_BAD_REQUEST)
+        
+        if application.status <= Application.Status.IN_PROCESSING:
+            return Response(jsonMessages.errorJsonResponse("Cannot provide result yet as uploaded files get still processed!"), status=status.HTTP_425_TOO_EARLY)
 
         # except AttributeError:
         #     return Response(
@@ -277,10 +281,12 @@ class AdminResultApplicationView(APIView):
         try:
             githubUrl = self.gApi.getRepoUrl(application.githubRepo)
             linterResult = self.gApi.getLinterResult(application.githubRepo)
-
         except GithubException:
             response, statusCode = jsonMessages.errorGithubJsonResponse(sys.exception())
-            return Response(response, status=statusCode)
+            if statusCode == 404:
+                return Response(jsonMessages.errorJsonResponse("Linting still in progress!"), status=status.HTTP_425_TOO_EARLY)
+            else:
+                return Response(response, status=statusCode)
 
         return Response({'githubUrl': githubUrl,
                          'content': linterResult}, status=status.HTTP_200_OK)
@@ -291,6 +297,22 @@ class UploadSolutionView(APIView):
     parser_classes = [FileUploadParser]
 
     gApi = GithubApi()
+
+    def addFilesToRepo(self, repoName, filteredPathList, file_obj, raw_file, user):
+        print("startingUploadProcess")
+        for path in filteredPathList:
+            if not path.endswith('/'):
+                print(path)
+                self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
+        
+        # reset the pointer to the beginning of the zipfile
+        raw_file.seek(0)
+        print("Now uploading zip-file: " + repoName + ".zip")
+        self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
+        self.gApi.addLinter(repoName)
+        print("finished Upload. Setting status to IN_REVIEW")
+        user.application.status = Application.Status.IN_REVIEW
+        user.application.save()
 
     # 18. Upload Solution
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
@@ -305,7 +327,7 @@ class UploadSolutionView(APIView):
         """
         user = User.objects.get(username=request.user.username)
 
-        if user.application.status < Application.Status.IN_REVIEW:
+        if user.application.status < Application.Status.IN_PROCESSING:
 
             repoName = f'{user.application.applicationId}_{user.application.challengeId}'
 
@@ -335,22 +357,21 @@ class UploadSolutionView(APIView):
                 else:
                     self.gApi.createRepo(repoName, 'to be defined') # TODO: description auslagern
 
-                for path in filteredPathList:
-                    if not path.endswith('/'):
-                        self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
-                
-                # reset the pointer to the beginning of the zipfile
-                raw_file.seek(0)
-                self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
+                user.application.submission = time.time()
+                user.application.status = Application.Status.IN_PROCESSING
+                user.application.githubRepo = repoName
+                user.application.save()
 
-                self.gApi.addLinter(repoName)
+                # as the addLinter API-Call sometimes takes a lot of time it gets outsourced to a thread.
+                thread = Thread(
+                     target=self.addFilesToRepo,
+                     args=(repoName, filteredPathList, file_obj, raw_file, user)
+                 )
+                thread.start()
+
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
             
-            user.application.submission = time.time()
-            user.application.status = Application.Status.IN_REVIEW
-            user.application.githubRepo = repoName
-            user.application.save()
 
             return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
         else:
