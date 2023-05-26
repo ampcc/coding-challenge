@@ -2,16 +2,12 @@ import unittest.mock as mock
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ....models.challenge import Challenge
-
 from ...mock.mockAuth import MockAuth
-from ....models.application import Application
-from ....views import jsonMessages
-from ....serializers import GetApplicationSerializer
 
 
 class test_getApplication(APITestCase):
     url = '/api/admin/applications/'
+
 
     def setUp(self):
         # Authorization
@@ -21,16 +17,18 @@ class test_getApplication(APITestCase):
         self.client.post('/api/admin/challenges/', {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"}, format='json')
 
         #Create Application Object
-        self.client.post("/api/admin/applications/", {"applicationId": "TEST1234"}, format="json")
+        self.client.post(self.url, {"applicationId": "TEST1234"}, format="json")
         self.applicationId = "TEST1234"
-    
+
+
     #Test the successful Response of getApplications, its also a test for the right token
     def test_successfulResponse(self):
-        response = self.client.get(self.url + self.applicationId, {}, format='json')
-        
+        response = self.client.get(self.url + self.applicationId, {}, format='json') 
+        challengeId = self.client.get(self.url).data[0]['challengeId']
+        user = self.client.get(self.url).data[0]['user']
         testdata = {
             'applicationId': 'TEST1234', 
-            'challengeId': 4, 
+            'challengeId': challengeId, 
             'operatingSystem': '', 
             'programmingLanguage': '', 
             'expiry': mock.ANY, 
@@ -39,33 +37,18 @@ class test_getApplication(APITestCase):
             'status': 0, 
             'created': mock.ANY,
             'modified': mock.ANY, 
-            'user': 8
+            'user': user
         }
-
-        # testcase for testing with postgresql and sqlite
-        if response.data.get('challengeId') != testdata.get('challengeId'):
-            responsedata = {
-                'applicationId': response.data.get('applicationId'), 
-                'challengeId': 4, 
-                'operatingSystem': response.data.get('operatingSystem'), 
-                'programmingLanguage': response.data.get('programmingLanguage'), 
-                'expiry': response.data.get('expiry'), 
-                'submission': response.data.get('submission'),
-                'githubRepo': response.data.get('githubRepo'), 
-                'status': response.data.get('status'), 
-                'created': response.data.get('created'),
-                'modified': response.data.get('modified'), 
-                'user': 8
-            }
-            self.assertEqual(responsedata, testdata)
-        else: 
-            self.assertEqual(response.data, testdata) 
+            
+        self.assertEqual(response.data, testdata) 
         
+
     #Test wrong url
     def test_wrongUrl(self):
         url = '/api/admin/applicationsasdfasd/' + self.applicationId
         response = self.client.get(url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
 
     #Test with missing Token
     def test_missingToken(self):
@@ -74,13 +57,15 @@ class test_getApplication(APITestCase):
         response = self.client.get(self.url + self.applicationId, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+
     #Test with invalid Token(applicant token)
     def test_invalidToken(self):
         #Give wrong token
         self.client.credentials(HTTP_AUTHORIZATION='Token 4f25709a420a92aa01cc67b091b92ac0247f168a')
         response = self.client.get(self.url + self.applicationId, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        
+
+
     #Test with wrong Token format
     def test_wrongTokenFormat(self):
         #Give wrong token
@@ -90,18 +75,20 @@ class test_getApplication(APITestCase):
         #Compare defined response status code with status 401 unauthorized
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+
     #Test to ingore additional data
     def test_ignoreAdditionalData(self):
         #Define additional data
         data = {
             "name": "ExampleName"
         }
-        
         response = self.client.get(self.url + self.applicationId, data)
-        
+        challengeId = self.client.get(self.url).data[0]['challengeId']
+        user = self.client.get(self.url).data[0]['user']
+
         self.assertEqual(response.data, {
             'applicationId': 'TEST1234', 
-            'challengeId': 1, 
+            'challengeId': challengeId, 
             'operatingSystem': '', 
             'programmingLanguage': '', 
             'expiry': mock.ANY, 
@@ -110,4 +97,4 @@ class test_getApplication(APITestCase):
             'status': 0, 
             'created': mock.ANY,
             'modified': mock.ANY, 
-            'user': mock.ANY})
+            'user': user})
