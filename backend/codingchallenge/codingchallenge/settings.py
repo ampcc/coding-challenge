@@ -89,26 +89,35 @@ WSGI_APPLICATION = 'codingchallenge.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'coding-challenge',
+        'USER': 'amplimind',
+        'PASSWORD': 'admin',
+        'HOST': 'database',
+        'PORT': '5432'
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'amplimind',
-            'USER': 'postgres',
-            'PASSWORD': DB_PASSWORD,
-            'HOST': 'amplimindcodingchallenge.c8pfluxipxie.eu-north-1.rds.amazonaws.com',
-            'PORT': '5432',
-        }
-    }
+}
 
-
+# if 'test' in sys.argv:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': 'amplimind',
+#             'USER': 'postgres',
+#             'PASSWORD': DB_PASSWORD,
+#             'HOST': 'amplimindcodingchallenge.c8pfluxipxie.eu-north-1.rds.amazonaws.com',
+#             'PORT': '5432',
+#         }
+#     }
+      
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
