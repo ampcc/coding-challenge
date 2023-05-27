@@ -11,7 +11,7 @@
 
     <!-- Input field for name/heading of the challenge -->
     <p class="heading">Name</p>
-    <input class="inputField" type="text" placeholder="Please enter a challenge name" [(ngModel)]="name"
+    <input class="inputField" id="name" type="text" placeholder="Please enter a challenge name" [(ngModel)]="name"
         [ngClass]="{'show_error': this.showNameError, 'show_success': this.successfulEdit}">
     <p class="error_message" [ngClass]="{'not_showing': !this.showNameError}">{{this.nameError}}</p>
 

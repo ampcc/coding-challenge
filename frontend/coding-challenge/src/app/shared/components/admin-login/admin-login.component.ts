@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { BackendService } from 'src/app/core/backend.service';
 import { Router } from '@angular/router';
@@ -26,6 +26,14 @@ export class AdminLoginComponent {
 
   showUsernameError: boolean = false;
   showPasswordError: boolean = false;
+
+  // Listens for press of enter key and handles it as if confirm button was clicked
+  @HostListener('window:keydown.enter', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    let username = (document.getElementById("username") as HTMLInputElement).value;
+    let password = (document.getElementById("password") as HTMLInputElement).value;
+    this.login(username, password);
+  }
 
   // The Admin Login Component is used to log an admin in with his correct username and password
   constructor(private router: Router, private backendService: BackendService) { }

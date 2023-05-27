@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { BackendService } from 'src/app/core/backend.service';
 import { Router } from '@angular/router';
@@ -18,10 +18,11 @@ import { HttpErrorResponse } from '@angular/common/http';
   ]
 })
 export class AdminPasswordComponent implements OnInit {
+  private adminToken: string | null;
+
   oldPassword: string = '';
   newPassword: string = '';
   confirmPassword: string = '';
-  private adminToken: string | null;
 
   oldPasswordError: string = 'Error';
   newPasswordError: string = 'Error';
@@ -32,6 +33,15 @@ export class AdminPasswordComponent implements OnInit {
   showConfirmPasswordError: boolean = false;
 
   successfulChange: boolean = false;
+
+  // Listens for press of enter key and handles it as if confirm button was clicked
+  @HostListener('window:keydown.enter', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    let oldPassword = (document.getElementById("oldPassword") as HTMLInputElement).value;
+    let newPassword = (document.getElementById("newPassword") as HTMLInputElement).value;
+    let confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+    this.setPassword(oldPassword, newPassword, confirmPassword);
+  }
 
   // Reg Expression to check if password contains at least one uppercase and lowercase letter, as well as a number an special character
   mustContain = new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?])');

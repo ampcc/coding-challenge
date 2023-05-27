@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { BackendService } from 'src/app/core/backend.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -38,6 +38,14 @@ export class AdminEditComponent {
 
   successfulEdit: boolean = false;
   editPage: boolean = false;
+
+  // Listens for press of enter key and handles it as if confirm button was clicked
+  @HostListener('window:keydown.enter', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    let name = (document.getElementById("name") as HTMLInputElement).value;
+    let description = (document.getElementById("description") as HTMLInputElement).value;
+    this.editChallenge(name, description);
+  }
 
   // The Admin Edit Component can either be used to edit an existing challenge or to create a new one
   constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService, private route: ActivatedRoute) {
@@ -101,14 +109,14 @@ export class AdminEditComponent {
       if (name == '') {
         this.nameError = 'Please enter a challenge name!';
         this.showNameError = true;
-      } else {
+      } else if (name.length < 4) {
         this.nameError = 'Challenge name should include at least four characters!';
         this.showNameError = true;
       }
       if (description == '') {
         this.descriptionError = 'Please enter a challenge description!';
         this.showDescriptionError = true;
-      } else {
+      } else if (description.length < 20) {
         this.descriptionError = 'Challenge description should include at least 20 characters!';
         this.showDescriptionError = true;
       }
