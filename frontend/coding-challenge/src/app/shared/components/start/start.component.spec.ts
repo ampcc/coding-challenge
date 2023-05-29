@@ -1,8 +1,10 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, flush, tick } from '@angular/core/testing';
 import { StartComponent } from './start.component';
 import { HttpClient, HttpClientModule, HttpXhrBackend } from '@angular/common/http';
 import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
+import { DialogComponent } from '../dialog/dialog.component';
 
 // Test if Start Component works properly
 describe('StartComponent', () => {
@@ -35,10 +37,23 @@ describe('StartComponent', () => {
 
   // Check if dialog can be opened
   it('can open dialog', () => {
-    spyOn(component.dialog, 'open').and.returnValue({ afterClosed: () => of(true) } as MatDialogRef<typeof component>);
-
     component.openDialog();
 
-    expect(component.dialog.open).toHaveBeenCalled();
+    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+
+    expect(dialog).toBeTruthy();
   });
+
+  // Check if dialog is opened on button click
+  it('dialog opens on button click', fakeAsync(() => {
+    let button = fixture.debugElement.nativeElement.querySelector('app-button');
+    button.click();
+    tick();
+
+    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+
+    expect(dialog).toBeTruthy();
+
+    flush();
+  }));
 });
