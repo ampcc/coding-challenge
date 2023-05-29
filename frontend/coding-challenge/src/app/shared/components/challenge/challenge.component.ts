@@ -326,8 +326,8 @@ export class ChallengeComponent implements OnInit {
    * Checks if all requirements for an successfull submit of a solution are met:
    * - All failed requirements are highlighted and a message for the user is displayed
    * - If all requirements are met, a call to the backend server is performed
-   * - While the user is waiting for a response, the html is switched to display an progress spinner
-   * - When the response is received, the html is once again witched to display an success image or the user gets redirected in case of any error reponse
+   * - While the user is waiting for a response, the html is switched to display a progress spinner
+   * - When the response is received, the html is either once again switched to display a success image or the user gets redirected in case of any error reponse
    */
   public submitChallenge(): void {
     let required = false;
