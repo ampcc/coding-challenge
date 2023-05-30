@@ -45,20 +45,20 @@ describe('ChallengeComponent', () => {
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
-    // expect(challengeTabStyle.borderBottom).toBe('none');
-    // expect(uploadTabStyle.borderBottom).toBe('none');
-    // expect(introTabStyle.borderBottom).toBe('2px solid black');
+    // expect(challengeTabStyle.borderBottom).toEqual('none');
+    // expect(uploadTabStyle.borderBottom).toEqual('none');
+    // expect(introTabStyle.borderBottom).toEqual('2px solid black');
 
     introTabElement.click();
 
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
-    expect(challengeTabStyle.borderBottom).toBe('none');
-    expect(uploadTabStyle.borderBottom).toBe('none');
-    expect(introTabStyle.borderBottomStyle).toBe('solid');
-    expect(introTabStyle.borderBottomWidth).toBe('2px');
-    expect(introTabStyle.borderBottomColor).toBe('black');
+    expect(challengeTabStyle.borderBottom).toEqual('none');
+    expect(uploadTabStyle.borderBottom).toEqual('none');
+    expect(introTabStyle.borderBottomStyle).toEqual('solid');
+    expect(introTabStyle.borderBottomWidth).toEqual('2px');
+    expect(introTabStyle.borderBottomColor).toEqual('black');
   });
 
 
@@ -74,20 +74,20 @@ describe('ChallengeComponent', () => {
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
-    // expect(challengeTabStyle.borderBottom).toBe('none');
-    // expect(uploadTabStyle.borderBottom).toBe('none');
-    // expect(introTabStyle.borderBottom).toBe('2px solid black');
+    // expect(challengeTabStyle.borderBottom).toEqual('none');
+    // expect(uploadTabStyle.borderBottom).toEqual('none');
+    // expect(introTabStyle.borderBottom).toEqual('2px solid black');
 
     challengeTabElement.click();
 
     expect(component.hideContentChallenge).toBeFalse();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeTrue();
-    expect(challengeTabStyle.borderBottomStyle).toBe('solid');
-    expect(challengeTabStyle.borderBottomWidth).toBe('2px');
-    expect(challengeTabStyle.borderBottomColor).toBe('black');
-    expect(uploadTabStyle.borderBottom).toBe('none');
-    expect(introTabStyle.borderBottom).toBe('none');
+    expect(challengeTabStyle.borderBottomStyle).toEqual('solid');
+    expect(challengeTabStyle.borderBottomWidth).toEqual('2px');
+    expect(challengeTabStyle.borderBottomColor).toEqual('black');
+    expect(uploadTabStyle.borderBottom).toEqual('none');
+    expect(introTabStyle.borderBottom).toEqual('none');
   });
 
 
@@ -104,11 +104,11 @@ describe('ChallengeComponent', () => {
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
-    // expect(challengeTabStyle.borderBottomStyle).toBe('none');
-    // expect(uploadTabStyle.borderBottomStyle).toBe('none');
-    // expect(introTabStyle.borderBottomStyle).toBe('solid');
-    // expect(introTabStyle.borderBottomWidth).toBe('2px');
-    // expect(introTabStyle.borderBottomColor).toBe('black');
+    // expect(challengeTabStyle.borderBottomStyle).toEqual('none');
+    // expect(uploadTabStyle.borderBottomStyle).toEqual('none');
+    // expect(introTabStyle.borderBottomStyle).toEqual('solid');
+    // expect(introTabStyle.borderBottomWidth).toEqual('2px');
+    // expect(introTabStyle.borderBottomColor).toEqual('black');
 
     uploadTabElement.click();
     // fixture.detectChanges();
@@ -116,50 +116,85 @@ describe('ChallengeComponent', () => {
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeFalse();
     expect(component.hideContentIntro).toBeTrue();
-    expect(challengeTabStyle.borderBottomStyle).toBe('none');
-    expect(uploadTabStyle.borderBottomStyle).toBe('solid');
-    expect(uploadTabStyle.borderBottomWidth).toBe('2px');
-    expect(uploadTabStyle.borderBottomColor).toBe('black');
-    expect(introTabStyle.borderBottomStyle).toBe('none');
+    expect(challengeTabStyle.borderBottomStyle).toEqual('none');
+    expect(uploadTabStyle.borderBottomStyle).toEqual('solid');
+    expect(uploadTabStyle.borderBottomWidth).toEqual('2px');
+    expect(uploadTabStyle.borderBottomColor).toEqual('black');
+    expect(introTabStyle.borderBottomStyle).toEqual('none');
   });
 
 
-  it('should display time correctly', () => {
+  it('display time correctly', () => {
+    let timeParagraph = fixture.debugElement.query(By.css('#time')).nativeElement;
     let initialRemainingTimeHTML = "<b>Remaining Time:</b> No data available!"
-    expect(fixture.debugElement.query(By.css('#time')).nativeElement.innerHTML).toBe(initialRemainingTimeHTML);
+    expect(timeParagraph.innerHTML).toEqual(initialRemainingTimeHTML);
+
+    /**
+     * Time only gets calculated inside ngOnInit
+     * --> Difficult to test, so only the correct display of the string is tested
+     */
+
+    component.time = 4 + " days " + 12 + " hours " + 36 + " minutes";
+    fixture.detectChanges();
+
+    let updatedRemainingTimeHTML = `<b>Remaining Time:</b> ${component.time}`;
+    expect(timeParagraph.innerHTML).toEqual(updatedRemainingTimeHTML);
   });
 
 
-  it('should display challenge text correctly', () => {
+  it('display challenge text correctly', () => {
     let challengeTextDiv = fixture.debugElement.query(By.css('.text_challenge')).nativeElement;
     let initialChallengeTextHTML = "<b>No data available!</b><br><br> No data available! "
-    expect(challengeTextDiv.innerHTML).toBe(initialChallengeTextHTML);
+    expect(challengeTextDiv.innerHTML).toEqual(initialChallengeTextHTML);
     
     component.challengeText = "I am another text for testing purposes";
     component.heading = "I am a text for testing purposes";
     fixture.detectChanges();
 
     let updatedChallengeTextHTML = `<b>${component.heading}</b><br><br> ${component.challengeText} `
-    expect(challengeTextDiv.innerHTML).toBe(updatedChallengeTextHTML);
+    expect(challengeTextDiv.innerHTML).toEqual(updatedChallengeTextHTML);
   });
 
 
-  it('should store "programming language" correctly', () => {
+  it('store selected "programming language" correctly', () => {
+    // let programmingLanguageSelectOptions = fixture.debugElement.query(By.css('#selectProgLang')).childNodes;
+
+    // let currentOptionNode: HTMLInputElement = programmingLanguageSelectOptions[0].nativeNode;
+    // expect(currentOptionNode.disabled).toBeTrue();
+    // currentOptionNode.click();
+    // fixture.detectChanges();
+    // expect(component.pl).toEqual('default');
+
+    // currentOptionNode = programmingLanguageSelectOptions[1].nativeNode;
+    // expect(currentOptionNode.disabled).toBeFalse();
+    // currentOptionNode.click();
+    // currentOptionNode.select();
+    // fixture.detectChanges();
+    // expect(component.pl).toEqual('java');
+  });
+
+
+  it('store other "programming language" correctly', () => {
 
   });
 
 
-  it('should store "operating system" correctly', () => {
+  it('store selected "operating system" correctly', () => {
 
   });
 
 
-  it('should display time correctly', () => {
+  it('store other "operating system" correctly', () => {
 
   });
 
 
-  it('should check uploaded file correcty', () => {
+  it('check uploaded file correctly', () => {
+
+  });
+
+
+  it('delete uploaded file correctly', () => {
 
   });
 
@@ -180,13 +215,13 @@ describe('ChallengeComponent', () => {
    * --> ?? := Questionable if not already done by others or if it's even possible
    * 
    * General tests:
-   * - Tabs change html (check if bools are correctly set (and if div of specific tab exists --> get element by id))
+   * - Tabs change html (check if bools are correctly set (and if div of specific tab exists --> get element by id)) ||
    * - Check if remaining time is correct
    * - ?? Correct navigation and ressource aquirement on ngInit
    * 
    * Tests for challenge_text tab:
-   * - Correct heading displayed 
-   * - Correct text displayed 
+   * - Correct heading displayed ||
+   * - Correct text displayed ||
    * 
    * Tests for upload tab:
    * - Programming language correctly stored
