@@ -27,12 +27,12 @@ describe('BackendService', () => {
     httpController.verify();
   });
 
-/********************************
-Applicant API Calls Tests
-*********************************/
+  /********************************
+  Applicant API Calls Tests
+  *********************************/
 
   describe('getChallenge', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       let expHeaders = new HttpHeaders().set('Authorization', "Token " + applicationToken);
       service.getChallengeApp(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -45,8 +45,8 @@ Applicant API Calls Tests
   });
 
   describe('login with Key', () => {
-    it('check Request Method, Headers and Body',() => {
-      var expBody = {applicationId: "A0000113", applicationKey: "62ce30b676d95ef439af5e1d84f9161034c67c4a"}
+    it('check Request Method, Headers and Body', () => {
+      var expBody = { applicationId: "A0000113", applicationKey: "62ce30b676d95ef439af5e1d84f9161034c67c4a" }
       service.loginWithAppKey(applicationKey).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -58,7 +58,7 @@ Applicant API Calls Tests
   });
 
   describe('getStatus', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + applicationToken);
       service.getStatus(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -71,7 +71,7 @@ Applicant API Calls Tests
   });
 
   describe('startChallenge', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + applicationToken);
       service.startChallenge(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -84,7 +84,7 @@ Applicant API Calls Tests
   });
 
   describe('submitChallenge', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + applicationToken);
       service.submitChallenge(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -96,17 +96,17 @@ Applicant API Calls Tests
     });
   });
 
-/********************************
-Admin API Calls Tests
-*********************************/
+  /********************************
+  Admin API Calls Tests
+  *********************************/
 
-let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
+  let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
 
   describe('loginAdmin', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var _username = 'admin';
       var _password = '4F4ayF$1A!&';
-      var expBody = {username: _username, password: _password};
+      var expBody = { username: _username, password: _password };
       service.loginAdmin(_username, _password).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -118,7 +118,7 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('getApplication', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       service.getApplication(adminToken, applicationId).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -131,7 +131,7 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('getApplications', () => {
-    it('check Request Method, Headers and Body (Without given Application Status)',() => {
+    it('check Request Method, Headers and Body (Without given Application Status)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       service.getApplications(adminToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -142,7 +142,7 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
       testRequest.flush(dummyRes);
     });
 
-    it('check Request Method, Headers and Body (With given Application Status)',() => {
+    it('check Request Method, Headers and Body (With given Application Status)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       var applicationStatus = 2;
       service.getApplications(adminToken, 2).subscribe((res) => {
@@ -156,9 +156,9 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('editApplications', () => {
-    it('check Request Method, Headers and Body (Without any optional Parameters)',() => {
+    it('check Request Method, Headers and Body (Without any optional Parameters)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {application: {}};
+      var expBody = { application: {} };
       service.editApplication(adminToken, applicationId).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -169,9 +169,9 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
       testRequest.flush(dummyRes);
     });
 
-    it('check Request Method, Headers and Body (With given Application Status)',() => {
+    it('check Request Method, Headers and Body (With given Application Status)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {application: {applicationStatus: 2}};
+      var expBody = { application: { applicationStatus: 2 } };
       service.editApplication(adminToken, applicationId, 2).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -182,9 +182,9 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
       testRequest.flush(dummyRes);
     });
 
-    it('check Request Method, Headers and Body (With given challenge ID)',() => {
+    it('check Request Method, Headers and Body (With given challenge ID)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {application: {challengeId: 4}};
+      var expBody = { application: { challengeId: 4 } };
       service.editApplication(adminToken, applicationId, undefined, 4).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -195,9 +195,9 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
       testRequest.flush(dummyRes);
     });
 
-    it('check Request Method, Headers and Body (With given challenge ID)',() => {
+    it('check Request Method, Headers and Body (With given challenge ID)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {application: {extendDays: 5}};
+      var expBody = { application: { extendDays: 5 } };
       service.editApplication(adminToken, applicationId, undefined, undefined, 5).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -208,9 +208,9 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
       testRequest.flush(dummyRes);
     });
 
-    it('check Request Method, Headers and Body (With given application Status and challengeId)',() => {
+    it('check Request Method, Headers and Body (With given application Status and challengeId)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {application: {applicationStatus: 2, challengeId: 4}};
+      var expBody = { application: { applicationStatus: 2, challengeId: 4 } };
       service.editApplication(adminToken, applicationId, 2, 4, undefined).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -221,9 +221,9 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
       testRequest.flush(dummyRes);
     });
 
-    it('check Request Method, Headers and Body (With given application Status and extend Days)',() => {
+    it('check Request Method, Headers and Body (With given application Status and extend Days)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {application: {applicationStatus: 2, extendDays: 5}};
+      var expBody = { application: { applicationStatus: 2, extendDays: 5 } };
       service.editApplication(adminToken, applicationId, 2, undefined, 5).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -234,9 +234,9 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
       testRequest.flush(dummyRes);
     });
 
-    it('check Request Method, Headers and Body (With all optional Parameters)',() => {
+    it('check Request Method, Headers and Body (With all optional Parameters)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {application: {applicationStatus: 2,challengeId: 4, extendDays: 5}};
+      var expBody = { application: { applicationStatus: 2, challengeId: 4, extendDays: 5 } };
       service.editApplication(adminToken, applicationId, 2, 4, 5).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -249,7 +249,7 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('deleteApplication', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       service.deleteApplication(adminToken, applicationId).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -262,7 +262,7 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('getResult', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       service.getResult(adminToken, applicationId).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -275,7 +275,7 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('getChallenge', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       service.getChallengeAdm(adminToken, 2).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -288,7 +288,7 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('getChallenges', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       service.getChallenges(adminToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -301,10 +301,10 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('createChallenge', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {challenge: {challengeHeading:"Testheading", challengeText: "Testtext"}};
-      var challenge: Challenge = {challengeId: 0, challengeHeading: "Testheading", challengeText: "Testtext"};
+      var expBody = { challenge: { challengeHeading: "Testheading", challengeText: "Testtext" } };
+      var challenge: Challenge = { id: 0, challengeHeading: "Testheading", challengeText: "Testtext" };
       service.createChallenge(adminToken, challenge).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -317,10 +317,10 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('editChallenge', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = {challenge: {challengeHeading:"HeadingTest", challengeText: "Texttest"}};
-      var challenge: Challenge = {challengeId: 0, challengeHeading: "HeadingTest", challengeText: "Texttest"};
+      var expBody = { challenge: { challengeHeading: "HeadingTest", challengeText: "Texttest" } };
+      var challenge: Challenge = { id: 0, challengeHeading: "HeadingTest", challengeText: "Texttest" };
       service.editChallenge(adminToken, challenge).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -333,7 +333,7 @@ let adminToken = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   });
 
   describe('deleteChallenge', () => {
-    it('check Request Method, Headers and Body',() => {
+    it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       service.deleteChallenge(adminToken, 2).subscribe((res) => {
         expect(res).toEqual(dummyRes);

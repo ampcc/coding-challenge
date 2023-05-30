@@ -14,8 +14,8 @@
             <h2>Coding Challenge: Challenges</h2>
         </div>
 
-
         <div class="view_tab">
+            <!-- Tab list area -->
             <div class="tab_list">
                 <div>
                     <label class="tabs" id="tab_active_challenges" for="tab-1"
@@ -23,40 +23,14 @@
                         Active Challenges
                     </label>
                 </div>
-
-                
-                    <button class="btn btn-dark add" id="add_button" (click)="addChallenge()">
-                        Add 
-                        <img src="../../../../assets/plus-lg.svg" class="plus">
-                    </button>               
-                
-
-                <!-- <div class="filter">
-                    <div>
-                        <label (click)="showFilter()" id="labelFilter">
-                            Filter
-                            <img src="../../../../assets/funnel.svg" class="funnel">
-                        </label>
-                    </div>
-                </div> -->
+                <!-- Button to add new challenge -->
+                <button class="btn btn-dark add" id="add_button" (click)="addChallenge()">
+                    Add
+                    <img src="../../../../assets/plus-lg.svg" class="plus">
+                </button>
             </div>
-            <!-- <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
-                <ul id="myUL">
-                    <li id="last_tree">
-                        <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
-                        <ul class="nested">
-                            <li *ngFor="let challenge of challengeArray">
-                                <input type="checkbox" class="challengeFilterElement"
-                                    id="challenge{{challenge.id}}" (change)="checkboxChallengeChange()"
-                                    value="challenge{{challenge.id}}" />
-                                <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <button class="btn btn-dark apply_button">Apply</button>
-            </div> -->
 
+            <!-- Tab content of active challenges  -->
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
                 <div class="list" id="list_challenges">
                     <div class="single_challenge" *ngFor="let challenge of challengeArray; let i = index">

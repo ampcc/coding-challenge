@@ -1,3 +1,4 @@
+/* Style for main container to align in th middle */
 .main_container {
     width: 75%;
     margin: auto;
@@ -5,6 +6,7 @@
     padding-bottom: 5em;
 }
 
+/* Style for title */
 h1 {
     font-size: 50px;
     line-height: 70px;
@@ -15,6 +17,15 @@ hr {
     margin-bottom: 5em;
     background-color: gray;
     height: 0.1em;
+}
+
+/* Style for input fields */
+.heading {
+    margin-top: 1.5em;
+    margin-bottom: 0.1em;
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 600;
 }
 
 .inputField {
@@ -34,14 +45,6 @@ hr {
     outline: none;
 }
 
-.heading {
-    margin-top: 1.5em;
-    margin-bottom: 0.1em;
-    font-size: 30px;
-    line-height: 40px;
-    font-weight: 600;
-}
-
 .error_message {
     margin-top: 0.1em;
     font-size: 20px;
@@ -54,12 +57,14 @@ hr {
     visibility: hidden;
 }
 
+/* Style for button */
 app-button {
     display: inline-block;
     width: 25%;
     margin-top: 3em;
 }
 
+/* Seperate styles for different window-width */
 @media (min-width:2000px) {
     h1 {
         line-height: 100px;

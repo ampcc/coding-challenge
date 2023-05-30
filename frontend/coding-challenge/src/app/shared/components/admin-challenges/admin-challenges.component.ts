@@ -21,20 +21,16 @@ import { Challenge } from '../../models/challenge';
 })
 
 export class AdminChallengesComponent implements OnInit {
-  challenge: Challenge;
   private adminToken: string | null;
 
   public hideContentActiveChallenges: boolean = false;
 
   public hideFilterSelect: boolean = true;
 
-  public challengeArray: Challenge[] = [{ id: 0, challengeHeading: 'Challenge0', challengeText: 'rtulip68o5ezrthsgfehjzr7ik4k6ujzhrtbfdv hf,kzujtzrgrhtj' },
-  { id: 1, challengeHeading: 'Challenge1', challengeText: 'bgdnhmjzk,uzjthrf ngjmzik6u75z6tgrfvd fhtjm,il6izjtuegfwdc fdgnhmt,il' }
-  ];
+  public challengeArray: Challenge[] = [];
 
 
   public constructor(private backend: BackendService, private router: Router, public dialog: MatDialog) {
-    this.challenge = { id: 0, challengeHeading: '', challengeText: '' };
     this.adminToken = null;
   }
 
@@ -42,7 +38,7 @@ export class AdminChallengesComponent implements OnInit {
     // Check if Admin Token is available
     this.adminToken = window.sessionStorage.getItem('Adm-Token');
     if (this.adminToken === null) {
-      this.router.navigateByUrl("/admin_login")
+      this.router.navigateByUrl("/admin_login");
     } else {
       this.backend.getChallenges(this.adminToken).subscribe((response: Challenge[]) => {
         this.challengeArray = response;
@@ -50,6 +46,11 @@ export class AdminChallengesComponent implements OnInit {
     }
   }
 
+  /**
+   * Changes the tab and shows the associated content.
+   * This also includes dynamically setting the style of the tabs
+   * @param id The id tab-html element
+   */
   public changeTab(id: string): void {
     let elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
     let elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
@@ -64,32 +65,18 @@ export class AdminChallengesComponent implements OnInit {
     }
   }
 
+  /**
+   * Navigates the user to the designated page to add a challenge
+   */
   public addChallenge(): void {
     this.router.navigateByUrl("/admin_edit_challenge");
   }
 
-
-  // public showFilter(): void {
-  //   this.hideFilterSelect = !this.hideFilterSelect;
-  // }
-
-  // public toggleTreeView(id: string): void {
-  //   let element = document.getElementById(id);
-  //   if(element !== null && element !== undefined) {
-  //     let parentElement = element.parentElement;
-
-  //     if(parentElement !== null && parentElement !== undefined) {
-  //       parentElement.querySelector(".nested")!.classList.toggle("active");
-  //       element.classList.toggle("caret-down");
-  //     }
-  //   }
-  // }
-
-  // public checkboxChallengeChange(): void {
-
-  // }
-
-
+  /**
+   * Opens a modal dialog that displays detailed information of the challenge.
+   * On top of that, buttons for additional functionality are also displayed
+   * @param challenge The challenge object of which information has to be shown
+   */
   public openDialogActiveChallenges(challenge: Challenge): void {
     DialogComponent.name;
     let dialogRef = this.dialog.open(DialogComponent, {
@@ -108,16 +95,23 @@ export class AdminChallengesComponent implements OnInit {
       minWidth: '30vw',
     });
 
+    // Checks which button was pressed on the dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
+        // If the user wants to edit the challenge he gets navigated to the edit page
         this.router.navigateByUrl("/admin_edit_challenge?id=" + challenge.id);
       } else if (result == 2 && challenge.id != null) {
+        // If user wants to delete a challenge another dialog opens
         this.openDeleteDialog(challenge);
       }
     });
-
   }
 
+
+  /**
+   * Opens another modal dialog that asks for confirmation to delete the challenge
+   * @param challenge The challenge object which should be deleted
+   */
   public openDeleteDialog(challenge: Challenge): void {
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
@@ -131,12 +125,12 @@ export class AdminChallengesComponent implements OnInit {
       minWidth: '30vw',
     });
 
-    // If the dialog is closed and the result is true, the user decided to delete challenge, the backend deletes the challenge and the user is navigated to Challenges
+    // If the dialog is closed and the result is 1 (the user decided to delete the challenge), the backend tries to delete the challenge
+    // If this action was successful the challenge gets immediately deleted
+    // Otherwise the user gets navigated to an error page depending on the error code
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
-        // TODO: Check if challenge gets properly deleted by backend
         this.backend.deleteChallenge(this.adminToken, challenge.id!).subscribe(() => {
-          // TODO: Check if navigating is actually needed or if page automatically gets rid of deleted Challenge
           var index = this.challengeArray.findIndex(chal => chal.id === challenge.id);
           this.challengeArray.splice(index, 1);
         }, (error) => {
@@ -158,6 +152,4 @@ export class AdminChallengesComponent implements OnInit {
       }
     })
   }
-
-
 }
