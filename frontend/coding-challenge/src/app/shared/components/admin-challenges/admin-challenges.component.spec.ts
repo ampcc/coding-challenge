@@ -30,4 +30,16 @@ describe('AdminChallengesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+
+  /**
+   * Tests for admin_challenges component
+   * --> !! := Difficult test
+   * --> ?? := Questionable if not already done by others or if it's even possible
+   * 
+   * - Test add-challenge button --> correct navigation happens
+   * - Challenges are correctly displayed --> Check heading
+   * - ?? Check detail dialog
+   * - ?? Check delete dialog
+   */
 });
