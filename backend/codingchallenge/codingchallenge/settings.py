@@ -37,6 +37,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DEPLOY_OFFLINE = False
+
 APPEND_SLASH = False
 
 # Application definition
