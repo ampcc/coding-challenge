@@ -222,18 +222,24 @@ class AdminApplicationsView(APIView):
                 applicationId
         """
         try:
-            application = Application.objects.get(applicationId=self.kwargs["applicationId"])
+            user = User.objects.get(username=self.kwargs["applicationId"])
 
-        except(KeyError, TypeError, Application.DoesNotExist):
+        except(KeyError, TypeError, User.DoesNotExist):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
 
-        try:
-            self.gApi.deleteRepo(application.githubRepo)
-        except GithubException:
-            return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
+        # if the repository has not been created yet, there shouldnt be a GitHub API-Call
+        if user.application.githubRepo:
+            try:
+                self.gApi.deleteRepo(user.application.githubRepo)
+            except GithubException:
+                return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
 
-        application.delete()
+        try:
+            user.delete()
+        except:
+            return Response(jsonMessages.errorJsonResponse("Can't delete user due to an unknown error!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
 
