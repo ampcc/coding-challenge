@@ -1,13 +1,12 @@
-from github import Github, GithubException
+import os
+from pathlib import Path
+
+from django.conf import settings
+from dotenv import load_dotenv
 from github import Github, GithubException
 from github.AppAuthentication import AppAuthentication
-import os
+
 from . import githubApiMockData
-from . import githubApiMockData
-from dotenv import load_dotenv
-from pathlib import Path
-from django.conf import settings
-from django.conf import settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv()
@@ -22,8 +21,12 @@ class GithubApi:
         self.githubOrg = "ampcc"
 
         if not settings.DEPLOY_OFFLINE:
-            self.gApi = Github(app_auth=AppAuthentication(app_id=self.app_id, private_key=self.private_key,
-                                                        installation_id=self.installation_id))
+            self.gApi = Github(
+                app_auth=AppAuthentication(
+                    app_id=self.app_id, private_key=self.private_key,
+                    installation_id=self.installation_id
+                )
+            )
 
     def getRepoUrl(self, repoName):
         if settings.DEPLOY_OFFLINE:
@@ -33,7 +36,6 @@ class GithubApi:
                 raise GithubException(400, {"message": "Repo not found!"}, None)
         else:
             return self.gApi.get_organization(self.githubOrg).get_repo(repoName).url
-
 
     def getRepos(self):
         if settings.DEPLOY_OFFLINE:
@@ -48,7 +50,11 @@ class GithubApi:
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.createRepo
         else:
-            return self.gApi.get_organization(self.githubOrg).create_repo(name=repoName, description=repoDescription, private=True)
+            return self.gApi.get_organization(self.githubOrg).create_repo(
+                name=repoName,
+                description=repoDescription,
+                private=True
+            )
 
     def deleteRepo(self, repoName):
         if settings.DEPLOY_OFFLINE:
@@ -61,9 +67,11 @@ class GithubApi:
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.pushFile
         else:
-            return self.gApi.get_organization(self.githubOrg).get_repo(repoName).create_file(path=path,
-                                                                                         message="auto push " + path,
-                                                                                         content=file)
+            return self.gApi.get_organization(self.githubOrg).get_repo(repoName).create_file(
+                path=path,
+                message="auto push " + path,
+                content=file
+            )
 
     def addLinter(self, repoName):
         if settings.DEPLOY_OFFLINE:
@@ -72,43 +80,46 @@ class GithubApi:
             return self.gApi.get_organization(self.githubOrg).get_repo(repoName).create_file(
                 path=".github/workflows/megalinter.yml",
                 message="added megalinter",
-                content=open(BASE_DIR.joinpath("api/include/megalinter.yml"), 'r').read())
+                content=open(BASE_DIR.joinpath("api/include/megalinter.yml"), 'r').read()
+            )
 
     def getLinterLog(self, repoName):
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.getLinterLog
         else:
             return self.gApi.get_organization(self.githubOrg).get_repo(repoName).get_contents(
-                'megalinter-reports/megalinter.log').decoded_content.decode()
+                'megalinter-reports/megalinter.log'
+            ).decoded_content.decode()
 
     def getLinterResult(self, repoName):
-        if settings.DEPLOY_OFFLINE:
-            return githubApiMockData.getLinterResult
-        else:
-            decodedLinter = self.getLinterLog(repoName)
 
-            # ----SUMMARY ----
-            linterStartIndex = decodedLinter.find("+----SUMMARY----")
-            linterSummary = decodedLinter[linterStartIndex:-1]
-            linterEndIndex = linterSummary.find('\n\n')
+        decodedLinter = self.getLinterLog(repoName)
 
-            cleanSummary = linterSummary[:linterEndIndex]
+        # ----SUMMARY ----
+        linterStartIndex = decodedLinter.find("+----SUMMARY----+")
+        linterSummary = decodedLinter[linterStartIndex:-1]
+        linterEndIndex = linterSummary.find('\n\n')
 
-            # replacing symbols and added padding for correct spacing
-            # check
-            cleanSummary = cleanSummary.replace(u"\u2705", u"\u2713" + " ")
-            # cross
-            cleanSummary = cleanSummary.replace(u"\u274c", u"\u2715" + " ")
-            # question mark
-            cleanSummary = cleanSummary.replace(u"\u25EC", "?" + " ")
+        cleanSummary = linterSummary[:linterEndIndex]
 
-            posArray = [i for i in range(len(cleanSummary)) if cleanSummary.startswith("?", i)]
+        # replacing symbols and added padding for correct spacing
+        # check
+        cleanSummary = cleanSummary.replace(u"\u2705", u"\u2713")
+        # cross
+        cleanSummary = cleanSummary.replace(u"\u274c", u"\u2715")
+        # question mark
+        cleanSummary = cleanSummary.replace(u"\u25EC", "?")
 
-            for i in posArray:
-                x = i + 1
-                while cleanSummary[x].isspace():
-                    x += 1
-                while not cleanSummary[x].isspace():
-                    x += 1
-                cleanSummary = cleanSummary[:x] + cleanSummary[x + 1:]
-            return cleanSummary
+        result = []
+
+        for i, line in enumerate(cleanSummary.split("\n")):
+            if line.startswith("+"):
+                pass
+            else:
+                row = []
+                for element in line.split("|"):
+                    if element:
+                        row.append(element.strip())
+                result.append(row)
+
+        return result
