@@ -36,7 +36,7 @@ export class AdminLoginComponent {
   }
 
   // The Admin Login Component is used to log an admin in with his correct username and password
-  constructor(private router: Router, private backendService: BackendService) { }
+  constructor(private router: Router, public backendService: BackendService) { }
 
   // Tries to log the user in with username and password by calling the backend function
   login(username: string, password: string): void {

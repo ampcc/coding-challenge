@@ -1,10 +1,7 @@
-import { ComponentFixture, TestBed, async, fakeAsync, flush, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { StartComponent } from './start.component';
 import { HttpClient, HttpClientModule, HttpXhrBackend } from '@angular/common/http';
-import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
-import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 // Test if Start Component works properly
 describe('StartComponent', () => {

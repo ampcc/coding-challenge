@@ -48,7 +48,7 @@ export class AdminPasswordComponent implements OnInit {
 
   // Admin Password Component can be accessed by the sidenavigation on admin pages
   // It is used to change an admins password
-  constructor(private router: Router, private backendService: BackendService) {
+  constructor(private router: Router, public backendService: BackendService) {
     this.adminToken = null;
   }
 
