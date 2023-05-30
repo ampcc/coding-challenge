@@ -20,7 +20,7 @@ def pushFileMock(*args):
     uploadedFileList.append(path)
 
 
-# patch is used to bypass the default githubApi and to raplace the following method with mock data
+# patch is used to bypass the default githubApi and to replace the following method with mock data
 @patch('api.include.githubApi.GithubApi.pushFile', pushFileMock)
 @patch('api.include.githubApi.GithubApi.addLinter', autospec=True)
 @patch('api.include.githubApi.GithubApi.createRepo', autospec=True)
