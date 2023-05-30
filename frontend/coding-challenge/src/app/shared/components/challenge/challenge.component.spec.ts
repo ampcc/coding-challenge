@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChallengeComponent } from './challenge.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { By } from '@angular/platform-browser';
 
 // Test if Challenge Component works properly
 describe('ChallengeComponent', () => {
@@ -29,6 +30,82 @@ describe('ChallengeComponent', () => {
   // Check if component can be created
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+
+  it('should change tabs correctly', () => {
+    // Initial state
+    expect(component.hideContentChallenge).toBeTrue();
+    expect(component.hideContentUpload).toBeTrue();
+    expect(component.hideContentIntro).toBeFalse();
+
+    // let tabElement = fixture.debugElement.nativeElement.getElementById('tab_challenge');
+    let tabElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
+    tabElement.click();
+
+    expect(component.hideContentChallenge).toBeFalse();
+    expect(component.hideContentUpload).toBeTrue();
+    expect(component.hideContentIntro).toBeTrue();
+
+    tabElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
+    tabElement.click();
+
+    expect(component.hideContentChallenge).toBeTrue();
+    expect(component.hideContentUpload).toBeFalse();
+    expect(component.hideContentIntro).toBeTrue();
+
+    // tabElement = fixture.debugElement.nativeElement.getElementById('tab_intro');
+    tabElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
+    tabElement.click();
+
+    expect(component.hideContentChallenge).toBeTrue();
+    expect(component.hideContentUpload).toBeTrue();
+    expect(component.hideContentIntro).toBeFalse();
+  });
+
+
+  it('should display time correctly', () => {
+
+  });
+
+
+  it('should display challenge heading correctly', () => {
+
+  });
+
+
+  it('should display challenge text correctly', () => {
+
+  });
+
+
+  it('should store "programming language" correctly', () => {
+
+  });
+
+
+  it('should store "operating system" correctly', () => {
+
+  });
+
+
+  it('should display time correctly', () => {
+
+  });
+
+
+  it('should check uploaded file correcty', () => {
+
+  });
+
+
+  it('should display error messages on incorrect submit', () => {
+
+  });
+
+
+  it('should behave correctly after successful submit', () => {
+
   });
 
 

@@ -33,7 +33,7 @@ import * as JSZip from 'jszip';
 })
 
 export class ChallengeComponent implements OnInit {
-  applicant: Application;
+  application: Application;
   private applicationToken: string | null;
 
   public time: string = 'No data available!';
@@ -64,7 +64,7 @@ export class ChallengeComponent implements OnInit {
 
 
   public constructor(private backend: BackendService, public dialog: MatDialog, private router: Router) {
-    this.applicant = { applicationId: "", applicationKey: "", challengeId: 0, expiry: 0, githubRepo: "", operatingSystem: "", programmingLanguage: "", status: 0, submission: 0, passphrase: "a4Xz!5T%" };
+    this.application = { applicationId: "", applicationKey: "", challengeId: 0, expiry: 0, githubRepo: "", operatingSystem: "", programmingLanguage: "", status: 0, submission: 0, passphrase: "a4Xz!5T%" };
     this.applicationToken = null;
   }
 
@@ -83,11 +83,11 @@ export class ChallengeComponent implements OnInit {
           this.router.navigateByUrl("/gone");
         }
         // get all received Parameters from the response
-        this.applicant = {
+        this.application = {
           applicationId: response.applicationId, applicationKey: "", challengeId: response.challengeId, expiry: response.expiry, githubRepo: "",
           operatingSystem: response.operatingSystem, programmingLanguage: response.programmingLanguage, submission: 0, status: response.progress
         };
-        this.time = this.backend.calcRemainingTime(new Date().getTime(), this.applicant.expiry);
+        this.time = this.backend.calcRemainingTime(new Date().getTime(), this.application.expiry);
         // in case of errors redirect to the correct error page
       }, (error: HttpErrorResponse) => {
         switch (error.status) {
