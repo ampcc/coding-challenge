@@ -33,49 +33,114 @@ describe('ChallengeComponent', () => {
   });
 
 
-  it('should change tabs correctly', () => {
+  it('click on intro tab', () => {
+    let challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
+    let uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
+    let introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
+    let challengeTabStyle: CSSStyleDeclaration = challengeTabElement.style;
+    let uploadTabStyle: CSSStyleDeclaration = uploadTabElement.style;
+    let introTabStyle: CSSStyleDeclaration = introTabElement.style;
+
     // Initial state
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
+    // expect(challengeTabStyle.borderBottom).toBe('none');
+    // expect(uploadTabStyle.borderBottom).toBe('none');
+    // expect(introTabStyle.borderBottom).toBe('2px solid black');
 
-    // let tabElement = fixture.debugElement.nativeElement.getElementById('tab_challenge');
-    let tabElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
-    tabElement.click();
-
-    expect(component.hideContentChallenge).toBeFalse();
-    expect(component.hideContentUpload).toBeTrue();
-    expect(component.hideContentIntro).toBeTrue();
-
-    tabElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
-    tabElement.click();
-
-    expect(component.hideContentChallenge).toBeTrue();
-    expect(component.hideContentUpload).toBeFalse();
-    expect(component.hideContentIntro).toBeTrue();
-
-    // tabElement = fixture.debugElement.nativeElement.getElementById('tab_intro');
-    tabElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
-    tabElement.click();
+    introTabElement.click();
 
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
+    expect(challengeTabStyle.borderBottom).toBe('none');
+    expect(uploadTabStyle.borderBottom).toBe('none');
+    expect(introTabStyle.borderBottomStyle).toBe('solid');
+    expect(introTabStyle.borderBottomWidth).toBe('2px');
+    expect(introTabStyle.borderBottomColor).toBe('black');
+  });
+
+
+  it('click on challenge tab', () => {
+    let challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
+    let uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
+    let introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
+    let challengeTabStyle: CSSStyleDeclaration = challengeTabElement.style;
+    let uploadTabStyle: CSSStyleDeclaration = uploadTabElement.style;
+    let introTabStyle: CSSStyleDeclaration = introTabElement.style;
+
+    // Initial state
+    expect(component.hideContentChallenge).toBeTrue();
+    expect(component.hideContentUpload).toBeTrue();
+    expect(component.hideContentIntro).toBeFalse();
+    // expect(challengeTabStyle.borderBottom).toBe('none');
+    // expect(uploadTabStyle.borderBottom).toBe('none');
+    // expect(introTabStyle.borderBottom).toBe('2px solid black');
+
+    challengeTabElement.click();
+
+    expect(component.hideContentChallenge).toBeFalse();
+    expect(component.hideContentUpload).toBeTrue();
+    expect(component.hideContentIntro).toBeTrue();
+    expect(challengeTabStyle.borderBottomStyle).toBe('solid');
+    expect(challengeTabStyle.borderBottomWidth).toBe('2px');
+    expect(challengeTabStyle.borderBottomColor).toBe('black');
+    expect(uploadTabStyle.borderBottom).toBe('none');
+    expect(introTabStyle.borderBottom).toBe('none');
+  });
+
+
+  it('click on upload tab', () => {
+    // fixture.detectChanges();
+    let challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
+    let uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
+    let introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
+    let challengeTabStyle: CSSStyleDeclaration = challengeTabElement.style;
+    let uploadTabStyle: CSSStyleDeclaration = uploadTabElement.style;
+    let introTabStyle: CSSStyleDeclaration = introTabElement.style;
+
+    // Initial state
+    expect(component.hideContentChallenge).toBeTrue();
+    expect(component.hideContentUpload).toBeTrue();
+    expect(component.hideContentIntro).toBeFalse();
+    // expect(challengeTabStyle.borderBottomStyle).toBe('none');
+    // expect(uploadTabStyle.borderBottomStyle).toBe('none');
+    // expect(introTabStyle.borderBottomStyle).toBe('solid');
+    // expect(introTabStyle.borderBottomWidth).toBe('2px');
+    // expect(introTabStyle.borderBottomColor).toBe('black');
+
+    uploadTabElement.click();
+    // fixture.detectChanges();
+
+    expect(component.hideContentChallenge).toBeTrue();
+    expect(component.hideContentUpload).toBeFalse();
+    expect(component.hideContentIntro).toBeTrue();
+    expect(challengeTabStyle.borderBottomStyle).toBe('none');
+    expect(uploadTabStyle.borderBottomStyle).toBe('solid');
+    expect(uploadTabStyle.borderBottomWidth).toBe('2px');
+    expect(uploadTabStyle.borderBottomColor).toBe('black');
+    expect(introTabStyle.borderBottomStyle).toBe('none');
   });
 
 
   it('should display time correctly', () => {
-
-  });
-
-
-  it('should display challenge heading correctly', () => {
-
+    let initialRemainingTimeHTML = "<b>Remaining Time:</b> No data available!"
+    expect(fixture.debugElement.query(By.css('#time')).nativeElement.innerHTML).toBe(initialRemainingTimeHTML);
   });
 
 
   it('should display challenge text correctly', () => {
+    let challengeTextDiv = fixture.debugElement.query(By.css('.text_challenge')).nativeElement;
+    let initialChallengeTextHTML = "<b>No data available!</b><br><br> No data available! "
+    expect(challengeTextDiv.innerHTML).toBe(initialChallengeTextHTML);
+    
+    component.challengeText = "I am another text for testing purposes";
+    component.heading = "I am a text for testing purposes";
+    fixture.detectChanges();
 
+    let updatedChallengeTextHTML = `<b>${component.heading}</b><br><br> ${component.challengeText} `
+    expect(challengeTextDiv.innerHTML).toBe(updatedChallengeTextHTML);
   });
 
 
