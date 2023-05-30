@@ -319,7 +319,8 @@ class UploadSolutionView(APIView):
                 return Response(jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting."), status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                correctZipped = False
+                oneFolderAtTopLevel = False
+                oneFileAtTopLevel = False
                 filteredPathList = []
                 for path in file_obj.namelist():
                     path_name = path[path.find('/') + 1:]
@@ -327,10 +328,12 @@ class UploadSolutionView(APIView):
                         # file or directory is not hidden -> use it
                         if not '/' in path_name and not path_name == "":
                             # there is at least one file inside the root folder
-                            correctZipped = True
+                            oneFileAtTopLevel = True
+                        else:
+                            # there is at least one folder inside the root folder -> Project folder
+                            oneFolderAtTopLevel = True
                         filteredPathList.append(path)
-
-                if not correctZipped:
+                if not (oneFileAtTopLevel and oneFolderAtTopLevel):
                     return Response(jsonMessages.errorJsonResponse(
                         "The data does not match the required structure inside of the zipfile!"),
                                     status=status.HTTP_406_NOT_ACCEPTABLE)
