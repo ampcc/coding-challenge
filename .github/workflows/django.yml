@@ -27,9 +27,9 @@ jobs:
         directory: backend/codingchallenge
         file_name: .env
         fail_on_empty: false
+    - uses: actions/checkout@v3
     - name: Create pemfile
       run: |
-        touch backend/codingchallenge/privateKey.pem
         echo "${{ secrets.PRIVATE_KEY }}" > backend/codingchallenge/privateKey.pem
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
