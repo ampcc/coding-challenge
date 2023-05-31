@@ -28,10 +28,6 @@ class test_editApplication(APITransactionTestCase):
 
         from django.contrib.auth.models import User
 
-        # print(Application.objects.count())
-        # print(User.objects.count())
-        # print(User.objects.first())
-        # print(getattr(User.objects.first(), "id"))
 
     def test_missingAuth(self):
         # remove headers for this test
