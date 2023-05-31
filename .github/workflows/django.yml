@@ -16,9 +16,7 @@ jobs:
         python-version: [3.11]
 
     steps:
-    - name: Create envfile
-      run: |
-        touch /github/workspace/backend/codingchallenge/.env
+    - uses: actions/checkout@v3
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v1.3
       with:
@@ -29,7 +27,6 @@ jobs:
         directory: backend/codingchallenge
         file_name: .env
         fail_on_empty: false
-    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
