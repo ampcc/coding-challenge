@@ -30,6 +30,11 @@ jobs:
     - uses: actions/checkout@v3
     - name: Create pemfile
       run: |
+        if [ -f backend/codingchallenge/.env ]; then
+          export $(echo $(cat backend/codingchallenge/.env | sed 's/#.*//g'| xargs) | envsubst)
+        fi
+        if [GH_APP_INSTALLATION_ID]; then
+          echo hier
         touch backend/codingchallenge/privateKey.pem
         echo ${{ secrets.PRIVATE_KEY }} | tr -d "/r" > backend/codingchallenge/privateKey.pem
     - name: Set up Python ${{ matrix.python-version }}
