@@ -16,6 +16,16 @@ jobs:
         python-version: [3.11]
 
     steps:
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v1.3
+      with:
+        envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        envkey_ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+        envkey_GH_APP_INSTALLATION_ID: ${{ secrets.GH_APP_INSTALLATION_ID }}
+        envkey_GH_APP_ID: ${{ secrets.GH_APP_ID }}
+        directory: backend
+        file_name: .env
+        fail_on_empty: false
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
