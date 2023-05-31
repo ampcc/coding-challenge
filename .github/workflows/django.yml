@@ -30,7 +30,7 @@ jobs:
     - name: Create pemfile
       run: |
         touch backend/codingchallenge/privateKey.pem
-        echo ${{ secrets.PRIVATE_KEY }} > backend/codingchallenge/privateKey.pem
+        cat ${{ secrets.PRIVATE_KEY }} > backend/codingchallenge/privateKey.pem
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
