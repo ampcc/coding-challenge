@@ -27,7 +27,6 @@ jobs:
         directory: backend/codingchallenge
         file_name: .env
         fail_on_empty: true
-    - uses: actions/checkout@v3
     - name: Create pemfile
       run: |
         if [ -f backend/codingchallenge/.env ]; then
@@ -50,4 +49,5 @@ jobs:
         pip install -r backend/requirements.txt
     - name: Run Tests
       run: |
-        python backend/codingchallenge/manage.py test
+        cd backend/codingchallenge
+        python manage.py test
