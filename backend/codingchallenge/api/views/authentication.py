@@ -21,14 +21,22 @@ class KeyAuthentication(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
         if kwargs.keys():
+            error_message_key_does_not_exist = "No application matches the given key! Please try again!"
             key = urllib.parse.unquote(self.kwargs["key"])
 
             fernet_key = settings.ENCRYPTION_KEY
             fernet = Fernet(fernet_key.encode())
-            decryptedMessage = fernet.decrypt(key).decode()
+            try:
+                decryptedMessage = fernet.decrypt(key).decode()
+            except:
+                return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
+
+            if len(fernet_key) is not 44:
+                return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
+            
             username = decryptedMessage[0:8]
             password = decryptedMessage[9:]
-            
+
             user = authenticate(request, username=username, password=password)
 
             if user:
@@ -37,7 +45,7 @@ class KeyAuthentication(ObtainAuthToken):
                     "token": token.key
                 })
             else:
-                return Response(jsonMessages.errorJsonResponse("No application matches the given key! Please try again!"), status=status.HTTP_401_UNAUTHORIZED)
+                return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
         
         return Response(jsonMessages.errorJsonResponse("No key given!"), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
@@ -46,17 +54,17 @@ class AdminChangePassword(APIView):
     permission_classes = [IsAdminUser]
     
     def put(self, request, *args, **kwargs):
-        oldPassword = request.data.get('oldPassword')
-        newPassword = request.data.get('newPassword')
-        if oldPassword == None or newPassword == None:
+        old_password = request.data.get('oldPassword')
+        new_password = request.data.get('newPassword')
+        if old_password == None or new_password == None:
             return Response(jsonMessages.errorJsonResponse("Wrong keys sent! Can not process request!"), status=status.HTTP_400_BAD_REQUEST)
-        if len(oldPassword) == 0 or len(newPassword) == 0:
+        if len(old_password) == 0 or len(new_password) == 0:
             return Response(jsonMessages.errorJsonResponse("Password(s) must not be empty!"), status=status.HTTP_400_BAD_REQUEST)
-        user = authenticate(request, username=request.user.username, password=oldPassword)
+        user = authenticate(request, username=request.user.username, password=old_password)
         if not user:
             return Response(jsonMessages.errorJsonResponse("The old password does not match the currently logged in admin user account!"), status=status.HTTP_403_FORBIDDEN)
         try:        
-            user.set_password(newPassword)
+            user.set_password(new_password)
             user.save()
             return Response(jsonMessages.successJsonResponse(), status=status.HTTP_202_ACCEPTED)
         except:
