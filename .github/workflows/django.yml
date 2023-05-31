@@ -16,9 +16,9 @@ jobs:
         python-version: [3.11]
 
     steps:
-    - name: Install Dependencies
+    - name: Create envfile
       run: |
-        ls -la 
+        touch /github/workspace/backend/codingchallenge/.env
     - name: Make envfile
       uses: SpicyPizza/create-envfile@v1.3
       with:
