@@ -26,7 +26,7 @@ jobs:
         envkey_GH_APP_ID: ${{ secrets.GH_APP_ID }}
         directory: backend/codingchallenge
         file_name: .env
-        fail_on_empty: false
+        fail_on_empty: true
     - uses: actions/checkout@v3
     - name: Create pemfile
       run: |
