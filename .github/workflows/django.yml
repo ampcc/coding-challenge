@@ -49,6 +49,5 @@ jobs:
         pip install -r backend/requirements.txt
     - name: Run Tests
       run: |
-        docker compose up
         cd backend/codingchallenge
         python manage.py test
