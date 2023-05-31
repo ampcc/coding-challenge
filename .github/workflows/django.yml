@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "feature/add-linter-to-codingchallenge-project" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "feature/add-linter-to-codingchallenge-project" ]
 
 jobs:
   build:
