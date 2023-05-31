@@ -27,6 +27,10 @@ jobs:
         directory: backend/codingchallenge
         file_name: .env
         fail_on_empty: false
+    - name: Create pemfile
+      run: |
+        touch backend/codingchallenge/privateKey.pem
+        echo ${{ secrets.GH_APP_INSTALLATION_ID }} > backend/codingchallenge/privateKey.pem
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
