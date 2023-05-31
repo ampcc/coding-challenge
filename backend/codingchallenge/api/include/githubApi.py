@@ -19,11 +19,12 @@ class GithubApi:
         self.app_id = os.getenv('GH_APP_ID')
         self.private_key = open(BASE_DIR.joinpath("privateKey.pem"), "r").read()
         self.installation_id = int(os.getenv('GH_APP_INSTALLATION_ID'))
-        self.githubOrg = "ampcc"
+        self.githubOrgName = "ampcc"
 
         if not settings.DEPLOY_OFFLINE:
             self.gApi = Github(app_auth=AppAuthentication(app_id=self.app_id, private_key=self.private_key,
                                                         installation_id=self.installation_id))
+            self.githubOrg = self.gApi.get_organization(self.githubOrgName)
 
     def getRepoUrl(self, repoName):
         if settings.DEPLOY_OFFLINE:
@@ -32,7 +33,7 @@ class GithubApi:
             else:
                 raise GithubException(400, {"message": "Repo not found!"}, None)
         else:
-            return self.gApi.get_organization(self.githubOrg).get_repo(repoName).url
+            return self.githubOrg.get_repo(repoName).url
 
 
     def getRepos(self):
@@ -40,7 +41,7 @@ class GithubApi:
             return githubApiMockData.getRepos
         else:
             ret = []
-            for repo in self.gApi.get_organization(self.githubOrg).get_repos():
+            for repo in self.githubOrg.get_repos():
                 ret.append(repo.name)
             return ret
 
@@ -48,20 +49,20 @@ class GithubApi:
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.createRepo
         else:
-            return self.gApi.get_organization(self.githubOrg).create_repo(name=repoName, description=repoDescription, private=True)
+            return self.githubOrg.create_repo(name=repoName, description=repoDescription, private=True)
 
     def deleteRepo(self, repoName):
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.deleteRepo
         else:
-            return self.gApi.get_organization(self.githubOrg).get_repo(repoName).delete()
+            return self.githubOrg.get_repo(repoName).delete()
 
     # def pushFiles(self):
     def pushFile(self, repoName, path, file):
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.pushFile
         else:
-            return self.gApi.get_organization(self.githubOrg).get_repo(repoName).create_file(path=path,
+            return self.githubOrg.get_repo(repoName).create_file(path=path,
                                                                                          message="auto push " + path,
                                                                                          content=file)
 
@@ -69,7 +70,7 @@ class GithubApi:
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.addLinter
         else:
-            return self.gApi.get_organization(self.githubOrg).get_repo(repoName).create_file(
+            return self.githubOrg.get_repo(repoName).create_file(
                 path=".github/workflows/megalinter.yml",
                 message="added megalinter",
                 content=open(BASE_DIR.joinpath("api/include/megalinter.yml"), 'r').read())
@@ -78,7 +79,7 @@ class GithubApi:
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.getLinterLog
         else:
-            return self.gApi.get_organization(self.githubOrg).get_repo(repoName).get_contents(
+            return self.githubOrg.get_repo(repoName).get_contents(
                 'megalinter-reports/megalinter.log').decoded_content.decode()
 
     def getLinterResult(self, repoName):
