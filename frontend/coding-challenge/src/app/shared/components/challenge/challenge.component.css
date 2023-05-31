@@ -19,11 +19,12 @@ h2 {
     margin-bottom: 10px;
 }
 
+/* Style tab-list */
 .tab_list {
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.tabs{
+.tabs {
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
@@ -41,8 +42,10 @@ h2 {
     border-bottom: 2px solid black;
 }
 
-#tab_challenge, #tab_upload {
-    margin-left: 24px;;
+#tab_challenge,
+#tab_upload {
+    margin-left: 24px;
+    ;
 }
 
 /* Style div for Intro and Challenge */
@@ -68,6 +71,7 @@ h2 {
 }
 
 /* Style upload challenge */
+/* Error Messages */
 .errorMessage {
     color: red;
     margin-left: 40%;
@@ -81,6 +85,7 @@ h2 {
     margin-right: auto !important;
 }
 
+/* Select options */
 .form-select {
     width: 60%;
     margin-left: auto;
@@ -97,17 +102,19 @@ h2 {
     overflow: hidden;
 }
 
-#programmingLanguage, #operatingSystem {
+#programmingLanguage,
+#operatingSystem {
     float: left;
     margin-left: 0;
     margin-right: auto;
 }
 
-#selectOpSys, #selectProgLang {
+#selectOpSys,
+#selectProgLang {
     overflow: hidden;
 }
 
-.inputOther{
+.inputOther {
     margin-top: 20px;
     width: 60%;
     margin-left: auto;
@@ -140,7 +147,6 @@ h2 {
 
 #DragnDropBlock {
     width: 100%;
-    /* height: 220px; */
     padding: 5px;
     text-align: center;
     border: dashed 2px rgba(0, 0, 0, 0.15);
@@ -211,7 +217,7 @@ h2 {
     justify-content: space-between;
 }
 
-.picntext{
+.picntext {
     overflow: hidden;
     float: left;
 }
@@ -245,7 +251,7 @@ h2 {
 
 .filename {
     font-size: 20px;
-    margin:0;
+    margin: 0;
 }
 
 .size {
@@ -281,21 +287,48 @@ h2 {
 }
 
 
+/* Style div for progress spinner */
+#divLoading {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+}
+
+.textLoading {
+    margin-top: 1cm;
+    font-size: 25px;
+}
+
+.progressSpinner {
+    margin: auto;
+    margin-top: 2cm;
+}
+
+
 /* Responsive Webdesign */
 @media screen and (min-width: 2000px) {
     h2 {
         font-size: 80px;
     }
 
-    #text, #divUpload, .size, .tabs, .files-list, .form-select{
+    #text,
+    #divUpload,
+    .size,
+    .tabs,
+    .files-list,
+    .form-select {
         font-size: 25px;
     }
 
-    #time, .infoDropFile, .filename {
+    #time,
+    .infoDropFile,
+    .filename {
         font-size: 30px;
     }
 
-    .textSuccess {
+    .textSuccess,
+    .textLoading {
         font-size: 35px;
     }
 
@@ -304,13 +337,15 @@ h2 {
     }
 }
 
+
 @media screen and (max-width: 768px) {
     .mb-3 {
         display: flex;
         flex-direction: column;
     }
 
-    .form-select, .inputOther {
+    .form-select,
+    .inputOther {
         margin-left: 0;
         margin-right: 0;
         width: 100%;

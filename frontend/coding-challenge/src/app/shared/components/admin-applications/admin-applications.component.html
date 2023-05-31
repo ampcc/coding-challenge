@@ -16,7 +16,9 @@
 
 
         <div class="view_tab">
+            <!-- Tab list area with the active challenges and archived challenges as well as the search bar and filter-->
             <div class="tab_list">
+                <!-- Tab list -->
                 <div class="tab_selection">
                     <label class="tabs" id="tab_active_challenges" for="tab-1"
                         (click)="changeTab('tab_active_challenges')">
@@ -28,7 +30,9 @@
                     </label>
                 </div>
 
+                <!-- Search bar and filter -->
                 <div class="options">
+                    <!-- Search bar with an input field and a button -->
                     <form action="" class="search_bar">
                         <div class="input-group mb-4">
                             <input type="search" placeholder="Search for application ..."
@@ -41,6 +45,7 @@
                         </div>
                     </form>
 
+                    <!-- Button for the filter -->
                     <div class="filter icon">
                         <div>
                             <label (click)="showFilter()" id="labelFilter">
@@ -51,8 +56,10 @@
                     </div>
                 </div>
             </div>
+            <!-- List of filter options -->
             <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
                 <ul id="myUL">
+                    <!-- Challenge filter options -->
                     <li id="first_tree">
                         <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
                         <ul class="nested">
@@ -63,6 +70,7 @@
                             </li>
                         </ul>
                     </li>
+                    <!-- Status filter options -->
                     <li [hidden]="hideContentActiveChallenges" class="tree">
                         <span class="caret" id="caret2" (click)="toggleTreeView('caret2')">Status</span>
                         <ul class="nested">
@@ -86,30 +94,36 @@
                 </ul>
             </div>
 
+            <!-- Tab content of all active applications  -->
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
                 <div class="list" id="list_applicants">
                     <div class="single_applicant" *ngFor="let app of filteredApplicantsArray; let i = index">
+                        <!-- Shows information of the application -->
                         <div class="text_elements">
                             <h4 class="applicantId">
                                 {{app.applicationId}}
                             </h4>
                             <span><b>Challenge:</b> {{getChallengeHeading(app.challengeId)}}</span>
                             <span><b>Status:</b> {{getStatusText(app.status)}}</span>
+                            <!-- Only shown if the challenge is uploaded -->
                             <span [hidden]="hideSubmissionDate"><b>Submission date:</b>
                                 {{getSubmissionDateText(app.submission)}}</span>
+                            <!-- Only shown if the challenge is not uploaded -->
                             <span [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}}</span>
                         </div>
                         <div class="btn_position">
+                            <!-- Shown if the applicant uploaded the challenge -->
                             <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details"
-                                (click)="openDialogActiveChallenges(app)">Details</button>
+                                (click)="openDialogActiveApplications(app)">Details</button>
+                            <!-- Shown if applicant hadn't uploaded the challenge and the admin wants to extend the remaining time -->
                             <button *ngIf="getStatusText(app.status) != 'uploaded'" class="btn btn-dark details"
-                                (click)="openExtendDialogActiveChallenges(app)">Edit</button>
+                                (click)="openExtendDialogActiveApplications(app)">Edit</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-
+            <!-- Tab content of all archived applications  -->
             <div [hidden]="hideContentArchiv" class="contentArchiv">
                 <div class="list" id="list_archiv">
                     <div class="single_archiv" *ngFor="let archiv of filteredArchivArray; let i = index">
@@ -120,9 +134,11 @@
                             <span><b>Challenge:</b> {{getChallengeHeading(archiv.challengeId)}}</span>
                             <span><b>Submission date:</b> {{getSubmissionDateText(archiv.submission)}}</span>
                         </div>
+                        <!-- Only shown if the challenge was uploaded -->
                         <div class="btn_position">
                             <button *ngIf="getSubmissionDateText(archiv.submission) !== 'not uploaded in time'"
-                                class="btn btn-dark details" (click)="openDialogArchiv(archiv)">Details</button>
+                                class="btn btn-dark details"
+                                (click)="openDialogArchivedApplications(archiv)">Details</button>
                         </div>
                     </div>
                 </div>

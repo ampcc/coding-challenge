@@ -25,9 +25,31 @@ class AdminChallengesView(APIView):
     name = "Admin Challenges View"
     description = "handling all requests for challenges as a admin"
 
-    # /api/admin/challenges
-    # /api/admin/challenges/<challengeId>
+
+
+    # 9. Get Challenge (Admin)
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#9-get-challenge
+    # /api/admin/challenges/{challengeId}
+
+    # 10. Get Challenges (Admin)
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#10-get-challenges
+    # /api/admin/challenges/
     def get(self, request, *args, **kwargs):
+        """
+        get all challenges or only the specified challenge
+            optional arguments:
+                challengeId
+
+            (on provided challengeId) returns a single object with the following values:
+                id
+                challengeHeader
+                challengeText
+
+            (no provided challengeId) returns an array of objects with the following values:
+                id
+                challengeHeader
+                challengeText
+        """
         if kwargs.keys():
             # getChallenge
             try:
@@ -114,17 +136,23 @@ class AdminChallengesView(APIView):
 
 
 
-# endpoint: /api/application/challenges
 class ApplicationChallengesView(APIView):
     permission_classes = [IsAuthenticated]
 
     name = "Get Challenge Application View"
     description = "get a specific challenge for the corespnding applicant"
 
+
+    # 17. Get Challenge (Application)
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#17-get-challenge
+    # /api/application/challenges/
     def get(self, request, *args, **kwargs):
         """
         get the challenge of the specified application
-            returns:
+            required arguments:
+                applicationId
+
+            returns a single object with the following values:
                 id
                 challengeHeader
                 challengeText

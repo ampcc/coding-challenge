@@ -4,33 +4,27 @@ import secrets
 import string
 import sys
 import time
-import os
 from zipfile import ZipFile
 
-from github import GithubException
-from django.conf import settings
 from cryptography.fernet import Fernet
-from rest_framework.parsers import FileUploadParser
-
-# Authentication imports
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from django.conf import settings
 from django.contrib.auth.models import User
-
 # RESTapi imports
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
+from github import GithubException
 from rest_framework import status
+from rest_framework.parsers import FileUploadParser
+# Authentication imports
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from . import jsonMessages, expirySettings
-
+from ..include.githubApi import GithubApi
 from ..models import Application, Challenge
-
 from ..serializers import GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer, \
     PostApplicationSerializer
-
-from ..include.githubApi import GithubApi
 
 
 # endpoint: /api/admin/applications
@@ -136,7 +130,6 @@ class AdminApplicationsView(APIView):
         fernet = Fernet(fernet_key.encode())
         encKey = fernet.encrypt(keyPlain.encode()).decode("utf-8")
 
-        # expiry note: The last possible start of the challenge is days + 3. So the applicant has three days to start the challenge
         data = {
             'applicationId': request.data.get('applicationId'),
             'challengeId': challengeId,
@@ -150,7 +143,8 @@ class AdminApplicationsView(APIView):
             try:
                 applications = Application.objects.get(applicationId=request.data.get('applicationId'))
             except (KeyError, ObjectDoesNotExist):
-                return Response(jsonMessages.errorJsonResponse("Application not found!"), status=status.HTTP_404_NOT_FOUND)
+                return Response(jsonMessages.errorJsonResponse("Application not found!"),
+                                status=status.HTTP_404_NOT_FOUND)
             postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
                                                                                           "applicationId": request.data.get(
                                                                                               'applicationId')})
@@ -228,18 +222,24 @@ class AdminApplicationsView(APIView):
                 applicationId
         """
         try:
-            application = Application.objects.get(applicationId=self.kwargs["applicationId"])
+            user = User.objects.get(username=self.kwargs["applicationId"])
 
-        except(KeyError, TypeError, Application.DoesNotExist):
+        except(KeyError, TypeError, User.DoesNotExist):
             return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
                             status=status.HTTP_404_NOT_FOUND)
 
-        try:
-            self.gApi.deleteRepo(application.githubRepo)
-        except GithubException:
-            return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
+        # if the repository has not been created yet, there shouldnt be a GitHub API-Call
+        if user.application.githubRepo:
+            try:
+                self.gApi.deleteRepo(user.application.githubRepo)
+            except GithubException:
+                return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
 
-        application.delete()
+        try:
+            user.delete()
+        except:
+            return Response(jsonMessages.errorJsonResponse("Can't delete user due to an unknown error!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
 
@@ -309,11 +309,18 @@ class UploadSolutionView(APIView):
 
             repoName = f'{user.application.applicationId}_{user.application.challengeId}'
 
-            raw_file = request.data['file']
-            file_obj = ZipFile(raw_file)
+            try:
+                raw_file = request.data['file']
+            except KeyError:
+                return Response(jsonMessages.errorJsonResponse("No file passed. Aborting."), status=status.HTTP_400_BAD_REQUEST)
+            try:
+                file_obj = ZipFile(raw_file)
+            except:
+                return Response(jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting."), status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                correctZipped = False
+                oneFolderAtTopLevel = False
+                oneFileAtTopLevel = False
                 filteredPathList = []
                 for path in file_obj.namelist():
                     path_name = path[path.find('/') + 1:]
@@ -321,23 +328,30 @@ class UploadSolutionView(APIView):
                         # file or directory is not hidden -> use it
                         if not '/' in path_name and not path_name == "":
                             # there is at least one file inside the root folder
-                            correctZipped = True
+                            oneFileAtTopLevel = True
+                        else:
+                            # there is at least one folder inside the root folder -> Project folder
+                            oneFolderAtTopLevel = True
                         filteredPathList.append(path)
-
-                if not correctZipped:
-                    return Response(jsonMessages.errorJsonResponse("The data does not match the required structure inside of the zipfile!"), status=status.HTTP_406_NOT_ACCEPTABLE)
+                if not (oneFileAtTopLevel and oneFolderAtTopLevel):
+                    return Response(jsonMessages.errorJsonResponse(
+                        "The data does not match the required structure inside of the zipfile!"),
+                                    status=status.HTTP_406_NOT_ACCEPTABLE)
                 else:
-                    self.gApi.createRepo(repoName, 'to be defined') # TODO: description auslagern
+                    self.gApi.createRepo(repoName, 'to be defined')  # TODO: description auslagern
 
                 for path in filteredPathList:
                     if not path.endswith('/'):
                         self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
-
+                
+                # reset the pointer to the beginning of the zipfile
+                raw_file.seek(0)
+                self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
 
                 self.gApi.addLinter(repoName)
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
-            
+
             user.application.submission = time.time()
             user.application.status = Application.Status.IN_REVIEW
             user.application.githubRepo = repoName

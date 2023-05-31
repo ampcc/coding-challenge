@@ -20,7 +20,6 @@ h2 {
     width: 100%;
     display: flex;
     flex-direction: row;
-    /* z-index: 1; */
 }
 
 .tabs {
@@ -58,94 +57,6 @@ h2 {
 }
 
 
-/* style filter elements */
-/* #labelFilter {
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.filter {
-    display: inline-block;
-    margin: auto;
-    margin-right: 0;
-}
-
-#filterTree {
-    margin: auto;
-    position: absolute;
-    background-color: white;
-    box-shadow: 5px 5px 20px 5px rgba(0, 0, 0, 0.15);
-    right: 12.5%;
-}
-
-.filterSelect {
-    border: 1px solid lightgrey;
-    border-radius: 10px;
-    display: inline-block;
-    padding: 10px;
-}
-
-ul,
-#myUL {
-    list-style-type: none;
-}
-
-#myUL {
-    margin: 0;
-    padding: 0;
-}
-
-li {
-    font-size: 16px;
-}
-
-.tree_checkbox_label {
-    margin-left: 0.5em;
-    font-size: 16px;
-}
-
-#last_tree {
-    margin-bottom: 5px;
-    padding: 5px;
-}
-
-.caret {
-    cursor: pointer;
-    -moz-user-select: none;
-    user-select: none;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.caret::before {
-    content: "\25B6";
-    color: black;
-    display: inline-block;
-    margin-right: 6px;
-}
-
-.caret-down::before {
-    transform: rotate(90deg);
-}
-
-.nested {
-    display: none;
-}
-
-.active {
-    display: block;
-}
-
-.btn.btn-dark.apply_button {
-    height: auto;
-    width: auto;
-    font-size: 16px;
-    text-align: center;
-    padding: 5px;
-    padding-left: 20px;
-    padding-right: 20px;
-} */
-
 /* style lists */
 .list {
     width: 100%;
@@ -158,7 +69,6 @@ li {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     margin-bottom: 0.5cm;
-    /* display: inline-block; */
     display: flex;
     flex-direction: row;
     padding: 1em;
@@ -202,11 +112,7 @@ span {
         font-size: 80px;
     }
 
-    .tabs
-    /* #labelFilter,
-    .caret,
-    .tree_checkbox_label */
-    {
+    .tabs {
         font-size: 25px;
     }
 
@@ -223,7 +129,6 @@ span {
         height: 25px;
     }
 
-    /* .btn.btn-dark.apply_button */
     #add_button {
         font-size: 22px;
         width: 120px;

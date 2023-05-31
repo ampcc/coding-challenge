@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Admin } from '../shared/models/admin';
-import { Application } from '../shared/models/application';
 import { Challenge } from '../shared/models/challenge';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
-import { Observable, min, throwError } from 'rxjs';
-import { adminLoginCreds, applicationLoginCreds } from '../shared/models/loginCreds';
-import { formatDate } from '@angular/common';
+import { Observable } from 'rxjs';
+import { adminLoginCreds } from '../shared/models/loginCreds';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +20,6 @@ export class BackendService {
   -----------------------------------------------*/
 
   public loginWithAppKey(_applicationKey: string):Observable<any>{
-    //var body: applicationLoginCreds = {applicationId: _applicationId, applicationKey: _applicationKey}
     return this.http.post(this.backendURL + "/api/application/loginWithKey/" + _applicationKey,{});
   }
 
@@ -144,7 +140,10 @@ export class BackendService {
     return this.http.delete(this.backendURL + "/api/admin/challenges/" + _challengeId, {'headers': headers});
   }
 
-  // Time functions
+  /*---------------------------------------------
+  Time Functions
+  -----------------------------------------------*/
+
   public calcRemainingTime(_currentTime: number, _expiryTime: number): string {
     _expiryTime = Math.floor(_expiryTime * 1000);
     var timeDelta = (_expiryTime - _currentTime) / 1000;
