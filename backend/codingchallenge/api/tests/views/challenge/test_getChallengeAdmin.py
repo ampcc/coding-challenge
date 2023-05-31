@@ -59,7 +59,8 @@ class test_getChallengeAdmin(APITestCase):
         self.assertEqual(response.data, {
             "id": 1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         })
 
         response = self.client.get(self.url + "2", {}, format='json')
@@ -67,7 +68,8 @@ class test_getChallengeAdmin(APITestCase):
         self.assertEqual(response.data, {
             "id": 2,
             "challengeHeading": "TestChallenge2",
-            "challengeText": "This is a second challenge"
+            "challengeText": "This is a second challenge",
+            "active": True
         })
 
     def test_ignoreAdditionalData(self):
@@ -79,7 +81,8 @@ class test_getChallengeAdmin(APITestCase):
         self.assertEqual(response.data, {
             "id": 1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         })
 
     def test_callNotAsAdmin(self):

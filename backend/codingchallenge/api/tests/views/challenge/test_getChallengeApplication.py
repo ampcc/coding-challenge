@@ -93,7 +93,8 @@ class test_getChallengeApplication(APITestCase):
         self.assertEqual(response.data, {
             "id": 1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         })
 
     def test_ignoreAdditionalData(self):
@@ -106,7 +107,8 @@ class test_getChallengeApplication(APITestCase):
         self.assertEqual(response.data, {
             "id": 1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         })
 
     def test_callAsPost(self):

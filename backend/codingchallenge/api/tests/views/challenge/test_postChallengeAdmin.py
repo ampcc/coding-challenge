@@ -32,11 +32,13 @@ class test_postChallengeAdmin(APITestCase):
         expected_data = {
             "id": 1,
             "challengeHeading": "Test",
-            "challengeText": "Text of challenge..."
+            "challengeText": "Text of challenge...",
+            "active": True
         }
         data = {
             "challengeHeading": "Test",
-            "challengeText": "Text of challenge..."
+            "challengeText": "Text of challenge...",
+            "active": True
         }
 
         # check if test db is empty
