@@ -1,17 +1,13 @@
 from pathlib import Path
-from textwrap import dedent
-from unittest.mock import patch
 from django.conf import settings
-
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
-
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 
-# patch is used to bypass the default githubApi and to raplace the following methods with mock data
+
 class test_getResult(APITransactionTestCase):
     reset_sequences = True
     applicationUrl = "/api/admin/applications/"
@@ -23,9 +19,11 @@ class test_getResult(APITransactionTestCase):
         MockAuth.admin(self)
         settings.DEPLOY_OFFLINE = True
         # Create Challenge
-        self.client.post("/api/admin/challenges/",
-                         {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
-                         format='json')
+        self.client.post(
+            "/api/admin/challenges/",
+            {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
+            format='json'
+        )
 
         # Create Application
         self.applicationId = "appl0001"
@@ -55,6 +53,7 @@ class test_getResult(APITransactionTestCase):
 
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     # Todo: should be implemented soon
     # def test_wrongStatus(self, mockGetRepoUrl, mockGetLinterLog):
     #     self.application.status = Application.Status.CHALLENGE_STARTED
@@ -76,5 +75,9 @@ class test_getResult(APITransactionTestCase):
 
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {'githubUrl': "https://api.github.com/repos/ampcc/" + self.applicationId,
-                                         'content': self.mockLinterResult})
+        self.assertEqual(
+            response.data, {
+                'githubUrl': "https://api.github.com/repos/ampcc/" + self.applicationId,
+                'content': self.mockLinterResult
+            }
+        )
