@@ -93,7 +93,8 @@ class test_getChallengeApplication(APITestCase):
         self.assertEqual(response.data, {
             "id": id_1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         })
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -108,7 +109,8 @@ class test_getChallengeApplication(APITestCase):
         self.assertEqual(response.data, {
             "id": id_1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         })
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

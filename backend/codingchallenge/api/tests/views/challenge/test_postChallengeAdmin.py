@@ -29,12 +29,14 @@ class test_postChallengeAdmin(APITestCase):
         self.assertEqual(response_no_data.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response_only_heading.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response_only_text.status_code, status.HTTP_400_BAD_REQUEST)
-
+        
 
     def test_defaultRequest(self):     
+
         data = {
             "challengeHeading": "Test",
-            "challengeText": "Text of challenge..."
+            "challengeText": "Text of challenge...",
+            "active": True
         }
 
         # check if test db is empty

@@ -66,7 +66,8 @@ class test_getChallengeAdmin(APITestCase):
         self.assertEqual(response.data, {
             "id": id_1,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         })
 
         response = self.client.get(self.url + str(id_2), {}, format='json')
@@ -75,7 +76,8 @@ class test_getChallengeAdmin(APITestCase):
         self.assertEqual(response.data, {
             "id": id_2,
             "challengeHeading": "TestChallenge2",
-            "challengeText": "This is a second challenge"
+            "challengeText": "This is a second challenge",
+            "active": True
         })
 
 
@@ -91,7 +93,8 @@ class test_getChallengeAdmin(APITestCase):
         self.assertEqual(responseGetChallenge.data, {
             "id": id,
             "challengeHeading": "TestChallenge",
-            "challengeText": "This is a Test Challenge"
+            "challengeText": "This is a Test Challenge",
+            "active": True
         })
         
 

@@ -7,6 +7,8 @@ from rest_framework.test import APITransactionTestCase
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 
+from django.contrib.auth.models import User
+
 
 class test_editApplication(APITransactionTestCase):
     reset_sequences = True
@@ -25,9 +27,6 @@ class test_editApplication(APITransactionTestCase):
         self.client.post(self.url, {"applicationId": "TEST1234"}, format='json')
 
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
-
-        from django.contrib.auth.models import User
-
 
     def test_missingAuth(self):
         # remove headers for this test

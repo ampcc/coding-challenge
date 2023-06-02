@@ -23,7 +23,8 @@ class test_putChallengeAdmin(APITestCase):
         expected_data = {
             "id": id_1,
             "challengeHeading": "Test",
-            "challengeText": "Text of challenge..."
+            "challengeText": "Text of challenge...",
+            "active": True
         }
         data_heading = {
             "challengeHeading": "Another Heading"
@@ -61,7 +62,8 @@ class test_putChallengeAdmin(APITestCase):
         expected_data = {
             "id": id_1,
             "challengeHeading": "Another Heading",
-            "challengeText": "Another challenge text..."
+            "challengeText": "Another challenge text...",
+            "active": True
         }
         data = {
             "challengeHeading": "Another Heading",
