@@ -94,7 +94,7 @@ h2 {
 }
 
 .form-select:focus {
-    border-color: rgba(0, 0, 0, 0.15);
+    border-color: #165dca;
     box-shadow: none;
 }
 
@@ -122,7 +122,7 @@ h2 {
 }
 
 .inputOther:focus {
-    border-color: rgba(0, 0, 0, 0.15);
+    border-color: #165dca;
     box-shadow: none;
 }
 
@@ -143,6 +143,8 @@ h2 {
 
 .question-circle:hover {
     cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
 }
 
 #DragnDropBlock {
@@ -161,6 +163,9 @@ h2 {
     align-items: center;
 }
 
+#DragnDropBlock:hover {
+    border-color: #165dca;
+}
 
 .dropFileHeader {
     font-size: 30px;
