@@ -48,7 +48,7 @@ export class AdminEditComponent {
   }
 
   // The Admin Edit Component can either be used to edit an existing challenge or to create a new one
-  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService, private route: ActivatedRoute) {
+  constructor(private dialog: MatDialog, private router: Router, public backendService: BackendService, private route: ActivatedRoute) {
     this.adminToken = null;
   }
 

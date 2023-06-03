@@ -121,7 +121,7 @@ describe('AdminPasswordComponent', () => {
   });
 
   // Check if success response is shown after successful changes
-  it('success response is shown after succesful changes', () => {
+  it('success response is shown after successful changes', () => {
     spyOn(component.backendService, 'changePassword').and.returnValue(of(true));
     component.setPassword('test', 'Test#1234', 'Test#1234');
     fixture.detectChanges();
