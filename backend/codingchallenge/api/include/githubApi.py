@@ -44,14 +44,8 @@ class GithubApi:
         else:
             return self.github_base.upload_files(files, repo_name, "main", "application file upload: commit")
 
-    def get_linter_log(self, repo_name):
-        if settings.DEPLOY_OFFLINE:
-            return githubApiMockData.getLinterLog
-        else:
-            return self.github_base.add_linter(repo_name)
-           
     def get_linter_result(self, repo_name):
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.getLinterResult
         else:
-            self.github_base.get_linter_result(repo_name)
+            return self.github_base.get_linter_result(repo_name)

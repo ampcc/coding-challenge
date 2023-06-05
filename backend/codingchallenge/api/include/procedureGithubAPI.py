@@ -1,6 +1,7 @@
 from github import Github, AppAuthentication, Repository, GitBlob, GitTree, InputGitTreeElement, GitCommit
 from pathlib import Path
 from zipfile import ZipFile
+import requests
 import base64
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -61,38 +62,42 @@ class GithubApiWrapper:
 
     def get_linter_log(self, repo_name):
         repo = self.get_repo(repo_name)
-        return repo.get_contents(
-                'megalinter-reports/megalinter.log').decoded_content.decode()
+        
+       
+        #download_url = repo.get_contents('megalinter-reports/megalinter.log').decoded_content.decode()
+        download_url = repo.get_contents('megalinter-reports/megalinter.log').raw_data.get("download_url")
+        log = requests.get(download_url, stream=True).content
+        return log.decode("utf-8")
 
     def get_linter_result(self, repo_name):
-        decodedLinter = self.getLinterLog(repo_name)
+        decodedLinter = self.get_linter_log(repo_name)
 
         # ----SUMMARY ----
-        linterStartIndex = decodedLinter.find("+----SUMMARY----")
+        linterStartIndex = decodedLinter.find("+----SUMMARY----+")
         linterSummary = decodedLinter[linterStartIndex:-1]
-        linterEndIndex = linterSummary.find('\n\n')
+        linterEndIndex = linterSummary.find("\\n\\n")
 
         cleanSummary = linterSummary[:linterEndIndex]
 
         # replacing symbols and added padding for correct spacing
         # check
-        cleanSummary = cleanSummary.replace(u"\u2705", u"\u2713" + " ")
+        cleanSummary = cleanSummary.replace(u"\u2705", u"\u2713")
         # cross
-        cleanSummary = cleanSummary.replace(u"\u274c", u"\u2715" + " ")
+        cleanSummary = cleanSummary.replace(u"\u274c", u"\u2715")
         # question mark
-        cleanSummary = cleanSummary.replace(u"\u25EC", "?" + " ")
+        cleanSummary = cleanSummary.replace(u"\u25EC", "?")
 
-        posArray = [i for i in range(len(cleanSummary)) if cleanSummary.startswith("?", i)]
-
-        for i in posArray:
-            x = i + 1
-            while cleanSummary[x].isspace():
-                x += 1
-            while not cleanSummary[x].isspace():
-                x += 1
-            cleanSummary = cleanSummary[:x] + cleanSummary[x + 1:]
-        return cleanSummary
-
+        result = []
+        for i, line in enumerate(cleanSummary.split("\\n")):
+            if line.startswith("+"):
+                pass
+            else:
+                row = []
+                for element in line.split("|"):
+                    if element:
+                        row.append(element.strip())
+                result.append(row)
+        return result
 
     # Function that combines all prior API-calls
     def upload_files(self, files, repo_name, branch_name, commit_message):
