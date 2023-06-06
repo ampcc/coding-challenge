@@ -52,10 +52,10 @@ export class ChallengeComponent implements OnInit {
 
   public msgProgLang: string = '';
   public msgOpSys: string = '';
-  public msgFileUplod: string = '';
+  public msgFileUpload: string = '';
   public hideMsgProgLang: boolean = true;
   public hideMsgOpSys: boolean = true;
-  public hideMsgFileUplod: boolean = true;
+  public hideMsgFileUpload: boolean = true;
 
   public os: string = 'default';
   public pl: string = 'default';
@@ -73,7 +73,7 @@ export class ChallengeComponent implements OnInit {
     // Check if Application Token is available
     this.applicationToken = window.sessionStorage.getItem('Auth-Token');
     if (this.applicationToken === null) {
-      this.router.navigateByUrl("/unauthorized")
+      this.router.navigateByUrl("/unauthorized");
     } else {
 
       // Get the current Status
@@ -190,7 +190,7 @@ export class ChallengeComponent implements OnInit {
    * If the user selected "other" an input element is displayed for the user to type his operating system
    */
   public selectionOpSys(): void {
-    var selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
+    let selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
 
     if (selectedOption.value == "other") {
       this.hideOpSys = false;
@@ -228,37 +228,37 @@ export class ChallengeComponent implements OnInit {
    * @param event 
    */
   public uploadFileHandler(event: Event): any {
-    var files = (event.target as HTMLInputElement).files;
-    var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
+    let files = (event.target as HTMLInputElement).files;
+    let element = <HTMLInputElement>document.getElementById('DragnDropBlock');
 
     if (typeof files !== 'undefined' && files !== null) {
       // checks if the filesize is greater than 5 GB (= 5368709120 Byte)
       // 50 MB = 52,428,800 Byte
       // and if the filetype is not supported
       if (this.fileArray.length !== 0) {
-        this.msgFileUplod = 'You already uploaded a file. Please delete that file before uploading another one.';
-        this.hideMsgFileUplod = false;
-
-        element.setAttribute("style", "border-color:red;");
-      } else if (files[0].size > 52428800) {
-        this.msgFileUplod = 'The file ' + files[0].name + ' is too big';
-        this.hideMsgFileUplod = false;
-
-        element.setAttribute("style", "border-color:red;");
-      } else if (!files[0].name.includes('.zip')) {
-        this.msgFileUplod = 'The file ' + files[0].name + ' has the wrong filetype';
-        this.hideMsgFileUplod = false;
+        this.msgFileUpload = 'You already uploaded a file. Please delete that file before uploading another one.';
+        this.hideMsgFileUpload = false;
 
         element.setAttribute("style", "border-color:red;");
       } else if (files[0].size > 52428800 && !files[0].name.includes('.zip')) {
-        this.msgFileUplod = 'The file ' + files[0].name + ' has the wrong filetype and is too big';
-        this.hideMsgFileUplod = false;
+        this.msgFileUpload = 'The file ' + files[0].name + ' has the wrong filetype and is too big';
+        this.hideMsgFileUpload = false;
 
         element.setAttribute("style", "border-color:red; ");
+      } else if (files[0].size > 52428800) {
+        this.msgFileUpload = 'The file ' + files[0].name + ' is too big';
+        this.hideMsgFileUpload = false;
+
+        element.setAttribute("style", "border-color:red;");
+      } else if (!files[0].name.includes('.zip')) {
+        this.msgFileUpload = 'The file ' + files[0].name + ' has the wrong filetype';
+        this.hideMsgFileUpload = false;
+
+        element.setAttribute("style", "border-color:red;");												
       } else {
         this.checkUploadedZipContent(files[0]);
-        this.hideMsgFileUplod = true;
-        element.setAttribute("style", "border-color:lightgrey;");
+        // this.hideMsgFileUpload = true;
+        // element.setAttribute("style", "border-color:lightgrey;");
       }
     }
   }
@@ -269,10 +269,10 @@ export class ChallengeComponent implements OnInit {
    * @param file The uploaded and compressed file
    */
   public checkUploadedZipContent(file: File): void {
-    var element = <HTMLInputElement>document.getElementById('DragnDropBlock');
+    let element = <HTMLInputElement>document.getElementById('DragnDropBlock');
     const jsZip = require('jszip');
-    var result = true;
-    var isSecondLayerFile = false;
+    let result = true;
+    let isSecondLayerFile = false;
     // load the zip and ignore all MACOSX and DS_Store files
     jsZip.loadAsync(file).then((zip: any) => {
       Object.keys(zip.files).filter(v => v.indexOf("__MACOSX/") === -1 && v.indexOf("DS_Store") === -1).forEach((filename) => {
@@ -289,9 +289,11 @@ export class ChallengeComponent implements OnInit {
       }
       if (result) {
         this.fileArray.push(file);
+        this.hideMsgFileUpload = true;
+        element.setAttribute("style", "border-color:lightgrey;");
       } else {
-        this.hideMsgFileUplod = false;
-        this.msgFileUplod = 'The file ' + file.name + ' has the wrong folder structure';
+        this.hideMsgFileUpload = false;
+        this.msgFileUpload = 'The file ' + file.name + ' has the wrong folder structure';
         element.setAttribute("style", "border-color:red; ");
         this.openDialogInfo();
       }
@@ -303,8 +305,10 @@ export class ChallengeComponent implements OnInit {
    * @param index The index of the file in the underlying fileArray
    */
   public deleteFile(index: number): void {
-    let deletedElement = this.fileArray[index];
+    let fileInput = <HTMLInputElement>document.getElementById('fileHandler');
+    fileInput.files = new DataTransfer().files;
 
+    let deletedElement = this.fileArray[index];
     this.fileArray = this.fileArray.filter((element) => {
       return element !== deletedElement;
     });
@@ -315,11 +319,11 @@ export class ChallengeComponent implements OnInit {
    * @param size The size of the uploaded and compressed file in bytes
    * @returns The size formatted in either KB, MB or GB
    */
-  public formatBytes(size: any): String {
+  public formatBytes(size: any): string {
     if (size >= 1073741824) { size = (size / 1073741824).toFixed(2) + " GB"; }
     else if (size >= 1048576) { size = (size / 1048576).toFixed(2) + " MB"; }
     else if (size >= 1024) { size = (size / 1024).toFixed(2) + " KB"; }
-    return size;
+    return '' + size;
   }
 
   /**
@@ -335,8 +339,8 @@ export class ChallengeComponent implements OnInit {
     let resultOs = this.os;
 
     let elementProgLang = <HTMLSelectElement>document.getElementById('selectProgLang');
-    var elementOpSys = <HTMLSelectElement>document.getElementById('selectOpSys');
-    var elementDragnDrop = <HTMLInputElement>document.getElementById('DragnDropBlock');
+    let elementOpSys = <HTMLSelectElement>document.getElementById('selectOpSys');
+    let elementDragnDrop = <HTMLInputElement>document.getElementById('DragnDropBlock');
 
     if (resultPl === 'default') {
       this.hideMsgProgLang = false;
@@ -393,12 +397,12 @@ export class ChallengeComponent implements OnInit {
     }
 
     if (this.fileArray.length === 0) {
-      this.hideMsgFileUplod = false;
-      this.msgFileUplod = 'No files for upload selected';
+      this.hideMsgFileUpload = false;
+      this.msgFileUpload = 'No files for upload selected';
       elementDragnDrop.setAttribute("style", "border-color:red;");
       required = true;
     } else {
-      this.hideMsgFileUplod = true;
+      this.hideMsgFileUpload = true;
       elementDragnDrop.setAttribute("style", "border-color:lightgrey;");
     }
 
@@ -409,7 +413,7 @@ export class ChallengeComponent implements OnInit {
         this.hideSuccess = false;
         this.hideUpload = true;
         this.hideLoading = true;
-        this.hideMsgFileUplod = true;
+        this.hideMsgFileUpload = true;
       }, (error) => {
         switch (error.status) {
           case 403:
