@@ -5,7 +5,6 @@ import string
 import sys
 import time
 from zipfile import ZipFile
-
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -33,7 +32,6 @@ from ..serializers import (
 class AdminApplicationsView(APIView):
     # grant permission only for admin user
     permission_classes = [IsAdminUser]
-    gApi = GithubApi()
 
     name = "Admin Application View"
     description = "handling all requests for applications as a admin"
@@ -80,8 +78,8 @@ class AdminApplicationsView(APIView):
         """
 
         try:
-            # random challenge
-            challengeId = random.choice(Challenge.objects.all()).id
+            # random challenge selection of active challenges
+            challengeId = random.choice(Challenge.objects.filter(active=True)).id
 
         except IndexError:
             return Response(
@@ -252,6 +250,8 @@ class AdminApplicationsView(APIView):
             query:
                 applicationId
         """
+        gApi = GithubApi()
+
         try:
             user = User.objects.get(username=self.kwargs["applicationId"])
 
@@ -264,7 +264,7 @@ class AdminApplicationsView(APIView):
         # if the repository has not been created yet, there shouldnt be a GitHub API-Call
         if user.application.githubRepo:
             try:
-                self.gApi.deleteRepo(user.application.githubRepo)
+                gApi.delete_repo(user.application.githubRepo)
             except GithubException:
                 return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
 
@@ -280,8 +280,7 @@ class AdminApplicationsView(APIView):
 
 
 class AdminResultApplicationView(APIView):
-    permission_classes = [IsAuthenticated]
-    gApi = GithubApi()
+    permission_classes = [IsAdminUser]
 
     # 8. Get Result
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#8-get-result
@@ -293,6 +292,7 @@ class AdminResultApplicationView(APIView):
             query:
                 applicationId
         """
+        gApi = GithubApi()
         try:
             application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
@@ -314,8 +314,8 @@ class AdminResultApplicationView(APIView):
         #         status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            githubUrl = self.gApi.getRepoUrl(application.githubRepo)
-            linterResult = self.gApi.getLinterResult(application.githubRepo)
+            githubUrl = gApi.get_repo_url(application.githubRepo)
+            linterResult = gApi.get_linter_result(application.githubRepo)
 
         except GithubException:
             response, statusCode = jsonMessages.errorGithubJsonResponse(sys.exception())
@@ -333,8 +333,6 @@ class UploadSolutionView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [FileUploadParser]
 
-    gApi = GithubApi()
-
     # 18. Upload Solution
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
     # /api/application/uploadSolution
@@ -346,6 +344,7 @@ class UploadSolutionView(APIView):
             required arguments:
                 dataZip
         """
+        gApi = GithubApi()
         user = User.objects.get(username=request.user.username)
 
         if user.application.status < Application.Status.IN_REVIEW:
@@ -389,18 +388,15 @@ class UploadSolutionView(APIView):
                         ),
                         status=status.HTTP_406_NOT_ACCEPTABLE
                     )
-                else:
-                    self.gApi.createRepo(repoName, 'to be defined')  # TODO: description auslagern
 
+                file_list = []
                 for path in filteredPathList:
                     if not path.endswith('/'):
-                        self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
+                        file_list.append(file_obj.open(path))
+                
+                gApi.create_repo(repoName, 'to be defined')  # TODO: description auslagern
+                gApi.upload_files(repoName, file_list)
 
-                # reset the pointer to the beginning of the zipfile
-                raw_file.seek(0)
-                self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
-
-                self.gApi.addLinter(repoName)
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
 

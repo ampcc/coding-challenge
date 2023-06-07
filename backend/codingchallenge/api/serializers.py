@@ -7,7 +7,7 @@ from django.db.models import CharField
 class GetChallengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge
-        fields = ["id", "challengeHeading", "challengeText"]
+        fields = ["id", "challengeHeading", "challengeText", "active"]
 
 class GetApplicationSerializer(serializers.ModelSerializer):
     class Meta:
