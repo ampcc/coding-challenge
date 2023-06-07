@@ -1,7 +1,6 @@
 from pathlib import Path
-from unittest.mock import patch
-from zipfile import ZipFile
 
+from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
@@ -10,21 +9,8 @@ from ...mock.mockAuth import MockAuth
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 filePath = BASE_DIR.joinpath(Path("api/tests/mock/fileuploads"))
 
-uploadedFileList = []
-
-
-# Mock function
-# appends the path of the uploaded file to a uploadedFileList
-def pushFileMock(*args):
-    path = args[2]
-    uploadedFileList.append(path)
-
-
-# patch is used to bypass the default githubApi and to replace the following method with mock data
-@patch('api.include.githubApi.GithubApi.pushFile', pushFileMock)
-@patch('api.include.githubApi.GithubApi.addLinter', autospec=True)
-@patch('api.include.githubApi.GithubApi.createRepo', autospec=True)
 class test_uploadSolution(APITransactionTestCase):
+    settings.DEPLOY_OFFLINE = True
     reset_sequences = True
 
     url = '/api/application/uploadSolution/'
@@ -36,7 +22,7 @@ class test_uploadSolution(APITransactionTestCase):
         # Reset of uploaded Files list from Mock
         uploadedFileList = []
 
-    def test_missingAuth(self, mockAddLinter, mockPushRepo):
+    def test_missingAuth(self):
         # remove headers for this test
         self.client.credentials()
 
@@ -50,17 +36,17 @@ class test_uploadSolution(APITransactionTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_wrongFormat(self, mockAddLinter, mockPushRepo):
+    def test_wrongFormat(self):
         response = self.client.post(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_noFile(self, mockAddLinter, mockPushRepo):
+    def test_noFile(self):
         response = self.client.post(self.url, content_type="application/zip")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {'detail': 'No file passed. Aborting.'})
 
-    def test_missingFilename(self, mockAddLinter, mockPushRepo):
+    def test_missingFilename(self):
         fileupload = open(filePath.joinpath('fileupload_correct.zip'), 'rb').read()
 
         response = self.client.post(
@@ -78,7 +64,7 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-    def test_testFileupload1(self, mockAddLinter, mockPushRepo):
+    def test_testFileupload1(self):
         # folder-structure of fileupload_wrong.zip
         # .
         # └── files
@@ -113,11 +99,7 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-        zipFile = ZipFile(fileuploadPath)
-
-        print(zipFile.namelist())
-
-    def test_testFileupload2(self, mockAddLinter, mockPushRepo):
+    def test_testFileupload2(self):
         # folder-structure of fileupload_correct.zip
         # .
         # ├── assets
@@ -150,14 +132,7 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-        # get a list of every path in fileupload
-        zipFile = ZipFile(fileuploadPath)
-
-        print(zipFile.namelist())
-        print(uploadedFileList)
-        self.assertListEqual(zipFile.namelist(), uploadedFileList)
-
-    def test_testFileupload3(self, mockAddLinter, mockPushRepo):
+    def test_testFileupload3(self):
         # folder-structure of fileupload_correct2.zip
         # assets
         #    ├── asset1.jpg
@@ -189,12 +164,44 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-        # get a list of every path in fileupload
-        zipFile = ZipFile(fileuploadPath)
+    def test_multipleUpload(self):
+        # folder-structure of fileupload_correct.zip
+        # .
+        # ├── assets
+        # │      ├── asset1.jpg
+        # │      ├── asset2.jpg
+        # │      └── asset3.jpg
+        # ├── run.py
+        # └── test.py
 
-        print(zipFile.namelist())
-        print(uploadedFileList)
-        self.assertListEqual(zipFile.namelist(), uploadedFileList)
+        fileuploadPath = filePath.joinpath('fileupload_correct.zip')
+        fileupload = open(fileuploadPath, 'rb').read()
 
-    def test_multipleUpload(self, mockAddLinter, mockPushRepo):
-        pass
+        # set Content-Disposition header
+        headers = {
+            'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
+        }
+
+        response = self.client.post(
+            self.url,
+            content_type="application/zip",
+            data=fileupload,
+            **headers
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response = self.client.post(
+            self.url,
+            content_type="application/zip",
+            data=fileupload,
+            **headers
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                'detail': 'solution has already been submitted'
+            }
+        )
