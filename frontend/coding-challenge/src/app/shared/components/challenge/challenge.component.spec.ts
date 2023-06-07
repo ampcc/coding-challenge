@@ -260,22 +260,92 @@ describe('ChallengeComponent', () => {
 
 
   it('display error message when file is already uploaded', () => {
+    component.fileArray.push(new File([''], 'first_test.zip', { type: 'application/zip' }));
 
+    let uploadedFile = new DataTransfer();
+    uploadedFile.items.add(new File([''], 'test.zip', { type: 'application/zip' }));
+
+    let fileInput: HTMLInputElement = fixture.debugElement.query(By.css('#fileHandler')).nativeElement;
+    fileInput.files = uploadedFile.files;
+    fileInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    let fileUploadError: HTMLElement = fixture.debugElement.query(By.css('.msgFileUpload')).nativeElement;
+    let errorMsg = 'You already uploaded a file. Please delete that file before uploading another one.';
+    let dragAndDropBoy: HTMLElement = fixture.debugElement.query(By.css('#DragnDropBlock')).nativeElement;
+
+    expect(component.hideMsgFileUpload).toBeFalse();
+    expect(component.fileArray.length).toBe(1);
+    expect(component.msgFileUpload).toBe(errorMsg);
+    expect(fileUploadError.innerText).toBe(errorMsg);
+    expect(dragAndDropBoy.style.borderColor).toBe('red');
   });
 
 
   it('display error message when file is too big', () => {
+    let uploadedFile = new DataTransfer();
+    let data: ArrayBuffer = new ArrayBuffer(52428899);
 
+    uploadedFile.items.add(new File([data], 'test.zip', { type: 'application/zip' }));
+
+    let fileInput: HTMLInputElement = fixture.debugElement.query(By.css('#fileHandler')).nativeElement;
+    fileInput.files = uploadedFile.files;
+    fileInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    let fileUploadError: HTMLElement = fixture.debugElement.query(By.css('.msgFileUpload')).nativeElement;
+    let errorMsg = 'The file ' + uploadedFile.files[0].name + ' is too big';
+    let dragAndDropBoy: HTMLElement = fixture.debugElement.query(By.css('#DragnDropBlock')).nativeElement;
+
+    expect(component.hideMsgFileUpload).toBeFalse();
+    expect(component.fileArray.length).toBe(0);
+    expect(component.msgFileUpload).toBe(errorMsg);
+    expect(fileUploadError.innerText).toBe(errorMsg);
+    expect(dragAndDropBoy.style.borderColor).toBe('red');
   });
 
 
   it('display error message when file has the wrong filetype', () => {
+    let uploadedFile = new DataTransfer();
+    uploadedFile.items.add(new File([''], 'test.tar', { type: 'application/tar' }));
 
+    let fileInput: HTMLInputElement = fixture.debugElement.query(By.css('#fileHandler')).nativeElement;
+    fileInput.files = uploadedFile.files;
+    fileInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    let fileUploadError: HTMLElement = fixture.debugElement.query(By.css('.msgFileUpload')).nativeElement;
+    let errorMsg = 'The file ' + uploadedFile.files[0].name + ' has the wrong filetype';
+    let dragAndDropBoy: HTMLElement = fixture.debugElement.query(By.css('#DragnDropBlock')).nativeElement;
+
+    expect(component.hideMsgFileUpload).toBeFalse();
+    expect(component.fileArray.length).toBe(0);
+    expect(component.msgFileUpload).toBe(errorMsg);
+    expect(fileUploadError.innerText).toBe(errorMsg);
+    expect(dragAndDropBoy.style.borderColor).toBe('red');
   });
 
 
   it('display error message when file has wrong filetype and is too big', () => {
+    let uploadedFile = new DataTransfer();
+    let data: ArrayBuffer = new ArrayBuffer(52428899);
 
+    uploadedFile.items.add(new File([data], 'test.tar', { type: 'application/tar' }));
+
+    let fileInput: HTMLInputElement = fixture.debugElement.query(By.css('#fileHandler')).nativeElement;
+    fileInput.files = uploadedFile.files;
+    fileInput.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    let fileUploadError: HTMLElement = fixture.debugElement.query(By.css('.msgFileUpload')).nativeElement;
+    let errorMsg = 'The file ' + uploadedFile.files[0].name + ' has the wrong filetype and is too big';
+    let dragAndDropBoy: HTMLElement = fixture.debugElement.query(By.css('#DragnDropBlock')).nativeElement;
+
+    expect(component.hideMsgFileUpload).toBeFalse();
+    expect(component.fileArray.length).toBe(0);
+    expect(component.msgFileUpload).toBe(errorMsg);
+    expect(fileUploadError.innerText).toBe(errorMsg);
+    expect(dragAndDropBoy.style.borderColor).toBe('red');
   });
 
 
@@ -502,7 +572,7 @@ describe('ChallengeComponent', () => {
    * 
    * General tests:
    * - Tabs change html (check if bools are correctly set (and if div of specific tab exists --> get element by id)) ||
-   * - Check if remaining time is correct
+   * - Check if remaining time is correct ||
    * - ?? Correct navigation and ressource aquirement on ngInit
    * 
    * Tests for challenge_text tab:
@@ -510,26 +580,27 @@ describe('ChallengeComponent', () => {
    * - Correct text displayed ||
    * 
    * Tests for upload tab:
-   * - Programming language correctly stored
+   * - Programming language correctly stored ||
    * - Text input for "other" programming language:
-   *    - Displayed when "other" is selected
-   *    - Value stored correctly
-   * - OS correctly stored
+   *    - Displayed when "other" is selected ||
+   *    - Value stored correctly ||
+   * - OS correctly stored ||
    * - Text input for "other" os:
-   *    - Displayed when "other" is selected
-   *    - Value stored correctly
+   *    - Displayed when "other" is selected ||
+   *    - Value stored correctly ||
    * - File upload:
-   *    - File is checked on upload (check error messages)
-   *    - File is stored in input element AND fileArray
-   *    - File is displayed visually under input
-   *    - File is deleted from input element AND fileArray
+   *    - File is checked on upload (check error messages) ||
+   *    - File is stored in input element AND fileArray ||
+   *    - File is displayed visually under input ||
+   *    - File is deleted from input element AND fileArray ||
    * - Submit button:
-   *    - Error messages are correctly displayed
-   *    - When everything is correct --> no error messages and upload call
+   *    - Error messages are correctly displayed ||
+   *    - When everything is correct --> no error messages and upload call ||
    *    - !! Correct navigation on error response
-   *    - !! Html switched to progress spinner and success
+   *    - !! Html switched to progress spinner and success ||
    * 
    * Other tests/stuff:
-   * - ?? Dialog on click on question mark
+   * - ?? Dialog on click on question mark ||
+   * - Correct formatting of byte ||
    */
 });
