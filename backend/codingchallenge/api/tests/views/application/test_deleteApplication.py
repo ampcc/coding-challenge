@@ -19,9 +19,14 @@ class test_deleteApplication(APITransactionTestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges/",
-                         {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
-                         format='json')
+        self.client.post(
+            "/api/admin/challenges/",
+            {
+                "challengeHeading": "TestChallenge",
+                "challengeText": "TestChallengeDescription"
+            },
+            format='json'
+        )
 
         # Create Application
         self.client.post(self.url, {"applicationId": "TEST1234"}, format='json')
