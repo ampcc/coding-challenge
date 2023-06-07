@@ -1,7 +1,7 @@
 from github import Github, GithubException
 from github.AppAuthentication import AppAuthentication
 import os
-from . import procedureGithubAPI
+from . import procedureGithubAPI, githubApiMockData
 from dotenv import load_dotenv
 from pathlib import Path
 from django.conf import settings
@@ -18,7 +18,7 @@ class GithubApi:
 
     def get_repo_url(self, repo_name):
         if settings.DEPLOY_OFFLINE:
-            if repoName in githubApiMockData.getRepos:
+            if repo_name in githubApiMockData.getRepos:
                 return githubApiMockData.getRepoUrl(repo_name)
             else:
                 raise GithubException(400, {"message": "Repo not found!"}, None)
