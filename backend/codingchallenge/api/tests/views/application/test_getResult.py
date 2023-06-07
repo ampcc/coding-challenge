@@ -54,22 +54,6 @@ class test_getResult(APITransactionTestCase):
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    # Todo: should be implemented soon
-    # def test_wrongStatus(self, mockGetRepoUrl, mockGetLinterLog):
-    #     self.application.status = Application.Status.CHALLENGE_STARTED
-    #     self.application.save()
-    #
-    #     response = self.client.get(self.url + self.applicationId, format='json')
-    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    # Todo: should be implemented soon
-    # def test_linterNotFinished(self, mockGetRepoUrl, mockGetLinterLog):
-    #     # MagicMock.
-    #
-    #     gApi = GithubApi()
-    #
-    #     print(gApi.getLinterLog("Test"))
-
     def test_correctInput(self):
         # ignore pep8
 
