@@ -4,6 +4,8 @@ import secrets
 import string
 import sys
 import time
+from io import BytesIO
+from textwrap import dedent
 from zipfile import ZipFile
 from cryptography.fernet import Fernet
 from django.conf import settings
@@ -285,7 +287,6 @@ class AdminResultApplicationView(APIView):
     # 8. Get Result
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#8-get-result
     # /api/admin/applications/results/{applicationId}
-    # Todo: Test Cases for this method
     def get(self, request, *args, **kwargs):
         """
         get Linter Results with
@@ -330,14 +331,12 @@ class AdminResultApplicationView(APIView):
 
 
 class UploadSolutionView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     parser_classes = [FileUploadParser]
 
     # 18. Upload Solution
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
     # /api/application/uploadSolution
-    # Todo: Test Cases for this method
-    # Todo: Add OS and Programming Language in Body
     def post(self, request, *args, **kwargs):
         """
         post Challenge with
@@ -350,6 +349,31 @@ class UploadSolutionView(APIView):
         if user.application.status < Application.Status.IN_REVIEW:
 
             repoName = f'{user.application.applicationId}_{user.application.challengeId}'
+
+            try:
+                operating_system = request.META['HTTP_OPERATINGSYSTEM']
+                programming_language = request.META['HTTP_PROGRAMMINGLANGUAGE']
+
+                read_me = dedent(f"""\
+                    # Application of {user.application.applicationId}
+                    ## Uploaded solution
+                    - Operating System: {operating_system}
+                    - Programming Language: {programming_language}
+                    
+                    ## Assigned challenge Nr. {user.application.challengeId}
+                    ### {Challenge.objects.get(id=user.application.challengeId).challengeHeading}
+                    {Challenge.objects.get(id=user.application.challengeId).challengeText}
+    
+                """)
+
+                read_me_file = BytesIO(read_me.encode())
+                read_me_file.name = "/.github/README.md"
+
+            except KeyError:
+                return Response(
+                    jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             try:
                 raw_file = request.data['file']
@@ -393,14 +417,12 @@ class UploadSolutionView(APIView):
                 for path in filteredPathList:
                     if not path.endswith('/'):
                         file_list.append(file_obj.open(path))
-                
+
+                file_list.append(read_me_file)
+
                 gApi.create_repo(repoName, 'to be defined')  # TODO: description auslagern
                 gApi.upload_files(repoName, file_list)
-                # reset the pointer to the beginning of the zipfile
-                #raw_file.seek(0)
-                #self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
 
-                #self.gApi.addLinter(repoName)
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
 
