@@ -11,7 +11,6 @@ from ....models.application import Application
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 
-# patch is used to bypass the default githubApi and to raplace the following methods with mock data
 class test_getResult(APITransactionTestCase):
     reset_sequences = True
     applicationUrl = "/api/admin/applications/"
