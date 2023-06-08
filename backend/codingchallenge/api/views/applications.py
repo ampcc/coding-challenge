@@ -4,17 +4,20 @@ import secrets
 import string
 import sys
 import time
+from io import BytesIO
+from textwrap import dedent
 from zipfile import ZipFile
-
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.contrib.auth.models import User
+
 # RESTapi imports
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from github import GithubException
 from rest_framework import status
 from rest_framework.parsers import FileUploadParser
+
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -23,24 +26,20 @@ from rest_framework.views import APIView
 from . import jsonMessages, expirySettings
 from ..include.githubApi import GithubApi
 from ..models import Application, Challenge
-from ..serializers import GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer, \
+from ..serializers import (
+    GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer,
     PostApplicationSerializer
+)
 
 
-# endpoint: /api/admin/applications
 class AdminApplicationsView(APIView):
-    # grant permission only for admin user
     permission_classes = [IsAdminUser]
-    gApi = GithubApi()
 
     name = "Admin Application View"
     description = "handling all requests for applications as a admin"
 
-    # Implementation of GET Application and GET Applications
     def get(self, request, *args, **kwargs):
 
-        # if kwargs has keys, then there is a specific call for an exact Application 
-        # -> call is GET Application
         if kwargs.keys():
             applicationId = self.kwargs["applicationId"]
             application = Application.objects.get(applicationId=applicationId)
@@ -48,11 +47,10 @@ class AdminApplicationsView(APIView):
                 serializer = GetApplicationSerializer(application, many=False)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except:
-                return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
-                                status=status.HTTP_404_NOT_FOUND)
-
-        # if kwargs is empty, all Applications get returned
-        # -> call is GET Applications
+                return Response(
+                    jsonMessages.errorJsonResponse("Application ID not found!"),
+                    status=status.HTTP_404_NOT_FOUND
+                )
         else:
             applications = Application.objects
             serializer = GetApplicationSerializer(applications, many=True)
@@ -76,12 +74,14 @@ class AdminApplicationsView(APIView):
         """
 
         try:
-            # random challenge
-            challengeId = random.choice(Challenge.objects.all()).id
+            # random challenge selection of active challenges
+            challengeId = random.choice(Challenge.objects.filter(active=True)).id
 
         except IndexError:
-            return Response(jsonMessages.errorJsonResponse('there are no challenges in database'),
-                            status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            return Response(
+                jsonMessages.errorJsonResponse('there are no challenges in database'),
+                status=status.HTTP_422_UNPROCESSABLE_ENTITY
+            )
 
         if not request.data:
             return Response(jsonMessages.errorJsonResponse('Body is empty'), status=status.HTTP_204_NO_CONTENT)
@@ -89,20 +89,27 @@ class AdminApplicationsView(APIView):
         try:
 
             if not len(request.data.get('applicationId')) == 8:
-                return Response(jsonMessages.errorJsonResponse('applicationId has the wrong length'),
-                                status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    jsonMessages.errorJsonResponse('applicationId has the wrong length'),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             if Application.objects.filter(
-                    applicationId=request.data.get('applicationId')).exists():
-                return Response(jsonMessages.errorJsonResponse('ApplicationId already in use'),
-                                status=status.HTTP_409_CONFLICT)
+                    applicationId=request.data.get('applicationId')
+            ).exists():
+                return Response(
+                    jsonMessages.errorJsonResponse('ApplicationId already in use'),
+                    status=status.HTTP_409_CONFLICT
+                )
 
             if 'challengeId' in request.data:
                 if Challenge.objects.filter(id=request.data.get('challengeId')).exists():
                     challengeId = request.data.get('challengeId')
                 else:
-                    return Response(jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"),
-                                    status=status.HTTP_404_NOT_FOUND)
+                    return Response(
+                        jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"),
+                        status=status.HTTP_404_NOT_FOUND
+                    )
 
             if 'expiry' in request.data:
                 try:
@@ -110,7 +117,8 @@ class AdminApplicationsView(APIView):
                 except ValueError:
                     return Response(
                         jsonMessages.errorJsonResponse('Wrong json attributes. Please check expiryTimestamp value!'),
-                        status=status.HTTP_400_BAD_REQUEST)
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
             else:
                 self.expiryTimestamp = time.time() + expirySettings.daysUntilChallengeStart * 24 * 60 * 60
 
@@ -119,8 +127,10 @@ class AdminApplicationsView(APIView):
 
         alphabet = string.ascii_letters + string.digits
         password = ''.join(secrets.choice(alphabet) for i in range(16))
-        user = User.objects.create_user(username=request.data.get('applicationId'),
-                                        password=password)
+        user = User.objects.create_user(
+            username=request.data.get('applicationId'),
+            password=password
+        )
         user.save()
 
         # the key is build as follows: "applicationId+password".
@@ -143,11 +153,18 @@ class AdminApplicationsView(APIView):
             try:
                 applications = Application.objects.get(applicationId=request.data.get('applicationId'))
             except (KeyError, ObjectDoesNotExist):
-                return Response(jsonMessages.errorJsonResponse("Application not found!"),
-                                status=status.HTTP_404_NOT_FOUND)
-            postSerializer = PostApplicationSerializer(applications, many=False, context={'key': encKey,
-                                                                                          "applicationId": request.data.get(
-                                                                                              'applicationId')})
+                return Response(
+                    jsonMessages.errorJsonResponse("Application not found!"),
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            postSerializer = PostApplicationSerializer(
+                applications, many=False, context={
+                    'key': encKey,
+                    "applicationId": request.data.get(
+                        'applicationId'
+                    )
+                }
+            )
             return Response(postSerializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -183,23 +200,31 @@ class AdminApplicationsView(APIView):
                         if request.data.get(key) in Application.Status.values:
                             serialized_application['fields']['status'] = request.data.get(key)
                         else:
-                            return Response(jsonMessages.errorJsonResponse("Invalid status!"),
-                                            status=status.HTTP_400_BAD_REQUEST)
+                            return Response(
+                                jsonMessages.errorJsonResponse("Invalid status!"),
+                                status=status.HTTP_400_BAD_REQUEST
+                            )
                     if key == allowedFields[1]:
                         if Challenge.objects.filter(id=request.data.get(key)).exists():
                             serialized_application['fields']['challengeId'] = request.data.get(key)
                         else:
-                            return Response(jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"),
-                                            status=status.HTTP_404_NOT_FOUND)
+                            return Response(
+                                jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"),
+                                status=status.HTTP_404_NOT_FOUND
+                            )
                     if key == allowedFields[2]:
                         if request.data.get(key) > time.time():
                             serialized_application['fields']['expiry'] = request.data.get(key)
                         else:
-                            return Response(jsonMessages.errorJsonResponse("Invalid expiry date!"),
-                                            status=status.HTTP_400_BAD_REQUEST)
+                            return Response(
+                                jsonMessages.errorJsonResponse("Invalid expiry date!"),
+                                status=status.HTTP_400_BAD_REQUEST
+                            )
                 else:
-                    return Response(jsonMessages.errorJsonResponse("Field: " + key + " not valid!"),
-                                    status=status.HTTP_400_BAD_REQUEST)
+                    return Response(
+                        jsonMessages.errorJsonResponse("Field: " + key + " not valid!"),
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
 
         else:
             return Response(jsonMessages.errorJsonResponse("No data provided!"), status=status.HTTP_204_NO_CONTENT)
@@ -221,53 +246,62 @@ class AdminApplicationsView(APIView):
             query:
                 applicationId
         """
+        gApi = GithubApi()
+
         try:
             user = User.objects.get(username=self.kwargs["applicationId"])
 
         except(KeyError, TypeError, User.DoesNotExist):
-            return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
-                            status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                jsonMessages.errorJsonResponse("Application ID not found!"),
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         # if the repository has not been created yet, there shouldnt be a GitHub API-Call
         if user.application.githubRepo:
             try:
-                self.gApi.deleteRepo(user.application.githubRepo)
+                gApi.delete_repo(user.application.githubRepo)
             except GithubException:
                 return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
 
         try:
             user.delete()
         except:
-            return Response(jsonMessages.errorJsonResponse("Can't delete user due to an unknown error!"), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                jsonMessages.errorJsonResponse("Can't delete user due to an unknown error!"),
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
         return Response(jsonMessages.successJsonResponse(), status=status.HTTP_200_OK)
 
 
 class AdminResultApplicationView(APIView):
-    permission_classes = [IsAuthenticated]
-    gApi = GithubApi()
+    permission_classes = [IsAdminUser]
 
     # 8. Get Result
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#8-get-result
     # /api/admin/applications/results/{applicationId}
-    # Todo: Test Cases for this method
     def get(self, request, *args, **kwargs):
         """
         get Linter Results with
             query:
                 applicationId
         """
+        gApi = GithubApi()
         try:
             application = Application.objects.get(applicationId=self.kwargs["applicationId"])
 
         except(KeyError, ObjectDoesNotExist):
-            return Response(jsonMessages.errorJsonResponse("Application ID not found!"),
-                            status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                jsonMessages.errorJsonResponse("Application ID not found!"),
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         if not application.githubRepo:
             return Response(
                 jsonMessages.errorJsonResponse("Can not find repo"),
-                status=status.HTTP_400_BAD_REQUEST)
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         # except AttributeError:
         #     return Response(
@@ -275,34 +309,35 @@ class AdminResultApplicationView(APIView):
         #         status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            githubUrl = self.gApi.getRepoUrl(application.githubRepo)
-            linterResult = self.gApi.getLinterResult(application.githubRepo)
+            githubUrl = gApi.get_repo_url(application.githubRepo)
+            linterResult = gApi.get_linter_result(application.githubRepo)
 
         except GithubException:
             response, statusCode = jsonMessages.errorGithubJsonResponse(sys.exception())
             return Response(response, status=statusCode)
 
-        return Response({'githubUrl': githubUrl,
-                         'content': linterResult}, status=status.HTTP_200_OK)
+        return Response(
+            {
+                'githubUrl': githubUrl,
+                'content': linterResult
+            }, status=status.HTTP_200_OK
+        )
 
 
 class UploadSolutionView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     parser_classes = [FileUploadParser]
-
-    gApi = GithubApi()
 
     # 18. Upload Solution
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
     # /api/application/uploadSolution
-    # Todo: Test Cases for this method
-    # Todo: Add OS and Programming Language in Body
     def post(self, request, *args, **kwargs):
         """
-        post Challenge with
+        post Solution with
             required arguments:
                 dataZip
         """
+        gApi = GithubApi()
         user = User.objects.get(username=request.user.username)
 
         if user.application.status < Application.Status.IN_REVIEW:
@@ -310,13 +345,44 @@ class UploadSolutionView(APIView):
             repoName = f'{user.application.applicationId}_{user.application.challengeId}'
 
             try:
+                operating_system = request.META['HTTP_OPERATINGSYSTEM']
+                programming_language = request.META['HTTP_PROGRAMMINGLANGUAGE']
+
+                read_me = dedent(f"""\
+                    # Application of {user.application.applicationId}
+                    ## Uploaded solution
+                    - Operating System: {operating_system}
+                    - Programming Language: {programming_language}
+                    
+                    ## Assigned challenge Nr. {user.application.challengeId}
+                    ### {Challenge.objects.get(id=user.application.challengeId).challengeHeading}
+                    {Challenge.objects.get(id=user.application.challengeId).challengeText}
+    
+                """)
+
+                read_me_file = BytesIO(read_me.encode())
+                read_me_file.name = "/.github/README.md"
+
+            except KeyError:
+                return Response(
+                    jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            try:
                 raw_file = request.data['file']
             except KeyError:
-                return Response(jsonMessages.errorJsonResponse("No file passed. Aborting."), status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    jsonMessages.errorJsonResponse("No file passed. Aborting."),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             try:
                 file_obj = ZipFile(raw_file)
             except:
-                return Response(jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting."), status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting."),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             try:
                 oneFolderAtTopLevel = False
@@ -334,21 +400,23 @@ class UploadSolutionView(APIView):
                             oneFolderAtTopLevel = True
                         filteredPathList.append(path)
                 if not (oneFileAtTopLevel and oneFolderAtTopLevel):
-                    return Response(jsonMessages.errorJsonResponse(
-                        "The data does not match the required structure inside of the zipfile!"),
-                                    status=status.HTTP_406_NOT_ACCEPTABLE)
-                else:
-                    self.gApi.createRepo(repoName, 'to be defined')  # TODO: description auslagern
+                    return Response(
+                        jsonMessages.errorJsonResponse(
+                            "The data does not match the required structure inside of the zipfile!"
+                        ),
+                        status=status.HTTP_406_NOT_ACCEPTABLE
+                    )
 
+                file_list = []
                 for path in filteredPathList:
                     if not path.endswith('/'):
-                        self.gApi.pushFile(repoName, path[path.find('/') + 1:], file_obj.read(path))
-                
-                # reset the pointer to the beginning of the zipfile
-                raw_file.seek(0)
-                self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
+                        file_list.append(file_obj.open(path))
 
-                self.gApi.addLinter(repoName)
+                file_list.append(read_me_file)
+
+                gApi.create_repo(repoName, 'to be defined')  # TODO: description auslagern
+                gApi.upload_files(repoName, file_list)
+
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
 
@@ -361,11 +429,10 @@ class UploadSolutionView(APIView):
         else:
             return Response(
                 jsonMessages.errorJsonResponse("solution has already been submitted"),
-                status=status.HTTP_400_BAD_REQUEST)
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
-# Implementation of GET Application Status
-### endpoint: /api/getApplicationStatus
 class StatusApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -379,13 +446,20 @@ class StatusApplicationView(APIView):
 class StartChallengeView(APIView):
     permission_classes = [IsAuthenticated]
 
+    # 15. Start Challenge
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#startChallenge
+    # /api/application/startChallenge/
     def get(self, request, *args, **kwargs):
+        """
+        start Challenge
+        """
         user = User.objects.get(username=request.user.username)
 
         if user.application.status >= Application.Status.CHALLENGE_STARTED:
             return Response(
                 jsonMessages.errorJsonResponse("Can not start challenge! The challenge has already been started!"),
-                status=status.HTTP_400_BAD_REQUEST)
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         expiryTimestamp = user.application.expiry
         currentTimestamp = time.time()
@@ -394,9 +468,13 @@ class StartChallengeView(APIView):
             # application is expired
             user.application.status = Application.Status.EXPIRED
             user.application.save()
-            return Response(jsonMessages.errorJsonResponse(
-                "Can not start challenge! The application is expired since " + str(
-                    expiryTimestamp - currentTimestamp) + " seconds!"), status=status.HTTP_410_GONE)
+            return Response(
+                jsonMessages.errorJsonResponse(
+                    "Can not start challenge! The application is expired since " + str(
+                        expiryTimestamp - currentTimestamp
+                    ) + " seconds!"
+                ), status=status.HTTP_410_GONE
+            )
         # application is still running
         else:
             user.application.expiry = time.time() + expirySettings.daysToFinishSinceChallengeStart * 24 * 60 * 60

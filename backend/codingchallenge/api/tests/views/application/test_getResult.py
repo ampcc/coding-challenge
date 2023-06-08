@@ -1,16 +1,13 @@
 from pathlib import Path
-
 from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
-
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 
 
-# patch is used to bypass the default githubApi and to raplace the following methods with mock data
 class test_getResult(APITransactionTestCase):
     reset_sequences = True
     applicationUrl = "/api/admin/applications/"
@@ -73,22 +70,6 @@ class test_getResult(APITransactionTestCase):
 
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    # Todo: should be implemented soon
-    # def test_wrongStatus(self, mockGetRepoUrl, mockGetLinterLog):
-    #     self.application.status = Application.Status.CHALLENGE_STARTED
-    #     self.application.save()
-    #
-    #     response = self.client.get(self.url + self.applicationId, format='json')
-    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    # Todo: should be implemented soon
-    # def test_linterNotFinished(self, mockGetRepoUrl, mockGetLinterLog):
-    #     # MagicMock.
-    #
-    #     gApi = GithubApi()
-    #
-    #     print(gApi.getLinterLog("Test"))
 
     def test_correctInput(self):
         # ignore pep8
