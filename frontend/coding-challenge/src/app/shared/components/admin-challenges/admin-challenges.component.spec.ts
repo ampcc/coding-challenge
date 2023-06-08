@@ -81,6 +81,17 @@ describe('AdminChallengesComponent', () => {
    });
 
 
+   it('display dialog on click on detail button', () => {
+    let detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
+    detail.click();
+
+    fixture.detectChanges();
+
+    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    expect(dialog).toBeTruthy();
+  });
+
+
   /**
    * Tests for admin_challenges component
    * --> !! := Difficult test
