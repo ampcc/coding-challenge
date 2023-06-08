@@ -17,22 +17,12 @@ class MockAuth:
         return user
 
     @staticmethod
-    def applicantWithApplication(testcase):
+    def applicantWithApplication(testcase, appId):
         applicationUrl = "/api/admin/applications/"
-        challengeUrl = "/api/admin/challenges/"
-        applicationId = "TEST1234"
-
-        # Create Application and Challenges as Admin
-        MockAuth.admin(testcase)
-
-        # Create Challenge
-        testcase.client.post(challengeUrl, {
-            "challengeHeading": "TestChallenge",
-            "challengeText": "TestChallengeDescription"
-        }, format='json')
+        applicationId = appId
 
         # Create Application
-        testcase.applicationId = "TEST1234"
+        testcase.applicationId = appId
         application = testcase.client.post(applicationUrl, {"applicationId": applicationId}, format='json')
         applicationobj = Application.objects.get(applicationId=application.data['applicationId'])
         user = User.objects.get(id=applicationobj.user_id)
