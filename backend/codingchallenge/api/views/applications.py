@@ -344,7 +344,13 @@ class UploadSolutionView(APIView):
                 dataZip
         """
         gApi = GithubApi()
-        user = User.objects.get(username=request.user.username)
+        try:
+            user = User.objects.get(username=request.user.username)
+        except ObjectDoesNotExist:
+            return Response(
+                jsonMessages.errorJsonResponse("unauthorized"),
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
         if user.application.status < Application.Status.IN_REVIEW:
 
