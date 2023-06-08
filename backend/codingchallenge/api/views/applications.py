@@ -357,31 +357,6 @@ class UploadSolutionView(APIView):
             repoName = f'{user.application.applicationId}_{user.application.challengeId}'
 
             try:
-                operating_system = request.META['HTTP_OPERATINGSYSTEM']
-                programming_language = request.META['HTTP_PROGRAMMINGLANGUAGE']
-
-                read_me = dedent(f"""\
-                    # Application of {user.application.applicationId}
-                    ## Uploaded solution
-                    - Operating System: {operating_system}
-                    - Programming Language: {programming_language}
-                    
-                    ## Assigned challenge Nr. {user.application.challengeId}
-                    ### {Challenge.objects.get(id=user.application.challengeId).challengeHeading}
-                    {Challenge.objects.get(id=user.application.challengeId).challengeText}
-    
-                """)
-
-                read_me_file = BytesIO(read_me.encode())
-                read_me_file.name = "/.github/README.md"
-
-            except KeyError:
-                return Response(
-                    jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-            try:
                 raw_file = request.data['file']
             except KeyError:
                 return Response(
@@ -393,6 +368,33 @@ class UploadSolutionView(APIView):
             except:
                 return Response(
                     jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting."),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            try:
+                operating_system = request.META['HTTP_OPERATINGSYSTEM']
+                programming_language = request.META['HTTP_PROGRAMMINGLANGUAGE']
+
+                read_me = dedent(
+                    f"""\
+                    # Application of {user.application.applicationId}
+                    ## Uploaded solution
+                    - Operating System: {operating_system}
+                    - Programming Language: {programming_language}
+
+                    ## Assigned challenge Nr. {user.application.challengeId}
+                    ### {Challenge.objects.get(id=user.application.challengeId).challengeHeading}
+                    {Challenge.objects.get(id=user.application.challengeId).challengeText}
+
+                """
+                )
+
+                read_me_file = BytesIO(read_me.encode())
+                read_me_file.name = "/.github/README.md"
+
+            except:
+                return Response(
+                    jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
                     status=status.HTTP_400_BAD_REQUEST
                 )
 

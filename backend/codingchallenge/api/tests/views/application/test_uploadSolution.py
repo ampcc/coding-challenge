@@ -9,6 +9,7 @@ from ...mock.mockAuth import MockAuth
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 filePath = BASE_DIR.joinpath(Path("api/tests/mock/fileuploads"))
 
+
 class test_uploadSolution(APITransactionTestCase):
     settings.DEPLOY_OFFLINE = True
     reset_sequences = True
@@ -19,9 +20,6 @@ class test_uploadSolution(APITransactionTestCase):
         # Create Application and Challenge to proceed
         self.user = MockAuth.applicantWithApplication(self)
 
-        # Reset of uploaded Files list from Mock
-        uploadedFileList = []
-
     def test_missingAuth(self):
         # remove headers for this test
         self.client.credentials()
@@ -31,7 +29,7 @@ class test_uploadSolution(APITransactionTestCase):
         response = self.client.post(
             self.url,
             content_type="application/zip",
-            files={"attachment": ("test.zip", fileupload)}
+            data={"attachment": fileupload}
         )
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -64,6 +62,30 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
+    def test_noZipFile(self):
+        fileupload = open(filePath.joinpath('fileupload_noZip.txt'), 'rb').read()
+
+        headers = {
+            'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
+            'HTTP_OPERATINGSYSTEM': 'windoof',
+            'HTTP_PROGRAMMINGLANGUAGE': 'c#'
+        }
+
+        response = self.client.post(
+            self.url,
+            content_type="application/zip",
+            data=fileupload,
+            **headers
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data,
+            {
+                'detail': 'Cannot process zipFile. Aborting.'
+            }
+        )
+
     def test_testFileupload1(self):
         # folder-structure of fileupload_wrong.zip
         # .
@@ -79,9 +101,10 @@ class test_uploadSolution(APITransactionTestCase):
         fileuploadPath = filePath.joinpath('fileupload_wrong.zip')
         fileupload = open(fileuploadPath, 'rb').read()
 
-        # set Content-Disposition header
         headers = {
             'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
+            'HTTP_OPERATINGSYSTEM': 'windoof',
+            'HTTP_PROGRAMMINGLANGUAGE': 'c#'
         }
 
         response = self.client.post(
@@ -112,9 +135,10 @@ class test_uploadSolution(APITransactionTestCase):
         fileuploadPath = filePath.joinpath('fileupload_correct.zip')
         fileupload = open(fileuploadPath, 'rb').read()
 
-        # set Content-Disposition header
         headers = {
             'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
+            'HTTP_OPERATINGSYSTEM': 'windoof',
+            'HTTP_PROGRAMMINGLANGUAGE': 'c#'
         }
 
         response = self.client.post(
@@ -144,9 +168,10 @@ class test_uploadSolution(APITransactionTestCase):
         fileuploadPath = filePath.joinpath('fileupload_correct2.zip')
         fileupload = open(fileuploadPath, 'rb').read()
 
-        # set Content-Disposition header
         headers = {
             'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
+            'HTTP_OPERATINGSYSTEM': 'windoof',
+            'HTTP_PROGRAMMINGLANGUAGE': 'c#'
         }
 
         response = self.client.post(
@@ -177,9 +202,10 @@ class test_uploadSolution(APITransactionTestCase):
         fileuploadPath = filePath.joinpath('fileupload_correct.zip')
         fileupload = open(fileuploadPath, 'rb').read()
 
-        # set Content-Disposition header
         headers = {
             'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
+            'HTTP_OPERATINGSYSTEM': 'windoof',
+            'HTTP_PROGRAMMINGLANGUAGE': 'c#'
         }
 
         response = self.client.post(
