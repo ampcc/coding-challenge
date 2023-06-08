@@ -23,10 +23,6 @@ export class BackendService {
     return this.http.post(this.backendURL + "/api/application/loginWithKey/" + _applicationKey,{});
   }
 
-  public loginWithPassphrase(_passphrase: string): Observable<any>{
-    const headers = new HttpHeaders().set('passphrase', _passphrase);
-    return this.http.get(this.backendURL + "/api/application/loginWithPassphrase/", {'headers': headers});
-  }
   public getStatus(_applicantToken: string | null): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicantToken);
     return this.http.get(this.backendURL + "/api/application/getApplicationStatus/", {'headers': headers});
@@ -39,7 +35,9 @@ export class BackendService {
 
   public uploadChallenge(_applicationToken: string | null, _oS: string, _pL: string, _zipFile: File): Observable<any>{
     const headers = new HttpHeaders().set('Authorization', "Token " + _applicationToken)
-                                     .set('Content-Disposition', "attatchment; filename=" + _zipFile.name);
+                                     .set('Content-Disposition', "attatchment; filename=" + _zipFile.name)
+                                     .set('OperatingSystem', _oS)
+                                     .set('ProgrammingLanguage', _pL);
     const body = new FormData();
     body.append('dataZip', _zipFile);
     console.log(body);
@@ -84,7 +82,7 @@ export class BackendService {
       return this.http.get(this.backendURL + "/api/admin/applications/", {'headers': headers});
     }else {
       const params = new HttpParams().set('applicationStatus', _applicationStatus);
-      return this.http.get(this.backendURL + "/api/admin/applications/", {'headers': headers, params:params});
+      return this.http.get(this.backendURL + "/api/admin/applications", {'headers': headers, params:params});
     }
   }
 
@@ -145,6 +143,9 @@ export class BackendService {
   -----------------------------------------------*/
 
   public calcRemainingTime(_currentTime: number, _expiryTime: number): string {
+    if(!Number.isFinite(_currentTime) || !Number.isFinite(_expiryTime)){
+      return "calculation Error"
+    }
     _expiryTime = Math.floor(_expiryTime * 1000);
     var timeDelta = (_expiryTime - _currentTime) / 1000;
     if(timeDelta > 0){

@@ -115,7 +115,7 @@ export class AdminApplicationsComponent {
 
   /**
    * Searches for an application by the applicationId.
-   * The applicationId is specified by the user via an input element 
+   * The applicationId is specified by the user via an input element
    */
   public search(): void {
     this.searchContent = (<HTMLInputElement>document.getElementById("input_search_bar")).value;
@@ -324,6 +324,9 @@ export class AdminApplicationsComponent {
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly, similar to the way GitHub displays it
       this.resultOfLinting = response.content;
+      if (this.resultOfLinting === undefined || this.resultOfLinting === null){
+        this.resultOfLinting = "Linting result not ready. Please Wait.";
+      }
       JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
       this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
       let dialogRef = this.dialog.open(DialogComponent, {
@@ -372,6 +375,21 @@ export class AdminApplicationsComponent {
             });
         }
       })
+    }, (error: HttpErrorResponse) => {
+      switch (error.status) {
+        case 401:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/unauthorized");
+          break;
+        case 404:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/notFound");
+          break;
+        default:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/internalError");
+          break;
+      }
     })
   }
 

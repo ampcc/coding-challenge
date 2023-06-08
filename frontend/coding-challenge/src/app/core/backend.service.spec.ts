@@ -6,10 +6,11 @@ import { HttpHeaders } from '@angular/common/http';
 
 
 
+
 describe('BackendService', () => {
   let service: BackendService;
   let httpController: HttpTestingController;
-  let url = 'https://46022e70-68be-4fbf-a4d1-441852e186b1.mock.pstmn.io';
+  let url = 'http://localhost:8000';
   let dummyRes = '';
   let applicationKey = '62ce30b676d95ef439af5e1d84f9161034c67c4a';
   let applicationId = 'A0000113'
@@ -37,7 +38,7 @@ describe('BackendService', () => {
       service.getChallengeApp(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/application/challenges/${applicationId}`);
+      const testRequest = httpController.expectOne(`${url}/api/application/challenges/`);
       expect(testRequest.request.method).toEqual('GET');
       expect(testRequest.request.headers).toEqual(expHeaders);
       testRequest.flush(dummyRes);
@@ -46,13 +47,11 @@ describe('BackendService', () => {
 
   describe('login with Key', () => {
     it('check Request Method, Headers and Body', () => {
-      var expBody = { applicationId: "A0000113", applicationKey: "62ce30b676d95ef439af5e1d84f9161034c67c4a" }
       service.loginWithAppKey(applicationKey).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/application/loginWithKey`);
+      const testRequest = httpController.expectOne(`${url}/api/application/loginWithKey/${applicationKey}`);
       expect(testRequest.request.method).toEqual('POST');
-      expect(testRequest.request.body).toEqual(expBody);
       testRequest.flush(dummyRes);
     });
   });
@@ -63,7 +62,7 @@ describe('BackendService', () => {
       service.getStatus(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/application/getApplicationStatus/${applicationId}`);
+      const testRequest = httpController.expectOne(`${url}/api/application/getApplicationStatus/`);
       expect(testRequest.request.method).toEqual('GET');
       expect(testRequest.request.headers).toEqual(expHeaders);
       testRequest.flush(dummyRes);
@@ -76,9 +75,31 @@ describe('BackendService', () => {
       service.startChallenge(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/application/startChallenge`);
+      const testRequest = httpController.expectOne(`${url}/api/application/startChallenge/`);
       expect(testRequest.request.method).toEqual('GET');
       expect(testRequest.request.headers).toEqual(expHeaders);
+      testRequest.flush(dummyRes);
+    });
+  });
+
+  describe('uploadChallenge', () => {
+    it('check Request Method, Headers and Body', () => {
+      var oS = "MACOS";
+      var pL = "Python";
+      const testFile = new File(["test123"], "test.zip");
+      const expHeaders = new HttpHeaders().set('Authorization', "Token " + applicationToken)
+                                     .set('Content-Disposition', `attatchment; filename=${testFile.name}`)
+                                     .set('OperatingSystem', oS)
+                                     .set('ProgrammingLanguage', pL);
+      const expBody  = new FormData();
+      expBody.append('dataZip', "test123");
+      service.uploadChallenge(applicationToken, oS, pL, testFile).subscribe((res) => {
+        expect(res).toEqual(dummyRes);
+      });
+      const testRequest = httpController.expectOne(`${url}/api/application/uploadSolution/`);
+      expect(testRequest.request.method).toEqual('POST');
+      expect(testRequest.request.headers).toEqual(expHeaders);
+      expect(testRequest.request.body).toEqual(expBody);
       testRequest.flush(dummyRes);
     });
   });
@@ -89,7 +110,7 @@ describe('BackendService', () => {
       service.submitChallenge(applicationToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/application/submitChallenge`);
+      const testRequest = httpController.expectOne(`${url}/api/application/submitChallenge/`);
       expect(testRequest.request.method).toEqual('GET');
       expect(testRequest.request.headers).toEqual(expHeaders);
       testRequest.flush(dummyRes);
@@ -110,7 +131,7 @@ describe('BackendService', () => {
       service.loginAdmin(_username, _password).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/admin/login`);
+      const testRequest = httpController.expectOne(`${url}/api/admin/login/`);
       expect(testRequest.request.method).toEqual('POST');
       expect(testRequest.request.body).toEqual(expBody);
       testRequest.flush(dummyRes);
@@ -130,13 +151,30 @@ describe('BackendService', () => {
     });
   });
 
+  describe('changePassword', () => {
+    it('check Request Method, Headers and Body', () => {
+      var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
+      var oldPw = "Test123";
+      var newPw = "Test321";
+      const expBody = {oldPassword: oldPw, newPassword: newPw};
+      service.changePassword(adminToken, oldPw, newPw).subscribe((res) => {
+        expect(res).toEqual(dummyRes);
+      });
+      const testRequest = httpController.expectOne(`${url}/api/admin/changePassword/`);
+      expect(testRequest.request.method).toEqual('PUT');
+      expect(testRequest.request.headers).toEqual(expHeaders);
+      expect(testRequest.request.body).toEqual(expBody);
+      testRequest.flush(dummyRes);
+    });
+  });
+
   describe('getApplications', () => {
     it('check Request Method, Headers and Body (Without given Application Status)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
       service.getApplications(adminToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/admin/applications`);
+      const testRequest = httpController.expectOne(`${url}/api/admin/applications/`);
       expect(testRequest.request.method).toEqual('GET');
       expect(testRequest.request.headers).toEqual(expHeaders);
       testRequest.flush(dummyRes);
@@ -158,7 +196,7 @@ describe('BackendService', () => {
   describe('editApplications', () => {
     it('check Request Method, Headers and Body (Without any optional Parameters)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { application: {} };
+      var expBody = {};
       service.editApplication(adminToken, applicationId).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -171,7 +209,7 @@ describe('BackendService', () => {
 
     it('check Request Method, Headers and Body (With given Application Status)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { application: { applicationStatus: 2 } };
+      var expBody = {applicationStatus: 2 };
       service.editApplication(adminToken, applicationId, 2).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -184,7 +222,7 @@ describe('BackendService', () => {
 
     it('check Request Method, Headers and Body (With given challenge ID)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { application: { challengeId: 4 } };
+      var expBody = {challengeId: 4 };
       service.editApplication(adminToken, applicationId, undefined, 4).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -197,7 +235,7 @@ describe('BackendService', () => {
 
     it('check Request Method, Headers and Body (With given challenge ID)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { application: { extendDays: 5 } };
+      var expBody = {expiry: 5 };
       service.editApplication(adminToken, applicationId, undefined, undefined, 5).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -210,7 +248,7 @@ describe('BackendService', () => {
 
     it('check Request Method, Headers and Body (With given application Status and challengeId)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { application: { applicationStatus: 2, challengeId: 4 } };
+      var expBody = {applicationStatus: 2, challengeId: 4 };
       service.editApplication(adminToken, applicationId, 2, 4, undefined).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -223,7 +261,7 @@ describe('BackendService', () => {
 
     it('check Request Method, Headers and Body (With given application Status and extend Days)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { application: { applicationStatus: 2, extendDays: 5 } };
+      var expBody = {applicationStatus: 2, expiry: 5 };
       service.editApplication(adminToken, applicationId, 2, undefined, 5).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -236,7 +274,7 @@ describe('BackendService', () => {
 
     it('check Request Method, Headers and Body (With all optional Parameters)', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { application: { applicationStatus: 2, challengeId: 4, extendDays: 5 } };
+      var expBody = {applicationStatus: 2, challengeId: 4, expiry: 5 };
       service.editApplication(adminToken, applicationId, 2, 4, 5).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
@@ -277,10 +315,11 @@ describe('BackendService', () => {
   describe('getChallenge', () => {
     it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      service.getChallengeAdm(adminToken, 2).subscribe((res) => {
+      var challId = 2;
+      service.getChallengeAdm(adminToken, challId).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/admin/challenges/2`);
+      const testRequest = httpController.expectOne(`${url}/api/admin/challenges/${challId}`);
       expect(testRequest.request.method).toEqual('GET');
       expect(testRequest.request.headers).toEqual(expHeaders);
       testRequest.flush(dummyRes);
@@ -293,7 +332,7 @@ describe('BackendService', () => {
       service.getChallenges(adminToken).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/admin/challenges`);
+      const testRequest = httpController.expectOne(`${url}/api/admin/challenges/`);
       expect(testRequest.request.method).toEqual('GET');
       expect(testRequest.request.headers).toEqual(expHeaders);
       testRequest.flush(dummyRes);
@@ -303,12 +342,12 @@ describe('BackendService', () => {
   describe('createChallenge', () => {
     it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { challenge: { challengeHeading: "Testheading", challengeText: "Testtext" } };
+      var expBody = { challengeHeading: "Testheading", challengeText: "Testtext" };
       var challenge: Challenge = { id: 0, challengeHeading: "Testheading", challengeText: "Testtext" };
       service.createChallenge(adminToken, challenge).subscribe((res) => {
         expect(res).toEqual(dummyRes);
       });
-      const testRequest = httpController.expectOne(`${url}/api/admin/challenges`);
+      const testRequest = httpController.expectOne(`${url}/api/admin/challenges/`);
       expect(testRequest.request.method).toEqual('POST');
       expect(testRequest.request.headers).toEqual(expHeaders);
       expect(testRequest.request.body).toEqual(expBody);
@@ -319,7 +358,7 @@ describe('BackendService', () => {
   describe('editChallenge', () => {
     it('check Request Method, Headers and Body', () => {
       var expHeaders = new HttpHeaders().set('Authorization', "Token " + adminToken);
-      var expBody = { challenge: { challengeHeading: "HeadingTest", challengeText: "Texttest" } };
+      var expBody = {challengeHeading: "HeadingTest", challengeText: "Texttest" };
       var challenge: Challenge = { id: 0, challengeHeading: "HeadingTest", challengeText: "Texttest" };
       service.editChallenge(adminToken, challenge).subscribe((res) => {
         expect(res).toEqual(dummyRes);
@@ -342,6 +381,38 @@ describe('BackendService', () => {
       expect(testRequest.request.method).toEqual('DELETE');
       expect(testRequest.request.headers).toEqual(expHeaders);
       testRequest.flush(dummyRes);
+    });
+  });
+
+  /********************************
+  Time Functions Tests
+  *********************************/
+
+  describe('calcRemainingTime', () => {
+    it('currentTime < expiryTime', () => {
+      var curTime = new Date().getTime();
+      var expiryTime = curTime / 1000;
+      curTime = curTime - (60 * 60 * 24 * 1000);
+      var expectedRes = "1 days 0 hours 0 minutes";
+      var result = service.calcRemainingTime(curTime, expiryTime);
+      expect(result).toEqual(expectedRes);
+    });
+
+    it('currentTime > expiryTime', () => {
+      var curTime = new Date().getTime();
+      var expiryTime = curTime / 1000;
+      curTime = curTime + (60 * 60 * 24 * 1000);
+      var expectedRes = "expired";
+      var result = service.calcRemainingTime(curTime, expiryTime);
+      expect(result).toEqual(expectedRes);
+    });
+
+    it('currentTime == expiryTime', () => {
+      var curTime = new Date().getTime();
+      var expiryTime = curTime / 1000;
+      var expectedRes = "expired";
+      var result = service.calcRemainingTime(curTime, expiryTime);
+      expect(result).toEqual(expectedRes);
     });
   });
 
