@@ -33,16 +33,16 @@ describe('AdminApplicationsComponent', () => {
   });
 
 
-  it('click on archive challenge tab', () => {
+  it('click on archive applications tab', () => {
     let activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
-    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
+    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
     
     let activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
     let archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
 
     // Initial state
-    expect(component.hideContentActiveChallenges).toBeTrue();
-    expect(component.hideContentArchiv).toBeFalse();
+    expect(component.hideContentArchiv).toBeTrue();
+    expect(component.hideContentActiveChallenges).toBeFalse();
     // expect(challengeTabStyle.borderBottom).toEqual('none');
     // expect(uploadTabStyle.borderBottom).toEqual('none');
     // expect(introTabStyle.borderBottom).toEqual('2px solid black');
@@ -52,16 +52,16 @@ describe('AdminApplicationsComponent', () => {
     expect(component.hideContentActiveChallenges).toBeTrue();
     expect(component.hideContentArchiv).toBeFalse();
 
-    expect(activeChallengeTabStyle.borderBottom).toEqual('none');
-    expect(archiveChallengeTabStyle.borderBottomStyle).toEqual('solid');
-    expect(archiveChallengeTabStyle.borderBottomWidth).toEqual('2px');
-    expect(archiveChallengeTabStyle.borderBottomColor).toEqual('black');
+    expect(activeChallengeTabStyle.borderBottom).toBe('none');
+    expect(archiveChallengeTabStyle.borderBottomStyle).toBe('solid');
+    expect(archiveChallengeTabStyle.borderBottomWidth).toBe('2px');
+    expect(archiveChallengeTabStyle.borderBottomColor).toBe('black');
   });
 
 
   it('click on active challenge tab', () => {
     let activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
-    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
+    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
     
     let activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
     let archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
@@ -83,6 +83,18 @@ describe('AdminApplicationsComponent', () => {
     expect(archiveChallengeTabStyle.borderBottom).toEqual('none');
   });
 
+
+  it('display dialog on click on detail or edit button', () => {
+    let detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
+    detail.click();
+
+    fixture.detectChanges();
+
+    let dialog = document.body.querySelector<HTMLInputElement>('. ');
+    expect(dialog).toBeTruthy();
+  });
+  
+
   /**
    * Tests for admin_applications component
    * --> !! := Difficult test
@@ -94,19 +106,14 @@ describe('AdminApplicationsComponent', () => {
    * - Filter:
    *    - Filter is displayed/hidden on click
    *    - Filter options work correctly 
+   * - Dialogs are correctly displayed ||
    * 
    * Tests for active_applications:
    * - Applicatios are displayed correctly
    * - correct Buttons are displayed
-   * - either time limit or submission dateare displayed
-   * - ?? Detail-Dialog is correctly displayed
-   * - ?? Extend-Dialog is correctly displayed 
-   * 
+   * - either time limit or submission date are displayed
+
    * Tests for archived_applications:
    * - Applicatios are displayed correctly
-   * - ?? Detail-Dialog is correctly displayed
-   * 
-   * Other tests/stuff:
-   * - ?? Dialog on click on question mark
    */
 });
