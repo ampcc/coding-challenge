@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { Application } from '../../models/application';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import * as JSZip from 'jszip';
 
 @Component({
   standalone: true,
