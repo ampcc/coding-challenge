@@ -113,10 +113,10 @@
                         </div>
                         <div class="btn_position">
                             <!-- Shown if the applicant uploaded the challenge -->
-                            <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details"
+                            <button *ngIf="getStatusText(app.status) === 'uploaded'" class="btn btn-dark details"
                                 (click)="openDialogActiveApplications(app)">Details</button>
                             <!-- Shown if applicant hadn't uploaded the challenge and the admin wants to extend the remaining time -->
-                            <button *ngIf="getStatusText(app.status) != 'uploaded'" class="btn btn-dark details"
+                            <button *ngIf="getStatusText(app.status) !== 'uploaded'" class="btn btn-dark details"
                                 (click)="openExtendDialogActiveApplications(app)">Edit</button>
                         </div>
                     </div>

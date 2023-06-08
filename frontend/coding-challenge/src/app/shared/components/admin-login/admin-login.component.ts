@@ -18,14 +18,14 @@ import { HttpErrorResponse } from '@angular/common/http';
   ]
 })
 export class AdminLoginComponent {
-  username: string = '';
-  password: string = '';
+  username = '';
+  password = '';
 
-  usernameError: string = 'Error';
-  passwordError: string = 'Error';
+  usernameError = 'Error';
+  passwordError = 'Error';
 
-  showUsernameError: boolean = false;
-  showPasswordError: boolean = false;
+  showUsernameError = false;
+  showPasswordError = false;
 
   // The Admin Login Component is used to log an admin in with his correct username and password
   constructor(private router: Router, private backendService: BackendService) { }

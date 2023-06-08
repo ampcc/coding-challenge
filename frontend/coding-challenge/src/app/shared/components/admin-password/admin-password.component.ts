@@ -18,20 +18,20 @@ import { HttpErrorResponse } from '@angular/common/http';
   ]
 })
 export class AdminPasswordComponent implements OnInit {
-  oldPassword: string = '';
-  newPassword: string = '';
-  confirmPassword: string = '';
+  oldPassword = '';
+  newPassword = '';
+  confirmPassword = '';
   private adminToken: string | null;
 
-  oldPasswordError: string = 'Error';
-  newPasswordError: string = 'Error';
-  confirmPasswordError: string = 'Error';
+  oldPasswordError = 'Error';
+  newPasswordError = 'Error';
+  confirmPasswordError = 'Error';
 
-  showOldPasswordError: boolean = false;
-  showNewPasswordError: boolean = false;
-  showConfirmPasswordError: boolean = false;
+  showOldPasswordError = false;
+  showNewPasswordError = false;
+  showConfirmPasswordError = false;
 
-  successfulChange: boolean = false;
+  successfulChange = false;
 
   // Reg Expression to check if password contains at least one uppercase and lowercase letter, as well as a number an special character
   mustContain = new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?])');

@@ -75,7 +75,7 @@ export class StartComponent implements OnInit {
 
   // Opens dialog to ask the user for confirmation to start the challenge
   openDialog(): void {
-    let dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Start Coding Challenge',
         description: {

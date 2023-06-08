@@ -23,9 +23,9 @@ import { Challenge } from '../../models/challenge';
 export class AdminChallengesComponent implements OnInit {
   private adminToken: string | null;
 
-  public hideContentActiveChallenges: boolean = false;
+  public hideContentActiveChallenges = false;
 
-  public hideFilterSelect: boolean = true;
+  public hideFilterSelect = true;
 
   public challengeArray: Challenge[] = [];
 
@@ -52,8 +52,8 @@ export class AdminChallengesComponent implements OnInit {
    * @param id The id tab-html element
    */
   public changeTab(id: string): void {
-    let elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
-    let elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
+    const elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
+    const elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
 
     switch (id) {
       case 'tab_active_challenges':
@@ -79,7 +79,7 @@ export class AdminChallengesComponent implements OnInit {
    */
   public openDialogActiveChallenges(challenge: Challenge): void {
     DialogComponent.name;
-    let dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: challenge.challengeHeading,
         description: {
@@ -113,7 +113,7 @@ export class AdminChallengesComponent implements OnInit {
    * @param challenge The challenge object which should be deleted
    */
   public openDeleteDialog(challenge: Challenge): void {
-    let dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Are you sure you want to delete the Challenge?',
         buttons: {
@@ -131,7 +131,7 @@ export class AdminChallengesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
         this.backend.deleteChallenge(this.adminToken, challenge.id!).subscribe(() => {
-          var index = this.challengeArray.findIndex(chal => chal.id === challenge.id);
+          const index = this.challengeArray.findIndex(chal => chal.id === challenge.id);
           this.challengeArray.splice(index, 1);
         }, (error) => {
           switch (error.status) {

@@ -22,22 +22,22 @@ import { Challenge } from '../../models/challenge';
 export class AdminEditComponent {
   private adminToken: string | null;
 
-  name: string = '';
-  description: string = '';
+  name = '';
+  description = '';
   id = 0;
 
-  nameError: string = 'Error';
-  descriptionError: string = 'Error';
+  nameError = 'Error';
+  descriptionError = 'Error';
 
-  successMessage: string = 'added';
-  pageName: string = 'Add';
-  buttonTitle: string = 'Add Challenge';
+  successMessage = 'added';
+  pageName = 'Add';
+  buttonTitle = 'Add Challenge';
 
-  showNameError: boolean = false;
-  showDescriptionError: boolean = false;
+  showNameError = false;
+  showDescriptionError = false;
 
-  successfulEdit: boolean = false;
-  editPage: boolean = false;
+  successfulEdit = false;
+  editPage = false;
 
   // The Admin Edit Component can either be used to edit an existing challenge or to create a new one
   constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService, private route: ActivatedRoute) {
@@ -118,7 +118,7 @@ export class AdminEditComponent {
       // If the changes are successful the user gets positive feedback and then is navigated to the challenges page
       // Otherwise the user gets navigated to an error page
       if (this.editPage) {
-        var tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description };
+        const tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description };
         this.backendService.editChallenge(this.adminToken, tempChallenge).subscribe((response) => {
           this.successfulEdit = true;
           setTimeout(() => {
@@ -144,7 +144,7 @@ export class AdminEditComponent {
         // If the page is an add challenge page the backend is calledto create a new challenge
         // If the creation is successful the user gets positive feedback and then is navigated to the challenges page
         // Otherwise the user gets navigated to an error page
-        var tempChallenge: Challenge = { challengeHeading: this.name, challengeText: this.description };
+        const tempChallenge: Challenge = { challengeHeading: this.name, challengeText: this.description };
         this.backendService.createChallenge(this.adminToken, tempChallenge).subscribe((response) => {
           this.successfulEdit = true;
           setTimeout(() => {
@@ -172,7 +172,7 @@ export class AdminEditComponent {
 
   // A dialog is opened to ask the user for confirmation that he wants to delete the challenge
   deleteChallenge(): void {
-    let dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Are you sure you want to delete the Challenge?',
         buttons: {

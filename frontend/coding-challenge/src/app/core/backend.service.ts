@@ -61,23 +61,23 @@ export class BackendService {
 
 
   public loginAdmin(_username: string, _password: string): Observable<any>{
-    var body: adminLoginCreds = {username: _username, password: _password};
+    const body: adminLoginCreds = {username: _username, password: _password};
     return this.http.post(this.backendURL + "/api/admin/login/", body);
   }
 
   public changePassword(_adminToken: string | null, _oldPassword: string, _newPassword: string): Observable<any> {
-    var body = {"oldPassword": _oldPassword, "newPassword": _newPassword};
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    const body = {"oldPassword": _oldPassword, "newPassword": _newPassword};
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.put(this.backendURL + "/api/admin/changePassword/", body, {'headers': headers});
   }
 
   public getApplication(_adminToken: string|null, _applicationId: string): Observable<any>{
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.get(this.backendURL + "/api/admin/applications/" + _applicationId, {'headers': headers});
   }
 
   public getApplications(_adminToken: string, _applicationStatus?: number): Observable<any>{
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     if(typeof _applicationStatus === 'undefined'){
       return this.http.get(this.backendURL + "/api/admin/applications/", {'headers': headers});
     }else {
@@ -86,9 +86,9 @@ export class BackendService {
     }
   }
 
-  public editApplication(_adminToken: string | null, _applicationId: string, _applicationStatus?: number, _challengeId?: number, _extendDays?: number): Observable<any> {
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
-    var body = {};
+  public editApplication(_adminToken: string|null, _applicationId: string, _applicationStatus?: number, _challengeId?: number, _extendDays?: number): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    const body = {};
     if(typeof _applicationStatus !== 'undefined'){
       Object.assign(body, {applicationStatus: _applicationStatus});
     }
@@ -102,39 +102,39 @@ export class BackendService {
   }
 
   public deleteApplication(_adminToken: string, _applicationId: string): Observable<any>{
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.delete(this.backendURL + "/api/admin/applications/" + _applicationId, {'headers': headers});
   }
 
-  public getResult(_adminToken: string | null, _applicationId: string): Observable<any> {
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+  public getResult(_adminToken: string|null, _applicationId: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.get(this.backendURL + "/api/admin/applications/results/" + _applicationId, {'headers': headers});
   }
 
-  public getChallengeAdm(_adminToken: string | null, _challengeId: number): Observable<any>{
+  public getChallengeAdm(_adminToken: string|null, _challengeId: number): Observable<any>{
     const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.get(this.backendURL + "/api/admin/challenges/" + _challengeId, {'headers': headers});
   }
 
-  public getChallenges(_adminToken: string | null): Observable<any> {
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+  public getChallenges(_adminToken: string|null): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.get(this.backendURL + "/api/admin/challenges/", {'headers': headers});
   }
 
-  public createChallenge(_adminToken: string | null, _challenge: Challenge): Observable<any> {
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
-    var body = {challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText};
+  public createChallenge(_adminToken: string|null, _challenge: Challenge): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    const body = {challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText};
     return this.http.post(this.backendURL + "/api/admin/challenges/", body, {'headers': headers});
   }
 
-  public editChallenge(_adminToken: string | null, _challenge: Challenge): Observable<any> {
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
-    var body = {challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText};
+  public editChallenge(_adminToken: string|null, _challenge: Challenge): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+    const body = {challengeHeading: _challenge.challengeHeading, challengeText: _challenge.challengeText};
     return this.http.put(this.backendURL + "/api/admin/challenges/" + _challenge.id, body, {'headers': headers});
   }
 
-  public deleteChallenge(_adminToken: string | null, _challengeId: number): Observable<any> {
-    var headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
+  public deleteChallenge(_adminToken: string|null, _challengeId: number): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', "Token " + _adminToken);
     return this.http.delete(this.backendURL + "/api/admin/challenges/" + _challengeId, {'headers': headers});
   }
 
@@ -147,13 +147,13 @@ export class BackendService {
       return "calculation Error"
     }
     _expiryTime = Math.floor(_expiryTime * 1000);
-    var timeDelta = (_expiryTime - _currentTime) / 1000;
+    let timeDelta = (_expiryTime - _currentTime) / 1000;
     if(timeDelta > 0){
-      var days = Math.floor(timeDelta / (60 * 60 * 24));
+      const days = Math.floor(timeDelta / (60 * 60 * 24));
       timeDelta -= days * 3600 * 24;
-      var hours = Math.floor(timeDelta / 3600);
+      const hours = Math.floor(timeDelta / 3600);
       timeDelta -= hours * 3600;
-      var minutes = Math.floor(timeDelta / 60);
+      const minutes = Math.floor(timeDelta / 60);
       return days + " days " + hours + " hours " + minutes + " minutes";
     }else {
       return "expired"

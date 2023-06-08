@@ -58,7 +58,7 @@ export class AppComponent {
   // Show Dialog to ask the admin to confirm that he wants to log out
   logout(): void {
     if (this.adminPage) {
-      let dialogRef = this.dialog.open(DialogComponent, {
+      const dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Are you sure you want to log out?',
           buttons: {
