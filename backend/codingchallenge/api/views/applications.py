@@ -5,6 +5,7 @@ import string
 import sys
 import time
 from io import BytesIO
+from threading import Thread
 from textwrap import dedent
 from zipfile import ZipFile
 from cryptography.fernet import Fernet
@@ -362,7 +363,6 @@ class UploadSolutionView(APIView):
 
                 read_me_file = BytesIO(read_me.encode())
                 read_me_file.name = "/.github/README.md"
-
             except KeyError:
                 return Response(
                     jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
@@ -416,6 +416,13 @@ class UploadSolutionView(APIView):
 
                 gApi.create_repo(repoName, 'to be defined')  # TODO: description auslagern
                 gApi.upload_files(repoName, file_list)
+                
+                # as the zipfile is redundant to the previous upload, the http-response will be sent before its upload is completed.
+                thread = Thread(
+                     target=gApi.upload_file,
+                     args=(repoName, 'zippedFile_' + repoName + '.zip', raw_file)
+                 )
+                thread.start()
 
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))

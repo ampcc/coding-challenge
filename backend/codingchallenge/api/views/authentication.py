@@ -31,7 +31,7 @@ class KeyAuthentication(ObtainAuthToken):
             except:
                 return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
 
-            if len(fernet_key) is not 44:
+            if len(fernet_key) != 44:
                 return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
             
             username = decryptedMessage[0:8]

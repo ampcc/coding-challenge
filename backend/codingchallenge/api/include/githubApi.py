@@ -49,7 +49,15 @@ class GithubApi:
             return githubApiMockData.pushFile
         else:
             return self.github_base.upload_files(files, repo_name, "main", "application file upload: commit")
-            
+    
+    def upload_file(self, repo_name, filename, input_file):
+        if settings.DEPLOY_OFFLINE:
+            return githubApiMockData.pushFile
+        else:
+            input_file.seek(0)
+            return self.github_base.upload_file(input_file, filename, repo_name, "main", "zipfile upload: commit")
+    
+
     def get_linter_result(self, repo_name):
         if settings.DEPLOY_OFFLINE:
             return githubApiMockData.getLinterResult
