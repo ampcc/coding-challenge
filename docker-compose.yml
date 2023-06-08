@@ -25,8 +25,8 @@ services:
     build: ./backend/
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/backend
+    # volumes:
+    #   - ./backend:/backend
     restart: always
     depends_on:
       database:
@@ -36,9 +36,9 @@ services:
     build: ./frontend/
     ports:
       - "4200:4200"
-    volumes:
-      - ./frontend/coding-challenge:/frontend
-      - node_modules:/frontend/node_modules
+    # volumes:
+    #   - ./frontend/coding-challenge:/frontend
+    #   - node_modules:/frontend/node_modules
     restart: always
     depends_on:
       - server
