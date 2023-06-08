@@ -12,7 +12,24 @@ class test_getResult(APITransactionTestCase):
     reset_sequences = True
     applicationUrl = "/api/admin/applications/"
     url = '/api/admin/applications/results/'
-    mockLinterResult = "+----SUMMARY----+------------+---------------+-------+-------+--------+--------------+\n| Descriptor    | Linter     | Mode          | Files | Fixed | Errors | Elapsed time |\n+---------------+------------+---------------+-------+-------+--------+--------------+\n| ✓  ACTION     | actionlint | list_of_files |     1 |       |      0 |        0.02s |\n| ✓  COPYPASTE  | jscpd      | project       |   n/a |       |      0 |        0.93s |\n| ✓  REPOSITORY | checkov    | project       |   n/a |       |      0 |       12.79s |\n| ✓  REPOSITORY | devskim    | project       |   n/a |       |      0 |        0.65s |\n| ✓  REPOSITORY | dustilock  | project       |   n/a |       |      0 |        0.02s |\n| ✓  REPOSITORY | gitleaks   | project       |   n/a |       |      0 |        0.11s |\n| ✓  REPOSITORY | git_diff   | project       |   n/a |       |      0 |        0.01s |\n| ✓  REPOSITORY | secretlint | project       |   n/a |       |      0 |        0.65s |\n| ✓  REPOSITORY | syft       | project       |   n/a |       |      0 |        0.43s |\n| ✓  REPOSITORY | trivy      | project       |   n/a |       |      0 |        3.41s |\n| ✕  SPELL      | cspell     | list_of_files |     2 |       |      2 |        2.85s |\n| ✓  SPELL      | misspell   | list_of_files |     1 |       |      0 |        0.04s |\n| ⁇ YAML        | prettier   | list_of_files |     1 |       |      1 |        0.42s |\n| ✓  YAML       | v8r        | list_of_files |     1 |       |      0 |        3.14s |\n| ✕  YAML       | yamllint   | list_of_files |     1 |       |      1 |        0.22s |\n+---------------+------------+---------------+-------+-------+--------+--------------+"
+    mockLinterResult = [
+        ['Descriptor', 'Linter', 'Mode', 'Files', 'Fixed', 'Errors', 'Elapsed time'],
+        ['✓ ACTION', 'actionlint', 'list_of_files', '1', '', '0', '0.02s'],
+        ['✓ COPYPASTE', 'jscpd', 'project', 'n/a', '', '0', '0.93s'],
+        ['✓ REPOSITORY', 'checkov', 'project', 'n/a', '', '0', '12.79s'],
+        ['✓ REPOSITORY', 'devskim', 'project', 'n/a', '', '0', '0.65s'],
+        ['✓ REPOSITORY', 'dustilock', 'project', 'n/a', '', '0', '0.02s'],
+        ['✓ REPOSITORY', 'gitleaks', 'project', 'n/a', '', '0', '0.11s'],
+        ['✓ REPOSITORY', 'git_diff', 'project', 'n/a', '', '0', '0.01s'],
+        ['✓ REPOSITORY', 'secretlint', 'project', 'n/a', '', '0', '0.65s'],
+        ['✓ REPOSITORY', 'syft', 'project', 'n/a', '', '0', '0.43s'],
+        ['✓ REPOSITORY', 'trivy', 'project', 'n/a', '', '0', '3.41s'],
+        ['✕ SPELL', 'cspell', 'list_of_files', '2', '', '2', '2.85s'],
+        ['✓ SPELL', 'misspell', 'list_of_files', '1', '', '0', '0.04s'],
+        ['? YAML', 'prettier', 'list_of_files', '1', '', '1', '0.42s'],
+        ['✓ YAML', 'v8r', 'list_of_files', '1', '', '0', '3.14s'],
+        ['✕ YAML', 'yamllint', 'list_of_files', '1', '', '1', '0.22s']
+    ]
 
     def setUp(self):
         # Authorization

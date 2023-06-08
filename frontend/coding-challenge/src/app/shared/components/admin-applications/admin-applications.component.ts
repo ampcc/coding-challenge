@@ -320,12 +320,13 @@ export class AdminApplicationsComponent {
    */
   public openDialogActiveApplications(application: Application): void {
     DialogComponent.name;
-    console.log(application)
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly, similar to the way GitHub displays it
+      console.log(response.content);
+
       this.resultOfLinting = response.content;
-      JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
-      this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
+      // JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
+      // this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
       let dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Applicant ' + application.applicationId,
@@ -478,8 +479,8 @@ export class AdminApplicationsComponent {
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly
       this.resultOfLinting = response.content;
-      JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
-      this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
+      // JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
+      // this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
       let dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Applicant ' + application.applicationId,
