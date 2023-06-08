@@ -16,8 +16,16 @@ class test_uploadSolution(APITransactionTestCase):
     url = '/api/application/uploadSolution/'
 
     def setUp(self):
+        MockAuth.admin(self)
+
+        # Create Challenge
+        self.client.post("/api/admin/challenges/", {
+            "challengeHeading": "TestChallenge",
+            "challengeText": "TestChallengeDescription"
+        }, format='json')
+
         # Create Application and Challenge to proceed
-        self.user = MockAuth.applicantWithApplication(self)
+        self.user = MockAuth.applicantWithApplication(self, "TEST1234")
 
         # Reset of uploaded Files list from Mock
         uploadedFileList = []
