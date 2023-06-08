@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
+from ....models.challenge import Challenge
 
 from ...mock.mockAuth import MockAuth
 from ....views import jsonMessages

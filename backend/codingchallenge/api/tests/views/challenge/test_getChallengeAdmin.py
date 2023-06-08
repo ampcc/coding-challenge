@@ -99,6 +99,6 @@ class test_getChallengeAdmin(APITestCase):
         
 
     def test_callNotAsAdmin(self):
-        MockAuth.applicant(self)
+        self.user = MockAuth.applicantWithApplication(self, "TEST1234")
         response = self.client.get(self.url + "1", {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)        

@@ -35,7 +35,6 @@ class test_getChallengeApplication(APITestCase):
         application = self.client.post("/api/admin/applications/", user, format='json')
 
         # Now authorize as application and login with key 
-        MockAuth.applicant(self)
         self.applicationId = "TEST1234"
         token = self.client.post('/api/application/loginWithKey/' + application.data['tmpLink'][29:]).data['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)

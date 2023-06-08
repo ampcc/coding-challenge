@@ -46,19 +46,21 @@ class test_postChallengeAdmin(APITestCase):
         # correct response values,
         # and if db entry matches requested data
         response = self.client.post(self.url, data, format="json")
-        responseJson = self.client.get(self.url)
-        id_1 = responseJson.data[0]['id']
+        challenges = self.client.get(self.url)
+        id_1 = challenges.data[0]['id']
         expected_data = {
             "id": id_1,
             "challengeHeading": "Test",
-            "challengeText": "Text of challenge..."
+            "challengeText": "Text of challenge...",
+            "active": True
         }
         response_data = {
-            "id": responseJson.data[0]['id'],
-            "challengeHeading": responseJson.data[0]['challengeHeading'],
-            "challengeText": responseJson.data[0]['challengeText']
+            "id": id_1,
+            "challengeHeading": challenges.data[0]['challengeHeading'],
+            "challengeText": challenges.data[0]['challengeText'],
+            "active": True
         }
-        
+
         self.assertEqual(Challenge.objects.count(), 1)
         self.assertEqual(response_data, expected_data)
         self.assertEqual(response_data, GetChallengeSerializer(Challenge.objects.get(id=str(id_1))).data)            

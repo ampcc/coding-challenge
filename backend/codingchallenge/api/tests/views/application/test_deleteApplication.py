@@ -8,7 +8,7 @@ from ....models.application import Application
 from ....views import jsonMessages
 
 
-# patch is used to bypass the default githubApi and to raplace the following method with mock data
+# patch is used to bypass the default githubApi and to replace the following method with mock data
 @patch('api.include.githubApi.GithubApi.deleteRepo', autospec=True)
 class test_deleteApplication(APITransactionTestCase):
     reset_sequences = True

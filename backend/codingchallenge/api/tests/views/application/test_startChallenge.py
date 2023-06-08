@@ -15,8 +15,16 @@ class test_getResult(APITransactionTestCase):
     url = '/api/application/startChallenge/'
 
     def setUp(self):
+        MockAuth.admin(self)
+
+        # Create Challenge
+        self.client.post("/api/admin/challenges/", {
+            "challengeHeading": "TestChallenge",
+            "challengeText": "TestChallengeDescription"
+        }, format='json')
+
         # Authorization
-        self.user = MockAuth.applicantWithApplication(self)
+        self.user = MockAuth.applicantWithApplication(self, "TEST1234")
         self.application = Application.objects.get(user_id=self.user)
         settings.DEPLOY_OFFLINE = True
 
@@ -69,6 +77,7 @@ class test_getResult(APITransactionTestCase):
             response.data, {
                 'id': mock.ANY,
                 'challengeHeading': mock.ANY,
-                'challengeText': mock.ANY
+                'challengeText': mock.ANY,
+                'active': mock.ANY
             }
         )
