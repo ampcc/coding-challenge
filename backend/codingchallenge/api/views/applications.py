@@ -340,7 +340,7 @@ class UploadSolutionView(APIView):
     # Todo: Add OS and Programming Language in Body
     def post(self, request, *args, **kwargs):
         """
-        post Challenge with
+        post Solution with
             required arguments:
                 dataZip
         """
@@ -396,11 +396,7 @@ class UploadSolutionView(APIView):
                 
                 gApi.create_repo(repoName, 'to be defined')  # TODO: description auslagern
                 gApi.upload_files(repoName, file_list)
-                # reset the pointer to the beginning of the zipfile
-                #raw_file.seek(0)
-                #self.gApi.pushFile(repoName, 'zippedFile_' + repoName + '.zip', raw_file.read())
 
-                #self.gApi.addLinter(repoName)
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
 
@@ -432,7 +428,13 @@ class StatusApplicationView(APIView):
 class StartChallengeView(APIView):
     permission_classes = [IsAuthenticated]
 
+    # 15. Start Challenge
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#startChallenge
+    # /api/application/startChallenge/
     def get(self, request, *args, **kwargs):
+        """
+        start Challenge
+        """
         user = User.objects.get(username=request.user.username)
 
         if user.application.status >= Application.Status.CHALLENGE_STARTED:
