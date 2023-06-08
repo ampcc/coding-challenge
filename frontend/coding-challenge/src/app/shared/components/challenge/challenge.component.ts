@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BackendService } from 'src/app/core/backend.service';
 import { MatTabsModule } from '@angular/material/tabs';
