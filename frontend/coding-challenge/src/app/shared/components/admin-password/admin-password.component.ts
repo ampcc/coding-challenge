@@ -33,8 +33,6 @@ export class AdminPasswordComponent implements OnInit {
 
   successfulChange = false;
 
-  successfulChange: boolean = false;
-
   // Listens for press of enter key and handles it as if confirm button was clicked
   @HostListener('window:keydown.enter', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
