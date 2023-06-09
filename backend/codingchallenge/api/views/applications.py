@@ -10,12 +10,14 @@ from zipfile import ZipFile
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.contrib.auth.models import User
+
 # RESTapi imports
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from github import GithubException
 from rest_framework import status
 from rest_framework.parsers import FileUploadParser
+
 # Authentication imports
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -30,19 +32,14 @@ from ..serializers import (
 )
 
 
-# endpoint: /api/admin/applications
 class AdminApplicationsView(APIView):
-    # grant permission only for admin user
     permission_classes = [IsAdminUser]
 
     name = "Admin Application View"
     description = "handling all requests for applications as a admin"
 
-    # Implementation of GET Application and GET Applications
     def get(self, request, *args, **kwargs):
 
-        # if kwargs has keys, then there is a specific call for an exact Application 
-        # -> call is GET Application
         if kwargs.keys():
             applicationId = self.kwargs["applicationId"]
             application = Application.objects.get(applicationId=applicationId)
@@ -54,9 +51,6 @@ class AdminApplicationsView(APIView):
                     jsonMessages.errorJsonResponse("Application ID not found!"),
                     status=status.HTTP_404_NOT_FOUND
                 )
-
-        # if kwargs is empty, all Applications get returned
-        # -> call is GET Applications
         else:
             applications = Application.objects
             serializer = GetApplicationSerializer(applications, many=True)
@@ -339,7 +333,7 @@ class UploadSolutionView(APIView):
     # /api/application/uploadSolution
     def post(self, request, *args, **kwargs):
         """
-        post Challenge with
+        post Solution with
             required arguments:
                 dataZip
         """
@@ -447,8 +441,6 @@ class UploadSolutionView(APIView):
             )
 
 
-# Implementation of GET Application Status
-### endpoint: /api/getApplicationStatus
 class StatusApplicationView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -462,7 +454,13 @@ class StatusApplicationView(APIView):
 class StartChallengeView(APIView):
     permission_classes = [IsAuthenticated]
 
+    # 15. Start Challenge
+    # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#startChallenge
+    # /api/application/startChallenge/
     def get(self, request, *args, **kwargs):
+        """
+        start Challenge
+        """
         user = User.objects.get(username=request.user.username)
 
         if user.application.status >= Application.Status.CHALLENGE_STARTED:

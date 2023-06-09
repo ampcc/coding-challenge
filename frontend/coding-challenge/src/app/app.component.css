@@ -43,10 +43,13 @@ a {
 .logout_link {
     margin-right: 0;
     display: inline-block;
+    padding: 3px;
+    border-radius: 5px;
 }
 
 .logout_link:hover {
     cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .home {
@@ -103,7 +106,7 @@ a {
 
 .sitenav_icon {
     height: 1.5em;
-}
+} 
 
 .sitenav_link {
     margin: 0;
@@ -114,8 +117,17 @@ a {
     font-weight: 600;
 }
 
+.sitenav_link:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 .sitenav_link_selected {
     background-color: rgb(0, 35, 57);
+    color: white;
+}
+
+.sitenav_link_selected:hover {
+    background-color: rgba(0, 35, 57, 0.795);
     color: white;
 }
 
