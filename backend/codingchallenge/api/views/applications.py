@@ -263,7 +263,8 @@ class AdminApplicationsView(APIView):
             try:
                 gApi.delete_repo(user.application.githubRepo)
             except GithubException:
-                return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
+                response, statusCode = jsonMessages.errorGithubJsonResponse(sys.exception())
+                return Response(response, status=statusCode)
 
         try:
             user.delete()
@@ -449,7 +450,8 @@ class UploadSolutionView(APIView):
                 thread.start()
 
             except GithubException:
-                return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
+                response, statusCode = jsonMessages.errorGithubJsonResponse(sys.exception())
+                return Response(response, status=statusCode)
 
             user.application.submission = time.time()
             user.application.status = Application.Status.IN_REVIEW

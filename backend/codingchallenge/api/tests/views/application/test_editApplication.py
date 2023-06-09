@@ -7,8 +7,6 @@ from rest_framework.test import APITransactionTestCase
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 
-from django.contrib.auth.models import User
-
 
 class test_editApplication(APITransactionTestCase):
     reset_sequences = True

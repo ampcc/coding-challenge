@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 from ....models.challenge import Challenge
-from ....views import jsonMessages
+from ....include import jsonMessages
 
 
 class test_getChallengeApplication(APITestCase):
