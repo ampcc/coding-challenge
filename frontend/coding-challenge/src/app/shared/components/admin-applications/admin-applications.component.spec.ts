@@ -34,7 +34,7 @@ describe('AdminApplicationsComponent', () => {
     fixture.detectChanges();
   });
 
-  // Check if component can be created
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -88,6 +88,16 @@ describe('AdminApplicationsComponent', () => {
     expect(activeChallengeTabStyle.borderBottomWidth).toEqual('2px');
     expect(activeChallengeTabStyle.borderBottomColor).toEqual('black');
     expect(archiveChallengeTabStyle.borderBottom).toEqual('none');
+  });
+
+
+  it('correct filter results', () => {
+
+  });
+
+
+  it('correct search results', () => {
+
   });
 
 
@@ -297,6 +307,7 @@ describe('AdminApplicationsComponent', () => {
    * - Filter:
    *    - Filter is displayed/hidden on click ||
    *    - Filter options work correctly 
+   * - Search works correctly
    * - Dialogs are correctly displayed ||
    * 
    * Tests for active_applications:

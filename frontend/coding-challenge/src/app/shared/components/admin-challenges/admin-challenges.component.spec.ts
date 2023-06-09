@@ -34,13 +34,12 @@ describe('AdminChallengesComponent', () => {
     fixture.detectChanges();
   });
 
-  // Check if component can be created
+ 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
 
-  // Test add-challenge button
   it('should navigate correctly', fakeAsync(() => {
     const navigateSpy = spyOn(router, 'navigateByUrl');
     component.addChallenge();
@@ -49,7 +48,6 @@ describe('AdminChallengesComponent', () => {
   }));
 
 
-  // Test the correct display of the challenges
   it('display challenges correctly', () => {
     let challengesHTML = fixture.debugElement.queryAll(By.css('.single_challenge'));
     expect(challengesHTML.length).toEqual(0);

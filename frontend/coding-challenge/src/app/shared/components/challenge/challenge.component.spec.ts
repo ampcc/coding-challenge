@@ -36,7 +36,7 @@ describe('ChallengeComponent', () => {
     fixture.detectChanges();
   });
 
-  // Check if component can be created
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -346,11 +346,6 @@ describe('ChallengeComponent', () => {
     expect(component.msgFileUpload).toBe(errorMsg);
     expect(fileUploadError.innerText).toBe(errorMsg);
     expect(dragAndDropBoy.style.borderColor).toBe('red');
-  });
-
-
-  it('display error message when file has wrong folder structure', () => {
-    // in progress
   });
 
 
