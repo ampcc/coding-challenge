@@ -7,7 +7,6 @@ import { Challenge } from '../../models/challenge';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 
-// Test if Admin Challenges Component works properly
 describe('AdminChallengesComponent', () => {
   let component: AdminChallengesComponent;
   let fixture: ComponentFixture<AdminChallengesComponent>;

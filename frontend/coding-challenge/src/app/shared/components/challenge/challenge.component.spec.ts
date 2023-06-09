@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { DebugElement } from '@angular/core';
 import { Observable, Subscriber, TeardownLogic, of, throwError } from 'rxjs';
 
-// Test if Challenge Component works properly
 describe('ChallengeComponent', () => {
   let component: ChallengeComponent;
   let fixture: ComponentFixture<ChallengeComponent>;
@@ -54,9 +53,6 @@ describe('ChallengeComponent', () => {
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
-    // expect(challengeTabStyle.borderBottom).toEqual('none');
-    // expect(uploadTabStyle.borderBottom).toEqual('none');
-    // expect(introTabStyle.borderBottom).toEqual('2px solid black');
 
     introTabElement.click();
 
@@ -83,9 +79,6 @@ describe('ChallengeComponent', () => {
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
-    // expect(challengeTabStyle.borderBottom).toEqual('none');
-    // expect(uploadTabStyle.borderBottom).toEqual('none');
-    // expect(introTabStyle.borderBottom).toEqual('2px solid black');
 
     challengeTabElement.click();
 
@@ -101,7 +94,6 @@ describe('ChallengeComponent', () => {
 
 
   it('click on upload tab', () => {
-    // fixture.detectChanges();
     let challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
     let uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
     let introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
@@ -113,14 +105,8 @@ describe('ChallengeComponent', () => {
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeTrue();
     expect(component.hideContentIntro).toBeFalse();
-    // expect(challengeTabStyle.borderBottomStyle).toEqual('none');
-    // expect(uploadTabStyle.borderBottomStyle).toEqual('none');
-    // expect(introTabStyle.borderBottomStyle).toEqual('solid');
-    // expect(introTabStyle.borderBottomWidth).toEqual('2px');
-    // expect(introTabStyle.borderBottomColor).toEqual('black');
 
     uploadTabElement.click();
-    // fixture.detectChanges();
 
     expect(component.hideContentChallenge).toBeTrue();
     expect(component.hideContentUpload).toBeFalse();
@@ -558,44 +544,4 @@ describe('ChallengeComponent', () => {
     formattedBytes = component.formatBytes(1993741824);
     expect(formattedBytes).toBe('1.86 GB');
   });
-
-
-  /**
-   * Tests for challenge component
-   * --> !! := Difficult test
-   * --> ?? := Questionable if not already done by others or if it's even possible
-   * 
-   * General tests:
-   * - Tabs change html (check if bools are correctly set (and if div of specific tab exists --> get element by id)) ||
-   * - Check if remaining time is correct ||
-   * - ?? Correct navigation and ressource aquirement on ngInit
-   * 
-   * Tests for challenge_text tab:
-   * - Correct heading displayed ||
-   * - Correct text displayed ||
-   * 
-   * Tests for upload tab:
-   * - Programming language correctly stored ||
-   * - Text input for "other" programming language:
-   *    - Displayed when "other" is selected ||
-   *    - Value stored correctly ||
-   * - OS correctly stored ||
-   * - Text input for "other" os:
-   *    - Displayed when "other" is selected ||
-   *    - Value stored correctly ||
-   * - File upload:
-   *    - File is checked on upload (check error messages) ||
-   *    - File is stored in input element AND fileArray ||
-   *    - File is displayed visually under input ||
-   *    - File is deleted from input element AND fileArray ||
-   * - Submit button:
-   *    - Error messages are correctly displayed ||
-   *    - When everything is correct --> no error messages and upload call ||
-   *    - !! Correct navigation on error response
-   *    - !! Html switched to progress spinner and success ||
-   * 
-   * Other tests/stuff:
-   * - ?? Dialog on click on question mark ||
-   * - Correct formatting of byte ||
-   */
 });

@@ -378,13 +378,45 @@ describe('AdminApplicationsComponent', () => {
 
    it('show and hide filter on click', () => {
     let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
-    let filterElement: HTMLElement = fixture.debugElement.query(By.css('#filterTree')).nativeElement;
     
     // Initial state
     expect(component.hideFilterSelect).toBeTrue();
     
     filterButtonElement.click();
 
+    fixture.detectChanges();
+
     expect(component.hideFilterSelect).toBeFalse();
    }); 
+
+
+   it('displays filter options correctly in active applications', () => {
+    let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
+    
+    expect(component.hideFilterSelect).toBeTrue();
+    
+    filterButtonElement.click();
+
+    fixture.detectChanges();
+
+    expect(component.hideFilterSelect).toBeFalse();
+    expect(component.hideContentActiveChallenges).toBeFalse();
+   });
+
+
+   it('displays filter options correctly in archive applications', () => {
+    let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
+    
+    component.hideContentArchiv = false;
+    component.hideContentActiveChallenges = true;
+
+    expect(component.hideFilterSelect).toBeTrue();
+    
+    filterButtonElement.click();
+
+    fixture.detectChanges();
+
+    expect(component.hideFilterSelect).toBeFalse();
+    expect(component.hideContentActiveChallenges).toBeTrue();
+   });
 });
