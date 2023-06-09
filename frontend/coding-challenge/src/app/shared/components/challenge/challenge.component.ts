@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BackendService } from 'src/app/core/backend.service';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -36,29 +37,29 @@ export class ChallengeComponent implements OnInit {
   application: Application;
   private applicationToken: string | null;
 
-  public time: string = 'No data available!';
-  public heading: string = 'No data available!';
-  public challengeText: string = 'No data available!';
+  public time = 'No data available!';
+  public heading = 'No data available!';
+  public challengeText = 'No data available!';
 
-  public hideContentIntro: boolean = false;
-  public hideContentChallenge: boolean = true;
-  public hideContentUpload: boolean = true;
+  public hideContentIntro = false;
+  public hideContentChallenge = true;
+  public hideContentUpload = true;
 
-  public hideProgLang: boolean = true;
-  public hideOpSys: boolean = true;
-  public hideSuccess: boolean = true;
-  public hideUpload: boolean = false;
-  public hideLoading: boolean = true;
+  public hideProgLang = true;
+  public hideOpSys = true;
+  public hideSuccess = true;
+  public hideUpload = false;
+  public hideLoading = true;
 
-  public msgProgLang: string = '';
-  public msgOpSys: string = '';
-  public msgFileUpload: string = '';
-  public hideMsgProgLang: boolean = true;
-  public hideMsgOpSys: boolean = true;
-  public hideMsgFileUpload: boolean = true;
+  public msgProgLang = '';
+  public msgOpSys = '';
+  public msgFileUpload = '';
+  public hideMsgProgLang = true;
+  public hideMsgOpSys = true;
+  public hideMsgFileUpload = true;
 
-  public os: string = 'default';
-  public pl: string = 'default';
+  public os = 'default';
+  public pl = 'default';
 
   public fileArray: File[] = [];
 
@@ -130,14 +131,14 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * Changes the tab and shows the associated content. 
+   * Changes the tab and shows the associated content.
    * This also includes dynamically setting the style of the tabs
    * @param id The id of the tab-html element
    */
   public changeTab(id: string): void {
-    let elementIntro = <HTMLLabelElement>document.getElementById('tab_intro');
-    let elementChallenge = <HTMLLabelElement>document.getElementById('tab_challenge');
-    let elementUpload = <HTMLLabelElement>document.getElementById('tab_upload');
+    const elementIntro = <HTMLLabelElement>document.getElementById('tab_intro');
+    const elementChallenge = <HTMLLabelElement>document.getElementById('tab_challenge');
+    const elementUpload = <HTMLLabelElement>document.getElementById('tab_upload');
 
     switch (id) {
       case 'tab_intro':
@@ -172,11 +173,11 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * Stores the selected programming language inside an attribute. 
+   * Stores the selected programming language inside an attribute.
    * If the user selected "other" an input element is displayed for the user to type his programming language
    */
   public selectionProgLang(): void {
-    let selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
+    const selectedOption = <HTMLSelectElement>document.getElementById('selectProgLang');
 
     if (selectedOption.value == "other") {
       this.hideProgLang = false;
@@ -186,11 +187,11 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * Stores the selected operating system inside an attribute. 
+   * Stores the selected operating system inside an attribute.
    * If the user selected "other" an input element is displayed for the user to type his operating system
    */
   public selectionOpSys(): void {
-    let selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
+    const selectedOption = <HTMLSelectElement>document.getElementById('selectOpSys');
 
     if (selectedOption.value == "other") {
       this.hideOpSys = false;
@@ -200,11 +201,11 @@ export class ChallengeComponent implements OnInit {
   }
 
   /**
-   * Opens a modal dialog that displays instructions on which folder structure the uploaded file should have 
+   * Opens a modal dialog that displays instructions on which folder structure the uploaded file should have
    */
   public openDialogInfo(): void {
     DialogComponent.name;
-    let dialogRef = this.dialog.open(DialogComponent, {
+    this.dialog.open(DialogComponent, {
       data: {
         title: 'Info: File structure',
         description: {
@@ -223,13 +224,13 @@ export class ChallengeComponent implements OnInit {
    * - There is no file already uploaded
    * - The size is smaller than 50 MB
    * - The file hast the correct file format (.zip)
-   * 
+   *
    * If any requirements fail, an error message is displayed
-   * @param event 
+   * @param event
    */
   public uploadFileHandler(event: Event): any {
-    let files = (event.target as HTMLInputElement).files;
-    let element = <HTMLInputElement>document.getElementById('DragnDropBlock');
+    const files = (event.target as HTMLInputElement).files;
+    const element = <HTMLInputElement>document.getElementById('DragnDropBlock');
 
     if (typeof files !== 'undefined' && files !== null) {
       // checks if the filesize is greater than 5 GB (= 5368709120 Byte)
@@ -254,7 +255,7 @@ export class ChallengeComponent implements OnInit {
         this.msgFileUpload = 'The file ' + files[0].name + ' has the wrong filetype';
         this.hideMsgFileUpload = false;
 
-        element.setAttribute("style", "border-color:red;");												
+        element.setAttribute("style", "border-color:red;");
       } else {
         this.checkUploadedZipContent(files[0]);
         // this.hideMsgFileUpload = true;
@@ -269,7 +270,7 @@ export class ChallengeComponent implements OnInit {
    * @param file The uploaded and compressed file
    */
   public checkUploadedZipContent(file: File): void {
-    let element = <HTMLInputElement>document.getElementById('DragnDropBlock');
+    const element = <HTMLInputElement>document.getElementById('DragnDropBlock');
     const jsZip = require('jszip');
     let result = true;
     let isSecondLayerFile = false;
@@ -308,14 +309,14 @@ export class ChallengeComponent implements OnInit {
     let fileInput = <HTMLInputElement>document.getElementById('fileHandler');
     fileInput.files = new DataTransfer().files;
 
-    let deletedElement = this.fileArray[index];
+    const deletedElement = this.fileArray[index];
     this.fileArray = this.fileArray.filter((element) => {
       return element !== deletedElement;
     });
   }
 
   /**
-   * Formates the bytes into a more adequate unit 
+   * Formates the bytes into a more adequate unit
    * @param size The size of the uploaded and compressed file in bytes
    * @returns The size formatted in either KB, MB or GB
    */
@@ -338,9 +339,9 @@ export class ChallengeComponent implements OnInit {
     let resultPl = this.pl;
     let resultOs = this.os;
 
-    let elementProgLang = <HTMLSelectElement>document.getElementById('selectProgLang');
-    let elementOpSys = <HTMLSelectElement>document.getElementById('selectOpSys');
-    let elementDragnDrop = <HTMLInputElement>document.getElementById('DragnDropBlock');
+    const elementProgLang = <HTMLSelectElement>document.getElementById('selectProgLang');
+    const elementOpSys = <HTMLSelectElement>document.getElementById('selectOpSys');
+    const elementDragnDrop = <HTMLInputElement>document.getElementById('DragnDropBlock');
 
     if (resultPl === 'default') {
       this.hideMsgProgLang = false;
@@ -348,7 +349,7 @@ export class ChallengeComponent implements OnInit {
       elementProgLang.setAttribute("style", "border-color:red;");
       required = true;
     } else if (resultPl === 'other') {
-      let elementInputProgLang = <HTMLInputElement>document.getElementById('progLang');
+      const elementInputProgLang = <HTMLInputElement>document.getElementById('progLang');
 
       resultPl = elementInputProgLang.value;
 
@@ -375,7 +376,7 @@ export class ChallengeComponent implements OnInit {
       elementOpSys.setAttribute("style", "border-color:red;");
       required = true;
     } else if (resultOs === 'other') {
-      let elementInputOpSy = <HTMLInputElement>document.getElementById('opSys');
+      const elementInputOpSy = <HTMLInputElement>document.getElementById('opSys');
 
       resultOs = elementInputOpSy.value;
 

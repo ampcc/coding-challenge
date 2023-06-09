@@ -18,14 +18,14 @@ import { HttpErrorResponse } from '@angular/common/http';
   ]
 })
 export class AdminLoginComponent {
-  username: string = '';
-  password: string = '';
+  username = '';
+  password = '';
 
-  usernameError: string = 'Error';
-  passwordError: string = 'Error';
+  usernameError = 'Error';
+  passwordError = 'Error';
 
-  showUsernameError: boolean = false;
-  showPasswordError: boolean = false;
+  showUsernameError = false;
+  showPasswordError = false;
 
   // Listens for press of enter key and handles it as if confirm button was clicked
   @HostListener('window:keydown.enter', ['$event'])

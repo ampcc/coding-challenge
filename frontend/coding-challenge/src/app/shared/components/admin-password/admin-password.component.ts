@@ -18,19 +18,20 @@ import { HttpErrorResponse } from '@angular/common/http';
   ]
 })
 export class AdminPasswordComponent implements OnInit {
+  oldPassword = '';
+  newPassword = '';
+  confirmPassword = '';
   private adminToken: string | null;
 
-  oldPassword: string = '';
-  newPassword: string = '';
-  confirmPassword: string = '';
+  oldPasswordError = 'Error';
+  newPasswordError = 'Error';
+  confirmPasswordError = 'Error';
 
-  oldPasswordError: string = 'Error';
-  newPasswordError: string = 'Error';
-  confirmPasswordError: string = 'Error';
+  showOldPasswordError = false;
+  showNewPasswordError = false;
+  showConfirmPasswordError = false;
 
-  showOldPasswordError: boolean = false;
-  showNewPasswordError: boolean = false;
-  showConfirmPasswordError: boolean = false;
+  successfulChange = false;
 
   successfulChange: boolean = false;
 
