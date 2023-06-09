@@ -17,6 +17,17 @@ class MockAuth:
         return user
 
     @staticmethod
+    def applicant(testcase):
+        # Authorisation Header
+        user = User.objects.create_user('user', 'user@test.com', "user")
+        user.save()
+        token = Token.objects.create(user=user)
+
+        testcase.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+
+        return user
+
+    @staticmethod
     def applicantWithApplication(testcase, appId):
         applicationUrl = "/api/admin/applications/"
         applicationId = appId
