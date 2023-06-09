@@ -5,11 +5,11 @@ from rest_framework.test import APITransactionTestCase
 
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
-from ....views import jsonMessages
+from ....include import jsonMessages
 
 
 # patch is used to bypass the default githubApi and to replace the following method with mock data
-@patch('api.include.githubApi.GithubApi.deleteRepo', autospec=True)
+@patch('api.include.githubApi.GithubApi.delete_repo', autospec=True)
 class test_deleteApplication(APITransactionTestCase):
     reset_sequences = True
     url = '/api/admin/applications/'

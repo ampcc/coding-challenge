@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from ...mock.mockAuth import MockAuth
-from ....views import jsonMessages
+from ....include import jsonMessages
 
 
 class test_getChallengeAdmin(APITestCase):
