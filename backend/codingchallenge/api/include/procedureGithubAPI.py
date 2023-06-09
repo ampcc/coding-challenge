@@ -111,3 +111,10 @@ class GithubApiWrapper:
         ref = self.push_commit(repo, "heads/" + branch_name, commit.sha)
         if ref is None and added_megalinter:
             return True
+
+    # Function that combines all prior API-calls
+    def upload_file(self, input_file, filename, repo_name, branch_name, commit_message):
+        repo = self.get_repo(repo_name)
+        create = repo.create_file(filename, commit_message, input_file.read())
+        if create is None:
+            return True

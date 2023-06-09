@@ -5,6 +5,7 @@ import string
 import sys
 import time
 from io import BytesIO
+from threading import Thread
 from textwrap import dedent
 from zipfile import ZipFile
 from cryptography.fernet import Fernet
@@ -23,7 +24,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from . import jsonMessages, expirySettings
+from ..include import jsonMessages, expirySettings
 from ..include.githubApi import GithubApi
 from ..models import Application, Challenge
 from ..serializers import (
@@ -386,6 +387,21 @@ class UploadSolutionView(APIView):
                 read_me_file = BytesIO(read_me.encode())
                 read_me_file.name = "/.github/README.md"
 
+            except KeyError:
+                return Response(
+                    jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            try:
+                raw_file = request.data['file']
+            except KeyError:
+                return Response(
+                    jsonMessages.errorJsonResponse("No file passed. Aborting."),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            try:
+                file_obj = ZipFile(raw_file)
             except:
                 return Response(
                     jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
@@ -424,6 +440,13 @@ class UploadSolutionView(APIView):
 
                 gApi.create_repo(repoName, 'to be defined')  # TODO: description auslagern
                 gApi.upload_files(repoName, file_list)
+                
+                # as the zipfile is redundant to the previous upload, the http-response will be sent before its upload is completed.
+                thread = Thread(
+                     target=gApi.upload_file,
+                     args=(repoName, 'zippedFile_' + repoName + '.zip', raw_file)
+                 )
+                thread.start()
 
             except GithubException:
                 return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
