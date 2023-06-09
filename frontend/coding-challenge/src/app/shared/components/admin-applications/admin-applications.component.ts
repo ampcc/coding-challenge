@@ -325,57 +325,10 @@ export class AdminApplicationsComponent {
       console.log(response.content);
 
       this.resultOfLinting = response.content;
-      if (this.resultOfLinting === undefined || this.resultOfLinting === null){
+      if (this.resultOfLinting === undefined || this.resultOfLinting === null) {
         this.resultOfLinting = "Linting result not ready. Please Wait.";
       }
-      // JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
-      // this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
-      const dialogRef = this.dialog.open(DialogComponent, {
-        data: {
-          title: 'Applicant ' + application.applicationId,
-          description: {
-            important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
-            link: 'Open Project on GitHub',
-            url: 'https://github.com/ampcc/' + application.githubRepo,
-            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
-          },
-          buttons: {
-            left: { title: 'Archive', look: 'primary' },
-            right: { title: 'Cancel', look: 'secondary' }
-          }
-        },
-        maxHeight: '85vh',
-        minWidth: '30vw',
-      });
-
-      // If the dialog is closed and the result is 1 (the user decided to archive an application), the backend tries to edit the application
-      // If this action was successful the application immediately gets moved to archive
-      // Otherwise the user gets navigated to an error page depending on the error code
-      dialogRef.afterClosed().subscribe(result => {
-        if (result == 1) {
-          this.backend.editApplication(this.adminToken, application.applicationId, 5)
-            .subscribe((result) => {
-              const index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
-              this.applicantsArray.splice(index, 1);
-              this.archivArray.push(application);
-            }, (error: HttpErrorResponse) => {
-              switch (error.status) {
-                case 401:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/unauthorized");
-                  break;
-                case 404:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/notFound");
-                  break;
-                default:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/internalError");
-                  break;
-              }
-            });
-        }
-      })
+      this.showDialog(application);
     }, (error: HttpErrorResponse) => {
       switch (error.status) {
         case 401:
@@ -383,13 +336,62 @@ export class AdminApplicationsComponent {
           this.router.navigateByUrl("/unauthorized");
           break;
         case 404:
-          window.sessionStorage.clear();
-          this.router.navigateByUrl("/notFound");
+          this.resultOfLinting = "Linting result not ready. Please Wait.";
+          this.showDialog(application);
           break;
         default:
           window.sessionStorage.clear();
           this.router.navigateByUrl("/internalError");
           break;
+      }
+    })
+  }
+
+  private showDialog(application: Application): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Applicant ' + application.applicationId,
+        description: {
+          important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
+          link: 'Open Project on GitHub',
+          url: 'https://github.com/ampcc/' + application.githubRepo,
+          details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+        },
+        buttons: {
+          left: { title: 'Archive', look: 'primary' },
+          right: { title: 'Cancel', look: 'secondary' }
+        }
+      },
+      maxHeight: '85vh',
+      minWidth: '30vw',
+    });
+
+    // If the dialog is closed and the result is 1 (the user decided to archive an application), the backend tries to edit the application
+    // If this action was successful the application immediately gets moved to archive
+    // Otherwise the user gets navigated to an error page depending on the error code
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == 1) {
+        this.backend.editApplication(this.adminToken, application.applicationId, 5)
+          .subscribe((result) => {
+            const index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+            this.applicantsArray.splice(index, 1);
+            this.archivArray.push(application);
+          }, (error: HttpErrorResponse) => {
+            switch (error.status) {
+              case 401:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/unauthorized");
+                break;
+              case 404:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/notFound");
+                break;
+              default:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/internalError");
+                break;
+            }
+          });
       }
     })
   }
@@ -497,8 +499,6 @@ export class AdminApplicationsComponent {
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly
       this.resultOfLinting = response.content;
-      // JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
-      // this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
       this.dialog.open(DialogComponent, {
         data: {
           title: 'Applicant ' + application.applicationId,
