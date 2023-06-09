@@ -218,7 +218,7 @@ span {
     margin-right: 0;
 }
 
-.btn.btn-dark.details {
+.btn.btn-dark.details, .edit {
     height: auto;
     width: 150px;
     padding: 10px;
@@ -264,7 +264,7 @@ span {
         height: 25px;
     }
 
-    .btn.btn-dark.details {
+    .btn.btn-dark.details, .edit {
         height: auto;
         width: 200px;
         padding: 10px;
