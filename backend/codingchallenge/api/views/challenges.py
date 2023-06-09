@@ -17,7 +17,7 @@ from ..models import Challenge, Application
 from ..serializers import GetChallengeSerializer
 
 # import errorMessage class
-from . import jsonMessages
+from ..include import jsonMessages
 
 class AdminChallengesView(APIView):
     permission_classes = [IsAdminUser]
