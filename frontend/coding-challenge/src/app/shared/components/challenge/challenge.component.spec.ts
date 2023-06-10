@@ -155,7 +155,7 @@ describe('ChallengeComponent', () => {
     let challengeTextDiv = fixture.debugElement.query(By.css('.text_challenge')).nativeElement;
     let initialChallengeTextHTML = "<b>No data available!</b><br><br> No data available! "
     expect(challengeTextDiv.innerHTML).toBe(initialChallengeTextHTML);
-    
+
     component.challengeText = "I am another text for testing purposes";
     component.heading = "I am a text for testing purposes";
     fixture.detectChanges();
@@ -249,7 +249,7 @@ describe('ChallengeComponent', () => {
     let currentOptionNode: HTMLOptionElement = osSelectOptions[osSelectOptions.length - 1];
     expect(currentOptionNode.value).toBe('other');
     expect(component.hideOpSys).toBeTrue();
-    
+
     osSelect.value = currentOptionNode.value;
     osSelect.dispatchEvent(new Event('change'));
     fixture.detectChanges();
@@ -358,7 +358,7 @@ describe('ChallengeComponent', () => {
     let uploadedHTMLFilesList: DebugElement = fixture.debugElement.query(By.css('.files-list'));
     // One additional childNode exists because of ngFor
     expect(uploadedHTMLFilesList.nativeElement.childNodes.length).toBe(1);
-    
+
     let uploadedFile = new DataTransfer();
     let data: ArrayBuffer = new ArrayBuffer(1048576);
     uploadedFile.items.add(new File([data], 'test.zip', { type: 'application/zip' }));
@@ -373,13 +373,13 @@ describe('ChallengeComponent', () => {
     expect(uploadedHTMLFilesList.nativeElement.childNodes.length).toBe(2);
     expect(uploadedHTMLFilesList.query(By.css('.filename')).nativeElement.innerText).toBe(' test.zip ');
     expect(uploadedHTMLFilesList.query(By.css('.size')).nativeElement.innerText).toBe(' 1.00 MB ');
-  
+
   });
 
 
   it('delete uploaded file correctly', () => {
     let uploadedHTMLFilesList: DebugElement = fixture.debugElement.query(By.css('.files-list'));
-    
+
     let uploadedFile = new DataTransfer();
     let data: ArrayBuffer = new ArrayBuffer(1048576);
     uploadedFile.items.add(new File([data], 'test.zip', { type: 'application/zip' }));
@@ -461,7 +461,7 @@ describe('ChallengeComponent', () => {
 
     let submitButton: HTMLElement = fixture.debugElement.query(By.css('button')).nativeElement;
     submitButton.click();
-    
+
     fixture.detectChanges();
 
     expect(component.hideUpload).toBeTrue();
@@ -483,7 +483,7 @@ describe('ChallengeComponent', () => {
 
     let submitButton: HTMLElement = fixture.debugElement.query(By.css('button')).nativeElement;
     submitButton.click();
-    
+
     fixture.detectChanges();
 
     expect(component.hideUpload).toBeTrue();
@@ -569,16 +569,16 @@ describe('ChallengeComponent', () => {
    * Tests for challenge component
    * --> !! := Difficult test
    * --> ?? := Questionable if not already done by others or if it's even possible
-   * 
+   *
    * General tests:
    * - Tabs change html (check if bools are correctly set (and if div of specific tab exists --> get element by id)) ||
    * - Check if remaining time is correct ||
    * - ?? Correct navigation and ressource aquirement on ngInit
-   * 
+   *
    * Tests for challenge_text tab:
    * - Correct heading displayed ||
    * - Correct text displayed ||
-   * 
+   *
    * Tests for upload tab:
    * - Programming language correctly stored ||
    * - Text input for "other" programming language:
@@ -598,7 +598,7 @@ describe('ChallengeComponent', () => {
    *    - When everything is correct --> no error messages and upload call ||
    *    - !! Correct navigation on error response
    *    - !! Html switched to progress spinner and success ||
-   * 
+   *
    * Other tests/stuff:
    * - ?? Dialog on click on question mark ||
    * - Correct formatting of byte ||

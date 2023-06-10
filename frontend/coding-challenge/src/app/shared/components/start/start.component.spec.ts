@@ -36,18 +36,18 @@ describe('StartComponent', () => {
   it('can open dialog', () => {
     component.openDialog();
 
-    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    const dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
 
     expect(dialog).toBeTruthy();
   });
 
   // Check if dialog is opened on button click
   it('dialog opens on button click', fakeAsync(() => {
-    let button = fixture.debugElement.nativeElement.querySelector('app-button');
+    const button = fixture.debugElement.nativeElement.querySelector('app-button');
     button.click();
     tick();
 
-    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    const dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
 
     expect(dialog).toBeTruthy();
 

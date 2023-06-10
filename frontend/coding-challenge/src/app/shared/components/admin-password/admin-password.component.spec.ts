@@ -35,7 +35,7 @@ describe('AdminPasswordComponent', () => {
 
   // Check if error message underneath old password input field is hidden on default
   it('error message for old password hidden on default', () => {
-    let error = !fixture.debugElement.query(By.css('.old_password_error')).nativeElement.classList.contains('not_showing');
+    const error = !fixture.debugElement.query(By.css('.old_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(error).toBeFalse();
   });
@@ -45,14 +45,14 @@ describe('AdminPasswordComponent', () => {
     component.setPassword('', '', '');
     fixture.detectChanges();
 
-    let error = !fixture.debugElement.query(By.css('.old_password_error')).nativeElement.classList.contains('not_showing');
+    const error = !fixture.debugElement.query(By.css('.old_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(error).toBeTrue();
   });
 
   // Check if error message underneath new password input field is hidden on default
   it('error message for new password hidden on default', () => {
-    let error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
+    const error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(error).toBeFalse();
   });
@@ -62,14 +62,14 @@ describe('AdminPasswordComponent', () => {
     component.setPassword('', '', '');
     fixture.detectChanges();
 
-    let error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
+    const error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(error).toBeTrue();
   });
 
   // Check if error message underneath confirm password input field is hidden on default
   it('error message for confirm password hidden on default', () => {
-    let error = !fixture.debugElement.query(By.css('.confirm_password_error')).nativeElement.classList.contains('not_showing');
+    const error = !fixture.debugElement.query(By.css('.confirm_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(error).toBeFalse();
   });
@@ -79,7 +79,7 @@ describe('AdminPasswordComponent', () => {
     component.setPassword('', '', '');
     fixture.detectChanges();
 
-    let error = !fixture.debugElement.query(By.css('.confirm_password_error')).nativeElement.classList.contains('not_showing');
+    const error = !fixture.debugElement.query(By.css('.confirm_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(error).toBeTrue();
   });
@@ -89,7 +89,7 @@ describe('AdminPasswordComponent', () => {
     component.setPassword('test', 'test', 'test');
     fixture.detectChanges();
 
-    let error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
+    const error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(error).toBeTrue();
     expect(component.newPasswordError).toContain('eight');
@@ -100,7 +100,7 @@ describe('AdminPasswordComponent', () => {
     component.setPassword('test', 'testtest', 'test');
     fixture.detectChanges();
 
-    let error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
+    const error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(error).toBeTrue();
     expect(component.newPasswordError).toContain('special');
@@ -111,8 +111,8 @@ describe('AdminPasswordComponent', () => {
     component.setPassword('test', 'Test#1234', 'testtest2');
     fixture.detectChanges();
 
-    let new_error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
-    let confirm_error = !fixture.debugElement.query(By.css('.confirm_password_error')).nativeElement.classList.contains('not_showing');
+    const new_error = !fixture.debugElement.query(By.css('.new_password_error')).nativeElement.classList.contains('not_showing');
+    const confirm_error = !fixture.debugElement.query(By.css('.confirm_password_error')).nativeElement.classList.contains('not_showing');
 
     expect(new_error).toBeTrue();
     expect(confirm_error).toBeTrue();
@@ -126,7 +126,7 @@ describe('AdminPasswordComponent', () => {
     component.setPassword('test', 'Test#1234', 'Test#1234');
     fixture.detectChanges();
 
-    let success_message = !fixture.debugElement.query(By.css('.alert')).nativeElement.classList.contains('not_showing');
+    const success_message = !fixture.debugElement.query(By.css('.alert')).nativeElement.classList.contains('not_showing');
 
     expect(component.successfulChange).toBeTrue();
     expect(success_message).toBeTrue();
@@ -134,9 +134,9 @@ describe('AdminPasswordComponent', () => {
 
   // Check if set password call gets triggered on button click
   it('set password call gets triggered on button click', fakeAsync(() => {
-    let passwordChange = spyOn(component, 'setPassword');
+    const passwordChange = spyOn(component, 'setPassword');
 
-    let button = fixture.debugElement.nativeElement.querySelector('.confirm');
+    const button = fixture.debugElement.nativeElement.querySelector('.confirm');
     button.click();
     tick();
 
@@ -147,9 +147,9 @@ describe('AdminPasswordComponent', () => {
 
   // Check if set password call gets triggered on enter press
   it('set password call gets triggered on enter press', () => {
-    let passwordChange = spyOn(component, 'setPassword');
+    const passwordChange = spyOn(component, 'setPassword');
 
-    let key_event = new KeyboardEvent("keypress", { "key": "Enter" });
+    const key_event = new KeyboardEvent("keypress", { "key": "Enter" });
     fixture.nativeElement.dispatchEvent(key_event);
 
     component.handleKeyDown(key_event);
@@ -159,9 +159,9 @@ describe('AdminPasswordComponent', () => {
 
   // Check if cancel call gets triggered on button click
   it('cancel call gets triggered on button click', fakeAsync(() => {
-    let cancel = spyOn(component, 'cancel');
+    const cancel = spyOn(component, 'cancel');
 
-    let button = fixture.debugElement.nativeElement.querySelector('.cancel');
+    const button = fixture.debugElement.nativeElement.querySelector('.cancel');
     button.click();
     tick();
 

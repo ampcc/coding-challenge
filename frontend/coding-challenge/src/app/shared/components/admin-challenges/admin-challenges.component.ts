@@ -133,8 +133,8 @@ export class AdminChallengesComponent implements OnInit {
     // If this action was successful the challenge gets immediately deleted
     // Otherwise the user gets navigated to an error page depending on the error code
     dialogRef.afterClosed().subscribe(result => {
-      if (result == 1) {
-        this.backend.deleteChallenge(this.adminToken, challenge.id!).subscribe(() => {
+      if (result == 1 && challenge.id) {
+        this.backend.deleteChallenge(this.adminToken, challenge.id).subscribe((response) => {
           const index = this.challengeArray.findIndex(chal => chal.id === challenge.id);
           this.challengeArray.splice(index, 1);
         }, (error) => {

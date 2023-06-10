@@ -30,8 +30,8 @@ export class AdminLoginComponent {
   // Listens for press of enter key and handles it as if confirm button was clicked
   @HostListener('window:keydown.enter', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    let username = (document.getElementById("username") as HTMLInputElement).value;
-    let password = (document.getElementById("password") as HTMLInputElement).value;
+    const username = (document.getElementById("username") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement).value;
     this.login(username, password);
   }
 

@@ -42,8 +42,8 @@ export class AdminEditComponent {
   // Listens for press of enter key and handles it as if confirm button was clicked
   @HostListener('window:keydown.enter', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    let name = (document.getElementById("name") as HTMLInputElement).value;
-    let description = (document.getElementById("description") as HTMLInputElement).value;
+    const name = (document.getElementById("name") as HTMLInputElement).value;
+    const description = (document.getElementById("description") as HTMLInputElement).value;
     this.editChallenge(name, description);
   }
 
@@ -197,7 +197,7 @@ export class AdminEditComponent {
     // Otherwise the user gets navigated to an error page depending on the given error code
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
-        this.backendService.deleteChallenge(this.adminToken, this.id).subscribe(() => {
+        this.backendService.deleteChallenge(this.adminToken, this.id).subscribe((response) => {
           this.router.navigate(['/admin_challenges']);
         }, (error) => {
           switch (error.status) {

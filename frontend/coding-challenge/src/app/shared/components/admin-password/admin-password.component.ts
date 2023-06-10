@@ -36,9 +36,9 @@ export class AdminPasswordComponent implements OnInit {
   // Listens for press of enter key and handles it as if confirm button was clicked
   @HostListener('window:keydown.enter', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    let oldPassword = (document.getElementById("oldPassword") as HTMLInputElement).value;
-    let newPassword = (document.getElementById("newPassword") as HTMLInputElement).value;
-    let confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+    const oldPassword = (document.getElementById("oldPassword") as HTMLInputElement).value;
+    const newPassword = (document.getElementById("newPassword") as HTMLInputElement).value;
+    const confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
     this.setPassword(oldPassword, newPassword, confirmPassword);
   }
 

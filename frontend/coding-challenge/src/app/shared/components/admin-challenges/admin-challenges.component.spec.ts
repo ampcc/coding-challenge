@@ -58,13 +58,15 @@ describe('AdminChallengesComponent', () => {
     let challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
-      challengeText: "This is the first test."
+      challengeText: "This is the first test.",
+      active: true
     };
 
     let challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
-      challengeText: "This is the second test."
+      challengeText: "This is the second test.",
+      active: true
     };
 
     component.challengeArray = [challenge1, challenge2];
@@ -73,7 +75,7 @@ describe('AdminChallengesComponent', () => {
     challengesHTML = fixture.debugElement.queryAll(By.css('.single_challenge'));
     expect(challengesHTML.length).toEqual(2);
     expect(component.challengeArray.length).toEqual(2);
-    
+
     for (let i = 0; i < challengesHTML.length; i++) {
         const element: HTMLElement = challengesHTML[i].query(By.css('.challengeId')).nativeElement;
         expect(element.innerText).toEqual(component.challengeArray[i].challengeHeading);
@@ -85,7 +87,7 @@ describe('AdminChallengesComponent', () => {
    * Tests for admin_challenges component
    * --> !! := Difficult test
    * --> ?? := Questionable if not already done by others or if it's even possible
-   * 
+   *
    * - Test add-challenge button --> correct navigation happens ||
    * - Challenges are correctly displayed --> Check heading ||
    * - ?? Check detail dialog

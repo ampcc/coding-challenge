@@ -9,7 +9,6 @@ import { Challenge } from '../../models/challenge';
 import { Application } from '../../models/application';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { forEach } from 'jszip';
 
 @Component({
   standalone: true,

@@ -35,9 +35,9 @@ describe('DialogComponent', () => {
 
   // Check if dialog can be closed
   it('can be closed', fakeAsync(() => {
-    let close = spyOn(component, 'closeDialog');
+    const close = spyOn(component, 'closeDialog');
 
-    let button = fixture.debugElement.nativeElement.querySelector('.close');
+    const button = fixture.debugElement.nativeElement.querySelector('.close');
     button.click();
     tick();
 
