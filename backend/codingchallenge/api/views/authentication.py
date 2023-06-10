@@ -41,7 +41,7 @@ class KeyAuthentication(ObtainAuthToken):
             user = authenticate(request, username=username, password=password)
 
             if user:
-                if user.application.expiry > time.time():
+                if user.application.expiry < time.time():
                     if user.application.status < Application.Status.ARCHIVED:
                         user.application.status = Application.Status.EXPIRED
                         user.save()
