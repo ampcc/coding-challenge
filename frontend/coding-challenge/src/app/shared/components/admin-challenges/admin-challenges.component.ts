@@ -41,7 +41,11 @@ export class AdminChallengesComponent implements OnInit {
       this.router.navigateByUrl("/admin_login");
     } else {
       this.backend.getChallenges(this.adminToken).subscribe((response: Challenge[]) => {
-        this.challengeArray = response;
+        response.forEach(element => {
+          if (element.active) {
+            this.challengeArray.push(element);
+          }
+        });
       });
     }
   }

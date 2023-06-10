@@ -46,7 +46,7 @@
                     </form>
 
                     <!-- Button for the filter -->
-                    <div class="filter icon">
+                    <div class="filter icon filterButton" #filterButton>
                         <div>
                             <label (click)="showFilter()" id="labelFilter">
                                 Filter
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <!-- List of filter options -->
-            <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
+            <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect" #filterSelect>
                 <ul id="myUL">
                     <!-- Challenge filter options -->
                     <li id="first_tree">

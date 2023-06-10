@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BackendService } from 'src/app/core/backend.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -9,6 +9,7 @@ import { Challenge } from '../../models/challenge';
 import { Application } from '../../models/application';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { forEach } from 'jszip';
 
 @Component({
   standalone: true,
@@ -51,12 +52,18 @@ export class AdminApplicationsComponent {
   public hideSubmissionDate = false;
   public hideTimeLimit = false;
 
+  @ViewChild('filterButton') filterButton?: ElementRef;
+  @ViewChild('filterSelect') filterSelect?: ElementRef;
 
-
-  public constructor(private backend: BackendService, public dialog: MatDialog, public router: Router) {
+  public constructor(private backend: BackendService, public dialog: MatDialog, public router: Router, private renderer: Renderer2) {
     this.adminToken = null;
-  }
 
+    this.renderer.listen('window', 'click', (e: Event) => {
+      if (!this.hideFilterSelect && this.filterButton && e.target !== this.filterButton.nativeElement && !this.filterButton.nativeElement.contains(e.target) && this.filterSelect && e.target !== this.filterSelect.nativeElement && !this.filterSelect.nativeElement.contains(e.target)) {
+        this.showFilter();
+      }
+    });
+  }
 
   public ngOnInit(): void {
     // Check if Admin Token is available
@@ -322,13 +329,39 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly, similar to the way GitHub displays it
-      console.log(response.content);
+      if (response.content === undefined || response.content === null) {
+        this.resultOfLinting = "Linter result can not be found. Please check the GitHub Repository or wait.";
+      } else {
+        const lengths = response.content.map((element: [string]) => element.length);
+        const maxColumns = Math.max(...lengths);
 
-      this.resultOfLinting = response.content;
-      if (this.resultOfLinting === undefined || this.resultOfLinting === null) {
-        this.resultOfLinting = "Linting result not ready. Please Wait.";
+        this.resultOfLinting = '<table>';
+        let tableCell = '';
+        response.content.forEach((element: [string]) => {
+          console.log(maxColumns);
+          if (element == response.content[0]) {
+            tableCell = 'th';
+          } else {
+            tableCell = 'td';
+          }
+          if (element.length == maxColumns) {
+            this.resultOfLinting = this.resultOfLinting + '<tr>';
+            element.forEach(value => {
+              this.resultOfLinting = this.resultOfLinting + '<' + tableCell + '>' + value + '</' + tableCell + '>';
+            });
+            this.resultOfLinting = this.resultOfLinting + '</tr>';
+          } else if (element.length > 0) {
+            const colspan = Number(maxColumns / element.length);
+            this.resultOfLinting = this.resultOfLinting + '<tr>';
+            element.forEach(value => {
+              this.resultOfLinting = this.resultOfLinting + '<' + tableCell + ' colspan="' + colspan + '">' + value + '</' + tableCell + '>';
+            });
+            this.resultOfLinting = this.resultOfLinting + '</tr>';
+          }
+        });
+        this.resultOfLinting = this.resultOfLinting + '</table>';
       }
-      this.showDialog(application);
+      this.displayDialogActiveApplications(application);
     }, (error: HttpErrorResponse) => {
       switch (error.status) {
         case 401:
@@ -336,8 +369,8 @@ export class AdminApplicationsComponent {
           this.router.navigateByUrl("/unauthorized");
           break;
         case 404:
-          this.resultOfLinting = "Linting result not ready. Please Wait.";
-          this.showDialog(application);
+          this.resultOfLinting = "Linter result can not be found. Please check the GitHub Repository or wait.";
+          this.displayDialogActiveApplications(application);
           break;
         default:
           window.sessionStorage.clear();
@@ -347,7 +380,7 @@ export class AdminApplicationsComponent {
     })
   }
 
-  private showDialog(application: Application): void {
+  private displayDialogActiveApplications(application: Application): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Applicant ' + application.applicationId,
@@ -405,7 +438,7 @@ export class AdminApplicationsComponent {
     // Array of possible new challenges gets filled with all existing challenges except the one already assigned to the user
     this.newChallengesArray = [];
     for (let i = 0; i < this.challengeArray.length; i++) {
-      if (this.challengeArray[i].id != application.challengeId) {
+      if (this.challengeArray[i].id != application.challengeId && this.challengeArray[i].active) {
         this.newChallengesArray.push({
           id: this.challengeArray[i].id,
           heading: this.challengeArray[i].challengeHeading
@@ -498,23 +531,74 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly
-      this.resultOfLinting = response.content;
-      this.dialog.open(DialogComponent, {
-        data: {
-          title: 'Applicant ' + application.applicationId,
-          description: {
-            important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
-            link: 'Open Project on GitHub',
-            url: 'https://github.com/ampcc/' + application.githubRepo,
-            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
-          },
-          buttons: {
-            right: { title: 'Cancel', look: 'secondary' }
+      if (response.content === undefined || response.content === null) {
+        this.resultOfLinting = "Linter result can not be found. Please check the GitHub Repository or wait.";
+      } else {
+        const lengths = response.content.map((element: [string]) => element.length);
+        const maxColumns = Math.max(...lengths);
+
+        this.resultOfLinting = '<table>';
+        let tableCell = '';
+        response.content.forEach((element: [string]) => {
+          console.log(maxColumns);
+          if (element == response.content[0]) {
+            tableCell = 'th';
+          } else {
+            tableCell = 'td';
           }
-        },
-        maxHeight: '85vh',
-        minWidth: '30vw',
-      });
+          if (element.length == maxColumns) {
+            this.resultOfLinting = this.resultOfLinting + '<tr>';
+            element.forEach(value => {
+              this.resultOfLinting = this.resultOfLinting + '<' + tableCell + '>' + value + '</' + tableCell + '>';
+            });
+            this.resultOfLinting = this.resultOfLinting + '</tr>';
+          } else if (element.length > 0) {
+            const colspan = Number(maxColumns / element.length);
+            this.resultOfLinting = this.resultOfLinting + '<tr>';
+            element.forEach(value => {
+              this.resultOfLinting = this.resultOfLinting + '<' + tableCell + ' colspan="' + colspan + '">' + value + '</' + tableCell + '>';
+            });
+            this.resultOfLinting = this.resultOfLinting + '</tr>';
+          }
+        });
+        this.resultOfLinting = this.resultOfLinting + '</table>';
+      }
+      this.displayDialogArchivedApplications(application);
+    }, (error: HttpErrorResponse) => {
+      switch (error.status) {
+        case 401:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/unauthorized");
+          break;
+        case 404:
+          this.resultOfLinting = "Linter result can not be found. Please check the GitHub Repository or wait.";
+          this.displayDialogArchivedApplications(application);
+          break;
+        default:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/internalError");
+          break;
+      }
     });
   }
+
+  private displayDialogArchivedApplications(application: Application): void {
+    this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Applicant ' + application.applicationId,
+        description: {
+          important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
+          link: 'Open Project on GitHub',
+          url: 'https://github.com/ampcc/' + application.githubRepo,
+          details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+        },
+        buttons: {
+          right: { title: 'Cancel', look: 'secondary' }
+        }
+      },
+      maxHeight: '85vh',
+      minWidth: '30vw',
+    });
+  }
+
 }

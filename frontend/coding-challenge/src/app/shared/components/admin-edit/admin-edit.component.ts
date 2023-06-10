@@ -126,7 +126,7 @@ export class AdminEditComponent {
       // If the changes are successful the user gets positive feedback and then is navigated to the challenges page
       // Otherwise the user gets navigated to an error page
       if (this.editPage) {
-        const tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description };
+        const tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description, active: true };
         this.backendService.editChallenge(this.adminToken, tempChallenge).subscribe((response) => {
           this.successfulEdit = true;
           setTimeout(() => {
@@ -152,7 +152,7 @@ export class AdminEditComponent {
         // If the page is an add challenge page the backend is calledto create a new challenge
         // If the creation is successful the user gets positive feedback and then is navigated to the challenges page
         // Otherwise the user gets navigated to an error page
-        const tempChallenge: Challenge = { challengeHeading: this.name, challengeText: this.description };
+        const tempChallenge: Challenge = { challengeHeading: this.name, challengeText: this.description, active: true };
         this.backendService.createChallenge(this.adminToken, tempChallenge).subscribe((response) => {
           this.successfulEdit = true;
           setTimeout(() => {

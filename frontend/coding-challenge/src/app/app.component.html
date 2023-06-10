@@ -16,11 +16,11 @@
   <!-- Button to open sidenav when curent page is admin page -->
   <div *ngIf="this.adminPage" class="open_sitenav" (click)="openSitenav()"
     [ngClass]="{'not_clickable': !this.sitenavClosed}">
-    <img src="../assets/menu.svg" class="sitenav_icon">
+    <img src="../assets/menu.svg" class="sitenav_icon" #sitenav_icon>
   </div>
 
   <!-- Sidenavigation with links to admin pages -->
-  <div *ngIf="this.adminPage" class="sitenav" id="sitenav" [ngClass]="{'closed_sitenav': this.sitenavClosed}">
+  <div *ngIf="this.adminPage" class="sitenav" id="sitenav" [ngClass]="{'closed_sitenav': this.sitenavClosed}" #sitenav>
     <div class="space"></div>
     <div class="close_sitenav" (click)="closeSitenav()">
       <img src="../assets/menu.svg" class="sitenav_icon">
