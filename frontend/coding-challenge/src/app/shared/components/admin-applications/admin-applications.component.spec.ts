@@ -314,12 +314,176 @@ describe('AdminApplicationsComponent', () => {
 
 
   it('correct search results for active applications', () => {
+    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(0);
+    expect(activeApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
 
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 1
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 3
+    };
+
+
+    let application3: Application = {
+      applicationId: 'ghi789',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 4
+    };
+
+    component.applicantsArray = [application1, application2, application3];
+    component.filteredApplicantsArray = [application1, application2, application3];
+
+    fixture.detectChanges();
+
+    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(3);
+    expect(activeApplicationHTML.length).toBe(3);
+    expect(component.applicantsArray.length).toBe(3);
+
+    
+    const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#input_search_bar')).nativeElement;
+    const searchButton = fixture.debugElement.query(By.css('#button-addon5')).nativeElement;
+
+    searchBar.value = '    def456   ';
+    searchButton.click();
+
+    fixture.detectChanges();
+
+    expect(component.filteredApplicantsArray.length).toBe(1);
+    expect(component.filteredApplicantsArray).toContain(application2);
+        
+    searchBar.value = '    def457   ';
+    searchButton.click();
+
+    fixture.detectChanges();
+
+    expect(component.filteredApplicantsArray.length).toBe(0);
+
+    searchBar.value = 'abc123';
+    searchButton.click();
+
+    fixture.detectChanges();
+    
+    expect(component.filteredApplicantsArray.length).toBe(1);
+    expect(component.filteredApplicantsArray).toContain(application1);
   });
 
 
   it('correct search results for archived applications', () => {
+    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(0);
+    expect(archivedApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
 
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+
+    let application3: Application = {
+      applicationId: 'ghi789',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+    component.archivArray = [application1, application2, application3];
+    component.filteredArchivArray = [application1, application2, application3];
+
+    fixture.detectChanges();
+
+    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(3);
+    expect(archivedApplicationHTML.length).toBe(3);
+    expect(component.archivArray.length).toBe(3);
+
+
+    const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#input_search_bar')).nativeElement;
+    const searchButton = fixture.debugElement.query(By.css('#button-addon5')).nativeElement;
+
+    searchBar.value = '    def456   ';
+    searchButton.click();
+
+    fixture.detectChanges();
+
+    expect(component.filteredArchivArray.length).toBe(1);
+    expect(component.filteredArchivArray).toContain(application2);
+        
+    searchBar.value = '    def457   ';
+    searchButton.click();
+
+    fixture.detectChanges();
+
+    expect(component.filteredArchivArray.length).toBe(0);
+
+    searchBar.value = 'abc123';
+    searchButton.click();
+
+    fixture.detectChanges();
+    
+    expect(component.filteredArchivArray.length).toBe(1);
+    expect(component.filteredArchivArray).toContain(application1);
   });
 
   it('display dialog on click on detail button in active applications', () => {
