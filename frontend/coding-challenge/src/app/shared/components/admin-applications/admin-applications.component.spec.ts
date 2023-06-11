@@ -84,15 +84,243 @@ describe('AdminApplicationsComponent', () => {
   });
 
 
-  it('correct filter results', () => {
+  it('correct filter results of active applications', () => {
+    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(0);
+    expect(activeApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 1
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 3
+    };
+
+
+    let application3: Application = {
+      applicationId: 'ghi789',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 4
+    };
+
+
+    let challenge1: Challenge = {
+      id: 1,
+      challengeHeading: "Test1",
+      challengeText: "This is the first test."
+    };
+
+    let challenge2: Challenge = {
+      id: 2,
+      challengeHeading: "Test2",
+      challengeText: "This is the second test."
+    };
+
+    component.applicantsArray = [application1, application2, application3];
+    component.filteredApplicantsArray = [application1, application2, application3];
+    component.challengeArray = [challenge1, challenge2];
+
+    let statusTextArray = ['not_uploaded_yet', 'uploaded', 'not_submitted_in_time'];
+
+    fixture.detectChanges();
+
+    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(3);
+    expect(activeApplicationHTML.length).toBe(3);
+    expect(component.applicantsArray.length).toBe(3);
+    expect(component.challengeArray.length).toBe(2);
+
+    for(let i = 0; i < component.challengeArray.length; i++) {
+      const challengeFilter = fixture.debugElement.query(By.css(`#challenge${component.challengeArray[i].id}`)).nativeElement;
+      challengeFilter.click();
+      fixture.detectChanges();
+
+      switch(component.challengeArray[i]) {
+        case challenge1:
+          expect(component.filteredApplicantsArray).toContain(application1);
+          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1); 
+        break;
+        case challenge2:
+          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicantsArray).toContain(application2);
+          expect(component.filteredApplicantsArray).toContain(application3);
+          break;
+        default:
+          throw Error('No identified challenge inside challenge Array in test "correct filter results of active applications"');
+      }
+      
+      challengeFilter.click();
+      fixture.detectChanges();
+    }
+
+    for (let i = 0; i < statusTextArray.length; i++) {
+      const statusFilter = fixture.debugElement.query(By.css(`#${statusTextArray[i]}`)).nativeElement;
+      statusFilter.click();
+      fixture.detectChanges();
+      
+      switch(statusTextArray[i]) {
+        case 'not_uploaded_yet':
+          expect(component.filteredApplicantsArray).toContain(application1);
+          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1); 
+        break;
+        case 'uploaded':
+          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicantsArray).toContain(application2);
+          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1);
+          break;
+        case 'not_submitted_in_time':
+          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicantsArray).toContain(application3);
+          break;
+        default:
+          throw Error('No identified status inside challenge Array in test "correct filter results of active applications"');
+      }
+      
+      statusFilter.click();
+      fixture.detectChanges();
+    }
+  });
+
+
+  it('correct filter results of archived applications', () => {
+    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(0);
+    expect(archivedApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+
+    let application3: Application = {
+      applicationId: 'ghi789',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+
+    let challenge1: Challenge = {
+      id: 1,
+      challengeHeading: "Test1",
+      challengeText: "This is the first test."
+    };
+
+    let challenge2: Challenge = {
+      id: 2,
+      challengeHeading: "Test2",
+      challengeText: "This is the second test."
+    };
+
+    component.archivArray = [application1, application2, application3];
+    component.filteredArchivArray = [application1, application2, application3];
+    component.challengeArray = [challenge1, challenge2];
+
+    fixture.detectChanges();
+
+    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(3);
+    expect(archivedApplicationHTML.length).toBe(3);
+    expect(component.archivArray.length).toBe(3);
+    expect(component.challengeArray.length).toBe(2);
+
+    for(let i = 0; i < component.challengeArray.length; i++) {
+      const challengeFilter = fixture.debugElement.query(By.css(`#challenge${component.challengeArray[i].id}`)).nativeElement;
+      challengeFilter.click();
+      fixture.detectChanges();
+
+      switch(component.challengeArray[i]) {
+        case challenge1:
+          expect(component.filteredArchivArray).toContain(application1);
+          expect(component.filteredArchivArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredArchivArray.indexOf(application3)).toBe(-1); 
+        break;
+        case challenge2:
+          expect(component.filteredArchivArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredArchivArray).toContain(application2);
+          expect(component.filteredArchivArray).toContain(application3);
+          break;
+        default:
+          throw Error('No identified challenge inside challenge Array in test "correct filter results of archived applications"');
+      }
+      
+      challengeFilter.click();
+      fixture.detectChanges();
+    }
+  });
+
+
+  it('correct search results for active applications', () => {
 
   });
 
 
-  it('correct search results', () => {
+  it('correct search results for archived applications', () => {
 
   });
-
 
   it('display dialog on click on detail button in active applications', () => {
     expect(component.filteredApplicantsArray.length).toBe(0);
