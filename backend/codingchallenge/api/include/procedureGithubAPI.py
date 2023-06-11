@@ -75,7 +75,7 @@ class GithubApiWrapper:
         # ----SUMMARY ----
         linterStartIndex = decodedLinter.find("+----SUMMARY----+")
         linterSummary = decodedLinter[linterStartIndex:-1]
-        linterEndIndex = linterSummary.find("\\n\\n")
+        linterEndIndex = linterSummary.find("\n\n")
 
         cleanSummary = linterSummary[:linterEndIndex]
 
@@ -88,7 +88,7 @@ class GithubApiWrapper:
         cleanSummary = cleanSummary.replace(u"\u25EC", "?")
 
         result = []
-        for i, line in enumerate(cleanSummary.split("\\n")):
+        for i, line in enumerate(cleanSummary.split("\n")):
             if line.startswith("+"):
                 pass
             else:
