@@ -15,8 +15,8 @@ from cryptography.fernet import Fernet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from django.contrib.auth.models import User
 
-from ..include import jsonMessages
-from ..models import Application
+from ...include import jsonMessages
+from ...models import Application
 
 class KeyAuthentication(ObtainAuthToken):
 

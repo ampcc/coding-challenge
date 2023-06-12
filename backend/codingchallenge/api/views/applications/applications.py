@@ -24,10 +24,10 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..include import jsonMessages, expirySettings
-from ..include.githubApi import GithubApi
-from ..models import Application, Challenge
-from ..serializers import (
+from ...include import jsonMessages, expirySettings
+from ...include.githubApi import GithubApi
+from ...models import Application, Challenge
+from ...serializers import (
     GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer,
     PostApplicationSerializer
 )

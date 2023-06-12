@@ -11,13 +11,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 # import model
-from ..models import Challenge, Application
+from ...models import Challenge, Application
 
 # import serializer
-from ..serializers import GetChallengeSerializer
+from ...serializers import GetChallengeSerializer
 
 # import errorMessage class
-from ..include import jsonMessages
+from ...include import jsonMessages
 
 class AdminChallengesView(APIView):
     permission_classes = [IsAdminUser]
