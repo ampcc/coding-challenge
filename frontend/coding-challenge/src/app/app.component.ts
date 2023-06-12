@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './shared/components/dialog/dialog.component';
 import { Router, NavigationEnd, NavigationStart, NavigationCancel } from '@angular/router';
@@ -18,9 +18,12 @@ export class AppComponent {
   // adminEdit = false;
   link = '/start';
 
+  @ViewChild('sitenav_icon') sitenav_icon?: ElementRef;
+  @ViewChild('sitenav') sitenav?: ElementRef;
+
   // Check whether the logout button and sitenavigation should be displayed and which link should be set for the amplimind logo
   // When user is on an admin page it should be except if that admin page is the login page
-  constructor(private dialog: MatDialog, private router: Router) {
+  constructor(private dialog: MatDialog, private router: Router, private renderer: Renderer2) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart || event instanceof NavigationEnd || event instanceof NavigationCancel) {
         // To avoid displaying the navigation and logout button when the user has just logged out, the variables are set to false on default
@@ -52,13 +55,18 @@ export class AppComponent {
           this.link = '/start';
         }
       }
-    })
+    });
+    this.renderer.listen('window', 'click', (e: Event) => {
+      if (this.sitenav_icon && e.target !== this.sitenav_icon.nativeElement && !this.sitenav_icon.nativeElement.contains(e.target) && this.sitenav && e.target !== this.sitenav.nativeElement && !this.sitenav.nativeElement.contains(e.target)) {
+        this.closeSitenav();
+      }
+    });
   }
 
   // Show Dialog to ask the admin to confirm that he wants to log out
   logout(): void {
     if (this.adminPage) {
-      let dialogRef = this.dialog.open(DialogComponent, {
+      const dialogRef = this.dialog.open(DialogComponent, {
         data: {
           title: 'Are you sure you want to log out?',
           buttons: {

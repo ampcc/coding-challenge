@@ -46,7 +46,7 @@
                     </form>
 
                     <!-- Button for the filter -->
-                    <div class="filter icon">
+                    <div class="filter icon filterButton" #filterButton>
                         <div>
                             <label (click)="showFilter()" id="labelFilter">
                                 Filter
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <!-- List of filter options -->
-            <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect">
+            <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect" #filterSelect>
                 <ul id="myUL">
                     <!-- Challenge filter options -->
                     <li id="first_tree">
@@ -103,20 +103,20 @@
                             <h4 class="applicantId">
                                 {{app.applicationId}}
                             </h4>
-                            <span><b>Challenge:</b> {{getChallengeHeading(app.challengeId)}}</span>
-                            <span><b>Status:</b> {{getStatusText(app.status)}}</span>
+                            <span class="challengeHeading"><b>Challenge:</b> {{getChallengeHeading(app.challengeId)}}</span>
+                            <span class="status"><b>Status:</b> {{getStatusText(app.status)}}</span>
                             <!-- Only shown if the challenge is uploaded -->
-                            <span [hidden]="hideSubmissionDate"><b>Submission date:</b>
+                            <span class="submission" [hidden]="hideSubmissionDate"><b>Submission date:</b>
                                 {{getSubmissionDateText(app.submission)}}</span>
                             <!-- Only shown if the challenge is not uploaded -->
-                            <span [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}}</span>
+                            <span class="limit" [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}}</span>
                         </div>
                         <div class="btn_position">
                             <!-- Shown if the applicant uploaded the challenge -->
-                            <button *ngIf="getStatusText(app.status) == 'uploaded'" class="btn btn-dark details"
+                            <button *ngIf="getStatusText(app.status) === 'uploaded'" class="btn btn-dark details"
                                 (click)="openDialogActiveApplications(app)">Details</button>
                             <!-- Shown if applicant hadn't uploaded the challenge and the admin wants to extend the remaining time -->
-                            <button *ngIf="getStatusText(app.status) != 'uploaded'" class="btn btn-dark details"
+                            <button *ngIf="getStatusText(app.status) !== 'uploaded'" class="btn btn-dark edit"
                                 (click)="openExtendDialogActiveApplications(app)">Edit</button>
                         </div>
                     </div>
@@ -131,8 +131,8 @@
                             <h4 class="applicantId">
                                 {{archiv.applicationId}}
                             </h4>
-                            <span><b>Challenge:</b> {{getChallengeHeading(archiv.challengeId)}}</span>
-                            <span><b>Submission date:</b> {{getSubmissionDateText(archiv.submission)}}</span>
+                            <span class="challengeHeading"><b>Challenge:</b> {{getChallengeHeading(archiv.challengeId)}}</span>
+                            <span class="submission"><b>Submission date:</b> {{getSubmissionDateText(archiv.submission)}}</span>
                         </div>
                         <!-- Only shown if the challenge was uploaded -->
                         <div class="btn_position">

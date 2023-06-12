@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { BackendService } from 'src/app/core/backend.service';
 import { Router } from '@angular/router';
@@ -18,27 +18,36 @@ import { HttpErrorResponse } from '@angular/common/http';
   ]
 })
 export class AdminPasswordComponent implements OnInit {
-  oldPassword: string = '';
-  newPassword: string = '';
-  confirmPassword: string = '';
+  oldPassword = '';
+  newPassword = '';
+  confirmPassword = '';
   private adminToken: string | null;
 
-  oldPasswordError: string = 'Error';
-  newPasswordError: string = 'Error';
-  confirmPasswordError: string = 'Error';
+  oldPasswordError = 'Error';
+  newPasswordError = 'Error';
+  confirmPasswordError = 'Error';
 
-  showOldPasswordError: boolean = false;
-  showNewPasswordError: boolean = false;
-  showConfirmPasswordError: boolean = false;
+  showOldPasswordError = false;
+  showNewPasswordError = false;
+  showConfirmPasswordError = false;
 
-  successfulChange: boolean = false;
+  successfulChange = false;
+
+  // Listens for press of enter key and handles it as if confirm button was clicked
+  @HostListener('window:keydown.enter', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    const oldPassword = (document.getElementById("oldPassword") as HTMLInputElement).value;
+    const newPassword = (document.getElementById("newPassword") as HTMLInputElement).value;
+    const confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+    this.setPassword(oldPassword, newPassword, confirmPassword);
+  }
 
   // Reg Expression to check if password contains at least one uppercase and lowercase letter, as well as a number an special character
   mustContain = new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?])');
 
   // Admin Password Component can be accessed by the sidenavigation on admin pages
   // It is used to change an admins password
-  constructor(private router: Router, private backendService: BackendService) {
+  constructor(private router: Router, public backendService: BackendService) {
     this.adminToken = null;
   }
 

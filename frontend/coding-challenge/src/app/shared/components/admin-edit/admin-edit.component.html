@@ -11,25 +11,25 @@
 
     <!-- Input field for name/heading of the challenge -->
     <p class="heading">Name</p>
-    <input class="inputField" type="text" placeholder="Please enter a challenge name" [(ngModel)]="name"
+    <input class="inputField" id="name" type="text" placeholder="Please enter a challenge name" [(ngModel)]="name"
         [ngClass]="{'show_error': this.showNameError, 'show_success': this.successfulEdit}">
-    <p class="error_message" [ngClass]="{'not_showing': !this.showNameError}">{{this.nameError}}</p>
+    <p class="error_message name_error" [ngClass]="{'not_showing': !this.showNameError}">{{this.nameError}}</p>
 
     <!-- Input field for description of the challenge -->
     <p class="heading">Description</p>
     <textarea class="inputField" id="description" type="textarea" placeholder="Please enter a challenge description"
         [(ngModel)]="description"
         [ngClass]="{'show_error': this.showDescriptionError, 'show_success': this.successfulEdit}"></textarea>
-    <p class="error_message" [ngClass]="{'not_showing': !this.showDescriptionError}">{{this.descriptionError}}</p>
+    <p class="error_message description_error" [ngClass]="{'not_showing': !this.showDescriptionError}">{{this.descriptionError}}</p>
 
     <!-- Button row to confirm changes, delete the challenge, or cancel the changes -->
     <div class="button_row">
-        <app-button title="{{this.buttonTitle}}" look="primary" font="normal"
+        <app-button class="confirm" title="{{this.buttonTitle}}" look="primary" font="normal"
             (click)="editChallenge(name, description)"></app-button>
         <div class="spacer"></div>
-        <app-button *ngIf="this.editPage" title="Delete Challenge" look="delete" font="normal"
+        <app-button class="delete" *ngIf="this.editPage" title="Delete Challenge" look="delete" font="normal"
             (click)="deleteChallenge()"></app-button>
         <div class="spacer"></div>
-        <app-button title="Cancel" look="secondary" font="normal" (click)="cancel()"></app-button>
+        <app-button class="cancel" title="Cancel" look="secondary" font="normal" (click)="cancel()"></app-button>
     </div>
 </div>

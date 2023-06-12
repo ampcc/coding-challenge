@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,20 +16,20 @@ import { FormsModule } from '@angular/forms';
   ]
 })
 export class DialogComponent {
-  days: number = 0;
+  days = 0;
   challenge?: string = '';
 
-  daysError: boolean = false;
-  challengeError: boolean = false;
+  daysError = false;
+  challengeError = false;
 
-  daysErrorText: string = 'Please select at least a new Challenge or time limit!';
-  challengeErrorText: string = 'Please select at least a new Challenge or time limit!';
+  daysErrorText = 'Please select at least a new Challenge or time limit!';
+  challengeErrorText = 'Please select at least a new Challenge or time limit!';
 
-  noOtherChallenges: boolean = false;
+  noOtherChallenges = false;
 
-  oneButton: boolean = false;
-  twoButtons: boolean = false;
-  threeButtons: boolean = false;
+  oneButton = false;
+  twoButtons = false;
+  threeButtons = false;
 
   // The dialog element expects at least a title as string
   // Additionally it can be used with a description including important informations, further details, a link, and one or more images
@@ -120,8 +120,8 @@ export class DialogComponent {
   public closeDialog(state: number) {
     // If the dialog was used to extend an applications time or change the challenge and the user wants to apply these, it is first checked if the input is correct
     if (this.data.description && (this.data.description.extend || this.data.description.challenges) && state == 1) {
-      var response;
-      var expiryTime = undefined;
+      let response;
+      let expiryTime = undefined;
       this.challenge = undefined;
       this.daysError = false;
       this.challengeError = false;

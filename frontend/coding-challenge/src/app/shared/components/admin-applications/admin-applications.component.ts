@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BackendService } from 'src/app/core/backend.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -26,10 +26,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AdminApplicationsComponent {
   private adminToken: string | null;
 
-  public hideContentActiveChallenges: boolean = false;
-  public hideContentArchiv: boolean = true;
+  public hideContentActiveChallenges = false;
+  public hideContentArchiv = true;
 
-  public hideFilterSelect: boolean = true;
+  public hideFilterSelect = true;
 
   public challengeArray: Challenge[] = [];
   private challengeFilter: number[] = [];
@@ -39,24 +39,30 @@ export class AdminApplicationsComponent {
   public archivArray: Application[] = [];
   public filteredArchivArray: Application[] = [];
 
-  public searchContent: String = "";
+  public searchContent = "";
 
-  public resultOfLinting: String = "";
+  public resultOfLinting = "";
 
   public newChallengesArray: [{
     id?: number,
     heading: string
   }?] = [];
 
-  public hideSubmissionDate: boolean = false;
-  public hideTimeLimit: boolean = false;
+  public hideSubmissionDate = false;
+  public hideTimeLimit = false;
 
+  @ViewChild('filterButton') filterButton?: ElementRef;
+  @ViewChild('filterSelect') filterSelect?: ElementRef;
 
-
-  public constructor(private backend: BackendService, public dialog: MatDialog, public router: Router) {
+  public constructor(private backend: BackendService, public dialog: MatDialog, public router: Router, private renderer: Renderer2) {
     this.adminToken = null;
-  }
 
+    this.renderer.listen('window', 'click', (e: Event) => {
+      if (!this.hideFilterSelect && this.filterButton && e.target !== this.filterButton.nativeElement && !this.filterButton.nativeElement.contains(e.target) && this.filterSelect && e.target !== this.filterSelect.nativeElement && !this.filterSelect.nativeElement.contains(e.target)) {
+        this.showFilter();
+      }
+    });
+  }
 
   public ngOnInit(): void {
     // Check if Admin Token is available
@@ -79,7 +85,7 @@ export class AdminApplicationsComponent {
         this.filteredArchivArray = this.archivArray;
       });
       // get all Challenges
-      const challengeInfos = this.backend.getChallenges(this.adminToken)
+      this.backend.getChallenges(this.adminToken)
         .subscribe((data: Challenge[]) => {
           this.challengeArray = data;
         });
@@ -92,8 +98,8 @@ export class AdminApplicationsComponent {
    * @param id The id tab-html element
    */
   public changeTab(id: string): void {
-    let elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
-    let elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
+    const elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
+    const elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
 
     switch (id) {
       case 'tab_active_challenges':
@@ -115,7 +121,7 @@ export class AdminApplicationsComponent {
 
   /**
    * Searches for an application by the applicationId.
-   * The applicationId is specified by the user via an input element 
+   * The applicationId is specified by the user via an input element
    */
   public search(): void {
     this.searchContent = (<HTMLInputElement>document.getElementById("input_search_bar")).value;
@@ -137,9 +143,9 @@ export class AdminApplicationsComponent {
    * @param id The id of the subtree-html element
    */
   public toggleTreeView(id: string): void {
-    let element = document.getElementById(id);
+    const element = document.getElementById(id);
     if (element !== null && element !== undefined) {
-      let parentElement = element.parentElement;
+      const parentElement = element.parentElement;
 
       if (parentElement !== null && parentElement !== undefined) {
         parentElement.querySelector(".nested")!.classList.toggle("active");
@@ -244,7 +250,7 @@ export class AdminApplicationsComponent {
    * @returns The heading of the challenge as a string
    */
   public getChallengeHeading(challengeId: number): string {
-    let elementHeading = this.challengeArray.find(element => element.id === challengeId)?.challengeHeading;
+    const elementHeading = this.challengeArray.find(element => element.id === challengeId)?.challengeHeading;
 
     if (elementHeading === undefined) {
       return 'Error: Challenge not found';
@@ -320,58 +326,105 @@ export class AdminApplicationsComponent {
    */
   public openDialogActiveApplications(application: Application): void {
     DialogComponent.name;
-    console.log(application)
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly, similar to the way GitHub displays it
-      this.resultOfLinting = response.content;
-      JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
-      this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
-      let dialogRef = this.dialog.open(DialogComponent, {
-        data: {
-          title: 'Applicant ' + application.applicationId,
-          description: {
-            important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
-            link: 'Open Project on GitHub',
-            url: 'https://github.com/ampcc/' + application.githubRepo,
-            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
-          },
-          buttons: {
-            left: { title: 'Archive', look: 'primary' },
-            right: { title: 'Cancel', look: 'secondary' }
-          }
-        },
-        maxHeight: '85vh',
-        minWidth: '30vw',
-      });
+      if (response.content === undefined || response.content === null) {
+        this.resultOfLinting = "Linter result can not be found. Please check the GitHub Repository or wait.";
+      } else {
+        const lengths = response.content.map((element: [string]) => element.length);
+        const maxColumns = Math.max(...lengths);
 
-      // If the dialog is closed and the result is 1 (the user decided to archive an application), the backend tries to edit the application
-      // If this action was successful the application immediately gets moved to archive
-      // Otherwise the user gets navigated to an error page depending on the error code
-      dialogRef.afterClosed().subscribe(result => {
-        if (result == 1) {
-          this.backend.editApplication(this.adminToken, application.applicationId, 5)
-            .subscribe((result) => {
-              var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
-              this.applicantsArray.splice(index, 1);
-              this.archivArray.push(application);
-            }, (error: HttpErrorResponse) => {
-              switch (error.status) {
-                case 401:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/unauthorized");
-                  break;
-                case 404:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/notFound");
-                  break;
-                default:
-                  window.sessionStorage.clear();
-                  this.router.navigateByUrl("/internalError");
-                  break;
-              }
+        this.resultOfLinting = '<table>';
+        let tableCell = '';
+        response.content.forEach((element: [string]) => {
+          console.log(maxColumns);
+          if (element == response.content[0]) {
+            tableCell = 'th';
+          } else {
+            tableCell = 'td';
+          }
+          if (element.length == maxColumns) {
+            this.resultOfLinting = this.resultOfLinting + '<tr>';
+            element.forEach(value => {
+              this.resultOfLinting = this.resultOfLinting + '<' + tableCell + '>' + value + '</' + tableCell + '>';
             });
+            this.resultOfLinting = this.resultOfLinting + '</tr>';
+          } else if (element.length > 0) {
+            const colspan = Number(maxColumns / element.length);
+            this.resultOfLinting = this.resultOfLinting + '<tr>';
+            element.forEach(value => {
+              this.resultOfLinting = this.resultOfLinting + '<' + tableCell + ' colspan="' + colspan + '">' + value + '</' + tableCell + '>';
+            });
+            this.resultOfLinting = this.resultOfLinting + '</tr>';
+          }
+        });
+        this.resultOfLinting = this.resultOfLinting + '</table>';
+      }
+      this.displayDialogActiveApplications(application);
+    }, (error: HttpErrorResponse) => {
+      switch (error.status) {
+        case 401:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/unauthorized");
+          break;
+        case 404:
+          this.resultOfLinting = "Linter result can not be found. Please check the GitHub Repository or wait.";
+          this.displayDialogActiveApplications(application);
+          break;
+        default:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/internalError");
+          break;
+      }
+    })
+  }
+
+  private displayDialogActiveApplications(application: Application): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Applicant ' + application.applicationId,
+        description: {
+          important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
+          link: 'Open Project on GitHub',
+          url: 'https://github.com/ampcc/' + application.githubRepo,
+          details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+        },
+        buttons: {
+          left: { title: 'Archive', look: 'primary' },
+          right: { title: 'Cancel', look: 'secondary' }
         }
-      })
+      },
+      maxHeight: '85vh',
+      minWidth: '30vw',
+    });
+
+    // If the dialog is closed and the result is 1 (the user decided to archive an application), the backend tries to edit the application
+    // If this action was successful the application immediately gets moved to archive
+    // Otherwise the user gets navigated to an error page depending on the error code
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == 1) {
+        this.backend.editApplication(this.adminToken, application.applicationId, 5)
+          .subscribe((result) => {
+            const index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+            this.applicantsArray.splice(index, 1);
+            this.archivArray.push(application);
+          }, (error: HttpErrorResponse) => {
+            switch (error.status) {
+              case 401:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/unauthorized");
+                break;
+              case 404:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/notFound");
+                break;
+              default:
+                window.sessionStorage.clear();
+                this.router.navigateByUrl("/internalError");
+                break;
+            }
+          });
+      }
     })
   }
 
@@ -383,8 +436,8 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     // Array of possible new challenges gets filled with all existing challenges except the one already assigned to the user
     this.newChallengesArray = [];
-    for (var i = 0; i < this.challengeArray.length; i++) {
-      if (this.challengeArray[i].id != application.challengeId) {
+    for (let i = 0; i < this.challengeArray.length; i++) {
+      if (this.challengeArray[i].id != application.challengeId && this.challengeArray[i].active) {
         this.newChallengesArray.push({
           id: this.challengeArray[i].id,
           heading: this.challengeArray[i].challengeHeading
@@ -393,7 +446,7 @@ export class AdminApplicationsComponent {
     }
 
     // Opens dialog to let admin expand time limit or select new challenge
-    let dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Applicant ' + application.applicationId,
         description: {
@@ -413,11 +466,11 @@ export class AdminApplicationsComponent {
     // If the dialog was closed with result 1 (the user commited changes), the backend tries to edit the application accordingly and immediately updates the list
     // If an error occurrs, the user gets redireced to one of the error pages
     dialogRef.afterClosed().subscribe(result => {
-      if (result.s && result.s == 1) {
+      if (result && result.s && result.s == 1) {
         this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
           .subscribe((result) => {
             // Update the list of applications
-            var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+            const index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
             this.backend.getApplication(this.adminToken, application.applicationId).subscribe((response) => {
               this.applicantsArray.splice(index, 0, response);
               this.applicantsArray.splice(index + 1, 1);
@@ -445,7 +498,7 @@ export class AdminApplicationsComponent {
       if (result == 2) {
         this.backend.editApplication(this.adminToken, application.applicationId, 5)
           .subscribe((result) => {
-            var index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+            const index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
             this.applicantsArray.splice(index, 1);
             this.archivArray.push(application);
           }, (error: HttpErrorResponse) => {
@@ -466,7 +519,7 @@ export class AdminApplicationsComponent {
           });
       }
     })
-  };
+  }
 
   /**
    * Opens a modal dialog that displays detailed information of the archived application.
@@ -477,25 +530,74 @@ export class AdminApplicationsComponent {
     DialogComponent.name;
     this.backend.getResult(this.adminToken, application.applicationId).subscribe((response) => {
       // Formats linter results to display properly
-      this.resultOfLinting = response.content;
-      JSON.stringify(this.resultOfLinting).replaceAll(new RegExp('\\\\n', 'g'), '<br>');
-      this.resultOfLinting.replaceAll(new RegExp('\\\\"', 'g'), '');
-      let dialogRef = this.dialog.open(DialogComponent, {
-        data: {
-          title: 'Applicant ' + application.applicationId,
-          description: {
-            important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
-            link: 'Open Project on GitHub',
-            url: 'https://github.com/ampcc/' + application.githubRepo,
-            details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
-          },
-          buttons: {
-            right: { title: 'Cancel', look: 'secondary' }
+      if (response.content === undefined || response.content === null) {
+        this.resultOfLinting = "Linter result can not be found. Please check the GitHub Repository or wait.";
+      } else {
+        const lengths = response.content.map((element: [string]) => element.length);
+        const maxColumns = Math.max(...lengths);
+
+        this.resultOfLinting = '<table>';
+        let tableCell = '';
+        response.content.forEach((element: [string]) => {
+          console.log(maxColumns);
+          if (element == response.content[0]) {
+            tableCell = 'th';
+          } else {
+            tableCell = 'td';
           }
-        },
-        maxHeight: '85vh',
-        minWidth: '30vw',
-      });
+          if (element.length == maxColumns) {
+            this.resultOfLinting = this.resultOfLinting + '<tr>';
+            element.forEach(value => {
+              this.resultOfLinting = this.resultOfLinting + '<' + tableCell + '>' + value + '</' + tableCell + '>';
+            });
+            this.resultOfLinting = this.resultOfLinting + '</tr>';
+          } else if (element.length > 0) {
+            const colspan = Number(maxColumns / element.length);
+            this.resultOfLinting = this.resultOfLinting + '<tr>';
+            element.forEach(value => {
+              this.resultOfLinting = this.resultOfLinting + '<' + tableCell + ' colspan="' + colspan + '">' + value + '</' + tableCell + '>';
+            });
+            this.resultOfLinting = this.resultOfLinting + '</tr>';
+          }
+        });
+        this.resultOfLinting = this.resultOfLinting + '</table>';
+      }
+      this.displayDialogArchivedApplications(application);
+    }, (error: HttpErrorResponse) => {
+      switch (error.status) {
+        case 401:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/unauthorized");
+          break;
+        case 404:
+          this.resultOfLinting = "Linter result can not be found. Please check the GitHub Repository or wait.";
+          this.displayDialogArchivedApplications(application);
+          break;
+        default:
+          window.sessionStorage.clear();
+          this.router.navigateByUrl("/internalError");
+          break;
+      }
     });
   }
+
+  private displayDialogArchivedApplications(application: Application): void {
+    this.dialog.open(DialogComponent, {
+      data: {
+        title: 'Applicant ' + application.applicationId,
+        description: {
+          important: 'Programming Language: ' + application.programmingLanguage + '<br>Operating System: ' + application.operatingSystem + '<br><br> Linter-Result:',
+          link: 'Open Project on GitHub',
+          url: 'https://github.com/ampcc/' + application.githubRepo,
+          details: "<div class='resultLinting'>" + this.resultOfLinting + "</div>"
+        },
+        buttons: {
+          right: { title: 'Cancel', look: 'secondary' }
+        }
+      },
+      maxHeight: '85vh',
+      minWidth: '30vw',
+    });
+  }
+
 }

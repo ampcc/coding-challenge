@@ -6,15 +6,15 @@
 
     <!-- Input field for username -->
     <p class="heading">Username</p>
-    <input class="inputField" type="text" placeholder="Please enter your username" [(ngModel)]="username"
+    <input class="inputField" id="username" type="text" placeholder="Please enter your username" [(ngModel)]="username"
         [ngClass]="{'show_error': this.showUsernameError}">
-    <p class="error_message" [ngClass]="{'no_error': !this.showUsernameError}">{{this.usernameError}}</p>
+    <p class="error_message username_error" [ngClass]="{'no_error': !this.showUsernameError}">{{this.usernameError}}</p>
 
     <!-- Input field for password -->
     <p class="heading">Password</p>
-    <input class="inputField" type="password" placeholder="Please enter your password" [(ngModel)]="password"
+    <input class="inputField" id="password" type="password" placeholder="Please enter your password" [(ngModel)]="password"
         [ngClass]="{'show_error': this.showPasswordError}">
-    <p class="error_message" [ngClass]="{'no_error': !this.showPasswordError}">{{this.passwordError}}</p>
+    <p class="error_message password_error" [ngClass]="{'no_error': !this.showPasswordError}">{{this.passwordError}}</p>
 
     <!-- Button to confirm login -->
     <app-button title="Login" look="primary" (click)="login(username, password)"></app-button>

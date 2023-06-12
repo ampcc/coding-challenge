@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { BackendService } from 'src/app/core/backend.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,25 +22,33 @@ import { Challenge } from '../../models/challenge';
 export class AdminEditComponent {
   private adminToken: string | null;
 
-  name: string = '';
-  description: string = '';
+  name = '';
+  description = '';
   id = 0;
 
-  nameError: string = 'Error';
-  descriptionError: string = 'Error';
+  nameError = 'Error';
+  descriptionError = 'Error';
 
-  successMessage: string = 'added';
-  pageName: string = 'Add';
-  buttonTitle: string = 'Add Challenge';
+  successMessage = 'added';
+  pageName = 'Add';
+  buttonTitle = 'Add Challenge';
 
-  showNameError: boolean = false;
-  showDescriptionError: boolean = false;
+  showNameError = false;
+  showDescriptionError = false;
 
-  successfulEdit: boolean = false;
-  editPage: boolean = false;
+  successfulEdit = false;
+  editPage = false;
+
+  // Listens for press of enter key and handles it as if confirm button was clicked
+  @HostListener('window:keydown.enter', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    const name = (document.getElementById("name") as HTMLInputElement).value;
+    const description = (document.getElementById("description") as HTMLInputElement).value;
+    this.editChallenge(name, description);
+  }
 
   // The Admin Edit Component can either be used to edit an existing challenge or to create a new one
-  constructor(private dialog: MatDialog, private router: Router, private backendService: BackendService, private route: ActivatedRoute) {
+  constructor(private dialog: MatDialog, private router: Router, public backendService: BackendService, private route: ActivatedRoute) {
     this.adminToken = null;
   }
 
@@ -101,14 +109,14 @@ export class AdminEditComponent {
       if (name == '') {
         this.nameError = 'Please enter a challenge name!';
         this.showNameError = true;
-      } else {
+      } else if (name.length < 4) {
         this.nameError = 'Challenge name should include at least four characters!';
         this.showNameError = true;
       }
       if (description == '') {
         this.descriptionError = 'Please enter a challenge description!';
         this.showDescriptionError = true;
-      } else {
+      } else if (description.length < 20) {
         this.descriptionError = 'Challenge description should include at least 20 characters!';
         this.showDescriptionError = true;
       }
@@ -118,7 +126,7 @@ export class AdminEditComponent {
       // If the changes are successful the user gets positive feedback and then is navigated to the challenges page
       // Otherwise the user gets navigated to an error page
       if (this.editPage) {
-        var tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description };
+        const tempChallenge: Challenge = { id: this.id, challengeHeading: this.name, challengeText: this.description, active: true };
         this.backendService.editChallenge(this.adminToken, tempChallenge).subscribe((response) => {
           this.successfulEdit = true;
           setTimeout(() => {
@@ -144,7 +152,7 @@ export class AdminEditComponent {
         // If the page is an add challenge page the backend is calledto create a new challenge
         // If the creation is successful the user gets positive feedback and then is navigated to the challenges page
         // Otherwise the user gets navigated to an error page
-        var tempChallenge: Challenge = { challengeHeading: this.name, challengeText: this.description };
+        const tempChallenge: Challenge = { challengeHeading: this.name, challengeText: this.description, active: true };
         this.backendService.createChallenge(this.adminToken, tempChallenge).subscribe((response) => {
           this.successfulEdit = true;
           setTimeout(() => {
@@ -172,7 +180,7 @@ export class AdminEditComponent {
 
   // A dialog is opened to ask the user for confirmation that he wants to delete the challenge
   deleteChallenge(): void {
-    let dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         title: 'Are you sure you want to delete the Challenge?',
         buttons: {
@@ -189,7 +197,7 @@ export class AdminEditComponent {
     // Otherwise the user gets navigated to an error page depending on the given error code
     dialogRef.afterClosed().subscribe(result => {
       if (result == 1) {
-        this.backendService.deleteChallenge(this.adminToken, this.id).subscribe(() => {
+        this.backendService.deleteChallenge(this.adminToken, this.id).subscribe((response) => {
           this.router.navigate(['/admin_challenges']);
         }, (error) => {
           switch (error.status) {

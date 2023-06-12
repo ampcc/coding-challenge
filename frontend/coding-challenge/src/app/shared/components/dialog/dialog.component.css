@@ -50,12 +50,12 @@ a {
     text-decoration: none;
 }
 
-.link:hover {
-    text-decoration: underline;
-}
-
 .link_text {
     margin-bottom: 1em;
+}
+
+.link_text:hover {
+    text-decoration: underline;
 }
 
 .regular {

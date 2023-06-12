@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { DialogComponent } from './dialog.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -21,8 +21,7 @@ describe('DialogComponent', () => {
         HttpClientModule,
         MatDialogModule
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DialogComponent);
     component = fixture.componentInstance;
@@ -33,4 +32,17 @@ describe('DialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // Check if dialog can be closed
+  it('can be closed', fakeAsync(() => {
+    const close = spyOn(component, 'closeDialog');
+
+    const button = fixture.debugElement.nativeElement.querySelector('.close');
+    button.click();
+    tick();
+
+    expect(close).toHaveBeenCalled();
+
+    flush();
+  }));
 });
