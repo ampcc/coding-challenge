@@ -10,8 +10,6 @@ from dotenv import load_dotenv
 from github import Github, GithubException
 from github.AppAuthentication import AppAuthentication
 
-from . import githubApiMockData
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv()
 
