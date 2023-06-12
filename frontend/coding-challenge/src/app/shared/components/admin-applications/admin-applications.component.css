@@ -248,10 +248,11 @@ span {
 /* Style tables */
 table {
   max-width: 90vw;
+  min-width: 60vw;
 }
 
 th, td {
-  padding: 0 0.2em;
+  padding: 0 0.5em;
 }
 
 
