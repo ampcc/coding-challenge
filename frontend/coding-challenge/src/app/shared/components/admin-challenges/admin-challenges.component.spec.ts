@@ -86,7 +86,8 @@ describe('AdminChallengesComponent', () => {
     let challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
-      challengeText: "This is the first test."
+      challengeText: "This is the first test.",
+      active: true
     };
 
     component.challengeArray = [challenge1];

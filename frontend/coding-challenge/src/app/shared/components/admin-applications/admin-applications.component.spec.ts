@@ -42,7 +42,7 @@ describe('AdminApplicationsComponent', () => {
   it('click on archive applications tab', () => {
     let activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
     let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
-    
+
     let activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
     let archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
 
@@ -65,7 +65,7 @@ describe('AdminApplicationsComponent', () => {
   it('click on active challenge tab', () => {
     let activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
     let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
-    
+
     let activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
     let archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
     // Initial state
@@ -76,7 +76,7 @@ describe('AdminApplicationsComponent', () => {
 
     expect(component.hideContentActiveChallenges).toBeFalse();
     expect(component.hideContentArchiv).toBeTrue();
-    
+
     expect(activeChallengeTabStyle.borderBottomStyle).toEqual('solid');
     expect(activeChallengeTabStyle.borderBottomWidth).toEqual('2px');
     expect(activeChallengeTabStyle.borderBottomColor).toEqual('black');
@@ -136,13 +136,15 @@ describe('AdminApplicationsComponent', () => {
     let challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
-      challengeText: "This is the first test."
+      challengeText: "This is the first test.",
+      active: true
     };
 
     let challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
-      challengeText: "This is the second test."
+      challengeText: "This is the second test.",
+      active: true
     };
 
     component.applicantsArray = [application1, application2, application3];
@@ -168,7 +170,7 @@ describe('AdminApplicationsComponent', () => {
         case challenge1:
           expect(component.filteredApplicantsArray).toContain(application1);
           expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
-          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1); 
+          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1);
         break;
         case challenge2:
           expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
@@ -178,7 +180,7 @@ describe('AdminApplicationsComponent', () => {
         default:
           throw Error('No identified challenge inside challenge Array in test "correct filter results of active applications"');
       }
-      
+
       challengeFilter.click();
       fixture.detectChanges();
     }
@@ -187,12 +189,12 @@ describe('AdminApplicationsComponent', () => {
       const statusFilter = fixture.debugElement.query(By.css(`#${statusTextArray[i]}`)).nativeElement;
       statusFilter.click();
       fixture.detectChanges();
-      
+
       switch(statusTextArray[i]) {
         case 'not_uploaded_yet':
           expect(component.filteredApplicantsArray).toContain(application1);
           expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
-          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1); 
+          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1);
         break;
         case 'uploaded':
           expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
@@ -207,7 +209,7 @@ describe('AdminApplicationsComponent', () => {
         default:
           throw Error('No identified status inside challenge Array in test "correct filter results of active applications"');
       }
-      
+
       statusFilter.click();
       fixture.detectChanges();
     }
@@ -266,13 +268,15 @@ describe('AdminApplicationsComponent', () => {
     let challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
-      challengeText: "This is the first test."
+      challengeText: "This is the first test.",
+      active: true
     };
 
     let challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
-      challengeText: "This is the second test."
+      challengeText: "This is the second test.",
+      active: true
     };
 
     component.archivArray = [application1, application2, application3];
@@ -296,7 +300,7 @@ describe('AdminApplicationsComponent', () => {
         case challenge1:
           expect(component.filteredArchivArray).toContain(application1);
           expect(component.filteredArchivArray.indexOf(application2)).toBe(-1);
-          expect(component.filteredArchivArray.indexOf(application3)).toBe(-1); 
+          expect(component.filteredArchivArray.indexOf(application3)).toBe(-1);
         break;
         case challenge2:
           expect(component.filteredArchivArray.indexOf(application1)).toBe(-1);
@@ -306,7 +310,7 @@ describe('AdminApplicationsComponent', () => {
         default:
           throw Error('No identified challenge inside challenge Array in test "correct filter results of archived applications"');
       }
-      
+
       challengeFilter.click();
       fixture.detectChanges();
     }
@@ -371,7 +375,7 @@ describe('AdminApplicationsComponent', () => {
     expect(activeApplicationHTML.length).toBe(3);
     expect(component.applicantsArray.length).toBe(3);
 
-    
+
     const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#input_search_bar')).nativeElement;
     const searchButton = fixture.debugElement.query(By.css('#button-addon5')).nativeElement;
 
@@ -382,7 +386,7 @@ describe('AdminApplicationsComponent', () => {
 
     expect(component.filteredApplicantsArray.length).toBe(1);
     expect(component.filteredApplicantsArray).toContain(application2);
-        
+
     searchBar.value = '    def457   ';
     searchButton.click();
 
@@ -394,7 +398,7 @@ describe('AdminApplicationsComponent', () => {
     searchButton.click();
 
     fixture.detectChanges();
-    
+
     expect(component.filteredApplicantsArray.length).toBe(1);
     expect(component.filteredApplicantsArray).toContain(application1);
   });
@@ -469,7 +473,7 @@ describe('AdminApplicationsComponent', () => {
 
     expect(component.filteredArchivArray.length).toBe(1);
     expect(component.filteredArchivArray).toContain(application2);
-        
+
     searchBar.value = '    def457   ';
     searchButton.click();
 
@@ -481,7 +485,7 @@ describe('AdminApplicationsComponent', () => {
     searchButton.click();
 
     fixture.detectChanges();
-    
+
     expect(component.filteredArchivArray.length).toBe(1);
     expect(component.filteredArchivArray).toContain(application1);
   });
@@ -576,7 +580,8 @@ describe('AdminApplicationsComponent', () => {
     let challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
-      challengeText: "This is the first test."
+      challengeText: "This is the first test.",
+      active: true
     };
 
     component.filteredApplicantsArray = [application1];
@@ -586,7 +591,7 @@ describe('AdminApplicationsComponent', () => {
 
     expect(component.filteredApplicantsArray.length).toBe(1);
     expect(component.challengeArray.length).toBe(1);
-    
+
     let edit: HTMLElement = fixture.debugElement.query(By.css('.edit')).nativeElement;
     edit.click();
 
@@ -638,13 +643,15 @@ describe('AdminApplicationsComponent', () => {
     let challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
-      challengeText: "This is the first test."
+      challengeText: "This is the first test.",
+      active: true
     };
 
     let challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
-      challengeText: "This is the second test."
+      challengeText: "This is the second test.",
+      active: true
     };
 
     component.applicantsArray = [application1, application2];
@@ -661,7 +668,7 @@ describe('AdminApplicationsComponent', () => {
     expect(component.applicantsArray.length).toBe(2);
 
     expect(component.challengeArray.length).toBe(2);
-    
+
     for (let i = 0; i < activeApplicationHTML.length; i++) {
         const id: HTMLElement = activeApplicationHTML[i].query(By.css('.applicantId')).nativeElement;
         expect(id.innerHTML).toEqual(' ' + component.applicantsArray[i].applicationId + ' ');
@@ -684,7 +691,7 @@ describe('AdminApplicationsComponent', () => {
         } else {
           const limit: HTMLElement = activeApplicationHTML[i].query(By.css('.limit')).nativeElement;
           expect(limit.innerHTML).toEqual('<b>Time limit:</b> ' + 4 + " days " + 12 + " hours " + 45 + " minutes");
-        
+
           expect(detailButton).toBeFalsy();
           expect(editButton).toBeTruthy();
         }
@@ -733,13 +740,15 @@ describe('AdminApplicationsComponent', () => {
     let challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
-      challengeText: "This is the first test."
+      challengeText: "This is the first test.",
+      active: true
     };
 
     let challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
-      challengeText: "This is the second test."
+      challengeText: "This is the second test.",
+      active: true
     };
 
     component.archivArray = [application1, application2];
@@ -754,7 +763,7 @@ describe('AdminApplicationsComponent', () => {
     expect(component.archivArray.length).toBe(2);
 
     expect(component.challengeArray.length).toBe(2);
-    
+
     for (let i = 0; i < archivedApplicationHTML.length; i++) {
         const id: HTMLElement = archivedApplicationHTML[i].query(By.css('.applicantId')).nativeElement;
         expect(id.innerHTML).toEqual(' ' + component.archivArray[i].applicationId + ' ');
@@ -770,23 +779,23 @@ describe('AdminApplicationsComponent', () => {
 
    it('show and hide filter on click', () => {
     let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
-    
+
     // Initial state
     expect(component.hideFilterSelect).toBeTrue();
-    
+
     filterButtonElement.click();
 
     fixture.detectChanges();
 
     expect(component.hideFilterSelect).toBeFalse();
-   }); 
+   });
 
 
    it('displays filter options correctly in active applications', () => {
     let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
-    
+
     expect(component.hideFilterSelect).toBeTrue();
-    
+
     filterButtonElement.click();
 
     fixture.detectChanges();
@@ -798,12 +807,12 @@ describe('AdminApplicationsComponent', () => {
 
    it('displays filter options correctly in archive applications', () => {
     let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
-    
+
     component.hideContentArchiv = false;
     component.hideContentActiveChallenges = true;
 
     expect(component.hideFilterSelect).toBeTrue();
-    
+
     filterButtonElement.click();
 
     fixture.detectChanges();
