@@ -75,7 +75,7 @@ class GithubApiWrapper:
         # ----SUMMARY ----
         linterStartIndex = decodedLinter.find("+----SUMMARY----+")
         linterSummary = decodedLinter[linterStartIndex:-1]
-        linterEndIndex = linterSummary.find("\\n\\n")
+        linterEndIndex = linterSummary.find("\n\n")
 
         cleanSummary = linterSummary[:linterEndIndex]
 
@@ -87,8 +87,6 @@ class GithubApiWrapper:
         # question mark
         cleanSummary = cleanSummary.replace(u"\u25EC", "?")
 
-        # print(cleanSummary)
-
         result = []
         for i, line in enumerate(cleanSummary.split("\n")):
             if line.startswith("+"):
@@ -99,7 +97,6 @@ class GithubApiWrapper:
                     if element:
                         row.append(element.strip())
                 result.append(row)
-        print(result)
         return result
 
     # Function that combines all prior API-calls
