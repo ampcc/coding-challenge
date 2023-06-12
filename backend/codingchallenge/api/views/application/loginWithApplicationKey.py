@@ -1,20 +1,11 @@
 import urllib.parse
-import os
 import time
-
-from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
-
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
 from django.conf import settings
 from cryptography.fernet import Fernet
-
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from django.contrib.auth.models import User
-
 from ...include import jsonMessages
 from ...models import Application
 
