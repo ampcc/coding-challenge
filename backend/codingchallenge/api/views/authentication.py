@@ -1,5 +1,6 @@
 import urllib.parse
 import os
+import time
 
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -14,8 +15,8 @@ from cryptography.fernet import Fernet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from django.contrib.auth.models import User
 
-from . import jsonMessages
-
+from ..include import jsonMessages
+from ..models import Application
 
 class KeyAuthentication(ObtainAuthToken):
 
@@ -31,7 +32,7 @@ class KeyAuthentication(ObtainAuthToken):
             except:
                 return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
 
-            if len(fernet_key) is not 44:
+            if len(fernet_key) != 44:
                 return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
             
             username = decryptedMessage[0:8]
@@ -40,6 +41,11 @@ class KeyAuthentication(ObtainAuthToken):
             user = authenticate(request, username=username, password=password)
 
             if user:
+                if user.application.expiry < time.time():
+                    if user.application.status < Application.Status.ARCHIVED:
+                        user.application.status = Application.Status.EXPIRED
+                        user.save()
+                    return Response(jsonMessages.errorJsonResponse("The application is expired!"), status=status.HTTP_410_GONE)
                 token, created = Token.objects.get_or_create(user=user)
                 return Response({
                     "token": token.key

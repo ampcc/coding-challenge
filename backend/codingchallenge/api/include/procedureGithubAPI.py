@@ -75,7 +75,7 @@ class GithubApiWrapper:
         # ----SUMMARY ----
         linterStartIndex = decodedLinter.find("+----SUMMARY----+")
         linterSummary = decodedLinter[linterStartIndex:-1]
-        linterEndIndex = linterSummary.find("\\n\\n")
+        linterEndIndex = linterSummary.find("\n\n")
 
         cleanSummary = linterSummary[:linterEndIndex]
 
@@ -88,7 +88,7 @@ class GithubApiWrapper:
         cleanSummary = cleanSummary.replace(u"\u25EC", "?")
 
         result = []
-        for i, line in enumerate(cleanSummary.split("\\n")):
+        for i, line in enumerate(cleanSummary.split("\n")):
             if line.startswith("+"):
                 pass
             else:
@@ -110,4 +110,11 @@ class GithubApiWrapper:
         commit = self.create_commit(repo, commit_message, tree, [latest_git_commit])
         ref = self.push_commit(repo, "heads/" + branch_name, commit.sha)
         if ref is None and added_megalinter:
+            return True
+
+    # Function that combines all prior API-calls
+    def upload_file(self, input_file, filename, repo_name, branch_name, commit_message):
+        repo = self.get_repo(repo_name)
+        create = repo.create_file(filename, commit_message, input_file.read())
+        if create is None:
             return True

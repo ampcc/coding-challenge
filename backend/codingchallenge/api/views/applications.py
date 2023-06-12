@@ -4,6 +4,9 @@ import secrets
 import string
 import sys
 import time
+from io import BytesIO
+from threading import Thread
+from textwrap import dedent
 from zipfile import ZipFile
 from cryptography.fernet import Fernet
 from django.conf import settings
@@ -21,7 +24,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from . import jsonMessages, expirySettings
+from ..include import jsonMessages, expirySettings
 from ..include.githubApi import GithubApi
 from ..models import Application, Challenge
 from ..serializers import (
@@ -260,7 +263,8 @@ class AdminApplicationsView(APIView):
             try:
                 gApi.delete_repo(user.application.githubRepo)
             except GithubException:
-                return Response(*jsonMessages.errorGithubJsonResponse(sys.exception()))
+                response, statusCode = jsonMessages.errorGithubJsonResponse(sys.exception())
+                return Response(response, status=statusCode)
 
         try:
             user.delete()
@@ -279,7 +283,6 @@ class AdminResultApplicationView(APIView):
     # 8. Get Result
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-admin-functions#8-get-result
     # /api/admin/applications/results/{applicationId}
-    # Todo: Test Cases for this method
     def get(self, request, *args, **kwargs):
         """
         get Linter Results with
@@ -324,14 +327,12 @@ class AdminResultApplicationView(APIView):
 
 
 class UploadSolutionView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     parser_classes = [FileUploadParser]
 
     # 18. Upload Solution
     # https://github.com/ampcc/coding-challenge/wiki/API-Documentation-for-applicant-functions#18-upload-solution
     # /api/application/uploadSolution
-    # Todo: Test Cases for this method
-    # Todo: Add OS and Programming Language in Body
     def post(self, request, *args, **kwargs):
         """
         post Solution with
@@ -339,7 +340,13 @@ class UploadSolutionView(APIView):
                 dataZip
         """
         gApi = GithubApi()
-        user = User.objects.get(username=request.user.username)
+        try:
+            user = User.objects.get(username=request.user.username)
+        except ObjectDoesNotExist:
+            return Response(
+                jsonMessages.errorJsonResponse("unauthorized"),
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
         if user.application.status < Application.Status.IN_REVIEW:
 
@@ -357,6 +364,48 @@ class UploadSolutionView(APIView):
             except:
                 return Response(
                     jsonMessages.errorJsonResponse("Cannot process zipFile. Aborting."),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            try:
+                operating_system = request.META['HTTP_OPERATINGSYSTEM']
+                programming_language = request.META['HTTP_PROGRAMMINGLANGUAGE']
+
+                read_me = dedent(
+                    f"""\
+                    # Application of {user.application.applicationId}
+                    ## Uploaded solution
+                    - Operating System: {operating_system}
+                    - Programming Language: {programming_language}
+
+                    ## Assigned challenge Nr. {user.application.challengeId}
+                    ### {Challenge.objects.get(id=user.application.challengeId).challengeHeading}
+                    {Challenge.objects.get(id=user.application.challengeId).challengeText}
+
+                """
+                )
+
+                read_me_file = BytesIO(read_me.encode())
+                read_me_file.name = "/.github/README.md"
+
+            except KeyError:
+                return Response(
+                    jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            try:
+                raw_file = request.data['file']
+            except KeyError:
+                return Response(
+                    jsonMessages.errorJsonResponse("No file passed. Aborting."),
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            try:
+                file_obj = ZipFile(raw_file)
+            except:
+                return Response(
+                    jsonMessages.errorJsonResponse("No Operating System or Programming Language specified"),
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -387,12 +436,22 @@ class UploadSolutionView(APIView):
                 for path in filteredPathList:
                     if not path.endswith('/'):
                         file_list.append(file_obj.open(path))
-                
+
+                file_list.append(read_me_file)
+
                 gApi.create_repo(repoName, 'to be defined')  # TODO: description auslagern
                 gApi.upload_files(repoName, file_list)
+                
+                # as the zipfile is redundant to the previous upload, the http-response will be sent before its upload is completed.
+                thread = Thread(
+                     target=gApi.upload_file,
+                     args=(repoName, 'zippedFile_' + repoName + '.zip', raw_file)
+                 )
+                thread.start()
 
             except GithubException:
-                return Response(jsonMessages.errorGithubJsonResponse(sys.exception()))
+                response, statusCode = jsonMessages.errorGithubJsonResponse(sys.exception())
+                return Response(response, status=statusCode)
 
             user.application.submission = time.time()
             user.application.status = Application.Status.IN_REVIEW

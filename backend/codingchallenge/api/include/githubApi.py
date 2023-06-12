@@ -4,7 +4,13 @@ import os
 from . import procedureGithubAPI, githubApiMockData
 from dotenv import load_dotenv
 from pathlib import Path
+
 from django.conf import settings
+from dotenv import load_dotenv
+from github import Github, GithubException
+from github.AppAuthentication import AppAuthentication
+
+from . import githubApiMockData
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv()
@@ -43,6 +49,14 @@ class GithubApi:
             return githubApiMockData.pushFile
         else:
             return self.github_base.upload_files(files, repo_name, "main", "application file upload: commit")
+    
+    def upload_file(self, repo_name, filename, input_file):
+        if settings.DEPLOY_OFFLINE:
+            return githubApiMockData.pushFile
+        else:
+            input_file.seek(0)
+            return self.github_base.upload_file(input_file, filename, repo_name, "main", "zipfile upload: commit")
+    
 
     def get_linter_result(self, repo_name):
         if settings.DEPLOY_OFFLINE:

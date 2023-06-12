@@ -7,7 +7,7 @@ from rest_framework.test import APITransactionTestCase
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 from ....models.challenge import Challenge
-from ....views import expirySettings
+from ....include import expirySettings
 
 
 class test_createApplication(APITransactionTestCase):
