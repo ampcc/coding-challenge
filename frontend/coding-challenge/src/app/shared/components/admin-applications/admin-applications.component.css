@@ -245,6 +245,15 @@ span {
     white-space: pre-wrap;
 }
 
+/* Style tables */
+table {
+  max-width: 90vw;
+}
+
+th, td {
+  padding: 0 0.2em;
+}
+
 
 /* Responsive Webdesign */
 @media screen and (min-width: 2000px) {
