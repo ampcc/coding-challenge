@@ -5,7 +5,7 @@ from rest_framework.test import APITransactionTestCase
 from ..mock.mockAuth import MockAuth
 from ...models import Application
 
-from ....codingchallenge.jobs.daily.expiredStatusScheduler import Job
+from ...jobs.daily.expiredStatusScheduler import Job
 from ...include import expirySettings 
 
 
@@ -31,12 +31,14 @@ class test_expiredStatusScheduler(APITransactionTestCase):
 
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
 
-    def expiredStatusGetsSet(self):
+    def test_expiredStatusGetsSet(self):
         applications = Application.objects.all()
-        self.assertEqual(applications.__len__, 2)
+        self.assertEqual(len(applications), 2)
         self.assertEqual(len(applications.filter(status=4)), 0)
-        Job.execute()
+
+        Job().execute()
+        
         applications = Application.objects.all()
         self.assertEqual(len(applications), 2)
         self.assertEqual(len(applications.filter(status=4)), 1)
-        self.assertEqual(applications.filter(status=4)[0].applicationId, 'ZWEI1234')
+        self.assertEqual(applications.filter(status=4)[0].applicationId, 'TEST1234')
