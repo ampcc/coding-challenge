@@ -1,44 +1,25 @@
-import json
 import random
 import secrets
 import string
-import sys
 import time
-from io import BytesIO
-from threading import Thread
-from textwrap import dedent
-from zipfile import ZipFile
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.contrib.auth.models import User
-
-# RESTapi imports
-from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
-from github import GithubException
 from rest_framework import status
-from rest_framework.parsers import FileUploadParser
-
-# Authentication imports
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
-
 from ...include import jsonMessages, expirySettings
-from ...include.githubApi import GithubApi
 from ...models import Application, Challenge
 from ...serializers import (
-    GetApplicationSerializer, GetApplicationStatus, GetChallengeSerializer,
-    PostApplicationSerializer
+    GetApplicationSerializer, PostApplicationSerializer
 )
-    
+
 def create(request):
-    
     expiryTimestamp = time.time() + expirySettings.daysUntilChallengeStart * 24 * 60 * 60
     try:
         # random challenge selection of active challenges
         challengeId = random.choice(Challenge.objects.filter(active=True)).id
-
+        
     except IndexError:
         return Response(
             jsonMessages.errorJsonResponse('there are no challenges in database'),
@@ -49,7 +30,6 @@ def create(request):
         return Response(jsonMessages.errorJsonResponse('Body is empty'), status=status.HTTP_204_NO_CONTENT)
 
     try:
-
         if not len(request.data.get('applicationId')) == 8:
             return Response(
                 jsonMessages.errorJsonResponse('applicationId has the wrong length'),
@@ -94,7 +74,7 @@ def create(request):
         password=password
     )
     user.save()
-
+    
     # the key is build as follows: "applicationId+password".
     # Note: The applicationId does always have 8 digits.
     keyPlain = request.data.get('applicationId') + "+" + password
