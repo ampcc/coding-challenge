@@ -3,11 +3,15 @@ import { AdminApplicationsComponent } from './admin-applications.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
+import { Application } from '../../models/application';
+import { BackendService } from 'src/app/core/backend.service';
+import { Challenge } from '../../models/challenge';
+import { formatDate } from '@angular/common';
 
-// Test if Admin Applications Component works properly
 describe('AdminApplicationsComponent', () => {
   let component: AdminApplicationsComponent;
   let fixture: ComponentFixture<AdminApplicationsComponent>;
+  let backend: BackendService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,55 +26,51 @@ describe('AdminApplicationsComponent', () => {
       ]
     }).compileComponents();
 
+    backend = TestBed.inject(BackendService);
+
     fixture = TestBed.createComponent(AdminApplicationsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  // Check if component can be created
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
 
-  it('click on archive challenge tab', () => {
+  it('click on archive applications tab', () => {
     let activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
-    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
+    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
     
     let activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
     let archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
 
     // Initial state
-    expect(component.hideContentActiveChallenges).toBeTrue();
-    expect(component.hideContentArchiv).toBeFalse();
-    // expect(challengeTabStyle.borderBottom).toEqual('none');
-    // expect(uploadTabStyle.borderBottom).toEqual('none');
-    // expect(introTabStyle.borderBottom).toEqual('2px solid black');
+    expect(component.hideContentArchiv).toBeTrue();
+    expect(component.hideContentActiveChallenges).toBeFalse();
 
     archiveChallengeTabElement.click();
 
     expect(component.hideContentActiveChallenges).toBeTrue();
     expect(component.hideContentArchiv).toBeFalse();
 
-    expect(activeChallengeTabStyle.borderBottom).toEqual('none');
-    expect(archiveChallengeTabStyle.borderBottomStyle).toEqual('solid');
-    expect(archiveChallengeTabStyle.borderBottomWidth).toEqual('2px');
-    expect(archiveChallengeTabStyle.borderBottomColor).toEqual('black');
+    expect(activeChallengeTabStyle.borderBottom).toBe('none');
+    expect(archiveChallengeTabStyle.borderBottomStyle).toBe('solid');
+    expect(archiveChallengeTabStyle.borderBottomWidth).toBe('2px');
+    expect(archiveChallengeTabStyle.borderBottomColor).toBe('black');
   });
 
 
   it('click on active challenge tab', () => {
     let activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
-    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
+    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
     
     let activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
     let archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
     // Initial state
     expect(component.hideContentArchiv).toBeTrue();
     expect(component.hideContentActiveChallenges).toBeFalse();
-    // expect(challengeTabStyle.borderBottom).toEqual('none');
-    // expect(uploadTabStyle.borderBottom).toEqual('none');
-    // expect(introTabStyle.borderBottom).toEqual('2px solid black');
 
     activeChallengeTabElement.click();
 
@@ -83,30 +83,732 @@ describe('AdminApplicationsComponent', () => {
     expect(archiveChallengeTabStyle.borderBottom).toEqual('none');
   });
 
-  /**
-   * Tests for admin_applications component
-   * --> !! := Difficult test
-   * --> ?? := Questionable if not already done by others or if it's even possible
-   * 
-   * General tests:
-   * - Tabs change html (check if bools are correctly set (and if div of specific tab exists --> get element by id)) ||
-   * - ?? Correct navigation and ressource aquirement on ngInit
-   * - Filter:
-   *    - Filter is displayed/hidden on click
-   *    - Filter options work correctly 
-   * 
-   * Tests for active_applications:
-   * - Applicatios are displayed correctly
-   * - correct Buttons are displayed
-   * - either time limit or submission dateare displayed
-   * - ?? Detail-Dialog is correctly displayed
-   * - ?? Extend-Dialog is correctly displayed 
-   * 
-   * Tests for archived_applications:
-   * - Applicatios are displayed correctly
-   * - ?? Detail-Dialog is correctly displayed
-   * 
-   * Other tests/stuff:
-   * - ?? Dialog on click on question mark
-   */
+
+  it('correct filter results of active applications', () => {
+    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(0);
+    expect(activeApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 1
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 3
+    };
+
+
+    let application3: Application = {
+      applicationId: 'ghi789',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 4
+    };
+
+
+    let challenge1: Challenge = {
+      id: 1,
+      challengeHeading: "Test1",
+      challengeText: "This is the first test."
+    };
+
+    let challenge2: Challenge = {
+      id: 2,
+      challengeHeading: "Test2",
+      challengeText: "This is the second test."
+    };
+
+    component.applicantsArray = [application1, application2, application3];
+    component.filteredApplicantsArray = [application1, application2, application3];
+    component.challengeArray = [challenge1, challenge2];
+
+    let statusTextArray = ['not_uploaded_yet', 'uploaded', 'not_submitted_in_time'];
+
+    fixture.detectChanges();
+
+    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(3);
+    expect(activeApplicationHTML.length).toBe(3);
+    expect(component.applicantsArray.length).toBe(3);
+    expect(component.challengeArray.length).toBe(2);
+
+    for(let i = 0; i < component.challengeArray.length; i++) {
+      const challengeFilter = fixture.debugElement.query(By.css(`#challenge${component.challengeArray[i].id}`)).nativeElement;
+      challengeFilter.click();
+      fixture.detectChanges();
+
+      switch(component.challengeArray[i]) {
+        case challenge1:
+          expect(component.filteredApplicantsArray).toContain(application1);
+          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1); 
+        break;
+        case challenge2:
+          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicantsArray).toContain(application2);
+          expect(component.filteredApplicantsArray).toContain(application3);
+          break;
+        default:
+          throw Error('No identified challenge inside challenge Array in test "correct filter results of active applications"');
+      }
+      
+      challengeFilter.click();
+      fixture.detectChanges();
+    }
+
+    for (let i = 0; i < statusTextArray.length; i++) {
+      const statusFilter = fixture.debugElement.query(By.css(`#${statusTextArray[i]}`)).nativeElement;
+      statusFilter.click();
+      fixture.detectChanges();
+      
+      switch(statusTextArray[i]) {
+        case 'not_uploaded_yet':
+          expect(component.filteredApplicantsArray).toContain(application1);
+          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1); 
+        break;
+        case 'uploaded':
+          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicantsArray).toContain(application2);
+          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1);
+          break;
+        case 'not_submitted_in_time':
+          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicantsArray).toContain(application3);
+          break;
+        default:
+          throw Error('No identified status inside challenge Array in test "correct filter results of active applications"');
+      }
+      
+      statusFilter.click();
+      fixture.detectChanges();
+    }
+  });
+
+
+  it('correct filter results of archived applications', () => {
+    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(0);
+    expect(archivedApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+
+    let application3: Application = {
+      applicationId: 'ghi789',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+
+    let challenge1: Challenge = {
+      id: 1,
+      challengeHeading: "Test1",
+      challengeText: "This is the first test."
+    };
+
+    let challenge2: Challenge = {
+      id: 2,
+      challengeHeading: "Test2",
+      challengeText: "This is the second test."
+    };
+
+    component.archivArray = [application1, application2, application3];
+    component.filteredArchivArray = [application1, application2, application3];
+    component.challengeArray = [challenge1, challenge2];
+
+    fixture.detectChanges();
+
+    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(3);
+    expect(archivedApplicationHTML.length).toBe(3);
+    expect(component.archivArray.length).toBe(3);
+    expect(component.challengeArray.length).toBe(2);
+
+    for(let i = 0; i < component.challengeArray.length; i++) {
+      const challengeFilter = fixture.debugElement.query(By.css(`#challenge${component.challengeArray[i].id}`)).nativeElement;
+      challengeFilter.click();
+      fixture.detectChanges();
+
+      switch(component.challengeArray[i]) {
+        case challenge1:
+          expect(component.filteredArchivArray).toContain(application1);
+          expect(component.filteredArchivArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredArchivArray.indexOf(application3)).toBe(-1); 
+        break;
+        case challenge2:
+          expect(component.filteredArchivArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredArchivArray).toContain(application2);
+          expect(component.filteredArchivArray).toContain(application3);
+          break;
+        default:
+          throw Error('No identified challenge inside challenge Array in test "correct filter results of archived applications"');
+      }
+      
+      challengeFilter.click();
+      fixture.detectChanges();
+    }
+  });
+
+
+  it('correct search results for active applications', () => {
+    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(0);
+    expect(activeApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 1
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 3
+    };
+
+
+    let application3: Application = {
+      applicationId: 'ghi789',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 4
+    };
+
+    component.applicantsArray = [application1, application2, application3];
+    component.filteredApplicantsArray = [application1, application2, application3];
+
+    fixture.detectChanges();
+
+    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(3);
+    expect(activeApplicationHTML.length).toBe(3);
+    expect(component.applicantsArray.length).toBe(3);
+
+    
+    const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#input_search_bar')).nativeElement;
+    const searchButton = fixture.debugElement.query(By.css('#button-addon5')).nativeElement;
+
+    searchBar.value = '    def456   ';
+    searchButton.click();
+
+    fixture.detectChanges();
+
+    expect(component.filteredApplicantsArray.length).toBe(1);
+    expect(component.filteredApplicantsArray).toContain(application2);
+        
+    searchBar.value = '    def457   ';
+    searchButton.click();
+
+    fixture.detectChanges();
+
+    expect(component.filteredApplicantsArray.length).toBe(0);
+
+    searchBar.value = 'abc123';
+    searchButton.click();
+
+    fixture.detectChanges();
+    
+    expect(component.filteredApplicantsArray.length).toBe(1);
+    expect(component.filteredApplicantsArray).toContain(application1);
+  });
+
+
+  it('correct search results for archived applications', () => {
+    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(0);
+    expect(archivedApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+
+    let application3: Application = {
+      applicationId: 'ghi789',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+    component.archivArray = [application1, application2, application3];
+    component.filteredArchivArray = [application1, application2, application3];
+
+    fixture.detectChanges();
+
+    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(3);
+    expect(archivedApplicationHTML.length).toBe(3);
+    expect(component.archivArray.length).toBe(3);
+
+
+    const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#input_search_bar')).nativeElement;
+    const searchButton = fixture.debugElement.query(By.css('#button-addon5')).nativeElement;
+
+    searchBar.value = '    def456   ';
+    searchButton.click();
+
+    fixture.detectChanges();
+
+    expect(component.filteredArchivArray.length).toBe(1);
+    expect(component.filteredArchivArray).toContain(application2);
+        
+    searchBar.value = '    def457   ';
+    searchButton.click();
+
+    fixture.detectChanges();
+
+    expect(component.filteredArchivArray.length).toBe(0);
+
+    searchBar.value = 'abc123';
+    searchButton.click();
+
+    fixture.detectChanges();
+    
+    expect(component.filteredArchivArray.length).toBe(1);
+    expect(component.filteredArchivArray).toContain(application1);
+  });
+
+  it('display dialog on click on detail button in active applications', () => {
+    expect(component.filteredApplicantsArray.length).toBe(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 3
+    };
+
+    component.filteredApplicantsArray = [application1];
+
+    fixture.detectChanges();
+
+    expect(component.filteredApplicantsArray.length).toBe(1);
+
+    let detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
+    detail.click();
+
+    fixture.detectChanges();
+
+    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    expect(dialog).toBeTruthy();
+  });
+
+
+  it('display dialog on click on detail button in archived applications', () => {
+    expect(component.filteredArchivArray.length).toBe(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+    component.filteredArchivArray = [application1];
+
+    fixture.detectChanges();
+
+    expect(component.filteredArchivArray.length).toBe(1);
+
+    let detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
+    detail.click();
+
+    fixture.detectChanges();
+
+    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    expect(dialog).toBeTruthy();
+  });
+
+
+  it('display dialog on click on edit button', () => {
+    expect(component.filteredApplicantsArray.length).toBe(0);
+    expect(component.challengeArray.length).toBe(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 7539876,
+      submission: date,
+      githubRepo: '',
+      status: 1
+    };
+
+    let challenge1: Challenge = {
+      id: 1,
+      challengeHeading: "Test1",
+      challengeText: "This is the first test."
+    };
+
+    component.filteredApplicantsArray = [application1];
+    component.challengeArray = [challenge1];
+
+    fixture.detectChanges();
+
+    expect(component.filteredApplicantsArray.length).toBe(1);
+    expect(component.challengeArray.length).toBe(1);
+    
+    let edit: HTMLElement = fixture.debugElement.query(By.css('.edit')).nativeElement;
+    edit.click();
+
+    fixture.detectChanges();
+
+    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    expect(dialog).toBeTruthy();
+  });
+
+
+  it('display active applications correctly', () => {
+    // Only test if the passed value is displayed correctly. The calculation itself is tested seperately.
+    spyOn(backend, 'calcRemainingTime').and.returnValue(4 + " days " + 12 + " hours " + 45 + " minutes");
+
+    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(0);
+    expect(activeApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 1
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 3
+    };
+
+
+    let challenge1: Challenge = {
+      id: 1,
+      challengeHeading: "Test1",
+      challengeText: "This is the first test."
+    };
+
+    let challenge2: Challenge = {
+      id: 2,
+      challengeHeading: "Test2",
+      challengeText: "This is the second test."
+    };
+
+    component.applicantsArray = [application1, application2];
+    component.filteredApplicantsArray = [application1, application2];
+    component.challengeArray = [challenge1, challenge2];
+
+    let statusTextArray = ['not uploaded yet', 'uploaded'];
+
+    fixture.detectChanges();
+
+    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
+    expect(component.filteredApplicantsArray.length).toBe(2);
+    expect(activeApplicationHTML.length).toBe(2);
+    expect(component.applicantsArray.length).toBe(2);
+
+    expect(component.challengeArray.length).toBe(2);
+    
+    for (let i = 0; i < activeApplicationHTML.length; i++) {
+        const id: HTMLElement = activeApplicationHTML[i].query(By.css('.applicantId')).nativeElement;
+        expect(id.innerHTML).toEqual(' ' + component.applicantsArray[i].applicationId + ' ');
+
+        const challengeHeading = activeApplicationHTML[i].query(By.css('.challengeHeading')).nativeElement;
+        expect(challengeHeading.innerHTML).toEqual('<b>Challenge:</b> ' + component.challengeArray[i].challengeHeading);
+
+        const status: HTMLElement = activeApplicationHTML[i].query(By.css('.status')).nativeElement;
+        expect(status.innerHTML).toEqual('<b>Status:</b> ' + statusTextArray[i]);
+
+        let detailButton = activeApplicationHTML[i].query(By.css('.details'));
+        let editButton = activeApplicationHTML[i].query(By.css('.edit'));
+
+        if(status.innerHTML === '<b>Status:</b> uploaded') {
+          const submission: HTMLElement = activeApplicationHTML[i].query(By.css('.submission')).nativeElement;
+          expect(submission.innerHTML).toEqual('<b>Submission date:</b> ' + formatDate(Math.floor(date * 1000), "dd.MM.yyyy HH:mm", "en-US"));
+
+          expect(detailButton).toBeTruthy();
+          expect(editButton).toBeFalsy();
+        } else {
+          const limit: HTMLElement = activeApplicationHTML[i].query(By.css('.limit')).nativeElement;
+          expect(limit.innerHTML).toEqual('<b>Time limit:</b> ' + 4 + " days " + 12 + " hours " + 45 + " minutes");
+        
+          expect(detailButton).toBeFalsy();
+          expect(editButton).toBeTruthy();
+        }
+      }
+   });
+
+
+   it('display archived applications correctly', () => {
+    // Only test if the passed value is displayed correctly. The calculation itself is tested seperately.
+    spyOn(backend, 'calcRemainingTime').and.returnValue(4 + " days " + 12 + " hours " + 45 + " minutes");
+
+    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(0);
+    expect(archivedApplicationHTML.length).toBe(0);
+    expect(component.applicantsArray.length).toEqual(0);
+
+    let date = Date.now();
+
+    let application1: Application = {
+      applicationId: 'abc123',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 1,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 3
+    };
+
+    let application2: Application = {
+      applicationId: 'def456',
+      applicationKey: '',
+      passphrase: '',
+      challengeId: 2,
+      operatingSystem: '',
+      programmingLanguage: '',
+      expiry: 753,
+      submission: date,
+      githubRepo: '',
+      status: 5
+    };
+
+
+    let challenge1: Challenge = {
+      id: 1,
+      challengeHeading: "Test1",
+      challengeText: "This is the first test."
+    };
+
+    let challenge2: Challenge = {
+      id: 2,
+      challengeHeading: "Test2",
+      challengeText: "This is the second test."
+    };
+
+    component.archivArray = [application1, application2];
+    component.filteredArchivArray = [application1, application2];
+    component.challengeArray = [challenge1, challenge2];
+
+    fixture.detectChanges();
+
+    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
+    expect(component.filteredArchivArray.length).toBe(2);
+    expect(archivedApplicationHTML.length).toBe(2);
+    expect(component.archivArray.length).toBe(2);
+
+    expect(component.challengeArray.length).toBe(2);
+    
+    for (let i = 0; i < archivedApplicationHTML.length; i++) {
+        const id: HTMLElement = archivedApplicationHTML[i].query(By.css('.applicantId')).nativeElement;
+        expect(id.innerHTML).toEqual(' ' + component.archivArray[i].applicationId + ' ');
+
+        const challengeHeading = archivedApplicationHTML[i].query(By.css('.challengeHeading')).nativeElement;
+        expect(challengeHeading.innerHTML).toEqual('<b>Challenge:</b> ' + component.challengeArray[i].challengeHeading);
+
+        const submission: HTMLElement = archivedApplicationHTML[i].query(By.css('.submission')).nativeElement;
+        expect(submission.innerHTML).toEqual('<b>Submission date:</b> ' + formatDate(Math.floor(date * 1000), "dd.MM.yyyy HH:mm", "en-US"));
+      }
+   });
+
+
+   it('show and hide filter on click', () => {
+    let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
+    
+    // Initial state
+    expect(component.hideFilterSelect).toBeTrue();
+    
+    filterButtonElement.click();
+
+    fixture.detectChanges();
+
+    expect(component.hideFilterSelect).toBeFalse();
+   }); 
+
+
+   it('displays filter options correctly in active applications', () => {
+    let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
+    
+    expect(component.hideFilterSelect).toBeTrue();
+    
+    filterButtonElement.click();
+
+    fixture.detectChanges();
+
+    expect(component.hideFilterSelect).toBeFalse();
+    expect(component.hideContentActiveChallenges).toBeFalse();
+   });
+
+
+   it('displays filter options correctly in archive applications', () => {
+    let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
+    
+    component.hideContentArchiv = false;
+    component.hideContentActiveChallenges = true;
+
+    expect(component.hideFilterSelect).toBeTrue();
+    
+    filterButtonElement.click();
+
+    fixture.detectChanges();
+
+    expect(component.hideFilterSelect).toBeFalse();
+    expect(component.hideContentActiveChallenges).toBeTrue();
+   });
 });

@@ -466,7 +466,7 @@ export class AdminApplicationsComponent {
     // If the dialog was closed with result 1 (the user commited changes), the backend tries to edit the application accordingly and immediately updates the list
     // If an error occurrs, the user gets redireced to one of the error pages
     dialogRef.afterClosed().subscribe(result => {
-      if (result.s && result.s == 1) {
+      if (result && result.s && result.s == 1) {
         this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
           .subscribe((result) => {
             // Update the list of applications

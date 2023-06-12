@@ -7,7 +7,6 @@ import { Challenge } from '../../models/challenge';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 
-// Test if Admin Challenges Component works properly
 describe('AdminChallengesComponent', () => {
   let component: AdminChallengesComponent;
   let fixture: ComponentFixture<AdminChallengesComponent>;
@@ -34,13 +33,12 @@ describe('AdminChallengesComponent', () => {
     fixture.detectChanges();
   });
 
-  // Check if component can be created
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
 
-  // Test add-challenge button
   it('should navigate correctly', fakeAsync(() => {
     const navigateSpy = spyOn(router, 'navigateByUrl');
     component.addChallenge();
@@ -49,7 +47,6 @@ describe('AdminChallengesComponent', () => {
   }));
 
 
-  // Test the correct display of the challenges
   it('display challenges correctly', () => {
     let challengesHTML = fixture.debugElement.queryAll(By.css('.single_challenge'));
     expect(challengesHTML.length).toEqual(0);
@@ -83,14 +80,27 @@ describe('AdminChallengesComponent', () => {
    });
 
 
-  /**
-   * Tests for admin_challenges component
-   * --> !! := Difficult test
-   * --> ?? := Questionable if not already done by others or if it's even possible
-   *
-   * - Test add-challenge button --> correct navigation happens ||
-   * - Challenges are correctly displayed --> Check heading ||
-   * - ?? Check detail dialog
-   * - ?? Check delete dialog
-   */
+   it('display dialog on click on detail button', () => {
+    expect(component.challengeArray.length).toEqual(0);
+
+    let challenge1: Challenge = {
+      id: 1,
+      challengeHeading: "Test1",
+      challengeText: "This is the first test."
+    };
+
+    component.challengeArray = [challenge1];
+
+    fixture.detectChanges();
+
+    expect(component.challengeArray.length).toEqual(1);
+
+    let detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
+    detail.click();
+
+    fixture.detectChanges();
+
+    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    expect(dialog).toBeTruthy();
+  });
 });
