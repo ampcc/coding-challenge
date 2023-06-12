@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 import { Application } from '../../models/application';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import * as JSZip from 'jszip';
 
 @Component({
   standalone: true,
@@ -306,7 +305,7 @@ export class ChallengeComponent implements OnInit {
    * @param index The index of the file in the underlying fileArray
    */
   public deleteFile(index: number): void {
-    let fileInput = <HTMLInputElement>document.getElementById('fileHandler');
+    const fileInput = <HTMLInputElement>document.getElementById('fileHandler');
     fileInput.files = new DataTransfer().files;
 
     const deletedElement = this.fileArray[index];

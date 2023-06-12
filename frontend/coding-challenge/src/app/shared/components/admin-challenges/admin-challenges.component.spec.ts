@@ -52,14 +52,14 @@ describe('AdminChallengesComponent', () => {
     expect(challengesHTML.length).toEqual(0);
     expect(component.challengeArray.length).toEqual(0);
 
-    let challenge1: Challenge = {
+    const challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
       challengeText: "This is the first test.",
       active: true
     };
 
-    let challenge2: Challenge = {
+    const challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
       challengeText: "This is the second test.",
@@ -83,7 +83,7 @@ describe('AdminChallengesComponent', () => {
    it('display dialog on click on detail button', () => {
     expect(component.challengeArray.length).toEqual(0);
 
-    let challenge1: Challenge = {
+    const challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
       challengeText: "This is the first test.",
@@ -96,12 +96,12 @@ describe('AdminChallengesComponent', () => {
 
     expect(component.challengeArray.length).toEqual(1);
 
-    let detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
+    const detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
     detail.click();
 
     fixture.detectChanges();
 
-    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    const dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
     expect(dialog).toBeTruthy();
   });
 });
