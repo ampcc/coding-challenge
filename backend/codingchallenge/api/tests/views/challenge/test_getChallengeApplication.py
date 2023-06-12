@@ -30,7 +30,7 @@ class test_getChallengeApplication(APITestCase):
         user = {
             "applicationId": "TEST1234", 
             "challengeId": challengeApplication.data['id'], 
-            "expiry": 0,
+            "expiry": 999999999999999,
         }
         application = self.client.post("/api/admin/applications/", user, format='json')
 
