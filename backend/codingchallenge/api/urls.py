@@ -16,9 +16,9 @@ urlpatterns = [
     path('admin/challenges/<challengeId>', adminEndpoints.ApplicationChallengesEndpoint.as_view(), name="challengeId"),
 
     path('application/loginWithKey/<key>', applicationEndpoints.LoginWithApplicationKeyEndpoint.as_view(), name="key"),
-    path('application/getApplicationStatus/', applicationEndpoints.getApplicationStatusEndpoint.as_view()),
-    path('application/startChallenge/', applicationEndpoints.startChallengeEndpoint.as_view()),
-    path('application/challenges/', applicationEndpoints.getChallengeEndpoint.as_view()),
+    path('application/getApplicationStatus/', applicationEndpoints.GetApplicationStatusEndpoint.as_view()),
+    path('application/startChallenge/', applicationEndpoints.StartChallengeEndpoint.as_view()),
+    path('application/challenges/', applicationEndpoints.GetChallengeEndpoint.as_view()),
 
-    path('application/uploadSolution/', applicationEndpoints.uploadSolutionEndpoint.as_view()),
+    path('application/uploadSolution/', applicationEndpoints.UploadSolutionEndpoint.as_view()),
 ]
