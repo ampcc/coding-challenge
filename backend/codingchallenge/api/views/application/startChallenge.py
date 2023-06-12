@@ -1,5 +1,6 @@
 import time
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
 from ...include import jsonMessages, expirySettings
@@ -7,7 +8,13 @@ from ...models import Application, Challenge
 from ...serializers import GetChallengeSerializer
 
 def start(request):
-    user = User.objects.get(username=request.user.username)
+    try:
+        user = User.objects.get(username=request.user.username)
+    except ObjectDoesNotExist:
+        return Response(
+            jsonMessages.errorJsonResponse("Application not found!"),
+            status=status.HTTP_404_NOT_FOUND
+        )
 
     if user.application.status >= Application.Status.CHALLENGE_STARTED:
         return Response(

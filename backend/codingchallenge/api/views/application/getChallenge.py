@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
 from ...models import Challenge, Application
@@ -7,8 +8,15 @@ from ...include import jsonMessages
 
 def get(request):
     applicationId = request.user.username
-    user = User.objects.get(username = applicationId)
     
+    try:
+        user = User.objects.get(username=applicationId)
+    except ObjectDoesNotExist:
+        return Response(
+            jsonMessages.errorJsonResponse("Application not found!"),
+            status=status.HTTP_404_NOT_FOUND
+        )
+
     try:
         application = Application.objects.get(applicationId=applicationId)
         try:
