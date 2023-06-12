@@ -242,8 +242,8 @@ export class ChallengeComponent implements OnInit {
 
         element.setAttribute("style", "border-color:red;");
       } else if (files[0].size > 52428800 && !files[0].name.includes('.zip')) {
-        this.msgFileUpload = 'The file ' + files[0].name + ' has the wrong filetype and is too big';
-        this.hideMsgFileUpload = false;
+        this.msgFileUplod = 'The file ' + files[0].name + ' has the wrong filetype and is too big';
+        this.hideMsgFileUplod = false;
 
         element.setAttribute("style", "border-color:red; ");
       } else if (files[0].size > 52428800) {
