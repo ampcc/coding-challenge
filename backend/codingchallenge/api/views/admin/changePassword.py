@@ -3,8 +3,6 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 from ...include import jsonMessages
 
-
-
 def change(request):
         old_password = request.data.get('oldPassword')
         new_password = request.data.get('newPassword')
@@ -14,6 +12,7 @@ def change(request):
         
         if len(old_password) == 0 or len(new_password) == 0:
             return Response(jsonMessages.errorJsonResponse("Password(s) must not be empty!"), status=status.HTTP_400_BAD_REQUEST)
+        
         user = authenticate(request, username=request.user.username, password=old_password)
         
         if not user:

@@ -20,8 +20,8 @@ def upload(request):
         user = User.objects.get(username=request.user.username)
     except ObjectDoesNotExist:
         return Response(
-            jsonMessages.errorJsonResponse("unauthorized"),
-            status=status.HTTP_401_UNAUTHORIZED
+            jsonMessages.errorJsonResponse("Application not found!"),
+            status=status.HTTP_404_NOT_FOUND
         )
 
     if user.application.status < Application.Status.IN_REVIEW:
