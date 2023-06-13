@@ -1,21 +1,21 @@
-def errorJsonResponse(responseText):
+def error_json_response(response_text):
     error = {
-        "detail": responseText
+        "detail": response_text
     }
     return error
 
 
-def successJsonResponse():
+def success_json_response():
     success = {
         "success": "true"
     }
     return success
 
 
-def errorGithubJsonResponse(exception):
-    statusCode, detail, args = exception.args
+def error_github_json_response(exception):
+    status_code, detail, args = exception.args
 
     error = {
         "detail": f'GitHub: {detail["message"]}'
     }
-    return error, statusCode
+    return error, status_code

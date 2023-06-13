@@ -7,14 +7,13 @@ from ....serializers import GetChallengeSerializer
 
 class test_postChallengeAdmin(APITestCase):
     url = "/api/admin/challenges/"
-    
 
     def setUp(self):
         # Authorization
         MockAuth.admin(self)
 
 
-    def test_requiredFields(self):
+    def test_required_fields(self):
         data_heading = {
             "challengeHeading": "Test"
         }
@@ -31,7 +30,7 @@ class test_postChallengeAdmin(APITestCase):
         self.assertEqual(response_only_text.status_code, status.HTTP_400_BAD_REQUEST)
         
 
-    def test_defaultRequest(self):     
+    def test_default_request(self):     
 
         data = {
             "challengeHeading": "Test",

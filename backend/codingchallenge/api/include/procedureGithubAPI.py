@@ -62,9 +62,6 @@ class GithubApiWrapper:
 
     def get_linter_log(self, repo_name):
         repo = self.get_repo(repo_name)
-        
-       
-        #download_url = repo.get_contents('megalinter-reports/megalinter.log').decoded_content.decode()
         download_url = repo.get_contents('megalinter-reports/megalinter.log').raw_data.get("download_url")
         log = requests.get(download_url, stream=True).content
         return log.decode("utf-8")

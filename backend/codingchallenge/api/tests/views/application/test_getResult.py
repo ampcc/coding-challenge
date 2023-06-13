@@ -10,9 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 
 class test_getResult(APITransactionTestCase):
     reset_sequences = True
-    applicationUrl = "/api/admin/applications/"
+    application_url = "/api/admin/applications/"
     url = '/api/admin/applications/results/'
-    mockLinterResult = [
+    mock_linter_result = [
         ['Descriptor', 'Linter', 'Mode', 'Files', 'Fixed', 'Errors', 'Elapsed time'],
         ['✓ ACTION', 'actionlint', 'list_of_files', '1', '', '0', '0.02s'],
         ['✓ COPYPASTE', 'jscpd', 'project', 'n/a', '', '0', '0.93s'],
@@ -44,34 +44,34 @@ class test_getResult(APITransactionTestCase):
 
         # Create Application
         self.applicationId = "appl0001"
-        self.client.post(self.applicationUrl, {"applicationId": self.applicationId}, format='json')
+        self.client.post(self.application_url, {"applicationId": self.applicationId}, format='json')
         self.application = Application.objects.get(applicationId=self.applicationId)
         self.application.githubRepo = self.applicationId
         self.application.status = Application.Status.IN_REVIEW
         self.application.save()
 
-    def test_missingAuth(self):
+    def test_missing_auth(self):
         # remove headers for this test
         self.client.credentials()
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_noApplicationId(self):
+    def test_no_application_id(self):
         response = self.client.get(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_wrongApplicationId(self):
+    def test_wrong_application_id(self):
         response = self.client.get(self.url + "4321TSET", format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_repoNotExists(self):
+    def test_repo_not_exists(self):
         self.application.githubRepo = "12345679"
         self.application.save()
 
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_correctInput(self):
+    def test_correct_input(self):
         # ignore pep8
 
         response = self.client.get(self.url + self.applicationId, format='json')
@@ -79,6 +79,6 @@ class test_getResult(APITransactionTestCase):
         self.assertEqual(
             response.data, {
                 'githubUrl': "https://api.github.com/repos/ampcc/" + self.applicationId,
-                'content': self.mockLinterResult
+                'content': self.mock_linter_result
             }
         )

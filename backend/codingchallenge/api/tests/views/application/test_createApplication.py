@@ -15,7 +15,7 @@ class test_createApplication(APITransactionTestCase):
     reset_sequences = True
 
     url = '/api/admin/applications/'
-    expectedReturnData = {
+    expected_return_data = {
         "applicationId": "TEST1234",
         "created": mock.ANY,
         "status": 0,
@@ -32,7 +32,7 @@ class test_createApplication(APITransactionTestCase):
 
 
 
-    def test_missingAuth(self):
+    def test_missing_auth(self):
         # remove headers for this test
         self.client.credentials()
 
@@ -47,7 +47,7 @@ class test_createApplication(APITransactionTestCase):
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_wrongUrl(self):
+    def test_wrong_url(self):
         url = '/api/admin/dumb/'
         data = {
             "applicationId": "TEST1234",
@@ -60,7 +60,7 @@ class test_createApplication(APITransactionTestCase):
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_wrongDatafields(self):
+    def test_wrong_datafields(self):
         data = {
             "wrongDatafield": "TEST1234",
             "challengeId": 2,
@@ -72,14 +72,14 @@ class test_createApplication(APITransactionTestCase):
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_emptyData(self):
+    def test_empty_data(self):
         self.assertEqual(Application.objects.count(), 0)
 
         response = self.client.post(self.url, {}, format='json')
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    def test_noChallenge(self):
+    def test_no_challenge(self):
         # delete all challenge objects
         Challenge.objects.all().delete()
 
@@ -94,7 +94,7 @@ class test_createApplication(APITransactionTestCase):
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-    def test_randomChallengeSelection(self):
+    def test_random_challenge_selection(self):
         # Add more challenges in Database
         self.client.post("/api/admin/challenges/", {"challengeHeading": "TestChallenge2", "challengeText": "This is a Test Challenge2"}, format="json")
         self.client.post("/api/admin/challenges/", {"challengeHeading": "TestChallenge3", "challengeText": "This is a Test Challenge3"}, format="json")
@@ -114,14 +114,14 @@ class test_createApplication(APITransactionTestCase):
         self.assertIn("www.amplimind.io/application/", response.data['tmpLink'])
         # tmpLink also contains a key
         self.assertGreater(len(response.data['tmpLink']), len("www.amplimind.io/application/"))
-        self.assertEqual(self.expectedReturnData, response.data)
+        self.assertEqual(self.expected_return_data, response.data)
 
         # test if challengeId is a valid random challenge from database
-        challengeId = Application.objects.get().challengeId
+        challenge_id = Application.objects.get().challengeId
 
-        self.assertIn(Challenge.objects.get(id=challengeId), Challenge.objects.all())
+        self.assertIn(Challenge.objects.get(id=challenge_id), Challenge.objects.all())
 
-    def test_correctInput(self):
+    def test_correct_input(self):
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
@@ -134,7 +134,7 @@ class test_createApplication(APITransactionTestCase):
 
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, self.expectedReturnData)
+        self.assertEqual(response.data, self.expected_return_data)
 
         timestamp = time.time()
         timestamp = timestamp + 6 * 24 * 60 * 60
@@ -144,7 +144,7 @@ class test_createApplication(APITransactionTestCase):
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
         self.assertEqual(Application.objects.get().challengeId, 1)
 
-    def test_correctInputDefault(self):
+    def test_correct_input_default(self):
         data = {
             "applicationId": "TEST1234",
         }
@@ -154,10 +154,10 @@ class test_createApplication(APITransactionTestCase):
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, self.expectedReturnData)
+        self.assertEqual(response.data, self.expected_return_data)
 
         timestamp = time.time()
-        timestamp = timestamp + expirySettings.daysUntilChallengeStart * 24 * 60 * 60
+        timestamp = timestamp + expirySettings.days_until_challenge_start * 24 * 60 * 60
 
         self.assertEqual(Application.objects.get().applicationId, 'TEST1234')
 
@@ -172,7 +172,7 @@ class test_createApplication(APITransactionTestCase):
         # rounds the assertion to seconds
         self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
 
-    def test_multipleIds(self):
+    def test_multiple_ids(self):
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
@@ -184,13 +184,13 @@ class test_createApplication(APITransactionTestCase):
         response1 = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response1.data, self.expectedReturnData)
+        self.assertEqual(response1.data, self.expected_return_data)
 
         response2 = self.client.post(self.url, data, format='json')
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response2.status_code, status.HTTP_409_CONFLICT)
 
-    def test_wrongApplicationIdLength(self):
+    def test_wrong_application_id_length(self):
         data = {
             "applicationId": "TEST123412312312312312",
             "challengeId": 1,

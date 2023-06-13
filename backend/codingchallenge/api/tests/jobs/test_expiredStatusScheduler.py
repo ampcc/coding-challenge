@@ -25,7 +25,7 @@ class test_expiredStatusScheduler(APITransactionTestCase):
                          format='json')
 
         self.client.post(self.url, 
-            {"applicationId": "TEST1234", "expiry": time.time() - (expirySettings.daysUntilChallengeStart * 24 * 60 * 60) - 360}, 
+            {"applicationId": "TEST1234", "expiry": time.time() - (expirySettings.days_until_challenge_start * 24 * 60 * 60) - 360}, 
             format='json')
         self.client.post(self.url, {"applicationId": "ZWEI1234"}, format='json')
 

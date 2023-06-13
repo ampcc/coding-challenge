@@ -12,33 +12,33 @@ def start(request):
         user = User.objects.get(username=request.user.username)
     except ObjectDoesNotExist:
         return Response(
-            jsonMessages.errorJsonResponse("Application not found!"),
+            jsonMessages.error_json_response("Application not found!"),
             status=status.HTTP_404_NOT_FOUND
         )
 
     if user.application.status >= Application.Status.CHALLENGE_STARTED:
         return Response(
-            jsonMessages.errorJsonResponse("Can not start challenge! The challenge has already been started!"),
+            jsonMessages.error_json_response("Can not start challenge! The challenge has already been started!"),
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    expiryTimestamp = user.application.expiry
-    currentTimestamp = time.time()
+    expiry_timestamp = user.application.expiry
+    current_timestamp = time.time()
 
-    if expiryTimestamp - currentTimestamp < 0:
+    if expiry_timestamp - current_timestamp < 0:
         # application is expired
         user.application.status = Application.Status.EXPIRED
         user.application.save()
         return Response(
-            jsonMessages.errorJsonResponse(
+            jsonMessages.error_json_response(
                 "Can not start challenge! The application is expired since " + str(
-                    expiryTimestamp - currentTimestamp
+                    expiry_timestamp - current_timestamp
                 ) + " seconds!"
             ), status=status.HTTP_410_GONE
         )
     # application is still running
     else:
-        user.application.expiry = time.time() + expirySettings.daysToFinishSinceChallengeStart * 24 * 60 * 60
+        user.application.expiry = time.time() + expirySettings.days_to_finish_since_challenge_start * 24 * 60 * 60
         user.application.status = Application.Status.CHALLENGE_STARTED
     try:
         challenge = Challenge.objects.get(id=request.user.application.challengeId)
@@ -48,4 +48,4 @@ def start(request):
         serializer = GetChallengeSerializer(challenge, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except:
-        return Response(jsonMessages.errorJsonResponse("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)
+        return Response(jsonMessages.error_json_response("Challenge ID not found!"), status=status.HTTP_404_NOT_FOUND)

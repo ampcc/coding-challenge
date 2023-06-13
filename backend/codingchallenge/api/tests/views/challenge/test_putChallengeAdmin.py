@@ -8,7 +8,6 @@ from ....serializers import GetChallengeSerializer
 
 class test_putChallengeAdmin(APITestCase):
     url = "/api/admin/challenges/"
-    
 
     def setUp(self):
         # Authorization
@@ -17,7 +16,7 @@ class test_putChallengeAdmin(APITestCase):
         self.client.post(self.url, {"challengeHeading": "Test", "challengeText": "Text of challenge..."}, format='json')
         
 
-    def test_differentDataFields(self):
+    def test_different_data_fields(self):
         response = self.client.get(self.url)
         id_1 = response.data[0]['id']
         expected_data = {
@@ -56,7 +55,7 @@ class test_putChallengeAdmin(APITestCase):
         self.assertEqual(response_only_text.data, expected_data)
 
 
-    def test_defaultRequest(self):
+    def test_default_request(self):
         response = self.client.get(self.url)
         id_1 = response.data[0]['id']
         expected_data = {
@@ -76,13 +75,13 @@ class test_putChallengeAdmin(APITestCase):
         self.assertEqual(response.data, expected_data)
 
 
-    def test_updateNonexistentChallenge(self):
+    def test_update_nonexistent_challenge(self):
         response = self.client.put(self.url + "2000", {}, format="json")
         
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-    def test_tryUpdatingId(self):
+    def test_try_updating_id(self):
         response = self.client.get(self.url)
         id_1 = response.data[0]['id']
         expected_error = {
@@ -94,7 +93,7 @@ class test_putChallengeAdmin(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-    def test_faultyBodyArguments(self):
+    def test_faulty_body_arguments(self):
         response = self.client.get(self.url)
         id_1 = response.data[0]['id']
         data_too_many = {

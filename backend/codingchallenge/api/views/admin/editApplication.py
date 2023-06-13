@@ -11,58 +11,58 @@ from ...serializers import (
 )
 
 def edit(request, **kwargs):   
-    allowedFields = ['applicationStatus', 'challengeId', 'expiry']
+    allowed_fields = ['applicationStatus', 'challengeId', 'expiry']
 
     try:
         application = Application.objects.get(applicationId=kwargs["applicationId"])
 
     except (KeyError, ObjectDoesNotExist):
-        return Response(jsonMessages.errorJsonResponse('Application not found'), status=status.HTTP_404_NOT_FOUND)
+        return Response(jsonMessages.error_json_response('Application not found'), status=status.HTTP_404_NOT_FOUND)
 
     serialized_application = json.loads(serializers.serialize("json", [application]))[0]
 
-    statusCode = status.HTTP_200_OK
+    status_code = status.HTTP_200_OK
 
     if request.data:
         for key in request.data.keys():
-            if key in allowedFields:
-                if key == allowedFields[0]:
+            if key in allowed_fields:
+                if key == allowed_fields[0]:
                     if request.data.get(key) in Application.Status.values:
                         serialized_application['fields']['status'] = request.data.get(key)
                     else:
                         return Response(
-                            jsonMessages.errorJsonResponse("Invalid status!"),
+                            jsonMessages.error_json_response("Invalid status!"),
                             status=status.HTTP_400_BAD_REQUEST
                         )
-                if key == allowedFields[1]:
+                if key == allowed_fields[1]:
                     if Challenge.objects.filter(id=request.data.get(key)).exists():
                         serialized_application['fields']['challengeId'] = request.data.get(key)
                     else:
                         return Response(
-                            jsonMessages.errorJsonResponse("Passed Challenge ID does not exist!"),
+                            jsonMessages.error_json_response("Passed Challenge ID does not exist!"),
                             status=status.HTTP_404_NOT_FOUND
                         )
-                if key == allowedFields[2]:
+                if key == allowed_fields[2]:
                     if request.data.get(key) > time.time():
                         serialized_application['fields']['expiry'] = request.data.get(key)
                     else:
                         return Response(
-                            jsonMessages.errorJsonResponse("Invalid expiry date!"),
+                            jsonMessages.error_json_response("Invalid expiry date!"),
                             status=status.HTTP_400_BAD_REQUEST
                         )
             else:
                 return Response(
-                    jsonMessages.errorJsonResponse("Field: " + key + " not valid!"),
+                    jsonMessages.error_json_response("Field: " + key + " not valid!"),
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
     else:
-        return Response(jsonMessages.errorJsonResponse("No data provided!"), status=status.HTTP_204_NO_CONTENT)
+        return Response(jsonMessages.error_json_response("No data provided!"), status=status.HTTP_204_NO_CONTENT)
 
     serializer = GetApplicationSerializer(application, data=serialized_application["fields"])
 
-    if serializer.is_valid() and statusCode == status.HTTP_200_OK:
+    if serializer.is_valid() and status_code == status.HTTP_200_OK:
         serializer.save()
-        return Response(serializer.data, status=statusCode)
+        return Response(serializer.data, status=status_code)
 
-    return Response(jsonMessages.errorJsonResponse("Please check input!"), status=status.HTTP_400_BAD_REQUEST)
+    return Response(jsonMessages.error_json_response("Please check input!"), status=status.HTTP_400_BAD_REQUEST)

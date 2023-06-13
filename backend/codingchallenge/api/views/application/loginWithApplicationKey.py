@@ -17,15 +17,15 @@ def login(request, **kwargs):
         fernet_key = settings.ENCRYPTION_KEY
         fernet = Fernet(fernet_key.encode())
         try:
-            decryptedMessage = fernet.decrypt(key).decode()
+            decrypted_message = fernet.decrypt(key).decode()
         except:
-            return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
+            return Response(jsonMessages.error_json_response(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
 
         if len(fernet_key) != 44:
-            return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
+            return Response(jsonMessages.error_json_response(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
         
-        username = decryptedMessage[0:8]
-        password = decryptedMessage[9:]
+        username = decrypted_message[0:8]
+        password = decrypted_message[9:]
 
         user = authenticate(request, username=username, password=password)
 
@@ -34,12 +34,12 @@ def login(request, **kwargs):
                 if user.application.status < Application.Status.ARCHIVED:
                     user.application.status = Application.Status.EXPIRED
                     user.save()
-                return Response(jsonMessages.errorJsonResponse("The application is expired!"), status=status.HTTP_410_GONE)
+                return Response(jsonMessages.error_json_response("The application is expired!"), status=status.HTTP_410_GONE)
             token, created = Token.objects.get_or_create(user=user)
             return Response({
                 "token": token.key
             })
         else:
-            return Response(jsonMessages.errorJsonResponse(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
+            return Response(jsonMessages.error_json_response(error_message_key_does_not_exist), status=status.HTTP_401_UNAUTHORIZED)
     
-    return Response(jsonMessages.errorJsonResponse("No key given!"), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    return Response(jsonMessages.error_json_response("No key given!"), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
