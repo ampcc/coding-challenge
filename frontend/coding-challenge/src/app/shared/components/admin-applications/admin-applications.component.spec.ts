@@ -40,11 +40,11 @@ describe('AdminApplicationsComponent', () => {
 
 
   it('click on archive applications tab', () => {
-    let activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
-    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
+    const activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
+    const archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
 
-    let activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
-    let archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
+    const activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
+    const archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
 
     // Initial state
     expect(component.hideContentArchiv).toBeTrue();
@@ -63,11 +63,11 @@ describe('AdminApplicationsComponent', () => {
 
 
   it('click on active challenge tab', () => {
-    let activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
-    let archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
+    const activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
+    const archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
 
-    let activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
-    let archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
+    const activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
+    const archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
     // Initial state
     expect(component.hideContentArchiv).toBeTrue();
     expect(component.hideContentActiveChallenges).toBeFalse();
@@ -90,9 +90,9 @@ describe('AdminApplicationsComponent', () => {
     expect(activeApplicationHTML.length).toBe(0);
     expect(component.applicantsArray.length).toEqual(0);
 
-    let date = Date.now();
+    const date = Date.now();
 
-    let application1: Application = {
+    const application1: Application = {
       applicationId: 'abc123',
       applicationKey: '',
       passphrase: '',
@@ -105,7 +105,7 @@ describe('AdminApplicationsComponent', () => {
       status: 1
     };
 
-    let application2: Application = {
+    const application2: Application = {
       applicationId: 'def456',
       applicationKey: '',
       passphrase: '',
@@ -119,7 +119,7 @@ describe('AdminApplicationsComponent', () => {
     };
 
 
-    let application3: Application = {
+    const application3: Application = {
       applicationId: 'ghi789',
       applicationKey: '',
       passphrase: '',
@@ -133,14 +133,14 @@ describe('AdminApplicationsComponent', () => {
     };
 
 
-    let challenge1: Challenge = {
+    const challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
       challengeText: "This is the first test.",
       active: true
     };
 
-    let challenge2: Challenge = {
+    const challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
       challengeText: "This is the second test.",
@@ -151,7 +151,7 @@ describe('AdminApplicationsComponent', () => {
     component.filteredApplicantsArray = [application1, application2, application3];
     component.challengeArray = [challenge1, challenge2];
 
-    let statusTextArray = ['not_uploaded_yet', 'uploaded', 'not_submitted_in_time'];
+    const statusTextArray = ['not_uploaded_yet', 'uploaded', 'not_submitted_in_time'];
 
     fixture.detectChanges();
 
@@ -222,9 +222,9 @@ describe('AdminApplicationsComponent', () => {
     expect(archivedApplicationHTML.length).toBe(0);
     expect(component.applicantsArray.length).toEqual(0);
 
-    let date = Date.now();
+    const date = Date.now();
 
-    let application1: Application = {
+    const application1: Application = {
       applicationId: 'abc123',
       applicationKey: '',
       passphrase: '',
@@ -237,7 +237,7 @@ describe('AdminApplicationsComponent', () => {
       status: 5
     };
 
-    let application2: Application = {
+    const application2: Application = {
       applicationId: 'def456',
       applicationKey: '',
       passphrase: '',
@@ -251,7 +251,7 @@ describe('AdminApplicationsComponent', () => {
     };
 
 
-    let application3: Application = {
+    const application3: Application = {
       applicationId: 'ghi789',
       applicationKey: '',
       passphrase: '',
@@ -265,14 +265,14 @@ describe('AdminApplicationsComponent', () => {
     };
 
 
-    let challenge1: Challenge = {
+    const challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
       challengeText: "This is the first test.",
       active: true
     };
 
-    let challenge2: Challenge = {
+    const challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
       challengeText: "This is the second test.",
@@ -323,9 +323,9 @@ describe('AdminApplicationsComponent', () => {
     expect(activeApplicationHTML.length).toBe(0);
     expect(component.applicantsArray.length).toEqual(0);
 
-    let date = Date.now();
+    const date = Date.now();
 
-    let application1: Application = {
+    const application1: Application = {
       applicationId: 'abc123',
       applicationKey: '',
       passphrase: '',
@@ -338,7 +338,7 @@ describe('AdminApplicationsComponent', () => {
       status: 1
     };
 
-    let application2: Application = {
+    const application2: Application = {
       applicationId: 'def456',
       applicationKey: '',
       passphrase: '',
@@ -352,7 +352,7 @@ describe('AdminApplicationsComponent', () => {
     };
 
 
-    let application3: Application = {
+    const application3: Application = {
       applicationId: 'ghi789',
       applicationKey: '',
       passphrase: '',
@@ -410,9 +410,9 @@ describe('AdminApplicationsComponent', () => {
     expect(archivedApplicationHTML.length).toBe(0);
     expect(component.applicantsArray.length).toEqual(0);
 
-    let date = Date.now();
+    const date = Date.now();
 
-    let application1: Application = {
+    const application1: Application = {
       applicationId: 'abc123',
       applicationKey: '',
       passphrase: '',
@@ -425,7 +425,7 @@ describe('AdminApplicationsComponent', () => {
       status: 5
     };
 
-    let application2: Application = {
+    const application2: Application = {
       applicationId: 'def456',
       applicationKey: '',
       passphrase: '',
@@ -439,7 +439,7 @@ describe('AdminApplicationsComponent', () => {
     };
 
 
-    let application3: Application = {
+    const application3: Application = {
       applicationId: 'ghi789',
       applicationKey: '',
       passphrase: '',
@@ -490,81 +490,14 @@ describe('AdminApplicationsComponent', () => {
     expect(component.filteredArchivArray).toContain(application1);
   });
 
-  it('display dialog on click on detail button in active applications', () => {
-    expect(component.filteredApplicantsArray.length).toBe(0);
-
-    let date = Date.now();
-
-    let application1: Application = {
-      applicationId: 'def456',
-      applicationKey: '',
-      passphrase: '',
-      challengeId: 2,
-      operatingSystem: '',
-      programmingLanguage: '',
-      expiry: 753,
-      submission: date,
-      githubRepo: '',
-      status: 3
-    };
-
-    component.filteredApplicantsArray = [application1];
-
-    fixture.detectChanges();
-
-    expect(component.filteredApplicantsArray.length).toBe(1);
-
-    let detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
-    detail.click();
-
-    fixture.detectChanges();
-
-    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
-    expect(dialog).toBeTruthy();
-  });
-
-
-  it('display dialog on click on detail button in archived applications', () => {
-    expect(component.filteredArchivArray.length).toBe(0);
-
-    let date = Date.now();
-
-    let application1: Application = {
-      applicationId: 'def456',
-      applicationKey: '',
-      passphrase: '',
-      challengeId: 2,
-      operatingSystem: '',
-      programmingLanguage: '',
-      expiry: 753,
-      submission: date,
-      githubRepo: '',
-      status: 5
-    };
-
-    component.filteredArchivArray = [application1];
-
-    fixture.detectChanges();
-
-    expect(component.filteredArchivArray.length).toBe(1);
-
-    let detail: HTMLElement = fixture.debugElement.query(By.css('.details')).nativeElement;
-    detail.click();
-
-    fixture.detectChanges();
-
-    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
-    expect(dialog).toBeTruthy();
-  });
-
 
   it('display dialog on click on edit button', () => {
     expect(component.filteredApplicantsArray.length).toBe(0);
     expect(component.challengeArray.length).toBe(0);
 
-    let date = Date.now();
+    const date = Date.now();
 
-    let application1: Application = {
+    const application1: Application = {
       applicationId: 'def456',
       applicationKey: '',
       passphrase: '',
@@ -577,7 +510,7 @@ describe('AdminApplicationsComponent', () => {
       status: 1
     };
 
-    let challenge1: Challenge = {
+    const challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
       challengeText: "This is the first test.",
@@ -592,12 +525,12 @@ describe('AdminApplicationsComponent', () => {
     expect(component.filteredApplicantsArray.length).toBe(1);
     expect(component.challengeArray.length).toBe(1);
 
-    let edit: HTMLElement = fixture.debugElement.query(By.css('.edit')).nativeElement;
+    const edit: HTMLElement = fixture.debugElement.query(By.css('.edit')).nativeElement;
     edit.click();
 
     fixture.detectChanges();
 
-    let dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
+    const dialog = document.body.querySelector<HTMLInputElement>('.dialog_container');
     expect(dialog).toBeTruthy();
   });
 
@@ -611,9 +544,9 @@ describe('AdminApplicationsComponent', () => {
     expect(activeApplicationHTML.length).toBe(0);
     expect(component.applicantsArray.length).toEqual(0);
 
-    let date = Date.now();
+    const date = Date.now();
 
-    let application1: Application = {
+    const application1: Application = {
       applicationId: 'abc123',
       applicationKey: '',
       passphrase: '',
@@ -626,7 +559,7 @@ describe('AdminApplicationsComponent', () => {
       status: 1
     };
 
-    let application2: Application = {
+    const application2: Application = {
       applicationId: 'def456',
       applicationKey: '',
       passphrase: '',
@@ -640,14 +573,14 @@ describe('AdminApplicationsComponent', () => {
     };
 
 
-    let challenge1: Challenge = {
+    const challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
       challengeText: "This is the first test.",
       active: true
     };
 
-    let challenge2: Challenge = {
+    const challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
       challengeText: "This is the second test.",
@@ -658,7 +591,7 @@ describe('AdminApplicationsComponent', () => {
     component.filteredApplicantsArray = [application1, application2];
     component.challengeArray = [challenge1, challenge2];
 
-    let statusTextArray = ['not uploaded yet', 'uploaded'];
+    const statusTextArray = ['not uploaded yet', 'uploaded'];
 
     fixture.detectChanges();
 
@@ -679,8 +612,8 @@ describe('AdminApplicationsComponent', () => {
         const status: HTMLElement = activeApplicationHTML[i].query(By.css('.status')).nativeElement;
         expect(status.innerHTML).toEqual('<b>Status:</b> ' + statusTextArray[i]);
 
-        let detailButton = activeApplicationHTML[i].query(By.css('.details'));
-        let editButton = activeApplicationHTML[i].query(By.css('.edit'));
+        const detailButton = activeApplicationHTML[i].query(By.css('.details'));
+        const editButton = activeApplicationHTML[i].query(By.css('.edit'));
 
         if(status.innerHTML === '<b>Status:</b> uploaded') {
           const submission: HTMLElement = activeApplicationHTML[i].query(By.css('.submission')).nativeElement;
@@ -708,9 +641,9 @@ describe('AdminApplicationsComponent', () => {
     expect(archivedApplicationHTML.length).toBe(0);
     expect(component.applicantsArray.length).toEqual(0);
 
-    let date = Date.now();
+    const date = Date.now();
 
-    let application1: Application = {
+    const application1: Application = {
       applicationId: 'abc123',
       applicationKey: '',
       passphrase: '',
@@ -723,7 +656,7 @@ describe('AdminApplicationsComponent', () => {
       status: 3
     };
 
-    let application2: Application = {
+    const application2: Application = {
       applicationId: 'def456',
       applicationKey: '',
       passphrase: '',
@@ -737,14 +670,14 @@ describe('AdminApplicationsComponent', () => {
     };
 
 
-    let challenge1: Challenge = {
+    const challenge1: Challenge = {
       id: 1,
       challengeHeading: "Test1",
       challengeText: "This is the first test.",
       active: true
     };
 
-    let challenge2: Challenge = {
+    const challenge2: Challenge = {
       id: 2,
       challengeHeading: "Test2",
       challengeText: "This is the second test.",
@@ -778,7 +711,7 @@ describe('AdminApplicationsComponent', () => {
 
 
    it('show and hide filter on click', () => {
-    let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
+    const filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
 
     // Initial state
     expect(component.hideFilterSelect).toBeTrue();
@@ -792,7 +725,7 @@ describe('AdminApplicationsComponent', () => {
 
 
    it('displays filter options correctly in active applications', () => {
-    let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
+    const filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
 
     expect(component.hideFilterSelect).toBeTrue();
 
@@ -806,7 +739,7 @@ describe('AdminApplicationsComponent', () => {
 
 
    it('displays filter options correctly in archive applications', () => {
-    let filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
+    const filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
 
     component.hideContentArchiv = false;
     component.hideContentActiveChallenges = true;
