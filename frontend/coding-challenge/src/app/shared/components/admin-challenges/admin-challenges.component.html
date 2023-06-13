@@ -14,17 +14,17 @@
             <h2>Coding Challenge: Challenges</h2>
         </div>
 
-        <div class="view_tab">
+        <div class="viewTab">
             <!-- Tab list area -->
-            <div class="tab_list">
+            <div class="tabList">
                 <div>
-                    <label class="tabs" id="tab_active_challenges" for="tab-1"
-                        (click)="changeTab('tab_active_challenges')">
+                    <label class="tabs" id="tabActiveChallenges" for="tab-1"
+                        (click)="changeTab('tabActiveChallenges')">
                         Active Challenges
                     </label>
                 </div>
                 <!-- Button to add new challenge -->
-                <button class="btn btn-dark add" id="add_button" (click)="addChallenge()">
+                <button class="btn btn-dark add" id="addButton" (click)="addChallenge()">
                     Add
                     <img src="../../../../assets/plus-lg.svg" class="plus">
                 </button>
@@ -32,14 +32,14 @@
 
             <!-- Tab content of active challenges  -->
             <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
-                <div class="list" id="list_challenges">
-                    <div class="single_challenge" *ngFor="let challenge of challengeArray; let i = index">
-                        <div class="text_elements">
+                <div class="list" id="listChallenges">
+                    <div class="singleChallenge" *ngFor="let challenge of challengeArray; let i = index">
+                        <div class="textElements">
                             <h4 class="challengeId">
                                 {{challenge.challengeHeading}}
                             </h4>
                         </div>
-                        <div class="btn_position">
+                        <div class="btnPosition">
                             <button class="btn btn-dark details"
                                 (click)="openDialogActiveChallenges(challenge)">Details</button>
                         </div>
@@ -48,7 +48,6 @@
             </div>
         </div>
     </div>
-
 </body>
 
 </html>
