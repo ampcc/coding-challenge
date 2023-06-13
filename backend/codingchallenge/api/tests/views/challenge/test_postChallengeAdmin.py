@@ -8,7 +8,7 @@ from ....serializers import GetChallengeSerializer
 class test_postChallengeAdmin(APITestCase):
     url = "/api/admin/challenges/"
 
-    def set_up(self):
+    def setUp(self):
         # Authorization
         MockAuth.admin(self)
 

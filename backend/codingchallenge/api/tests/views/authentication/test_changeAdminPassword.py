@@ -14,7 +14,7 @@ import unittest.mock as mock
 class test_changeAdminPassword(APITestCase):
     url = '/api/admin/changePassword/'
 
-    def set_up(self):
+    def setUp(self):
         # Authorization
         MockAuth.admin(self)
 

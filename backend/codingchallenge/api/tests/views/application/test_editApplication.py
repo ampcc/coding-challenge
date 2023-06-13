@@ -12,7 +12,7 @@ class test_editApplication(APITransactionTestCase):
     reset_sequences = True
     url = '/api/admin/applications/'
 
-    def set_up(self):
+    def setUp(self):
         # Authorization
         MockAuth.admin(self)
 

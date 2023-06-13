@@ -23,7 +23,7 @@ class test_createApplication(APITransactionTestCase):
         "tmpLink": mock.ANY
     }
 
-    def set_up(self):
+    def setUp(self):
         # Authorization
         MockAuth.admin(self)
 

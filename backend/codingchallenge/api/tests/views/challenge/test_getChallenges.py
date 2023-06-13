@@ -7,7 +7,7 @@ class test_getChallenges(APITestCase):
     url = '/api/admin/challenges/'
 
 
-    def set_up(self):
+    def setUp(self):
         # Authorization
         MockAuth.admin(self)
 

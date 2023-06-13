@@ -16,7 +16,7 @@ class test_uploadSolution(APITransactionTestCase):
 
     url = '/api/application/uploadSolution/'
 
-    def set_up(self):
+    def setUp(self):
         MockAuth.admin(self)
 
         # Create Challenge

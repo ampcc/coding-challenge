@@ -14,7 +14,7 @@ class test_getResult(APITransactionTestCase):
     reset_sequences = True
     url = '/api/application/startChallenge/'
 
-    def set_up(self):
+    def setUp(self):
         MockAuth.admin(self)
 
         # Create Challenge

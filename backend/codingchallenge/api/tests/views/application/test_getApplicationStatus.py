@@ -10,7 +10,7 @@ from ....models.application import Application
 class test_getApplicationStatus(APITestCase):
     url = "/api/application/getApplicationStatus/"
 
-    def set_up(self):
+    def setUp(self):
         MockAuth.admin(self)
         challenge = {
             "challengeHeading": "TestChallenge",

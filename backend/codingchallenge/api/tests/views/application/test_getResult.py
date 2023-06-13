@@ -31,7 +31,7 @@ class test_getResult(APITransactionTestCase):
         ['✕ YAML', 'yamllint', 'list_of_files', '1', '', '1', '0.22s']
     ]
 
-    def set_up(self):
+    def setUp(self):
         # Authorization
         MockAuth.admin(self)
         settings.DEPLOY_OFFLINE = True

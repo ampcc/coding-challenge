@@ -8,7 +8,7 @@ from ...mock.mockAuth import MockAuth
 class test_getApplication(APITestCase):
     url = '/api/admin/applications/'
 
-    def set_up(self):
+    def setUp(self):
         MockAuth.admin(self)
         self.client.post('/api/admin/challenges/', {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"}, format='json')
         self.client.post(self.url, {"applicationId": "TEST1234"}, format="json")

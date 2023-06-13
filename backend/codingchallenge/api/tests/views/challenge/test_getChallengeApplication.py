@@ -11,7 +11,7 @@ class test_getChallengeApplication(APITestCase):
     url = "/api/application/challenges/"
 
 
-    def set_up(self):
+    def setUp(self):
         # First authorize as admin to create the mock data for the database
         MockAuth.admin(self)
 
