@@ -14,28 +14,28 @@
             <h2>Coding Challenge Platform</h2>
         </div>
 
-        <div class="remaining_time">
+        <div class="remainingTime">
             <p id="time"><b>Remaining Time:</b> {{time}}</p>
         </div>
 
-        <div class="view_tab">
+        <div class="viewTab">
             <!-- Tab list area with the intro, challenge, and challenge upload options -->
-            <div class="tab_list">
-                <label class="tabs" id="tab_intro" for="tab-1" (click)="changeTab('tab_intro')">
+            <div class="tabHeadings">
+                <label class="tabs" id="tabIntro" for="tab-1" (click)="changeTab('tabIntro')">
                     Intro
                 </label>
 
-                <label class="tabs" id="tab_challenge" for="tab-2" (click)="changeTab('tab_challenge')">
+                <label class="tabs" id="tabChallenge" for="tab-2" (click)="changeTab('tabChallenge')">
                     Challenge
                 </label>
 
-                <label class="tabs" id="tab_upload" for="tab-3" (click)="changeTab('tab_upload')">
+                <label class="tabs" id="tabUpload" for="tab-3" (click)="changeTab('tabUpload')">
                     Upload
                 </label>
             </div>
 
             <!-- Tab content of the intro  -->
-            <div [hidden]="hideContentIntro" class="text_intro" id="text">
+            <div [hidden]="hideContentIntro" class="text" id="textIntro">
                 Hi applicant,
                 <br>
                 <br />
@@ -89,16 +89,16 @@
             </div>
 
             <!-- Tab content of the challenge  -->
-            <div [hidden]="hideContentChallenge" class="text_challenge" id="text">
+            <div [hidden]="hideContentChallenge" class="text" id="textChallenge">
                 <b>{{heading}}</b>
                 <br><br>
                 {{challengeText}}
             </div>
 
             <!-- Tab content of the challenge upload  -->
-            <div [hidden]="hideContentUpload" class="div_upload">
+            <div [hidden]="hideContentUpload">
                 <div [hidden]="hideUpload" id="divUpload">
-                    <div class="selection-options">
+                    <div class="selectionOptions">
                         <!-- Area to select the programming language -->
                         <div class="mb-3">
                             <label class="form-label" id="programmingLanguage"><b>Programming Language: <span
@@ -106,18 +106,18 @@
 
                             <select class="form-select" id="selectProgLang" [(ngModel)]="pl"
                                 (change)="selectionProgLang()" required>
-                                <option id="disabledOption" class="pl_option" value="default" disabled selected hidden>
+                                <option class="disabledOption" value="default" disabled selected hidden>
                                     Programming Language</option>
-                                <option class="pl_option" value="java">Java</option>
-                                <option class="pl_option" value="c">C</option>
-                                <option class="pl_option" value="python">Python</option>
-                                <option class="pl_option" value="rust">Rust</option>
-                                <option class="pl_option" value="other">Other</option>
+                                <option value="java">Java</option>
+                                <option value="c">C</option>
+                                <option value="python">Python</option>
+                                <option value="rust">Rust</option>
+                                <option value="other">Other</option>
                             </select>
 
 
                             <!-- Input if selected programming language is 'other' -->
-                            <input [hidden]="hideProgLang" class="form-control inputOther" id="progLang" type="text"
+                            <input [hidden]="hideProgLang" class="form-control inputOther" id="otherProgLang" type="text"
                                 placeholder="Other programming langugage" required>
                             <!-- Error message if no programming language is selected or none is entered  -->
                             <div [hidden]="hideMsgProgLang" class="errorMessage">{{msgProgLang}}</div>
@@ -131,7 +131,7 @@
 
                             <select class="form-select" id="selectOpSys" [(ngModel)]="os" (change)="selectionOpSys()"
                                 required>
-                                <option id="disabledOption" value="default" disabled selected hidden>Operating System
+                                <option class="disabledOption" value="default" disabled selected hidden>Operating System
                                 </option>
                                 <option value="linux">Linux</option>
                                 <option value="windows">Windows</option>
@@ -140,7 +140,7 @@
                             </select>
 
                             <!-- Input if selected operating system is 'other' -->
-                            <input [hidden]="hideOpSys" class="form-control inputOther" id="opSys" type="text"
+                            <input [hidden]="hideOpSys" class="form-control inputOther" id="otherOpSys" type="text"
                                 placeholder="Other operating system" required>
                             <!-- Error message if no operating system is selected or none is entered  -->
                             <div [hidden]="hideMsgOpSys" class="errorMessage">{{msgOpSys}}</div>
@@ -152,7 +152,7 @@
                         <div>
                             <!-- Image to open the info of the folder structure -->
                             <img src="../../../../assets/question-circle.svg" width="20" height="20"
-                                class="question-circle" (click)="openDialogInfo()">
+                                class="questionCircle" (click)="openDialogInfo()">
 
                             <!-- Drag and drop area -->
                             <div id="DragnDropBlock" appHandlerBundle>
@@ -174,9 +174,9 @@
                         <div [hidden]="hideMsgFileUpload" class="errorMessage msgFileUpload">{{msgFileUpload}}</div>
 
                         <!-- Area to display all uploaded files -->
-                        <div class="files-list">
-                            <div class="single-file" *ngFor="let file of fileArray; let i = index">
-                                <div class="picntext">
+                        <div class="filesList">
+                            <div class="singleFile" *ngFor="let file of fileArray; let i = index">
+                                <div class="fileInfos">
                                     <div class="folder">
                                         <img src="../../../../assets/folder.svg" width="40" height="40">
                                     </div>
@@ -201,6 +201,12 @@
                     <button type="button" class="btn btn-dark" (click)="submitChallenge()">Submit Solution</button>
                 </div>
 
+                <!-- Tab content of the challenge upload if the challenge is in uploading process -->               
+                <div [hidden]="hideLoading" id="divLoading">
+                    <label class="textLoading"><b>Uploading your solution. Please wait a moment.</b></label>
+                    <mat-progress-spinner mode="indeterminate" class="progressSpinner"></mat-progress-spinner>
+                </div>
+
                 <!-- Tab content of the challenge upload if the challenge is successfully uploaded -->
                 <div [hidden]="hideSuccess" id="divSuccess">
                     <div class="child">
@@ -208,12 +214,6 @@
                         <img src="../../../../assets/check2.svg" width="300" height="300" class="picSuccess">
                         <label class="textSuccess"> We will contact you! </label>
                     </div>
-                </div>
-
-                <!-- Tab content of the challenge upload if the challenge is in uploading process -->               
-                <div [hidden]="hideLoading" id="divLoading">
-                    <label class="textLoading"><b>Uploading your solution. Please wait a moment.</b></label>
-                    <mat-progress-spinner mode="indeterminate" class="progressSpinner"></mat-progress-spinner>
                 </div>
             </div>
         </div>

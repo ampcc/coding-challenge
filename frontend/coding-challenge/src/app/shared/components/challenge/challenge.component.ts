@@ -136,12 +136,12 @@ export class ChallengeComponent implements OnInit {
    * @param id The id of the tab-html element
    */
   public changeTab(id: string): void {
-    const elementIntro = <HTMLLabelElement>document.getElementById('tab_intro');
-    const elementChallenge = <HTMLLabelElement>document.getElementById('tab_challenge');
-    const elementUpload = <HTMLLabelElement>document.getElementById('tab_upload');
+    const elementIntro = <HTMLLabelElement>document.getElementById('tabIntro');
+    const elementChallenge = <HTMLLabelElement>document.getElementById('tabChallenge');
+    const elementUpload = <HTMLLabelElement>document.getElementById('tabUpload');
 
     switch (id) {
-      case 'tab_intro':
+      case 'tabIntro':
         this.hideContentIntro = false;
         this.hideContentChallenge = true;
         this.hideContentUpload = true;
@@ -150,7 +150,7 @@ export class ChallengeComponent implements OnInit {
         elementChallenge.setAttribute("style", "border-bottom: none;");
         elementUpload.setAttribute("style", "border-bottom: none;");
         break;
-      case 'tab_challenge':
+      case 'tabChallenge':
         this.hideContentChallenge = false;
         this.hideContentIntro = true;
         this.hideContentUpload = true;
@@ -159,7 +159,7 @@ export class ChallengeComponent implements OnInit {
         elementChallenge.setAttribute("style", "border-bottom: 2px solid black;");
         elementUpload.setAttribute("style", "border-bottom: none;");
         break;
-      case 'tab_upload':
+      case 'tabUpload':
         this.hideContentUpload = false;
         this.hideContentIntro = true;
         this.hideContentChallenge = true;
@@ -349,7 +349,7 @@ export class ChallengeComponent implements OnInit {
       elementProgLang.setAttribute("style", "border-color:red;");
       required = true;
     } else if (resultPl === 'other') {
-      const elementInputProgLang = <HTMLInputElement>document.getElementById('progLang');
+      const elementInputProgLang = <HTMLInputElement>document.getElementById('otherProgLang');
 
       resultPl = elementInputProgLang.value;
 
@@ -376,7 +376,7 @@ export class ChallengeComponent implements OnInit {
       elementOpSys.setAttribute("style", "border-color:red;");
       required = true;
     } else if (resultOs === 'other') {
-      const elementInputOpSy = <HTMLInputElement>document.getElementById('opSys');
+      const elementInputOpSy = <HTMLInputElement>document.getElementById('otherOpSys');
 
       resultOs = elementInputOpSy.value;
 
