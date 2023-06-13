@@ -40,11 +40,11 @@ describe('AdminApplicationsComponent', () => {
 
 
   it('click on archived applications tab', () => {
-    let activeApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabActiveApplications')).nativeElement;
-    let archivedApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabArchivedApplications')).nativeElement;
+    const activeApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabActiveApplications')).nativeElement;
+    const archivedApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabArchivedApplications')).nativeElement;
 
-    let activeApplicationsTabStyle: CSSStyleDeclaration = activeApplicationsTabElement.style;
-    let archivedApplicationsTabStyle: CSSStyleDeclaration = archivedApplicationsTabElement.style;
+    const activeApplicationsTabStyle: CSSStyleDeclaration = activeApplicationsTabElement.style;
+    const archivedApplicationsTabStyle: CSSStyleDeclaration = archivedApplicationsTabElement.style;
 
     // Initial state
     expect(component.hideContentArchivedApplications).toBeTrue();
@@ -63,11 +63,11 @@ describe('AdminApplicationsComponent', () => {
 
 
   it('click on active applications tab', () => {
-    let activeApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabActiveApplications')).nativeElement;
-    let archivedApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabArchivedApplications')).nativeElement;
+    const activeApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabActiveApplications')).nativeElement;
+    const archivedApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabArchivedApplications')).nativeElement;
 
-    let activeApplicationsTabStyle: CSSStyleDeclaration = activeApplicationsTabElement.style;
-    let archivedApplicationsTabStyle: CSSStyleDeclaration = archivedApplicationsTabElement.style;
+    const activeApplicationsTabStyle: CSSStyleDeclaration = activeApplicationsTabElement.style;
+    const archivedApplicationsTabStyle: CSSStyleDeclaration = archivedApplicationsTabElement.style;
     // Initial state
     expect(component.hideContentArchivedApplications).toBeTrue();
     expect(component.hideContentActiveApplications).toBeFalse();
