@@ -14,7 +14,7 @@ class test_getResult(APITransactionTestCase):
     reset_sequences = True
     url = '/api/application/startChallenge/'
 
-    def setUp(self):
+    def set_up(self):
         MockAuth.admin(self)
 
         # Create Challenge
@@ -28,13 +28,13 @@ class test_getResult(APITransactionTestCase):
         self.application = Application.objects.get(user_id=self.user)
         settings.DEPLOY_OFFLINE = True
 
-    def test_missingAuth(self):
+    def test_missing_auth(self):
         # remove headers for this test
         self.client.credentials()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_challengeAlreadyStarted(self):
+    def test_challenge_already_started(self):
         self.application.status = Application.Status.COMPLETED
         self.application.save()
 
@@ -46,7 +46,7 @@ class test_getResult(APITransactionTestCase):
             }
         )
 
-    def test_challengeExpired(self):
+    def test_challenge_expired(self):
         self.application.expiry = self.application.expiry - time.time() - 1000
         self.application.save()
 
@@ -58,7 +58,7 @@ class test_getResult(APITransactionTestCase):
             }
         )
 
-    def test_challengeNotFound(self):
+    def test_challenge_not_found(self):
         self.application.challengeId = Challenge.objects.last().id + 1
         self.application.save()
 
@@ -70,7 +70,7 @@ class test_getResult(APITransactionTestCase):
             }
         )
 
-    def test_correctInput(self):
+    def test_correct_input(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(

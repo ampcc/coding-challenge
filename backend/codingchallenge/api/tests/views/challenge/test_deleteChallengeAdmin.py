@@ -10,14 +10,14 @@ class test_deleteChallengeAdmin(APITestCase):
     url = "/api/admin/challenges/"
 
     
-    def setUp(self):
+    def set_up(self):
         # Authorization
         MockAuth.admin(self)
 
         self.client.post(self.url, {"challengeHeading": "Test", "challengeText": "Text of challenge..."}, format='json')
 
 
-    def test_defaultRequest(self):
+    def test_default_request(self):
         response = self.client.get(self.url)
         id = response.data[0]['id']
         response = self.client.delete(self.url + str(id))
@@ -27,7 +27,7 @@ class test_deleteChallengeAdmin(APITestCase):
         self.assertFalse(Challenge.objects.first().active)
 
 
-    def test_tryDeleteOnNonexistentChallenge(self):
+    def test_try_delete_on_nonexistent_challenge(self):
         response = self.client.delete(self.url + "9999")    
         
         self.assertEqual(response.data, jsonMessages.error_json_response("No object found for given challengeId."),

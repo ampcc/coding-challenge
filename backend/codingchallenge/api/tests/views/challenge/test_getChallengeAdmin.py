@@ -9,7 +9,7 @@ class test_getChallengeAdmin(APITestCase):
     url = "/api/admin/challenges/"
     
 
-    def setUp(self): 
+    def set_up(self): 
         # Authorization
         MockAuth.admin(self)
 
@@ -26,7 +26,7 @@ class test_getChallengeAdmin(APITestCase):
         self.client.post(self.url, challenge_2, format='json')
 
 
-    def test_missingToken(self):
+    def test_missing_token(self):
         # remove headers for this test
         self.client.credentials()
         response = self.client.get(self.url + "1")
@@ -34,7 +34,7 @@ class test_getChallengeAdmin(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_invalidToken(self):
+    def test_invalid_token(self):
         # for this test, use the example token from the wiki
         self.client.credentials(HTTP_AUTHORIZATION='Token 62ce30b676d95ef439af5e1d84f9161034c67c4a')
         response = self.client.get(self.url + "1")
@@ -42,21 +42,21 @@ class test_getChallengeAdmin(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_wrongTokenFormat(self):
+    def test_wrong_token_format(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 1234')
         response = self.client.get(self.url + "1")
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_challengeDoesNotExist(self):
+    def test_challenge_does_not_exist(self):
         response = self.client.get(self.url + "9999")
         
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data, jsonMessages.error_json_response("The desired challenge can not be found!"))
 
 
-    def test_receiveCorrectChallenges(self):
+    def test_receive_correct_challenges(self):
         response = self.client.get(self.url)
         id_1 = response.data[0]['id']
         id_2 = response.data[1]['id']
@@ -81,7 +81,7 @@ class test_getChallengeAdmin(APITestCase):
         })
 
 
-    def test_ignoreAdditionalData(self):
+    def test_ignore_additional_data(self):
         response = self.client.get(self.url)
         id = response.data[0]['id']
         data = {
@@ -98,7 +98,7 @@ class test_getChallengeAdmin(APITestCase):
         })
         
 
-    def test_callNotAsAdmin(self):
+    def test_call_not_as_admin(self):
         self.user = MockAuth.applicantWithApplication(self, "TEST1234")
         response = self.client.get(self.url + "1", {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)        

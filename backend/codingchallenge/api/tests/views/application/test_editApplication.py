@@ -12,7 +12,7 @@ class test_editApplication(APITransactionTestCase):
     reset_sequences = True
     url = '/api/admin/applications/'
 
-    def setUp(self):
+    def set_up(self):
         # Authorization
         MockAuth.admin(self)
 
@@ -26,14 +26,14 @@ class test_editApplication(APITransactionTestCase):
 
         self.application_id = getattr(Application.objects.first(), 'applicationId')
 
-    def test_missingAuth(self):
+    def test_missing_auth(self):
         # remove headers for this test
         self.client.credentials()
 
         response = self.client.put(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_noApplicationId(self):
+    def test_no_application_id(self):
         data = {
             "applicationStatus": 2,
             "challengeId": 1,
@@ -42,7 +42,7 @@ class test_editApplication(APITransactionTestCase):
         response = self.client.put(self.url + "/", data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_wrongApplicationId(self):
+    def test_wrong_application_id(self):
         data = {
             "applicationStatus": 2,
             "challengeId": 1,
@@ -52,7 +52,7 @@ class test_editApplication(APITransactionTestCase):
         response = self.client.put(self.url + "/" + "4321TSET", data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_wrongDatafields(self):
+    def test_wrong_datafields(self):
         data = {
             "applicationStatus": 2,
             "wrongDatafield": 1,
@@ -63,7 +63,7 @@ class test_editApplication(APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {"detail": "Field: wrongDatafield not valid!"})
 
-    def test_notAllowedDatafields(self):
+    def test_not_allowed_datafields(self):
         data = {
             "applicationId": "TEST1234",
             "challengeId": 1,
@@ -73,12 +73,12 @@ class test_editApplication(APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {"detail": "Field: applicationId not valid!"})
 
-    def test_emptyData(self):
+    def test_empty_data(self):
         response = self.client.put(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(response.data, {"detail": "No data provided!"})
 
-    def test_correctInput(self):
+    def test_correct_input(self):
         data = {
             "applicationStatus": 2,
             "challengeId": 1,
@@ -99,7 +99,7 @@ class test_editApplication(APITransactionTestCase):
         self.assertEqual(response.data,
                          json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
 
-    def test_nonExistingStatus(self):
+    def test_non_existing_status(self):
         data = {
             "applicationStatus": 123123,
             "challengeId": 1,
@@ -110,7 +110,7 @@ class test_editApplication(APITransactionTestCase):
         self.assertNotEqual(Application.objects.get().status, 123123)
         self.assertEqual(response.data, {"detail": "Invalid status!"})
 
-    def test_nonExistingChallengeId(self):
+    def test_non_existing_challenge_id(self):
         data = {
             "applicationStatus": 2,
             "challengeId": 123123,

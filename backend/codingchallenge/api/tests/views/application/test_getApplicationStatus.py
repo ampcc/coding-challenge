@@ -10,7 +10,7 @@ from ....models.application import Application
 class test_getApplicationStatus(APITestCase):
     url = "/api/application/getApplicationStatus/"
 
-    def setUp(self):
+    def set_up(self):
         MockAuth.admin(self)
         challenge = {
             "challengeHeading": "TestChallenge",
@@ -26,37 +26,37 @@ class test_getApplicationStatus(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + response.data["token"])
         
 
-    def test_successfulResponse(self):
+    def test_successful_response(self):
         expected_data = GetApplicationStatus(Application.objects.get(applicationId = "TEST1234"))
         response = self.client.get(self.url)
         self.assertEqual(response.data, json.loads(json.dumps(expected_data.data)))
     
 
-    def test_wrongUrl(self):
+    def test_wrong_url(self):
         wrong_url = '/api/admin/appppplications/'
         response = self.client.get(wrong_url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-    def test_missingToken(self):
+    def test_missing_token(self):
         self.client.credentials()
         response = self.client.get(self.url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_invalidToken(self):
+    def test_invalid_token(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 4f25709a420a92aa01cc67b091b92ac0247f168a')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
  
 
-    def test_wrongTokenFormat(self):
+    def test_wrong_token_format(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 8234kawsdjfas')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_ignoreAdditionalData(self):
+    def test_ignore_additional_data(self):
         data = {
             "name": "ExampleName"
         }

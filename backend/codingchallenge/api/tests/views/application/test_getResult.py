@@ -31,7 +31,7 @@ class test_getResult(APITransactionTestCase):
         ['✕ YAML', 'yamllint', 'list_of_files', '1', '', '1', '0.22s']
     ]
 
-    def setUp(self):
+    def set_up(self):
         # Authorization
         MockAuth.admin(self)
         settings.DEPLOY_OFFLINE = True
@@ -50,28 +50,28 @@ class test_getResult(APITransactionTestCase):
         self.application.status = Application.Status.IN_REVIEW
         self.application.save()
 
-    def test_missingAuth(self):
+    def test_missing_auth(self):
         # remove headers for this test
         self.client.credentials()
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_noApplicationId(self):
+    def test_no_application_id(self):
         response = self.client.get(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_wrongApplicationId(self):
+    def test_wrong_application_id(self):
         response = self.client.get(self.url + "4321TSET", format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_repoNotExists(self):
+    def test_repo_not_exists(self):
         self.application.githubRepo = "12345679"
         self.application.save()
 
         response = self.client.get(self.url + self.applicationId, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_correctInput(self):
+    def test_correct_input(self):
         # ignore pep8
 
         response = self.client.get(self.url + self.applicationId, format='json')

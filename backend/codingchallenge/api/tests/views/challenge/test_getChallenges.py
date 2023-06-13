@@ -7,7 +7,7 @@ class test_getChallenges(APITestCase):
     url = '/api/admin/challenges/'
 
 
-    def setUp(self):
+    def set_up(self):
         # Authorization
         MockAuth.admin(self)
 
@@ -24,7 +24,7 @@ class test_getChallenges(APITestCase):
         self.client.post(self.url, challenge_2, format='json')
 
 
-    def test_missingToken(self):
+    def test_missing_token(self):
         # remove headers for this test
         self.client.credentials()
         response = self.client.get(self.url)
@@ -32,7 +32,7 @@ class test_getChallenges(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_invalidToken(self):
+    def test_invalid_token(self):
         # for this test, use the example token from the wiki
         self.client.credentials(HTTP_AUTHORIZATION='Token 62ce30b676d95ef439af5e1d84f9161034c67c4a')
         response = self.client.get(self.url)
@@ -40,21 +40,21 @@ class test_getChallenges(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_wrongTokenFormat(self):
+    def test_wrong_token_format(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 1234')
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_wrongUrl(self):
+    def test_wrong_url(self):
         url = '/api/admin/super_cool_challenges/'
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-    def test_receiveCorrectChallenges(self):
+    def test_receive_correct_challenges(self):
         response = self.client.get(self.url)
         id_1 = response.data[0]['id']
         id_2 = response.data[1]['id']

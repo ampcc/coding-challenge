@@ -14,7 +14,7 @@ class test_deleteApplication(APITransactionTestCase):
     reset_sequences = True
     url = '/api/admin/applications/'
 
-    def setUp(self):
+    def set_up(self):
         # Authorization
         MockAuth.admin(self)
 
@@ -33,7 +33,7 @@ class test_deleteApplication(APITransactionTestCase):
 
         self.applicationId = getattr(Application.objects.first(), 'applicationId')
 
-    def test_missingAuth(self, mockDelete):
+    def test_missing_auth(self, mockDelete):
         # remove headers for this test
         self.client.credentials()
         self.assertEqual(Application.objects.count(), 1)
@@ -42,21 +42,21 @@ class test_deleteApplication(APITransactionTestCase):
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_noApplicationId(self, mockDelete):
+    def test_no_application_id(self, mockDelete):
         self.assertEqual(Application.objects.count(), 1)
 
         response = self.client.delete(self.url + "/", format='json', )
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_wrongApplicationId(self, mockDelete):
+    def test_wrong_application_id(self, mockDelete):
         self.assertEqual(Application.objects.count(), 1)
 
         response = self.client.delete(self.url + "/" + "4321TSET", format='json', )
         self.assertEqual(Application.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_correctInput(self, mockDelete):
+    def test_correct_input(self, mockDelete):
         self.assertEqual(Application.objects.count(), 1)
 
         response = self.client.delete(self.url + self.applicationId)

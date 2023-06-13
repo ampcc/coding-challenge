@@ -8,14 +8,14 @@ from ...mock.mockAuth import MockAuth
 class test_getApplication(APITestCase):
     url = '/api/admin/applications/'
 
-    def setUp(self):
+    def set_up(self):
         MockAuth.admin(self)
         self.client.post('/api/admin/challenges/', {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"}, format='json')
         self.client.post(self.url, {"applicationId": "TEST1234"}, format="json")
         self.application_id = "TEST1234"
 
 
-    def test_successfulResponse(self):
+    def test_successful_response(self):
         response = self.client.get(self.url + self.application_id, {}, format='json') 
         challenge_id = self.client.get(self.url).data[0]['challengeId']
         user = self.client.get(self.url).data[0]['user']
@@ -36,31 +36,31 @@ class test_getApplication(APITestCase):
         self.assertEqual(response.data, testdata) 
 
 
-    def test_wrongUrl(self):
+    def test_wrong_url(self):
         url = '/api/admin/applicationsasdfasd/' + self.application_id
         response = self.client.get(url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-    def test_missingToken(self):
+    def test_missing_token(self):
         self.client.credentials()
         response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_invalidToken(self):
+    def test_invalid_token(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 4f25709a420a92aa01cc67b091b92ac0247f168a')
         response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_wrongTokenFormat(self):
+    def test_wrong_token_format(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 8234kawsdjfas')
         response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-    def test_ignoreAdditionalData(self):
+    def test_ignore_additional_data(self):
         data = {
             "name": "ExampleName"
         }

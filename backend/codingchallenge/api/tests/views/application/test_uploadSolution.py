@@ -16,7 +16,7 @@ class test_uploadSolution(APITransactionTestCase):
 
     url = '/api/application/uploadSolution/'
 
-    def setUp(self):
+    def set_up(self):
         MockAuth.admin(self)
 
         # Create Challenge
@@ -28,7 +28,7 @@ class test_uploadSolution(APITransactionTestCase):
         # Create Application and Challenge to proceed
         self.user = MockAuth.applicantWithApplication(self, "TEST1234")
 
-    def test_missingAuth(self):
+    def test_missing_auth(self):
         # remove headers for this test
         self.client.credentials()
 
@@ -42,17 +42,17 @@ class test_uploadSolution(APITransactionTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_wrongFormat(self):
+    def test_wrong_format(self):
         response = self.client.post(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_noFile(self):
+    def test_no_file(self):
         response = self.client.post(self.url, content_type="application/zip")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {'detail': 'No file passed. Aborting.'})
 
-    def test_missingFilename(self):
+    def test_missing_filename(self):
         fileupload = open(filePath.joinpath('fileupload_correct.zip'), 'rb').read()
 
         response = self.client.post(
@@ -70,7 +70,7 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-    def test_noZipFile(self):
+    def test_no_zip_file(self):
         fileupload = open(filePath.joinpath('fileupload_noZip.txt'), 'rb').read()
 
         headers = {
@@ -94,7 +94,7 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-    def test_testFileupload1(self):
+    def test_test_fileupload_1(self):
         # folder-structure of fileupload_wrong.zip
         # .
         # └── files
@@ -130,7 +130,7 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-    def test_testFileupload2(self):
+    def test_test_fileupload_2(self):
         # folder-structure of fileupload_correct.zip
         # .
         # ├── assets
@@ -164,7 +164,7 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-    def test_testFileupload3(self):
+    def test_test_fileupload_3(self):
         # folder-structure of fileupload_correct2.zip
         # assets
         #    ├── asset1.jpg
@@ -197,7 +197,7 @@ class test_uploadSolution(APITransactionTestCase):
             }
         )
 
-    def test_multipleUpload(self):
+    def test_multiple_upload(self):
         # folder-structure of fileupload_correct.zip
         # .
         # ├── assets
