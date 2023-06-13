@@ -62,4 +62,4 @@ class test_deleteApplication(APITransactionTestCase):
         response = self.client.delete(self.url + self.applicationId)
         self.assertEqual(Application.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, jsonMessages.successJsonResponse())
+        self.assertEqual(response.data, jsonMessages.success_json_response())

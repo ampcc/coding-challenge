@@ -8,7 +8,6 @@ from ....serializers import GetChallengeSerializer
 
 class test_putChallengeAdmin(APITestCase):
     url = "/api/admin/challenges/"
-    
 
     def setUp(self):
         # Authorization

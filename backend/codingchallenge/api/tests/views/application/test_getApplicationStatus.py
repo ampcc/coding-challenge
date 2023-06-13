@@ -33,8 +33,8 @@ class test_getApplicationStatus(APITestCase):
     
 
     def test_wrongUrl(self):
-        wrongUrl = '/api/admin/appppplications/'
-        response = self.client.get(wrongUrl, {}, format='json')
+        wrong_url = '/api/admin/appppplications/'
+        response = self.client.get(wrong_url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 

@@ -14,16 +14,16 @@ class test_getChallengeAdmin(APITestCase):
         MockAuth.admin(self)
 
         # Initialize data in the database
-        challenge1 = {
+        challenge_1 = {
             "challengeHeading": "TestChallenge", 
             "challengeText": "This is a Test Challenge"
         }
-        challenge2 = {
+        challenge_2 = {
             "challengeHeading": "TestChallenge2", 
             "challengeText": "This is a second challenge"
         }
-        self.client.post(self.url, challenge1, format='json')
-        self.client.post(self.url, challenge2, format='json')
+        self.client.post(self.url, challenge_1, format='json')
+        self.client.post(self.url, challenge_2, format='json')
 
 
     def test_missingToken(self):
@@ -53,7 +53,7 @@ class test_getChallengeAdmin(APITestCase):
         response = self.client.get(self.url + "9999")
         
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.data, jsonMessages.errorJsonResponse("The desired challenge can not be found!"))
+        self.assertEqual(response.data, jsonMessages.error_json_response("The desired challenge can not be found!"))
 
 
     def test_receiveCorrectChallenges(self):

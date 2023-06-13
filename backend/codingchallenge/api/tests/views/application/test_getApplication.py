@@ -12,16 +12,16 @@ class test_getApplication(APITestCase):
         MockAuth.admin(self)
         self.client.post('/api/admin/challenges/', {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"}, format='json')
         self.client.post(self.url, {"applicationId": "TEST1234"}, format="json")
-        self.applicationId = "TEST1234"
+        self.application_id = "TEST1234"
 
 
     def test_successfulResponse(self):
-        response = self.client.get(self.url + self.applicationId, {}, format='json') 
-        challengeId = self.client.get(self.url).data[0]['challengeId']
+        response = self.client.get(self.url + self.application_id, {}, format='json') 
+        challenge_id = self.client.get(self.url).data[0]['challengeId']
         user = self.client.get(self.url).data[0]['user']
         testdata = {
             'applicationId': 'TEST1234', 
-            'challengeId': challengeId, 
+            'challengeId': challenge_id, 
             'operatingSystem': '', 
             'programmingLanguage': '', 
             'expiry': mock.ANY, 
@@ -37,26 +37,26 @@ class test_getApplication(APITestCase):
 
 
     def test_wrongUrl(self):
-        url = '/api/admin/applicationsasdfasd/' + self.applicationId
+        url = '/api/admin/applicationsasdfasd/' + self.application_id
         response = self.client.get(url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
     def test_missingToken(self):
         self.client.credentials()
-        response = self.client.get(self.url + self.applicationId, {}, format='json')
+        response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
     def test_invalidToken(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 4f25709a420a92aa01cc67b091b92ac0247f168a')
-        response = self.client.get(self.url + self.applicationId, {}, format='json')
+        response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
     def test_wrongTokenFormat(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 8234kawsdjfas')
-        response = self.client.get(self.url + self.applicationId, {}, format='json')
+        response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
@@ -64,13 +64,13 @@ class test_getApplication(APITestCase):
         data = {
             "name": "ExampleName"
         }
-        response = self.client.get(self.url + self.applicationId, data)
-        challengeId = self.client.get(self.url).data[0]['challengeId']
+        response = self.client.get(self.url + self.application_id, data)
+        challenge_id = self.client.get(self.url).data[0]['challengeId']
         user = self.client.get(self.url).data[0]['user']
 
         self.assertEqual(response.data, {
             'applicationId': 'TEST1234', 
-            'challengeId': challengeId, 
+            'challengeId': challenge_id, 
             'operatingSystem': '', 
             'programmingLanguage': '', 
             'expiry': mock.ANY, 

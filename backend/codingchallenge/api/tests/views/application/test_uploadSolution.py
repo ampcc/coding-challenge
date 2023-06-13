@@ -106,8 +106,8 @@ class test_uploadSolution(APITransactionTestCase):
         #         ├── run.py
         #         └── test.py
 
-        fileuploadPath = filePath.joinpath('fileupload_wrong.zip')
-        fileupload = open(fileuploadPath, 'rb').read()
+        fileupload_path = filePath.joinpath('fileupload_wrong.zip')
+        fileupload = open(fileupload_path, 'rb').read()
 
         headers = {
             'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
@@ -140,8 +140,8 @@ class test_uploadSolution(APITransactionTestCase):
         # ├── run.py
         # └── test.py
 
-        fileuploadPath = filePath.joinpath('fileupload_correct.zip')
-        fileupload = open(fileuploadPath, 'rb').read()
+        fileupload_path = filePath.joinpath('fileupload_correct.zip')
+        fileupload = open(fileupload_path, 'rb').read()
 
         headers = {
             'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
@@ -173,8 +173,8 @@ class test_uploadSolution(APITransactionTestCase):
         # run.py
         # test.py
 
-        fileuploadPath = filePath.joinpath('fileupload_correct2.zip')
-        fileupload = open(fileuploadPath, 'rb').read()
+        fileupload_path = filePath.joinpath('fileupload_correct2.zip')
+        fileupload = open(fileupload_path, 'rb').read()
 
         headers = {
             'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',
@@ -207,8 +207,8 @@ class test_uploadSolution(APITransactionTestCase):
         # ├── run.py
         # └── test.py
 
-        fileuploadPath = filePath.joinpath('fileupload_correct.zip')
-        fileupload = open(fileuploadPath, 'rb').read()
+        fileupload_path = filePath.joinpath('fileupload_correct.zip')
+        fileupload = open(fileupload_path, 'rb').read()
 
         headers = {
             'HTTP_CONTENT_DISPOSITION': 'attachment; filename=file.zip}',

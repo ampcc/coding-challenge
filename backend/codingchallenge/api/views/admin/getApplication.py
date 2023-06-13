@@ -8,13 +8,13 @@ from ...serializers import (
 )
 
 def get(**kwargs):
-    applicationId = kwargs["applicationId"]
+    application_id = kwargs["applicationId"]
 
     try:
-        application = Application.objects.get(applicationId=applicationId)
+        application = Application.objects.get(applicationId=application_id)
     except ObjectDoesNotExist:
         return Response(
-            jsonMessages.errorJsonResponse("Application not found!"),
+            jsonMessages.error_json_response("Application not found!"),
             status=status.HTTP_404_NOT_FOUND
         )
 
@@ -23,6 +23,6 @@ def get(**kwargs):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except:
         return Response(
-            jsonMessages.errorJsonResponse("Application ID not found!"),
+            jsonMessages.error_json_response("Application ID not found!"),
             status=status.HTTP_404_NOT_FOUND
         )

@@ -12,16 +12,16 @@ class test_getChallenges(APITestCase):
         MockAuth.admin(self)
 
         # Initialize data in the database
-        challenge1 = {
+        challenge_1 = {
             "challengeHeading": "TestChallenge", 
             "challengeText": "This is a Test Challenge"
         }
-        challenge2 = {
+        challenge_2 = {
             "challengeHeading": "TestChallenge2", 
             "challengeText": "This is a second challenge"
         }
-        self.client.post(self.url, challenge1, format='json')
-        self.client.post(self.url, challenge2, format='json')
+        self.client.post(self.url, challenge_1, format='json')
+        self.client.post(self.url, challenge_2, format='json')
 
 
     def test_missingToken(self):

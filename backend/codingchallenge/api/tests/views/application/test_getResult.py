@@ -10,9 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
 
 class test_getResult(APITransactionTestCase):
     reset_sequences = True
-    applicationUrl = "/api/admin/applications/"
+    application_url = "/api/admin/applications/"
     url = '/api/admin/applications/results/'
-    mockLinterResult = [
+    mock_linter_result = [
         ['Descriptor', 'Linter', 'Mode', 'Files', 'Fixed', 'Errors', 'Elapsed time'],
         ['✓ ACTION', 'actionlint', 'list_of_files', '1', '', '0', '0.02s'],
         ['✓ COPYPASTE', 'jscpd', 'project', 'n/a', '', '0', '0.93s'],
@@ -44,7 +44,7 @@ class test_getResult(APITransactionTestCase):
 
         # Create Application
         self.applicationId = "appl0001"
-        self.client.post(self.applicationUrl, {"applicationId": self.applicationId}, format='json')
+        self.client.post(self.application_url, {"applicationId": self.applicationId}, format='json')
         self.application = Application.objects.get(applicationId=self.applicationId)
         self.application.githubRepo = self.applicationId
         self.application.status = Application.Status.IN_REVIEW
@@ -79,6 +79,6 @@ class test_getResult(APITransactionTestCase):
         self.assertEqual(
             response.data, {
                 'githubUrl': "https://api.github.com/repos/ampcc/" + self.applicationId,
-                'content': self.mockLinterResult
+                'content': self.mock_linter_result
             }
         )

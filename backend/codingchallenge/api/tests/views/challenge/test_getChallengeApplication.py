@@ -16,26 +16,26 @@ class test_getChallengeApplication(APITestCase):
         MockAuth.admin(self)
 
         # Initialize data in the database
-        challenge1 = {
+        challenge_1 = {
             "challengeHeading": "TestChallenge", 
             "challengeText": "This is a Test Challenge"
         }
-        challenge2 = {
+        challenge_2 = {
             "challengeHeading": "TestChallenge2", 
             "challengeText": "This is a second challenge"
         }
-        challengeApplication = self.client.post("/api/admin/challenges/", challenge1, format='json')
-        self.client.post("/api/admin/challenges/", challenge2, format='json')
+        challenge_application = self.client.post("/api/admin/challenges/", challenge_1, format='json')
+        self.client.post("/api/admin/challenges/", challenge_2, format='json')
         
         user = {
             "applicationId": "TEST1234", 
-            "challengeId": challengeApplication.data['id'], 
+            "challengeId": challenge_application.data['id'], 
             "expiry": 999999999999999,
         }
         application = self.client.post("/api/admin/applications/", user, format='json')
 
         # Now authorize as application and login with key 
-        self.applicationId = "TEST1234"
+        self.application_id = "TEST1234"
         token = self.client.post('/api/application/loginWithKey/' + application.data['tmpLink'][29:]).data['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
@@ -78,11 +78,11 @@ class test_getChallengeApplication(APITestCase):
 
 
     def test_challengeDoesNotExist(self):
-        Application.objects.filter(applicationId=self.applicationId).update(challengeId=3000)
+        Application.objects.filter(applicationId=self.application_id).update(challengeId=3000)
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.data, jsonMessages.errorJsonResponse("The applications challenge can not be found!"))
+        self.assertEqual(response.data, jsonMessages.error_json_response("The applications challenge can not be found!"))
 
 
     def test_receiveCorrectChallenge(self):

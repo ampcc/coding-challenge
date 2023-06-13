@@ -24,13 +24,13 @@ class test_editApplication(APITransactionTestCase):
         # Create Application
         self.client.post(self.url, {"applicationId": "TEST1234"}, format='json')
 
-        self.applicationId = getattr(Application.objects.first(), 'applicationId')
+        self.application_id = getattr(Application.objects.first(), 'applicationId')
 
     def test_missingAuth(self):
         # remove headers for this test
         self.client.credentials()
 
-        response = self.client.put(self.url + self.applicationId, {}, format='json')
+        response = self.client.put(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_noApplicationId(self):
@@ -58,7 +58,7 @@ class test_editApplication(APITransactionTestCase):
             "wrongDatafield": 1,
             "extendDays": 2
         }
-        response = self.client.put(self.url + self.applicationId, data, format='json')
+        response = self.client.put(self.url + self.application_id, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {"detail": "Field: wrongDatafield not valid!"})
@@ -69,12 +69,12 @@ class test_editApplication(APITransactionTestCase):
             "challengeId": 1,
             "expiry": 2
         }
-        response = self.client.put(self.url + self.applicationId, data, format='json')
+        response = self.client.put(self.url + self.application_id, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {"detail": "Field: applicationId not valid!"})
 
     def test_emptyData(self):
-        response = self.client.put(self.url + self.applicationId, {}, format='json')
+        response = self.client.put(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(response.data, {"detail": "No data provided!"})
 
@@ -84,13 +84,13 @@ class test_editApplication(APITransactionTestCase):
             "challengeId": 1,
             "expiry": 99999999999999
         }
-        response = self.client.put(self.url + self.applicationId, data, format='json')
+        response = self.client.put(self.url + self.application_id, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Application.objects.count(), 1)
 
         self.assertEqual(Application.objects.get().status, 2)
 
-        self.assertEqual(Application.objects.get().applicationId, self.applicationId)
+        self.assertEqual(Application.objects.get().applicationId, self.application_id)
         self.assertEqual(Application.objects.get().challengeId, 1)
 
         # rounds the assertion to seconds
@@ -105,7 +105,7 @@ class test_editApplication(APITransactionTestCase):
             "challengeId": 1,
             "extendDays": 2
         }
-        response = self.client.put(self.url + self.applicationId, data, format='json')
+        response = self.client.put(self.url + self.application_id, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertNotEqual(Application.objects.get().status, 123123)
         self.assertEqual(response.data, {"detail": "Invalid status!"})
@@ -117,7 +117,7 @@ class test_editApplication(APITransactionTestCase):
             "extendDays": 2
         }
 
-        response = self.client.put(self.url + self.applicationId, data, format='json')
+        response = self.client.put(self.url + self.application_id, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
         self.assertNotEqual(Application.objects.get().challengeId, 123123)

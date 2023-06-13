@@ -23,14 +23,14 @@ class test_deleteChallengeAdmin(APITestCase):
         response = self.client.delete(self.url + str(id))
 
 
-        self.assertEqual(response.data, jsonMessages.successJsonResponse())
+        self.assertEqual(response.data, jsonMessages.success_json_response())
         self.assertFalse(Challenge.objects.first().active)
 
 
     def test_tryDeleteOnNonexistentChallenge(self):
         response = self.client.delete(self.url + "9999")    
         
-        self.assertEqual(response.data, jsonMessages.errorJsonResponse("No object found for given challengeId."),
+        self.assertEqual(response.data, jsonMessages.error_json_response("No object found for given challengeId."),
                          status.HTTP_404_NOT_FOUND)
         self.assertTrue(Challenge.objects.first().active)
     
