@@ -15,28 +15,28 @@
         </div>
 
 
-        <div class="view_tab">
+        <div class="viewTab">
             <!-- Tab list area with the active challenges and archived challenges as well as the search bar and filter-->
-            <div class="tab_list">
+            <div class="tabList">
                 <!-- Tab list -->
-                <div class="tab_selection">
-                    <label class="tabs" id="tab_active_challenges" for="tab-1"
-                        (click)="changeTab('tab_active_challenges')">
+                <div class="tabHeadings">
+                    <label class="tabs" id="tabActiveApplications" for="tab-1"
+                        (click)="changeTab('tabActiveApplications')">
                         Active Applications
                     </label>
 
-                    <label class="tabs" id="tab_archiv" for="tab-2" (click)="changeTab('tab_archiv')">
+                    <label class="tabs" id="tabArchivedApplications" for="tab-2" (click)="changeTab('tabArchivedApplications')">
                         Archive
                     </label>
                 </div>
 
                 <!-- Search bar and filter -->
-                <div class="options">
+                <div class="limitations">
                     <!-- Search bar with an input field and a button -->
-                    <form action="" class="search_bar">
+                    <form action="" class="searchBar">
                         <div class="input-group mb-4">
                             <input type="search" placeholder="Search for application ..."
-                                aria-describedby="button-addon5" class="form-control" id="input_search_bar">
+                                aria-describedby="button-addon5" class="form-control" id="inputSearchBar">
                             <div class="input-group-append">
                                 <button id="button-addon5" type="submit" class="btn btn-primary" (click)="search()">
                                     <img src="../../../../assets/search.svg" class="search">
@@ -71,7 +71,7 @@
                         </ul>
                     </li>
                     <!-- Status filter options -->
-                    <li [hidden]="hideContentActiveChallenges" class="tree">
+                    <li [hidden]="hideContentActiveApplications" class="tree">
                         <span class="caret" id="caret2" (click)="toggleTreeView('caret2')">Status</span>
                         <ul class="nested">
                             <li>
@@ -86,7 +86,7 @@
                             </li>
                             <li>
                                 <input type="checkbox" id="not_submitted_in_time"
-                                    (change)="checkboxStatusChange($event)" value="not_uploaded_in_time" />
+                                    (change)="checkboxStatusChange($event)" value="not_submitted_in_time" />
                                 <span class="tree_checkbox_label"> not submitted in time</span>
                             </li>
                         </ul>
@@ -95,11 +95,11 @@
             </div>
 
             <!-- Tab content of all active applications  -->
-            <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
-                <div class="list" id="list_applicants">
-                    <div class="single_applicant" *ngFor="let app of filteredApplicantsArray; let i = index">
+            <div [hidden]="hideContentActiveApplications" class="contentActiveApplications">
+                <div class="list" id="listApplications">
+                    <div class="singleApplication" *ngFor="let app of filteredApplicationsArray; let i = index">
                         <!-- Shows information of the application -->
-                        <div class="text_elements">
+                        <div class="textElements">
                             <h4 class="applicantId">
                                 {{app.applicationId}}
                             </h4>
@@ -124,19 +124,19 @@
             </div>
 
             <!-- Tab content of all archived applications  -->
-            <div [hidden]="hideContentArchiv" class="contentArchiv">
-                <div class="list" id="list_archiv">
-                    <div class="single_archiv" *ngFor="let archiv of filteredArchivArray; let i = index">
-                        <div class="text_elements">
+            <div [hidden]="hideContentArchivedApplications" class="contentArchivedApplications">
+                <div class="list" id="listArchivedApplications">
+                    <div class="singleArchived" *ngFor="let archived of filteredArchivedArray; let i = index">
+                        <div class="textElements">
                             <h4 class="applicantId">
-                                {{archiv.applicationId}}
+                                {{archived.applicationId}}
                             </h4>
-                            <span class="challengeHeading"><b>Challenge:</b> {{getChallengeHeading(archiv.challengeId)}}</span>
-                            <span class="submission"><b>Submission date:</b> {{getSubmissionDateText(archiv.submission)}}</span>
+                            <span class="challengeHeading"><b>Challenge:</b> {{getChallengeHeading(archived.challengeId)}}</span>
+                            <span class="submission"><b>Submission date:</b> {{getSubmissionDateText(archived.submission)}}</span>
                         </div>
                         <!-- Only shown if the challenge was uploaded -->
                         <div class="btn_position">
-                            <button *ngIf="getSubmissionDateText(archiv.submission) !== 'not uploaded in time'"
+                            <button *ngIf="getSubmissionDateText(archived.submission) !== 'not uploaded in time'"
                                 class="btn btn-dark details"
                                 (click)="openDialogArchivedApplications(archiv)">Details</button>
                         </div>

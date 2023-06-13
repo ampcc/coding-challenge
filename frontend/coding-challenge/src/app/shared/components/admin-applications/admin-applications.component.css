@@ -15,7 +15,7 @@ h2 {
 }
 
 /* Style tab navigation */
-.tab_list {
+.tabList {
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     width: 100%;
     display: flex;
@@ -36,17 +36,17 @@ h2 {
     cursor: pointer;
 }
 
-#tab_active_challenges {
+#tabActiveApplications {
     border-bottom: 2px solid black;
 }
 
-#tab_archiv {
+#tabArchivedApplications {
     margin-left: 24px;
 }
 
 
 /* Style search bar and filter */
-.options {
+.limitations {
     display: inline-block;
     margin-top: auto;
     margin-bottom: auto;
@@ -55,7 +55,7 @@ h2 {
 }
 
 /* Style search bar */
-.search_bar {
+.searchBar {
     display: inline-block;
     margin-top: auto;
     margin-bottom: auto;
@@ -67,7 +67,7 @@ h2 {
     margin-bottom: 0 !important;
 }
 
-#input_search_bar {
+#inputSearchBar {
     border-radius: 5px;
 }
 
@@ -193,8 +193,8 @@ li {
     margin-bottom: 20px;
 }
 
-.single_applicant,
-.single_archiv {
+.singleApplication,
+.singleArchived {
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 10px;
@@ -204,7 +204,7 @@ li {
     padding: 1em;
 }
 
-.text_elements {
+.textElements {
     display: flex;
     flex-direction: column;
 
@@ -301,11 +301,11 @@ th, td {
 }
 
 @media screen and (max-width: 840px) {
-    .tab_list {
+    .tabList {
         display: inline-block;
     }
 
-    .options {
+    .limitations {
         display: flex;
         margin-top: 9px;
         margin-bottom: 9px;

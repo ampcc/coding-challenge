@@ -24,7 +24,6 @@ export class AdminChallengesComponent implements OnInit {
   private adminToken: string | null;
 
   public hideContentActiveChallenges = false;
-
   public hideFilterSelect = true;
 
   public challengeArray: Challenge[] = [];
@@ -56,15 +55,13 @@ export class AdminChallengesComponent implements OnInit {
    * @param id The id tab-html element
    */
   public changeTab(id: string): void {
-    const elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
-    const elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
+    const elementActiveChallenge = <HTMLLabelElement>document.getElementById('tabActiveChallenges');
 
     switch (id) {
-      case 'tab_active_challenges':
+      case 'tabActiveChallenges':
         this.hideContentActiveChallenges = false;
 
         elementActiveChallenge.setAttribute("style", "border-bottom: 2px solid black;");
-        elementArchive.setAttribute("style", "border-bottom: none;");
         break;
     }
   }

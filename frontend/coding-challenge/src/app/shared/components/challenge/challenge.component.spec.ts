@@ -42,9 +42,9 @@ describe('ChallengeComponent', () => {
 
 
   it('click on intro tab', () => {
-    const challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
-    const uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
-    const introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
+    const challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabChallenge')).nativeElement;
+    const uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabUpload')).nativeElement;
+    const introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabIntro')).nativeElement;
     const challengeTabStyle: CSSStyleDeclaration = challengeTabElement.style;
     const uploadTabStyle: CSSStyleDeclaration = uploadTabElement.style;
     const introTabStyle: CSSStyleDeclaration = introTabElement.style;
@@ -68,9 +68,9 @@ describe('ChallengeComponent', () => {
 
 
   it('click on challenge tab', () => {
-    const challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
-    const uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
-    const introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
+    const challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabChallenge')).nativeElement;
+    const uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabUpload')).nativeElement;
+    const introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabIntro')).nativeElement;
     const challengeTabStyle: CSSStyleDeclaration = challengeTabElement.style;
     const uploadTabStyle: CSSStyleDeclaration = uploadTabElement.style;
     const introTabStyle: CSSStyleDeclaration = introTabElement.style;
@@ -94,9 +94,9 @@ describe('ChallengeComponent', () => {
 
 
   it('click on upload tab', () => {
-    const challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_challenge')).nativeElement;
-    const uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_upload')).nativeElement;
-    const introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_intro')).nativeElement;
+    const challengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabChallenge')).nativeElement;
+    const uploadTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabUpload')).nativeElement;
+    const introTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabIntro')).nativeElement;
     const challengeTabStyle: CSSStyleDeclaration = challengeTabElement.style;
     const uploadTabStyle: CSSStyleDeclaration = uploadTabElement.style;
     const introTabStyle: CSSStyleDeclaration = introTabElement.style;
@@ -138,7 +138,7 @@ describe('ChallengeComponent', () => {
 
 
   it('display challenge text correctly', () => {
-    const challengeTextDiv = fixture.debugElement.query(By.css('.text_challenge')).nativeElement;
+    const challengeTextDiv = fixture.debugElement.query(By.css('#textChallenge')).nativeElement;
     const initialChallengeTextHTML = "<b>No data available!</b><br><br> No data available! "
     expect(challengeTextDiv.innerHTML).toBe(initialChallengeTextHTML);
 
@@ -336,7 +336,7 @@ describe('ChallengeComponent', () => {
 
 
   it('display uploaded file correctly', () => {
-    let uploadedHTMLFilesList: DebugElement = fixture.debugElement.query(By.css('.files-list'));
+    let uploadedHTMLFilesList: DebugElement = fixture.debugElement.query(By.css('.filesList'));
     // One additional childNode exists because of ngFor
     expect(uploadedHTMLFilesList.nativeElement.childNodes.length).toBe(1);
 
@@ -349,7 +349,7 @@ describe('ChallengeComponent', () => {
     component.fileArray.push(uploadedFile.files[0]);
     fixture.detectChanges();
 
-    uploadedHTMLFilesList = fixture.debugElement.query(By.css('.files-list'));
+    uploadedHTMLFilesList = fixture.debugElement.query(By.css('.filesList'));
 
     expect(uploadedHTMLFilesList.nativeElement.childNodes.length).toBe(2);
     expect(uploadedHTMLFilesList.query(By.css('.filename')).nativeElement.innerText).toBe(' test.zip ');
@@ -359,7 +359,7 @@ describe('ChallengeComponent', () => {
 
 
   it('delete uploaded file correctly', () => {
-    let uploadedHTMLFilesList: DebugElement = fixture.debugElement.query(By.css('.files-list'));
+    let uploadedHTMLFilesList: DebugElement = fixture.debugElement.query(By.css('.filesList'));
 
     const uploadedFile = new DataTransfer();
     const data: ArrayBuffer = new ArrayBuffer(1048576);
@@ -379,7 +379,7 @@ describe('ChallengeComponent', () => {
     fixture.detectChanges();
 
     fileInput = fixture.debugElement.query(By.css('#fileHandler')).nativeElement;
-    uploadedHTMLFilesList = fixture.debugElement.query(By.css('.files-list'))
+    uploadedHTMLFilesList = fixture.debugElement.query(By.css('.filesList'))
     expect(component.fileArray.length).toBe(0);
     expect(fileInput.files?.length).toBe(0);
     expect(uploadedHTMLFilesList.childNodes.length).toBe(1);
@@ -420,8 +420,8 @@ describe('ChallengeComponent', () => {
     const selectProgLang: HTMLSelectElement = fixture.debugElement.query(By.css('#selectProgLang')).nativeElement;
     const selectOpSys: HTMLSelectElement = fixture.debugElement.query(By.css('#selectOpSys')).nativeElement;
 
-    const inputOtherProgLang: HTMLInputElement = fixture.debugElement.query(By.css('#progLang')).nativeElement;
-    const inputOtherOpSys: HTMLInputElement = fixture.debugElement.query(By.css('#opSys')).nativeElement;
+    const inputOtherProgLang: HTMLInputElement = fixture.debugElement.query(By.css('#otherProgLang')).nativeElement;
+    const inputOtherOpSys: HTMLInputElement = fixture.debugElement.query(By.css('#otherOpSys')).nativeElement;
 
     expect(selectProgLang.style.borderColor).toBe('red');
     expect(component.hideMsgProgLang).toBeFalse();
@@ -521,7 +521,7 @@ describe('ChallengeComponent', () => {
 
 
   it('display dialog on question mark click', () => {
-    const questionMark: HTMLElement = fixture.debugElement.query(By.css('.question-circle')).nativeElement;
+    const questionMark: HTMLElement = fixture.debugElement.query(By.css('.questionCircle')).nativeElement;
     questionMark.click();
 
     fixture.detectChanges();

@@ -48,7 +48,7 @@ describe('AdminChallengesComponent', () => {
 
 
   it('display challenges correctly', () => {
-    let challengesHTML = fixture.debugElement.queryAll(By.css('.single_challenge'));
+    let challengesHTML = fixture.debugElement.queryAll(By.css('.singleChallenge'));
     expect(challengesHTML.length).toEqual(0);
     expect(component.challengeArray.length).toEqual(0);
 
@@ -69,7 +69,7 @@ describe('AdminChallengesComponent', () => {
     component.challengeArray = [challenge1, challenge2];
     fixture.detectChanges();
 
-    challengesHTML = fixture.debugElement.queryAll(By.css('.single_challenge'));
+    challengesHTML = fixture.debugElement.queryAll(By.css('.singleChallenge'));
     expect(challengesHTML.length).toEqual(2);
     expect(component.challengeArray.length).toEqual(2);
 
