@@ -26,18 +26,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AdminApplicationsComponent {
   private adminToken: string | null;
 
-  public hideContentActiveChallenges = false;
-  public hideContentArchiv = true;
+  public hideContentActiveApplications = false;
+  public hideContentArchivedApplications = true;
 
   public hideFilterSelect = true;
 
   public challengeArray: Challenge[] = [];
   private challengeFilter: number[] = [];
   private statusFilter: string[] = [];
-  public applicantsArray: Application[] = [];
-  public filteredApplicantsArray: Application[] = [];
-  public archivArray: Application[] = [];
-  public filteredArchivArray: Application[] = [];
+  public applicationsArray: Application[] = [];
+  public filteredApplicationsArray: Application[] = [];
+  public archivedArray: Application[] = [];
+  public filteredArchivedArray: Application[] = [];
 
   public searchContent = "";
 
@@ -75,14 +75,14 @@ export class AdminApplicationsComponent {
         //if successful receive all Applications and split them into Archived and Active
         response.forEach((element: Application) => {
           if (element.status <= 3) {
-            this.applicantsArray.push(element);
+            this.applicationsArray.push(element);
           } else if (element.status === 5) {
-            this.archivArray.push(element);
+            this.archivedArray.push(element);
           }
         });
         //only filtered Arrays are displayed
-        this.filteredApplicantsArray = this.applicantsArray;
-        this.filteredArchivArray = this.archivArray;
+        this.filteredApplicationsArray = this.applicationsArray;
+        this.filteredArchivedArray = this.archivedArray;
       });
       // get all Challenges
       this.backend.getChallenges(this.adminToken)
@@ -98,20 +98,20 @@ export class AdminApplicationsComponent {
    * @param id The id tab-html element
    */
   public changeTab(id: string): void {
-    const elementActiveChallenge = <HTMLLabelElement>document.getElementById('tab_active_challenges');
-    const elementArchive = <HTMLLabelElement>document.getElementById('tab_archiv');
+    const elementActiveChallenge = <HTMLLabelElement>document.getElementById('tabActiveApplications');
+    const elementArchive = <HTMLLabelElement>document.getElementById('tabArchivedApplications');
 
     switch (id) {
-      case 'tab_active_challenges':
-        this.hideContentActiveChallenges = false;
-        this.hideContentArchiv = true;
+      case 'tabActiveApplications':
+        this.hideContentActiveApplications = false;
+        this.hideContentArchivedApplications = true;
 
         elementActiveChallenge.setAttribute("style", "border-bottom: 2px solid black;");
         elementArchive.setAttribute("style", "border-bottom: none;");
         break;
-      case 'tab_archiv':
-        this.hideContentArchiv = false;
-        this.hideContentActiveChallenges = true;
+      case 'tabArchivedApplications':
+        this.hideContentArchivedApplications = false;
+        this.hideContentActiveApplications = true;
 
         elementActiveChallenge.setAttribute("style", "border-bottom: none;");
         elementArchive.setAttribute("style", "border-bottom: 2px solid black;");
@@ -124,7 +124,7 @@ export class AdminApplicationsComponent {
    * The applicationId is specified by the user via an input element
    */
   public search(): void {
-    this.searchContent = (<HTMLInputElement>document.getElementById("input_search_bar")).value;
+    this.searchContent = (<HTMLInputElement>document.getElementById("inputSearchBar")).value;
     this.searchContent = this.searchContent.trim();
     this.updateFilteredApplicantArray();
     this.updateFilteredArchiveArray();
@@ -160,18 +160,18 @@ export class AdminApplicationsComponent {
    */
   private updateFilteredArchiveArray(): void {
     if (this.challengeFilter.length === 0) {
-      this.filteredArchivArray = this.archivArray;
+      this.filteredArchivedArray = this.archivedArray;
     } else {
-      this.filteredArchivArray = [];
-      this.archivArray.forEach((app) => {
+      this.filteredArchivedArray = [];
+      this.archivedArray.forEach((app) => {
         if (this.challengeFilter.some(e => e === app.challengeId)) {
-          this.filteredArchivArray.push(app);
+          this.filteredArchivedArray.push(app);
         }
       });
     }
 
     if (this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
-      this.filteredArchivArray = this.filteredArchivArray.filter(element => element.applicationId === this.searchContent);
+      this.filteredArchivedArray = this.filteredArchivedArray.filter(element => element.applicationId === this.searchContent);
     }
   }
 
@@ -181,37 +181,37 @@ export class AdminApplicationsComponent {
    */
   private updateFilteredApplicantArray(): void {
     if (this.challengeFilter.length === 0 && this.statusFilter.length === 0) {
-      this.filteredApplicantsArray = this.applicantsArray;
-      this.filteredArchivArray = this.archivArray;
+      this.filteredApplicationsArray = this.applicationsArray;
+      this.filteredArchivedArray = this.archivedArray;
     } else if (this.challengeFilter.length !== 0 && this.statusFilter.length === 0) {
-      this.filteredApplicantsArray = [];
-      this.applicantsArray.forEach((app) => {
+      this.filteredApplicationsArray = [];
+      this.applicationsArray.forEach((app) => {
         if (this.challengeFilter.some(e => e === app.challengeId)) {
-          this.filteredApplicantsArray.push(app);
+          this.filteredApplicationsArray.push(app);
         }
       });
     } else if (this.challengeFilter.length === 0 && this.statusFilter.length !== 0) {
-      this.filteredApplicantsArray = [];
-      this.applicantsArray.forEach((app) => {
+      this.filteredApplicationsArray = [];
+      this.applicationsArray.forEach((app) => {
         const statusText = this.getStatusText(app.status).replaceAll(" ", "_");
         if (this.statusFilter.some(e => e === statusText)) {
-          this.filteredApplicantsArray.push(app);
+          this.filteredApplicationsArray.push(app);
         }
       });
     } else {
-      this.filteredApplicantsArray = [];
-      this.applicantsArray.forEach((app) => {
+      this.filteredApplicationsArray = [];
+      this.applicationsArray.forEach((app) => {
         if (this.challengeFilter.some(e => e === app.challengeId)) {
           const statusText = this.getStatusText(app.status).replaceAll(" ", "_");
           if (this.statusFilter.some(e => e === statusText)) {
-            this.filteredApplicantsArray.push(app);
+            this.filteredApplicationsArray.push(app);
           }
         }
       });
     }
 
     if (this.searchContent !== "" && this.searchContent !== null && this.searchContent !== undefined) {
-      this.filteredApplicantsArray = this.filteredApplicantsArray.filter(element => element.applicationId === this.searchContent);
+      this.filteredApplicationsArray = this.filteredApplicationsArray.filter(element => element.applicationId === this.searchContent);
     }
   }
 
@@ -405,9 +405,9 @@ export class AdminApplicationsComponent {
       if (result == 1) {
         this.backend.editApplication(this.adminToken, application.applicationId, 5)
           .subscribe((result) => {
-            const index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
-            this.applicantsArray.splice(index, 1);
-            this.archivArray.push(application);
+            const index = this.applicationsArray.findIndex(app => app.applicationId === application.applicationId);
+            this.applicationsArray.splice(index, 1);
+            this.archivedArray.push(application);
           }, (error: HttpErrorResponse) => {
             switch (error.status) {
               case 401:
@@ -470,10 +470,10 @@ export class AdminApplicationsComponent {
         this.backend.editApplication(this.adminToken, application.applicationId, application.status, result.c, result.e)
           .subscribe((result) => {
             // Update the list of applications
-            const index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
+            const index = this.applicationsArray.findIndex(app => app.applicationId === application.applicationId);
             this.backend.getApplication(this.adminToken, application.applicationId).subscribe((response) => {
-              this.applicantsArray.splice(index, 0, response);
-              this.applicantsArray.splice(index + 1, 1);
+              this.applicationsArray.splice(index, 0, response);
+              this.applicationsArray.splice(index + 1, 1);
             });
           }, (error: HttpErrorResponse) => {
             switch (error.status) {
@@ -498,9 +498,9 @@ export class AdminApplicationsComponent {
       if (result == 2) {
         this.backend.editApplication(this.adminToken, application.applicationId, 5)
           .subscribe((result) => {
-            const index = this.applicantsArray.findIndex(app => app.applicationId === application.applicationId);
-            this.applicantsArray.splice(index, 1);
-            this.archivArray.push(application);
+            const index = this.applicationsArray.findIndex(app => app.applicationId === application.applicationId);
+            this.applicationsArray.splice(index, 1);
+            this.archivedArray.push(application);
           }, (error: HttpErrorResponse) => {
             switch (error.status) {
               case 401:

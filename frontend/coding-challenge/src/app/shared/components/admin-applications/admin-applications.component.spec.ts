@@ -39,56 +39,56 @@ describe('AdminApplicationsComponent', () => {
   });
 
 
-  it('click on archive applications tab', () => {
-    const activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
-    const archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
+  it('click on archived applications tab', () => {
+    let activeApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabActiveApplications')).nativeElement;
+    let archivedApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabArchivedApplications')).nativeElement;
 
-    const activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
-    const archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
+    let activeApplicationsTabStyle: CSSStyleDeclaration = activeApplicationsTabElement.style;
+    let archivedApplicationsTabStyle: CSSStyleDeclaration = archivedApplicationsTabElement.style;
 
     // Initial state
-    expect(component.hideContentArchiv).toBeTrue();
-    expect(component.hideContentActiveChallenges).toBeFalse();
+    expect(component.hideContentArchivedApplications).toBeTrue();
+    expect(component.hideContentActiveApplications).toBeFalse();
 
-    archiveChallengeTabElement.click();
+    archivedApplicationsTabElement.click();
 
-    expect(component.hideContentActiveChallenges).toBeTrue();
-    expect(component.hideContentArchiv).toBeFalse();
+    expect(component.hideContentActiveApplications).toBeTrue();
+    expect(component.hideContentArchivedApplications).toBeFalse();
 
-    expect(activeChallengeTabStyle.borderBottom).toBe('none');
-    expect(archiveChallengeTabStyle.borderBottomStyle).toBe('solid');
-    expect(archiveChallengeTabStyle.borderBottomWidth).toBe('2px');
-    expect(archiveChallengeTabStyle.borderBottomColor).toBe('black');
+    expect(activeApplicationsTabStyle.borderBottom).toBe('none');
+    expect(archivedApplicationsTabStyle.borderBottomStyle).toBe('solid');
+    expect(archivedApplicationsTabStyle.borderBottomWidth).toBe('2px');
+    expect(archivedApplicationsTabStyle.borderBottomColor).toBe('black');
   });
 
 
-  it('click on active challenge tab', () => {
-    const activeChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_active_challenges')).nativeElement;
-    const archiveChallengeTabElement: HTMLElement = fixture.debugElement.query(By.css('#tab_archiv')).nativeElement;
+  it('click on active applications tab', () => {
+    let activeApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabActiveApplications')).nativeElement;
+    let archivedApplicationsTabElement: HTMLElement = fixture.debugElement.query(By.css('#tabArchivedApplications')).nativeElement;
 
-    const activeChallengeTabStyle: CSSStyleDeclaration = activeChallengeTabElement.style;
-    const archiveChallengeTabStyle: CSSStyleDeclaration = archiveChallengeTabElement.style;
+    let activeApplicationsTabStyle: CSSStyleDeclaration = activeApplicationsTabElement.style;
+    let archivedApplicationsTabStyle: CSSStyleDeclaration = archivedApplicationsTabElement.style;
     // Initial state
-    expect(component.hideContentArchiv).toBeTrue();
-    expect(component.hideContentActiveChallenges).toBeFalse();
+    expect(component.hideContentArchivedApplications).toBeTrue();
+    expect(component.hideContentActiveApplications).toBeFalse();
 
-    activeChallengeTabElement.click();
+    activeApplicationsTabElement.click();
 
-    expect(component.hideContentActiveChallenges).toBeFalse();
-    expect(component.hideContentArchiv).toBeTrue();
+    expect(component.hideContentActiveApplications).toBeFalse();
+    expect(component.hideContentArchivedApplications).toBeTrue();
 
-    expect(activeChallengeTabStyle.borderBottomStyle).toEqual('solid');
-    expect(activeChallengeTabStyle.borderBottomWidth).toEqual('2px');
-    expect(activeChallengeTabStyle.borderBottomColor).toEqual('black');
-    expect(archiveChallengeTabStyle.borderBottom).toEqual('none');
+    expect(activeApplicationsTabStyle.borderBottomStyle).toEqual('solid');
+    expect(activeApplicationsTabStyle.borderBottomWidth).toEqual('2px');
+    expect(activeApplicationsTabStyle.borderBottomColor).toEqual('black');
+    expect(archivedApplicationsTabStyle.borderBottom).toEqual('none');
   });
 
 
   it('correct filter results of active applications', () => {
-    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
-    expect(component.filteredApplicantsArray.length).toBe(0);
+    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.singleApplication'));
+    expect(component.filteredApplicationsArray.length).toBe(0);
     expect(activeApplicationHTML.length).toBe(0);
-    expect(component.applicantsArray.length).toEqual(0);
+    expect(component.applicationsArray.length).toEqual(0);
 
     const date = Date.now();
 
@@ -147,18 +147,18 @@ describe('AdminApplicationsComponent', () => {
       active: true
     };
 
-    component.applicantsArray = [application1, application2, application3];
-    component.filteredApplicantsArray = [application1, application2, application3];
+    component.applicationsArray = [application1, application2, application3];
+    component.filteredApplicationsArray = [application1, application2, application3];
     component.challengeArray = [challenge1, challenge2];
 
     const statusTextArray = ['not_uploaded_yet', 'uploaded', 'not_submitted_in_time'];
 
     fixture.detectChanges();
 
-    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
-    expect(component.filteredApplicantsArray.length).toBe(3);
+    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.singleApplication'));
+    expect(component.filteredApplicationsArray.length).toBe(3);
     expect(activeApplicationHTML.length).toBe(3);
-    expect(component.applicantsArray.length).toBe(3);
+    expect(component.applicationsArray.length).toBe(3);
     expect(component.challengeArray.length).toBe(2);
 
     for(let i = 0; i < component.challengeArray.length; i++) {
@@ -168,14 +168,14 @@ describe('AdminApplicationsComponent', () => {
 
       switch(component.challengeArray[i]) {
         case challenge1:
-          expect(component.filteredApplicantsArray).toContain(application1);
-          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
-          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1);
+          expect(component.filteredApplicationsArray).toContain(application1);
+          expect(component.filteredApplicationsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicationsArray.indexOf(application3)).toBe(-1);
         break;
         case challenge2:
-          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
-          expect(component.filteredApplicantsArray).toContain(application2);
-          expect(component.filteredApplicantsArray).toContain(application3);
+          expect(component.filteredApplicationsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicationsArray).toContain(application2);
+          expect(component.filteredApplicationsArray).toContain(application3);
           break;
         default:
           throw Error('No identified challenge inside challenge Array in test "correct filter results of active applications"');
@@ -192,19 +192,19 @@ describe('AdminApplicationsComponent', () => {
 
       switch(statusTextArray[i]) {
         case 'not_uploaded_yet':
-          expect(component.filteredApplicantsArray).toContain(application1);
-          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
-          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1);
+          expect(component.filteredApplicationsArray).toContain(application1);
+          expect(component.filteredApplicationsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicationsArray.indexOf(application3)).toBe(-1);
         break;
         case 'uploaded':
-          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
-          expect(component.filteredApplicantsArray).toContain(application2);
-          expect(component.filteredApplicantsArray.indexOf(application3)).toBe(-1);
+          expect(component.filteredApplicationsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicationsArray).toContain(application2);
+          expect(component.filteredApplicationsArray.indexOf(application3)).toBe(-1);
           break;
         case 'not_submitted_in_time':
-          expect(component.filteredApplicantsArray.indexOf(application1)).toBe(-1);
-          expect(component.filteredApplicantsArray.indexOf(application2)).toBe(-1);
-          expect(component.filteredApplicantsArray).toContain(application3);
+          expect(component.filteredApplicationsArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredApplicationsArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredApplicationsArray).toContain(application3);
           break;
         default:
           throw Error('No identified status inside challenge Array in test "correct filter results of active applications"');
@@ -217,10 +217,10 @@ describe('AdminApplicationsComponent', () => {
 
 
   it('correct filter results of archived applications', () => {
-    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
-    expect(component.filteredArchivArray.length).toBe(0);
+    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.singleArchived'));
+    expect(component.filteredArchivedArray.length).toBe(0);
     expect(archivedApplicationHTML.length).toBe(0);
-    expect(component.applicantsArray.length).toEqual(0);
+    expect(component.applicationsArray.length).toEqual(0);
 
     const date = Date.now();
 
@@ -279,16 +279,16 @@ describe('AdminApplicationsComponent', () => {
       active: true
     };
 
-    component.archivArray = [application1, application2, application3];
-    component.filteredArchivArray = [application1, application2, application3];
+    component.archivedArray = [application1, application2, application3];
+    component.filteredArchivedArray = [application1, application2, application3];
     component.challengeArray = [challenge1, challenge2];
 
     fixture.detectChanges();
 
-    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
-    expect(component.filteredArchivArray.length).toBe(3);
+    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.singleArchived'));
+    expect(component.filteredArchivedArray.length).toBe(3);
     expect(archivedApplicationHTML.length).toBe(3);
-    expect(component.archivArray.length).toBe(3);
+    expect(component.archivedArray.length).toBe(3);
     expect(component.challengeArray.length).toBe(2);
 
     for(let i = 0; i < component.challengeArray.length; i++) {
@@ -298,14 +298,14 @@ describe('AdminApplicationsComponent', () => {
 
       switch(component.challengeArray[i]) {
         case challenge1:
-          expect(component.filteredArchivArray).toContain(application1);
-          expect(component.filteredArchivArray.indexOf(application2)).toBe(-1);
-          expect(component.filteredArchivArray.indexOf(application3)).toBe(-1);
+          expect(component.filteredArchivedArray).toContain(application1);
+          expect(component.filteredArchivedArray.indexOf(application2)).toBe(-1);
+          expect(component.filteredArchivedArray.indexOf(application3)).toBe(-1);
         break;
         case challenge2:
-          expect(component.filteredArchivArray.indexOf(application1)).toBe(-1);
-          expect(component.filteredArchivArray).toContain(application2);
-          expect(component.filteredArchivArray).toContain(application3);
+          expect(component.filteredArchivedArray.indexOf(application1)).toBe(-1);
+          expect(component.filteredArchivedArray).toContain(application2);
+          expect(component.filteredArchivedArray).toContain(application3);
           break;
         default:
           throw Error('No identified challenge inside challenge Array in test "correct filter results of archived applications"');
@@ -318,10 +318,10 @@ describe('AdminApplicationsComponent', () => {
 
 
   it('correct search results for active applications', () => {
-    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
-    expect(component.filteredApplicantsArray.length).toBe(0);
+    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.singleApplication'));
+    expect(component.filteredApplicationsArray.length).toBe(0);
     expect(activeApplicationHTML.length).toBe(0);
-    expect(component.applicantsArray.length).toEqual(0);
+    expect(component.applicationsArray.length).toEqual(0);
 
     const date = Date.now();
 
@@ -365,18 +365,18 @@ describe('AdminApplicationsComponent', () => {
       status: 4
     };
 
-    component.applicantsArray = [application1, application2, application3];
-    component.filteredApplicantsArray = [application1, application2, application3];
+    component.applicationsArray = [application1, application2, application3];
+    component.filteredApplicationsArray = [application1, application2, application3];
 
     fixture.detectChanges();
 
-    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
-    expect(component.filteredApplicantsArray.length).toBe(3);
+    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.singleApplication'));
+    expect(component.filteredApplicationsArray.length).toBe(3);
     expect(activeApplicationHTML.length).toBe(3);
-    expect(component.applicantsArray.length).toBe(3);
+    expect(component.applicationsArray.length).toBe(3);
 
 
-    const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#input_search_bar')).nativeElement;
+    const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#inputSearchBar')).nativeElement;
     const searchButton = fixture.debugElement.query(By.css('#button-addon5')).nativeElement;
 
     searchBar.value = '    def456   ';
@@ -384,31 +384,31 @@ describe('AdminApplicationsComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.filteredApplicantsArray.length).toBe(1);
-    expect(component.filteredApplicantsArray).toContain(application2);
+    expect(component.filteredApplicationsArray.length).toBe(1);
+    expect(component.filteredApplicationsArray).toContain(application2);
 
     searchBar.value = '    def457   ';
     searchButton.click();
 
     fixture.detectChanges();
 
-    expect(component.filteredApplicantsArray.length).toBe(0);
+    expect(component.filteredApplicationsArray.length).toBe(0);
 
     searchBar.value = 'abc123';
     searchButton.click();
 
     fixture.detectChanges();
 
-    expect(component.filteredApplicantsArray.length).toBe(1);
-    expect(component.filteredApplicantsArray).toContain(application1);
+    expect(component.filteredApplicationsArray.length).toBe(1);
+    expect(component.filteredApplicationsArray).toContain(application1);
   });
 
 
   it('correct search results for archived applications', () => {
-    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
-    expect(component.filteredArchivArray.length).toBe(0);
+    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.singleArchived'));
+    expect(component.filteredArchivedArray.length).toBe(0);
     expect(archivedApplicationHTML.length).toBe(0);
-    expect(component.applicantsArray.length).toEqual(0);
+    expect(component.applicationsArray.length).toEqual(0);
 
     const date = Date.now();
 
@@ -452,18 +452,18 @@ describe('AdminApplicationsComponent', () => {
       status: 5
     };
 
-    component.archivArray = [application1, application2, application3];
-    component.filteredArchivArray = [application1, application2, application3];
+    component.archivedArray = [application1, application2, application3];
+    component.filteredArchivedArray = [application1, application2, application3];
 
     fixture.detectChanges();
 
-    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
-    expect(component.filteredArchivArray.length).toBe(3);
+    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.singleArchived'));
+    expect(component.filteredArchivedArray.length).toBe(3);
     expect(archivedApplicationHTML.length).toBe(3);
-    expect(component.archivArray.length).toBe(3);
+    expect(component.archivedArray.length).toBe(3);
 
 
-    const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#input_search_bar')).nativeElement;
+    const searchBar: HTMLInputElement = fixture.debugElement.query(By.css('#inputSearchBar')).nativeElement;
     const searchButton = fixture.debugElement.query(By.css('#button-addon5')).nativeElement;
 
     searchBar.value = '    def456   ';
@@ -471,28 +471,28 @@ describe('AdminApplicationsComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.filteredArchivArray.length).toBe(1);
-    expect(component.filteredArchivArray).toContain(application2);
+    expect(component.filteredArchivedArray.length).toBe(1);
+    expect(component.filteredArchivedArray).toContain(application2);
 
     searchBar.value = '    def457   ';
     searchButton.click();
 
     fixture.detectChanges();
 
-    expect(component.filteredArchivArray.length).toBe(0);
+    expect(component.filteredArchivedArray.length).toBe(0);
 
     searchBar.value = 'abc123';
     searchButton.click();
 
     fixture.detectChanges();
 
-    expect(component.filteredArchivArray.length).toBe(1);
-    expect(component.filteredArchivArray).toContain(application1);
+    expect(component.filteredArchivedArray.length).toBe(1);
+    expect(component.filteredArchivedArray).toContain(application1);
   });
 
 
   it('display dialog on click on edit button', () => {
-    expect(component.filteredApplicantsArray.length).toBe(0);
+    expect(component.filteredApplicationsArray.length).toBe(0);
     expect(component.challengeArray.length).toBe(0);
 
     const date = Date.now();
@@ -517,12 +517,12 @@ describe('AdminApplicationsComponent', () => {
       active: true
     };
 
-    component.filteredApplicantsArray = [application1];
+    component.filteredApplicationsArray = [application1];
     component.challengeArray = [challenge1];
 
     fixture.detectChanges();
 
-    expect(component.filteredApplicantsArray.length).toBe(1);
+    expect(component.filteredApplicationsArray.length).toBe(1);
     expect(component.challengeArray.length).toBe(1);
 
     const edit: HTMLElement = fixture.debugElement.query(By.css('.edit')).nativeElement;
@@ -539,10 +539,10 @@ describe('AdminApplicationsComponent', () => {
     // Only test if the passed value is displayed correctly. The calculation itself is tested seperately.
     spyOn(backend, 'calcRemainingTime').and.returnValue(4 + " days " + 12 + " hours " + 45 + " minutes");
 
-    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
-    expect(component.filteredApplicantsArray.length).toBe(0);
+    let activeApplicationHTML = fixture.debugElement.queryAll(By.css('.singleApplication'));
+    expect(component.filteredApplicationsArray.length).toBe(0);
     expect(activeApplicationHTML.length).toBe(0);
-    expect(component.applicantsArray.length).toEqual(0);
+    expect(component.applicationsArray.length).toEqual(0);
 
     const date = Date.now();
 
@@ -587,24 +587,24 @@ describe('AdminApplicationsComponent', () => {
       active: true
     };
 
-    component.applicantsArray = [application1, application2];
-    component.filteredApplicantsArray = [application1, application2];
+    component.applicationsArray = [application1, application2];
+    component.filteredApplicationsArray = [application1, application2];
     component.challengeArray = [challenge1, challenge2];
 
     const statusTextArray = ['not uploaded yet', 'uploaded'];
 
     fixture.detectChanges();
 
-    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.single_applicant'));
-    expect(component.filteredApplicantsArray.length).toBe(2);
+    activeApplicationHTML = fixture.debugElement.queryAll(By.css('.singleApplication'));
+    expect(component.filteredApplicationsArray.length).toBe(2);
     expect(activeApplicationHTML.length).toBe(2);
-    expect(component.applicantsArray.length).toBe(2);
+    expect(component.applicationsArray.length).toBe(2);
 
     expect(component.challengeArray.length).toBe(2);
 
     for (let i = 0; i < activeApplicationHTML.length; i++) {
         const id: HTMLElement = activeApplicationHTML[i].query(By.css('.applicantId')).nativeElement;
-        expect(id.innerHTML).toEqual(' ' + component.applicantsArray[i].applicationId + ' ');
+        expect(id.innerHTML).toEqual(' ' + component.applicationsArray[i].applicationId + ' ');
 
         const challengeHeading = activeApplicationHTML[i].query(By.css('.challengeHeading')).nativeElement;
         expect(challengeHeading.innerHTML).toEqual('<b>Challenge:</b> ' + component.challengeArray[i].challengeHeading);
@@ -636,10 +636,10 @@ describe('AdminApplicationsComponent', () => {
     // Only test if the passed value is displayed correctly. The calculation itself is tested seperately.
     spyOn(backend, 'calcRemainingTime').and.returnValue(4 + " days " + 12 + " hours " + 45 + " minutes");
 
-    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
-    expect(component.filteredArchivArray.length).toBe(0);
+    let archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.singleArchived'));
+    expect(component.filteredArchivedArray.length).toBe(0);
     expect(archivedApplicationHTML.length).toBe(0);
-    expect(component.applicantsArray.length).toEqual(0);
+    expect(component.applicationsArray.length).toEqual(0);
 
     const date = Date.now();
 
@@ -684,22 +684,22 @@ describe('AdminApplicationsComponent', () => {
       active: true
     };
 
-    component.archivArray = [application1, application2];
-    component.filteredArchivArray = [application1, application2];
+    component.archivedArray = [application1, application2];
+    component.filteredArchivedArray = [application1, application2];
     component.challengeArray = [challenge1, challenge2];
 
     fixture.detectChanges();
 
-    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.single_archiv'));
-    expect(component.filteredArchivArray.length).toBe(2);
+    archivedApplicationHTML = fixture.debugElement.queryAll(By.css('.singleArchived'));
+    expect(component.filteredArchivedArray.length).toBe(2);
     expect(archivedApplicationHTML.length).toBe(2);
-    expect(component.archivArray.length).toBe(2);
+    expect(component.archivedArray.length).toBe(2);
 
     expect(component.challengeArray.length).toBe(2);
 
     for (let i = 0; i < archivedApplicationHTML.length; i++) {
         const id: HTMLElement = archivedApplicationHTML[i].query(By.css('.applicantId')).nativeElement;
-        expect(id.innerHTML).toEqual(' ' + component.archivArray[i].applicationId + ' ');
+        expect(id.innerHTML).toEqual(' ' + component.archivedArray[i].applicationId + ' ');
 
         const challengeHeading = archivedApplicationHTML[i].query(By.css('.challengeHeading')).nativeElement;
         expect(challengeHeading.innerHTML).toEqual('<b>Challenge:</b> ' + component.challengeArray[i].challengeHeading);
@@ -734,15 +734,15 @@ describe('AdminApplicationsComponent', () => {
     fixture.detectChanges();
 
     expect(component.hideFilterSelect).toBeFalse();
-    expect(component.hideContentActiveChallenges).toBeFalse();
+    expect(component.hideContentActiveApplications).toBeFalse();
    });
 
 
    it('displays filter options correctly in archive applications', () => {
     const filterButtonElement: HTMLElement = fixture.debugElement.query(By.css('#labelFilter')).nativeElement;
 
-    component.hideContentArchiv = false;
-    component.hideContentActiveChallenges = true;
+    component.hideContentArchivedApplications = false;
+    component.hideContentActiveApplications = true;
 
     expect(component.hideFilterSelect).toBeTrue();
 
@@ -751,6 +751,6 @@ describe('AdminApplicationsComponent', () => {
     fixture.detectChanges();
 
     expect(component.hideFilterSelect).toBeFalse();
-    expect(component.hideContentActiveChallenges).toBeTrue();
+    expect(component.hideContentActiveApplications).toBeTrue();
    });
 });
