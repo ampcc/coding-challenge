@@ -45,6 +45,7 @@ APPEND_SLASH = False
 
 # Application definition
 INSTALLED_APPS = [
+    'codingchallenge',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
