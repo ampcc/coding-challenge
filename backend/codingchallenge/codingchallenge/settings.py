@@ -36,7 +36,7 @@ ENCRYPTION_KEY = os.getenv('ENCRYPTION_KEY')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -104,13 +104,6 @@ DATABASES = {
         'PORT': '5432'
     }
 }
-
-'''DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

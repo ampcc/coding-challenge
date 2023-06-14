@@ -14,4 +14,4 @@ COPY ./coding-challenge/ .
 # Install project dependencies
 RUN npm install package.json
 
-CMD [ "ng", "serve", "--host", "0.0.0.0", "--poll", "500"]
+CMD [ "ng", "serve", "--host", "0.0.0.0" ]
