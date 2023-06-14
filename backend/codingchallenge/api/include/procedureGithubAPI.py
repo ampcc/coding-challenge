@@ -1,10 +1,11 @@
-from github import Github, AppAuthentication, Repository, GitBlob, GitTree, InputGitTreeElement, GitCommit
-from pathlib import Path
-from zipfile import ZipFile
-import requests
 import base64
+from pathlib import Path
+
+import requests
+from github import Github, AppAuthentication, InputGitTreeElement
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
 
 class GithubApiWrapper:
     def __init__(self, app_id, installation_id, private_key, organization_name):
@@ -56,9 +57,10 @@ class GithubApiWrapper:
     def add_linter(self, repo):
         linter_content = open(BASE_DIR.joinpath("api/include/megalinter.yml"), 'r').read()
         return repo.create_file(
-                path=".github/workflows/megalinter.yml",
-                message="initial commit: added megalinter",
-                content=linter_content)
+            path=".github/workflows/megalinter.yml",
+            message="initial commit: added megalinter",
+            content=linter_content
+        )
 
     def get_linter_log(self, repo_name):
         repo = self.get_repo(repo_name)

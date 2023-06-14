@@ -1,6 +1,3 @@
-from textwrap import dedent
-
-
 def get_repo_url(repoName):
     return "https://api.github.com/repos/ampcc/" + repoName
 
