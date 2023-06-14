@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin View Applications</title>
+    <link rel="stylesheet" type="text/css" href="admin-applications.component.css">
+    <meta charset="UTF-8">
+</head>
+
+
+<body>
+    <div id="elements">
+        <div class="heading">
+            <h2>Coding Challenge: Applications</h2>
+        </div>
+
+
+        <div class="viewTab">
+            <!-- Tab list area with the active challenges and archived challenges as well as the search bar and filter-->
+            <div class="tabList">
+                <!-- Tab list -->
+                <div class="tabHeadings">
+                    <label class="tabs" id="tabActiveApplications" for="tab-1"
+                        (click)="changeTab('tabActiveApplications')">
+                        Active Applications
+                    </label>
+
+                    <label class="tabs" id="tabArchivedApplications" for="tab-2" (click)="changeTab('tabArchivedApplications')">
+                        Archive
+                    </label>
+                </div>
+
+                <!-- Search bar and filter -->
+                <div class="limitations">
+                    <!-- Search bar with an input field and a button -->
+                    <form action="" class="searchBar">
+                        <div class="input-group mb-4">
+                            <input type="search" placeholder="Search for application ..."
+                                aria-describedby="button-addon5" class="form-control" id="inputSearchBar">
+                            <div class="input-group-append">
+                                <button id="button-addon5" type="submit" class="btn btn-primary" (click)="search()">
+                                    <img src="../../../../assets/search.svg" class="search">
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Button for the filter -->
+                    <div class="filter icon filterButton" #filterButton>
+                        <div>
+                            <label (click)="showFilter()" id="labelFilter">
+                                Filter
+                                <img src="../../../../assets/funnel.svg" class="funnel">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- List of filter options -->
+            <div [hidden]="hideFilterSelect" id="filterTree" class="filter filterSelect" #filterSelect>
+                <ul id="myUL">
+                    <!-- Challenge filter options -->
+                    <li id="first_tree">
+                        <span class="caret" id="caret1" (click)="toggleTreeView('caret1')">Challenges</span>
+                        <ul class="nested">
+                            <li *ngFor="let challenge of challengeArray">
+                                <input type="checkbox" class="challengeFilterElement" id="challenge{{challenge.id}}"
+                                    (change)="checkboxChallengeChange($event)" value="challenge{{challenge.id}}" />
+                                <span class="tree_checkbox_label"> {{challenge.challengeHeading}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Status filter options -->
+                    <li [hidden]="hideContentActiveApplications" class="tree">
+                        <span class="caret" id="caret2" (click)="toggleTreeView('caret2')">Status</span>
+                        <ul class="nested">
+                            <li>
+                                <input type="checkbox" id="uploaded" (change)="checkboxStatusChange($event)"
+                                    value="uploaded" />
+                                <span class="tree_checkbox_label"> uploaded</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="not_uploaded_yet" (change)="checkboxStatusChange($event)"
+                                    value="not_uploaded_yet" />
+                                <span class="tree_checkbox_label"> not uploaded yet</span>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="not_submitted_in_time"
+                                    (change)="checkboxStatusChange($event)" value="not_submitted_in_time" />
+                                <span class="tree_checkbox_label"> not submitted in time</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tab content of all active applications  -->
+            <div [hidden]="hideContentActiveApplications" class="contentActiveApplications">
+                <div class="list" id="listApplications">
+                    <div class="singleApplication" *ngFor="let app of filteredApplicationsArray; let i = index">
+                        <!-- Shows information of the application -->
+                        <div class="textElements">
+                            <h4 class="applicantId">
+                                {{app.applicationId}}
+                            </h4>
+                            <span class="challengeHeading"><b>Challenge:</b> {{getChallengeHeading(app.challengeId)}}</span>
+                            <span class="status"><b>Status:</b> {{getStatusText(app.status)}}</span>
+                            <!-- Only shown if the challenge is uploaded -->
+                            <span class="submission" [hidden]="hideSubmissionDate"><b>Submission date:</b>
+                                {{getSubmissionDateText(app.submission)}}</span>
+                            <!-- Only shown if the challenge is not uploaded -->
+                            <span class="limit" [hidden]="hideTimeLimit"><b>Time limit:</b> {{getTimeLimit(app)}}</span>
+                        </div>
+                        <div class="btnPosition">
+                            <!-- Shown if the applicant uploaded the challenge -->
+                            <button *ngIf="getStatusText(app.status) === 'uploaded'" class="btn btn-dark details"
+                                (click)="openDialogActiveApplications(app)">Details</button>
+                            <!-- Shown if applicant hadn't uploaded the challenge and the admin wants to extend the remaining time -->
+                            <button *ngIf="getStatusText(app.status) !== 'uploaded'" class="btn btn-dark edit"
+                                (click)="openExtendDialogActiveApplications(app)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab content of all archived applications  -->
+            <div [hidden]="hideContentArchivedApplications" class="contentArchivedApplications">
+                <div class="list" id="listArchivedApplications">
+                    <div class="singleArchived" *ngFor="let archived of filteredArchivedArray; let i = index">
+                        <div class="textElements">
+                            <h4 class="applicantId">
+                                {{archived.applicationId}}
+                            </h4>
+                            <span class="challengeHeading"><b>Challenge:</b> {{getChallengeHeading(archived.challengeId)}}</span>
+                            <span class="submission"><b>Submission date:</b> {{getSubmissionDateText(archived.submission)}}</span>
+                        </div>
+                        <!-- Only shown if the challenge was uploaded -->
+                        <div class="btnPosition">
+                            <button *ngIf="getSubmissionDateText(archived.submission) !== 'not uploaded in time'"
+                                class="btn btn-dark details"
+                                (click)="openDialogArchivedApplications(archived)">Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

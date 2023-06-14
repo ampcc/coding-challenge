@@ -1,0 +1,220 @@
+/* Style for whole dialog container */
+.dialog_container {
+    padding: 2em;
+    border: 0.12em;
+    border-color: black;
+    border-style: solid;
+    border-radius: 0.3em;
+}
+
+/* Style cross close  button */
+.close {
+    display: flex;
+    float: right;
+    background: none;
+    border: none;
+}
+
+.close:hover {
+    cursor: pointer;
+}
+
+.close_image {
+    filter: invert(60%);
+    width: 3vw;
+}
+
+.close_image:hover {
+    filter: invert(75%);
+}
+
+/* Style title */
+h1 {
+    font-size: 50px;
+    line-height: 70px;
+    font-weight: 600;
+    margin-bottom: 1em;
+}
+
+/* Style description text and link */
+.bold,
+a {
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 600;
+    margin-bottom: 1.5em;
+}
+
+.link {
+    color: darkblue;
+    text-decoration: none;
+}
+
+.link_text {
+    margin-bottom: 1em;
+}
+
+.link_text:hover {
+    text-decoration: underline;
+}
+
+.regular {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+}
+
+/* Style extend days elements */
+.extend_container {
+    display: block;
+}
+
+.extend_line {
+    display: inline-flex;
+    width: 100%;
+}
+
+/* Style new challenge elements */
+.selector {
+    display: inline-flex;
+    width: 100%;
+}
+
+/* General style for components of extend days and new challenge */
+.hidden {
+    visibility: hidden;
+}
+
+.show_error {
+    border-color: red;
+    outline: none;
+}
+
+.error_message {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+    margin-top: 0.3em;
+    color: red;
+}
+
+.inline_text {
+    margin: auto;
+}
+
+.input {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+    padding: 1em;
+    width: 50%;
+    border: 0.1em;
+    border-style: solid;
+    border-radius: 0.3em;
+}
+
+.input:hover {
+    cursor: pointer;
+}
+
+/* Style for images */
+.image_container {
+    width: 100%;
+    margin: auto;
+}
+
+.image {
+    width: 60%;
+    margin: auto;
+    display: block;
+}
+
+/* Style for buttons */
+.button_container {
+    display: inline-flex;
+    width: 100%;
+}
+
+.block {
+    display: block;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.triple,
+.single {
+    width: 100%;
+}
+
+.double {
+    width: 40%;
+}
+
+app-button {
+    display: inline-block;
+    margin-top: 3em;
+}
+
+/* Seperate styles for different window-width */
+@media (min-width:2000px) {
+
+    p,
+    .input,
+    .error_message {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    .bold,
+    a {
+        font-size: 40px;
+        line-height: 50px;
+    }
+}
+
+@media (max-width:1024px) {
+    .double {
+        width: 49%;
+    }
+
+    .close_image {
+        width: 5vw;
+    }
+}
+
+@media (max-width:768px) {
+    h1 {
+        font-size: 30px;
+        line-height: 50px;
+    }
+
+    p,
+    .input,
+    .error_message {
+        font-size: 16px;
+        line-height: 25px;
+    }
+
+    .bold,
+    a {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .button_container {
+        display: block;
+        width: 100%;
+    }
+
+    .double {
+        width: 100%;
+    }
+}
+
+@media (max-width:425px) {
+    .close_image {
+        width: 7vw;
+    }
+}

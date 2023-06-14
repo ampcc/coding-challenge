@@ -1,0 +1,144 @@
+/* Style generell view */
+#elements {
+    margin: auto;
+    width: 75%;
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+h2 {
+    line-height: 1.2em;
+    font-size: 50px;
+    font-weight: 600;
+    color: rgb(0, 0, 0);
+    margin-bottom: 50px;
+}
+
+/* style tab navigation */
+.tabList {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.tabs {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    align-items: center;
+
+    padding-top: 16px;
+    padding-bottom: 14px;
+}
+
+.tabs:hover {
+    cursor: pointer;
+}
+
+#tabActiveChallenges {
+    border-bottom: 2px solid black;
+}
+
+
+/* style add-button */
+#addButton {
+    cursor: pointer;
+    font-size: 16px;
+    display: inline-block;
+    margin: auto;
+    margin-right: 0;
+    height: auto;
+    width: auto;
+    text-align: center;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+/* style lists */
+.list {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.singleChallenge {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    margin-bottom: 0.5cm;
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+}
+
+.textElements {
+    display: flex;
+    align-items: center;
+}
+
+h4 {
+    font-size: 25px;
+    line-height: 1.2em;
+    margin: 0;
+}
+
+span {
+    font-size: 20px;
+}
+
+.btnPosition {
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.btn.btn-dark.details {
+    height: auto;
+    width: 150px;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+
+/* Responsive Webdesign */
+@media screen and (min-width: 2000px) {
+    h2 {
+        font-size: 80px;
+    }
+
+    .tabs {
+        font-size: 25px;
+    }
+
+    h4 {
+        font-size: 35px;
+    }
+
+    span {
+        font-size: 30px;
+    }
+
+    .funnel {
+        width: 25px;
+        height: 25px;
+    }
+
+    #addButton {
+        font-size: 22px;
+        width: 120px;
+    }
+
+    .btn.btn-dark.details {
+        height: auto;
+        width: 200px;
+        padding: 10px;
+        font-weight: 400;
+        font-size: 25px;
+    }
+}

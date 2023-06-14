@@ -1,0 +1,39 @@
+volumes:
+  node_modules:
+  db_data:
+
+services:
+  database:
+    build: ./database/
+    ports: 
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      - POSTGRES_USER=amplimind
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=coding-challenge
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U amplimind -d coding-challenge" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s  
+    
+  server:
+    build: ./backend/
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      database:
+        condition: service_healthy
+  
+  web:
+    build: ./frontend/
+    ports:
+      - "4200:4200"
+    restart: always
+    depends_on:
+      - server

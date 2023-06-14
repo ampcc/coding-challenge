@@ -1,0 +1,328 @@
+/* Style generell view */
+#elements {
+    margin: auto;
+    width: 75%;
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+h2 {
+    line-height: 1.2em;
+    font-size: 50px;
+    font-weight: 600;
+    color: rgb(0, 0, 0);
+    margin-bottom: 50px;
+}
+
+/* Style tab navigation */
+.tabList {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.tabs {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    align-items: center;
+
+    padding-top: 16px;
+    padding-bottom: 14px;
+}
+
+.tabs:hover {
+    cursor: pointer;
+}
+
+#tabActiveApplications {
+    border-bottom: 2px solid black;
+}
+
+#tabArchivedApplications {
+    margin-left: 24px;
+}
+
+
+/* Style search bar and filter */
+.limitations {
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+/* Style search bar */
+.searchBar {
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.mb-4 {
+    margin-bottom: 0 !important;
+}
+
+#inputSearchBar {
+    border-radius: 5px;
+}
+
+.form-control {
+    font-size: 16px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.form-control::placeholder {
+    color: rgba(0, 0, 0, 0.15);
+}
+
+#button-addon5 {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.15);
+    margin-left: 2px;
+}
+
+#button-addon5:hover {
+    background-color: darkgrey;
+}
+
+
+/* style filter elements */
+#labelFilter {
+    cursor: pointer;
+    font-size: 16px;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+#labelFilter:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.filter {
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 0;
+    margin-left: 20px;
+}
+
+#filterTree {
+    margin: auto;
+    position: absolute;
+    background-color: white;
+    box-shadow: 5px 5px 20px 5px rgba(0, 0, 0, 0.15);
+    right: 12.5%;
+}
+
+.filterSelect {
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 10px;
+}
+
+ul,
+#myUL {
+    list-style-type: none;
+}
+
+#myUL {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    font-size: 16px;
+}
+
+.tree {
+    border-top: 1px solid lightgrey;
+    padding: 5px;
+}
+
+.tree_checkbox_label {
+    margin-left: 0.5em;
+    font-size: 16px;
+}
+
+#first_tree {
+    border-top: none;
+    padding: 5px;
+}
+
+.caret {
+    cursor: pointer;
+    -moz-user-select: none;
+    user-select: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+
+/* Style lists */
+.list {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.singleApplication,
+.singleArchived {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    margin-bottom: 0.5cm;
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+}
+
+.textElements {
+    display: flex;
+    flex-direction: column;
+
+}
+
+h4 {
+    font-size: 25px;
+    line-height: 1.2em;
+    margin-bottom: 15px;
+}
+
+span {
+    font-size: 20px;
+}
+
+.btnPosition {
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.btn.btn-dark.details, .edit {
+    height: auto;
+    width: 150px;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+
+/* Style linting result in the details of an applications */
+.resultLinting {
+    font-family: 'Jet Brains', monospace;
+    font-size: 14px;
+    line-height: 14px;
+    white-space: pre-wrap;
+}
+
+/* Style tables */
+table {
+  max-width: 90vw;
+  min-width: 60vw;
+}
+
+th, td {
+  padding: 0 0.5em;
+}
+
+
+/* Responsive Webdesign */
+@media screen and (min-width: 2000px) {
+    h2 {
+        font-size: 80px;
+    }
+
+    .tabs,
+    #labelFilter,
+    .caret,
+    .tree_checkbox_label,
+    .form-control {
+        font-size: 25px;
+    }
+
+    h4 {
+        font-size: 35px;
+    }
+
+    span {
+        font-size: 30px;
+    }
+
+    .funnel,
+    .search {
+        width: 25px;
+        height: 25px;
+    }
+
+    .btn.btn-dark.details, .edit {
+        height: auto;
+        width: 200px;
+        padding: 10px;
+        font-weight: 400;
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .resultLinting {
+        font-size: 12px;
+        line-height: 12px;
+    }
+}
+
+@media screen and (max-width: 840px) {
+    .tabList {
+        display: inline-block;
+    }
+
+    .limitations {
+        display: flex;
+        margin-top: 9px;
+        margin-bottom: 9px;
+        margin-left: auto;
+        margin-right: 0;
+        float: right;
+    }
+
+    #filterTree {
+        right: 12.5%;
+        top: 12.76cm;
+    }
+}
+
+@media screen and (max-width: 636px) {
+    #filterTree {
+        right: 12.5%;
+        top: 14.36cm;
+    }
+}

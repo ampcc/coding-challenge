@@ -1,0 +1,130 @@
+/* Style for main container to align in th middle */
+.main_container {
+    width: 75%;
+    margin: auto;
+    margin-top: 5em;
+    padding-bottom: 5em;
+}
+
+/* Style for title */
+h1 {
+    font-size: 50px;
+    line-height: 70px;
+    font-weight: 600;
+}
+
+hr {
+    margin-bottom: 5em;
+    background-color: gray;
+    height: 0.1em;
+}
+
+/* Style for input fields */
+.heading {
+    margin-top: 1.5em;
+    margin-bottom: 0.1em;
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 600;
+}
+
+.inputField {
+    width: 100%;
+    padding: 1em;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    border: 0.1em;
+    border-style: solid;
+    border-radius: 0.3em;
+    border-color: gray;
+}
+
+.show_error {
+    border-color: red;
+    outline: none;
+}
+
+.error_message {
+    margin-top: 0.1em;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    color: red;
+}
+
+.no_error {
+    visibility: hidden;
+}
+
+/* Style for button */
+app-button {
+    display: inline-block;
+    width: 25%;
+    margin-top: 3em;
+}
+
+/* Seperate styles for different window-width */
+@media (min-width:2000px) {
+    h1 {
+        line-height: 100px;
+        font-size: 80px;
+    }
+
+    hr {
+        margin-bottom: 7em;
+    }
+
+    .inputField,
+    .error_message {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    .heading {
+        margin-top: 2em;
+        font-size: 40px;
+        line-height: 50px;
+    }
+
+    app-button {
+        margin-top: 5em;
+    }
+}
+
+@media (max-width:1024px) {
+    app-button {
+        width: auto;
+    }
+}
+
+@media (max-width:768px) {
+    h1 {
+        font-size: 40px;
+        line-height: 60px;
+    }
+
+    .inputField,
+    .error_message {
+        font-size: 16px;
+        line-height: 25px;
+    }
+
+    .heading {
+        font-size: 20px;
+        line-height: 30px;
+    }
+}
+
+@media (max-width:425px) {
+    h1 {
+        font-size: 30px;
+        line-height: 50px;
+    }
+
+    .inputField,
+    .error_message {
+        font-size: 13px;
+        line-height: 23px;
+    }
+}

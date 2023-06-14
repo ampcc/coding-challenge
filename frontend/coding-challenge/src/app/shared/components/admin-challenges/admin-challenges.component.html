@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin View Challenges</title>
+    <link rel="stylesheet" type="text/css" href="admin-challenges.component.css">
+    <meta charset="UTF-8">
+</head>
+
+
+<body>
+    <div id="elements">
+        <div class="heading">
+            <h2>Coding Challenge: Challenges</h2>
+        </div>
+
+        <div class="viewTab">
+            <!-- Tab list area -->
+            <div class="tabList">
+                <div>
+                    <label class="tabs" id="tabActiveChallenges" for="tab-1"
+                        (click)="changeTab('tabActiveChallenges')">
+                        Active Challenges
+                    </label>
+                </div>
+                <!-- Button to add new challenge -->
+                <button class="btn btn-dark add" id="addButton" (click)="addChallenge()">
+                    Add
+                    <img src="../../../../assets/plus-lg.svg" class="plus">
+                </button>
+            </div>
+
+            <!-- Tab content of active challenges  -->
+            <div [hidden]="hideContentActiveChallenges" class="contentActiveChallenges">
+                <div class="list" id="listChallenges">
+                    <div class="singleChallenge" *ngFor="let challenge of challengeArray; let i = index">
+                        <div class="textElements">
+                            <h4 class="challengeId">
+                                {{challenge.challengeHeading}}
+                            </h4>
+                        </div>
+                        <div class="btnPosition">
+                            <button class="btn btn-dark details"
+                                (click)="openDialogActiveChallenges(challenge)">Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

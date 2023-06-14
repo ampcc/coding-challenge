@@ -1,0 +1,86 @@
+/* Style button in general */
+button {
+    padding: 1em;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    text-align: center;
+    border: 0.1em;
+    border-style: solid;
+    border-radius: 0.3em;
+    width: 100%;
+}
+
+button:hover {
+    box-shadow: 0 0.4em 0.6em 0 rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+/* Style for primary buttons */
+.primary {
+    color: white;
+    background-color: rgb(20, 20, 20);
+    border-color: rgb(20, 20, 20);
+}
+
+.primary:hover {
+    background-color: rgb(50, 50, 50);
+}
+
+/* Style for secondary buttons */
+.secondary {
+    color: black;
+    background-color: white;
+    border-color: black;
+}
+
+.secondary:hover {
+    background-color: rgb(210, 210, 210);
+}
+
+/* Style for important buttons used to delete */
+.delete {
+    color: white;
+    background-color: red;
+    border-color: red;
+}
+
+.delete:hover {
+    background-color: rgb(255, 60, 60);
+}
+
+/* Seperate styles for different window-width */
+@media (min-width:2000px) {
+    button {
+        font-size: 30px;
+        line-height: 40px;
+    }
+}
+
+@media (max-width:1024px) {
+    .smaller {
+        font-size: 16px;
+        line-height: 25px;
+    }
+}
+
+@media (max-width:768px) {
+    .normal {
+        font-size: 16px;
+        line-height: 25px;
+    }
+}
+
+@media (max-width:375px) {
+    button {
+        font-size: 16px;
+        line-height: 25px;
+    }
+}
+
+@media (max-width:375px) {
+    .smaller {
+        font-size: 13px;
+        line-height: 23px;
+    }
+}

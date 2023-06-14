@@ -1,0 +1,59 @@
+<div id="page">
+  <!-- Displays header with amplimind logo onthe left and homepage button and logout button when current page is admin page on the right -->
+  <div class="toolbar" role="banner">
+    <a class="logo_link" href={{this.link}}>
+      <img class="logo" alt="amplimind Logo" src="../assets/amplimind_logo.png">
+    </a>
+    <div class="spacer"></div>
+    <div *ngIf="this.adminPage" class="logout_link" href="/admin_login" (click)="logout()">
+      <img class="logout" src="../assets/logout.svg">
+    </div>
+    <a class="home_link" href="https://amplimind.io/">
+      <div class="home">Homepage</div>
+    </a>
+  </div>
+
+  <!-- Button to open sidenav when curent page is admin page -->
+  <div *ngIf="this.adminPage" class="open_sitenav" (click)="openSitenav()"
+    [ngClass]="{'not_clickable': !this.sitenavClosed}">
+    <img src="../assets/menu.svg" class="sitenav_icon" #sitenav_icon>
+  </div>
+
+  <!-- Sidenavigation with links to admin pages -->
+  <div *ngIf="this.adminPage" class="sitenav" id="sitenav" [ngClass]="{'closed_sitenav': this.sitenavClosed}" #sitenav>
+    <div class="space"></div>
+    <div class="close_sitenav" (click)="closeSitenav()">
+      <img src="../assets/menu.svg" class="sitenav_icon">
+    </div>
+    <a href="/admin_applications" class="sitenav_link" [ngClass]="{'sitenav_link_selected': this.adminApplicants}">
+      <div>Show Applications</div>
+    </a>
+    <a href="/admin_challenges" class="sitenav_link" [ngClass]="{'sitenav_link_selected': this.adminChallenges}">
+      <div>Show Challenges</div>
+    </a>
+    <!-- <a href="/admin_edit" class="sitenav_link" [ngClass]="{'sitenav_link_selected': this.adminEdit}">
+      <div>Add Challenge</div>
+    </a> -->
+    <a href="/admin_password" class="sitenav_link" [ngClass]="{'sitenav_link_selected': this.adminPassword}">
+      <div>Change Password</div>
+    </a>
+  </div>
+
+  <!-- background overlay when sidenav is opened -->
+  <div [ngClass]="{'in_background': !this.sitenavClosed}"></div>
+  <div [ngClass]="{'not_clickable': !this.sitenavClosed}">
+    <div class="body">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Footer with links to amplimind Impressum and Datenschutzerklaerung -->
+    <footer class="footer">
+      <a class="impressum_link" href="https://amplimind.io/impressum/">
+        Impressum
+      </a>
+      <a class="datenschutz_link" href="https://amplimind.io/datenschutzerklaerung/">
+        Datenschutzerklärung
+      </a>
+    </footer>
+  </div>
+</div>

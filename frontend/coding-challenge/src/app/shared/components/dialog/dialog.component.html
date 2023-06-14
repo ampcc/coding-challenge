@@ -1,0 +1,83 @@
+<div class="dialog_container">
+    <!-- Button on the top right to close the dialog -->
+    <button class="close" (click)="closeDialog(0)">
+        <img class="close_image" src="../../../../assets/x.svg">
+    </button>
+
+    <!-- Title of the dialog -->
+    <h1 mat-dialog-title>{{data.title}}</h1>
+
+    <!-- Description -->
+    <div mat-dialog-content *ngIf="data.description">
+
+        <!-- Possible link opening in new window -->
+        <a *ngIf="data.description.link && data.description.url" href={{data.description.url}} class="link"
+            target="_blank">
+            <div class="link_text">{{data.description.link}}</div>
+        </a>
+
+        <!-- Text in two different sizes -->
+        <p *ngIf="data.description.important" class="bold" [innerHTML]="data.description.important"></p>
+        <p *ngIf="data.description.details" class="regular" [innerHTML]="data.description.details"></p>
+
+        <!-- Selector for days to extend with -->
+        <div *ngIf="data.description.extend" class="extend_container">
+            <div class="extend_line">
+                <p class="inline_text">Days to extend with:</p>
+                <div class="spacer"></div>
+                <input [(ngModel)]="days" class="input" type="number" min="0" step="1" max="21"
+                    [ngClass]="{'show_error': this.daysError}" />
+            </div>
+            <div class="extend_line">
+                <div class="spacer"></div>
+                <p class="error_message" [ngClass]="{'hidden': !this.daysError}">{{this.daysErrorText}}
+                </p>
+            </div>
+        </div>
+
+        <!-- Selector for new challenge -->
+        <div *ngIf="data.description.challenges">
+            <div class="selector">
+                <p class="inline_text">New Challenge:</p>
+                <div class="spacer"></div>
+                <select class="input"
+                    [ngClass]="{'show_error': this.challengeError}" id="dropdown">
+                    <option selected="selected" value="none">None</option>
+                    <option value="random">Random</option>
+                    <option *ngFor="let challenge of data.description.challenges" value="{{challenge.id}}">
+                        {{challenge.heading}}
+                    </option>
+                </select>
+            </div>
+            <div class="extend_line">
+                <div class="spacer"></div>
+                <p class="error_message" [ngClass]="{'hidden': !this.challengeError}">{{this.challengeErrorText}}
+                </p>
+            </div>
+        </div>
+
+        <!-- One or more images -->
+        <div *ngIf="data.description.images" class="image_container">
+            <img *ngFor="let image of data.description.images" src={{image}} class="image">
+        </div>
+    </div>
+
+    <!-- Up to three buttons -->
+    <div mat-dialog-actions class="button_container" *ngIf="data.buttons"
+        [ngClass]="{'block': this.threeButtons || this.oneButton}">
+        <app-button *ngIf="data.buttons.left" class="left_button"
+            [ngClass]="{'triple': this.threeButtons, 'double': this.twoButtons, 'single': this.oneButton}"
+            title={{data.buttons.left.title}} look={{data.buttons.left.look}} font="smaller"
+            (click)="closeDialog(1)"></app-button>
+        <div class="spacer"></div>
+        <app-button *ngIf="data.buttons.middle" class="middle_button"
+            [ngClass]="{'triple': this.threeButtons, 'double': this.twoButtons, 'single': this.oneButton}"
+            title={{data.buttons.middle.title}} look={{data.buttons.middle.look}} font="smaller"
+            (click)="closeDialog(2)"></app-button>
+        <div class="spacer"></div>
+        <app-button *ngIf="data.buttons.right" class="right_button"
+            [ngClass]="{'triple': this.threeButtons, 'double': this.twoButtons, 'single': this.oneButton}"
+            title={{data.buttons.right.title}} look={{data.buttons.right.look}} font="smaller"
+            (click)="closeDialog(0)"></app-button>
+    </div>
+</div>

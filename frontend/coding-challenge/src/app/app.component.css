@@ -1,0 +1,206 @@
+/* Achieve full page height to display footer at the very bottom */
+:host {
+    display: block;
+    min-height: 100%;
+}
+
+/* General styling for multiple elements */
+a {
+    margin-left: 35px;
+    margin-right: 35px;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    line-height: 25px;
+    font-weight: 400;
+}
+
+.spacer {
+    flex: 1;
+}
+
+/* Style for header */
+.toolbar {
+    top: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(0, 35, 57);
+    position: fixed;
+    z-index: 4;
+}
+
+.logo {
+    height: 45.6px;
+}
+
+.logout {
+    height: 40px;
+    filter: invert();
+}
+
+.logout_link {
+    margin-right: 0;
+    display: inline-block;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.logout_link:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.home {
+    padding: 10px;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0.3em;
+    border-color: white;
+}
+
+.home:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Style for sidenavigation */
+.sitenav {
+    width: 20%;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color: white;
+    z-index: 3;
+}
+
+.space {
+    height: 80px;
+}
+
+.closed_sitenav {
+    display: none;
+}
+
+.open_sitenav {
+    padding-top: 80px;
+    margin: 2em;
+    float: right;
+}
+
+.open_sitenav:hover {
+    cursor: pointer;
+}
+
+.close_sitenav {
+    display: inline-block;
+    margin: 1.5em 0 1em 1.5em;
+}
+
+.close_sitenav:hover {
+    cursor: pointer;
+}
+
+.sitenav_icon {
+    height: 1.5em;
+} 
+
+.sitenav_link {
+    margin: 0;
+    display: block;
+    padding: 0.5em 1em;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+}
+
+.sitenav_link:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.sitenav_link_selected {
+    background-color: rgb(0, 35, 57);
+    color: white;
+}
+
+.sitenav_link_selected:hover {
+    background-color: rgba(0, 35, 57, 0.795);
+    color: white;
+}
+
+.not_clickable {
+    pointer-events: none;
+}
+
+.in_background {
+    background-color: rgba(55, 55, 55, 0.3);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 2;
+}
+
+/* Body for displaying main the pages */
+.body {
+    padding-top: 80px;
+    min-height: calc(100vh - 80px);
+}
+
+/* Style for footer */
+.footer {
+    height: 80px;
+    width: 100%;
+    display: flex;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Seperate styles for different window-width */
+@media (min-width:2000px) {
+    a {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .sitenav_link {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    .close_sitenav {
+        margin: 2em 0 1em 2em;
+    }
+
+    .sitenav_icon {
+        height: 2em;
+    }
+}
+
+@media (max-width:1440px) {
+    .sitenav {
+        width: 30%;
+    }
+}
+
+@media (max-width:768px) {
+    .sitenav {
+        width: 55%;
+    }
+}
+
+@media (max-width:425px) {
+    .logo {
+        height: 35.6px;
+    }
+
+    .sitenav {
+        width: 100%;
+    }
+}

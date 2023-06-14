@@ -1,0 +1,39 @@
+/* Style for main container to align in th middle */
+.main_container {
+  width: 75%;
+  margin: auto;
+  margin-top: 5em;
+  padding-bottom: 5em;
+}
+
+/* Style for title */
+h1 {
+  font-size: 50px;
+  line-height: 70px;
+  font-weight: 600;
+  margin-bottom: 1em;
+}
+
+/* Style for text */
+p {
+  font-size: 30px;
+  line-height: 40px;
+  font-weight: 600;
+}
+
+.first_line {
+  margin-bottom: 2.5em;
+}
+
+/* Seperate styles for different window-width */
+@media (min-width:2000px) {
+  h1 {
+    font-size: 80px;
+    line-height: 100px;
+  }
+
+  p {
+    font-size: 40px;
+    line-height: 50px;
+  }
+}
