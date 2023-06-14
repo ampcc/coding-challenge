@@ -7,7 +7,7 @@ def change(request):
         old_password = request.data.get('oldPassword')
         new_password = request.data.get('newPassword')
         
-        if old_password == None or new_password == None:
+        if old_password is None or new_password is None:
             return Response(jsonMessages.error_json_response("Wrong keys sent! Can not process request!"), status=status.HTTP_400_BAD_REQUEST)
         
         if len(old_password) == 0 or len(new_password) == 0:
