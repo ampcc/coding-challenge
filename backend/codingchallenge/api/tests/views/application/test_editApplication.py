@@ -17,9 +17,11 @@ class test_editApplication(APITransactionTestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges/",
-                         {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
-                         format='json')
+        self.client.post(
+            "/api/admin/challenges/",
+            {"challengeHeading": "TestChallenge", "challengeText": "TestChallengeDescription"},
+            format='json'
+        )
 
         # Create Application
         self.client.post(self.url, {"applicationId": "TEST1234"}, format='json')
@@ -96,8 +98,10 @@ class test_editApplication(APITransactionTestCase):
         # rounds the assertion to seconds
         self.assertAlmostEqual(Application.objects.get().expiry, 99999999999999, 0)
 
-        self.assertEqual(response.data,
-                         json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields'])
+        self.assertEqual(
+            response.data,
+            json.loads(serializers.serialize("json", [Application.objects.first()]))[0]['fields']
+        )
 
     def test_non_existing_status(self):
         data = {

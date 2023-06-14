@@ -1,4 +1,5 @@
 import unittest.mock as mock
+
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -10,55 +11,53 @@ class test_getApplication(APITestCase):
 
     def setUp(self):
         MockAuth.admin(self)
-        self.client.post('/api/admin/challenges/', {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"}, format='json')
+        self.client.post(
+            '/api/admin/challenges/',
+            {"challengeHeading": "TestChallenge", "challengeText": "Text Challenge 123"},
+            format='json'
+        )
         self.client.post(self.url, {"applicationId": "TEST1234"}, format="json")
         self.application_id = "TEST1234"
 
-
     def test_successful_response(self):
-        response = self.client.get(self.url + self.application_id, {}, format='json') 
+        response = self.client.get(self.url + self.application_id, {}, format='json')
         challenge_id = self.client.get(self.url).data[0]['challengeId']
         user = self.client.get(self.url).data[0]['user']
         testdata = {
-            'applicationId': 'TEST1234', 
-            'challengeId': challenge_id, 
-            'operatingSystem': '', 
-            'programmingLanguage': '', 
-            'expiry': mock.ANY, 
+            'applicationId': 'TEST1234',
+            'challengeId': challenge_id,
+            'operatingSystem': '',
+            'programmingLanguage': '',
+            'expiry': mock.ANY,
             'submission': 0.0,
-            'githubRepo': '', 
-            'status': 0, 
+            'githubRepo': '',
+            'status': 0,
             'created': mock.ANY,
-            'modified': mock.ANY, 
+            'modified': mock.ANY,
             'user': user
         }
-            
-        self.assertEqual(response.data, testdata) 
 
+        self.assertEqual(response.data, testdata)
 
     def test_wrong_url(self):
         url = '/api/admin/applicationsasdfasd/' + self.application_id
         response = self.client.get(url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-
     def test_missing_token(self):
         self.client.credentials()
         response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
     def test_invalid_token(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 4f25709a420a92aa01cc67b091b92ac0247f168a')
         response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-
     def test_wrong_token_format(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token 8234kawsdjfas')
         response = self.client.get(self.url + self.application_id, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
     def test_ignore_additional_data(self):
         data = {
@@ -68,15 +67,18 @@ class test_getApplication(APITestCase):
         challenge_id = self.client.get(self.url).data[0]['challengeId']
         user = self.client.get(self.url).data[0]['user']
 
-        self.assertEqual(response.data, {
-            'applicationId': 'TEST1234', 
-            'challengeId': challenge_id, 
-            'operatingSystem': '', 
-            'programmingLanguage': '', 
-            'expiry': mock.ANY, 
-            'submission': 0.0, 
-            'githubRepo': '', 
-            'status': 0, 
-            'created': mock.ANY,
-            'modified': mock.ANY, 
-            'user': user})
+        self.assertEqual(
+            response.data, {
+                'applicationId': 'TEST1234',
+                'challengeId': challenge_id,
+                'operatingSystem': '',
+                'programmingLanguage': '',
+                'expiry': mock.ANY,
+                'submission': 0.0,
+                'githubRepo': '',
+                'status': 0,
+                'created': mock.ANY,
+                'modified': mock.ANY,
+                'user': user
+            }
+        )

@@ -5,13 +5,13 @@ from ...mock.mockAuth import MockAuth
 from ....models.challenge import Challenge
 from ....serializers import GetChallengeSerializer
 
+
 class test_postChallengeAdmin(APITestCase):
     url = "/api/admin/challenges/"
 
     def setUp(self):
         # Authorization
         MockAuth.admin(self)
-
 
     def test_required_fields(self):
         data_heading = {
@@ -28,10 +28,8 @@ class test_postChallengeAdmin(APITestCase):
         self.assertEqual(response_no_data.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response_only_heading.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response_only_text.status_code, status.HTTP_400_BAD_REQUEST)
-        
 
-    def test_default_request(self):     
-
+    def test_default_request(self):
         data = {
             "challengeHeading": "Test",
             "challengeText": "Text of challenge...",
@@ -62,5 +60,5 @@ class test_postChallengeAdmin(APITestCase):
 
         self.assertEqual(Challenge.objects.count(), 1)
         self.assertEqual(response_data, expected_data)
-        self.assertEqual(response_data, GetChallengeSerializer(Challenge.objects.get(id=str(id_1))).data)            
+        self.assertEqual(response_data, GetChallengeSerializer(Challenge.objects.get(id=str(id_1))).data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

@@ -18,10 +18,12 @@ class test_getResult(APITransactionTestCase):
         MockAuth.admin(self)
 
         # Create Challenge
-        self.client.post("/api/admin/challenges/", {
-            "challengeHeading": "TestChallenge",
-            "challengeText": "TestChallengeDescription"
-        }, format='json')
+        self.client.post(
+            "/api/admin/challenges/", {
+                "challengeHeading": "TestChallenge",
+                "challengeText": "TestChallengeDescription"
+            }, format='json'
+        )
 
         # Authorization
         self.user = MockAuth.applicantWithApplication(self, "TEST1234")

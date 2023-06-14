@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
 from ...mock.mockAuth import MockAuth
-from ....models.application import Application
 from ....include import jsonMessages
+from ....models.application import Application
 
 
 # patch is used to bypass the default githubApi and to replace the following method with mock data
