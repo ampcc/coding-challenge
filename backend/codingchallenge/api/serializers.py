@@ -1,19 +1,24 @@
 import urllib.parse
 
-from rest_framework import serializers
-from .models import Challenge, Application
 from django.db.models import CharField
+from rest_framework import serializers
+
+from .models import Challenge, Application
+
 
 class GetChallengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge
         fields = ["id", "challengeHeading", "challengeText", "active"]
 
+
 class GetApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
-        fields = ["applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission", "githubRepo",
+        fields = ["applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission",
+                  "githubRepo",
                   "status", "created", "modified", "user"]
+
 
 class PostApplicationSerializer(serializers.ModelSerializer):
     tmpLink = serializers.SerializerMethodField()
@@ -32,7 +37,9 @@ class PostApplicationSerializer(serializers.ModelSerializer):
 
         fields = ["applicationId", "created", "status", "expiry", "tmpLink"]
 
+
 class GetApplicationStatus(serializers.ModelSerializer):
     class Meta:
         model = Application
-        fields = ["applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission", "status"]
+        fields = ["applicationId", "challengeId", "operatingSystem", "programmingLanguage", "expiry", "submission",
+                  "status"]
