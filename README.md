@@ -11,7 +11,8 @@
 - [**5. Local deployment**](#5-local-deployment)
   - [**5.1 Prerequisites**](#51-prerequisites)
   - [**5.2 Options for local deployment**](#52-options-for-local-deployment)
-- [**6. Additional information**](#6-additional-information)
+- [**6. Jobs for the database**](#6-jobs-for-the-database)
+- [**7. Additional information**](#7-additional-information)
 
 
 ## **1. Idea behind the project**
@@ -84,5 +85,11 @@ The frontend container on the other hand can be started with almost no downsides
 \
 If you only want to work on the backend and also don't want to use docker-compose, you will need to change the settings.py file too. On top of that, you will need to [setup a virtual environment](https://github.com/ampcc/coding-challenge/wiki/Virual-Environment-Setup) in order maintain compability.
 
-## **6. Additional information**
+## **6. Jobs for the database**
+This project uses jobs in order to maintain the data inside the databse.\
+Jobs are preferred over traditional PostgreSQL trigger, because jobs can be called periodically on a specific time, while trigger don't have such a functionality.\
+Additionally, the jobs are defined inside the backend using the django-extensions library. They are not defined inside the database, since this would make the database and the container setup more complex, while the database is already heavily dependent on the backend. Therefor the simpler solution, having the jobs being defined inside the backend, is chosen.\
+The jobs are scheduled using cron. This process is run in parallel to the django server.
+
+## **7. Additional information**
 For more detailed information on the projekt, visit the corresponding [wiki](https://github.com/ampcc/coding-challenge/wiki).
