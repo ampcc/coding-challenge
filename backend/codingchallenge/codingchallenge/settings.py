@@ -38,7 +38,7 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
 
 DEPLOY_OFFLINE = False
 
