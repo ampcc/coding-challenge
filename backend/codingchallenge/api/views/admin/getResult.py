@@ -1,8 +1,10 @@
 import sys
+
 from django.core.exceptions import ObjectDoesNotExist
 from github import GithubException
 from rest_framework import status
 from rest_framework.response import Response
+
 from ...include import jsonMessages
 from ...include.githubApi import GithubApi
 from ...models import Application

@@ -1,10 +1,13 @@
 import sys
+
 from django.contrib.auth.models import User
 from github import GithubException
 from rest_framework import status
 from rest_framework.response import Response
+
 from ...include import jsonMessages
 from ...include.githubApi import GithubApi
+
 
 def delete(**kwargs):
     g_api = GithubApi()
@@ -17,7 +20,7 @@ def delete(**kwargs):
             status=status.HTTP_404_NOT_FOUND
         )
 
-    # if the repository has not been created yet, there shouldnt be a GitHub API-Call
+    # if the repository has not been created yet, there shouldn't be a GitHub API-Call
     if user.application.githubRepo:
         try:
             g_api.delete_repo(user.application.githubRepo)

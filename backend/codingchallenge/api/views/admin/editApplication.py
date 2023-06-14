@@ -1,16 +1,19 @@
 import json
 import time
+
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
+
 from ...include import jsonMessages
 from ...models import Application, Challenge
 from ...serializers import (
     GetApplicationSerializer
 )
 
-def edit(request, **kwargs):   
+
+def edit(request, **kwargs):
     allowed_fields = ['applicationStatus', 'challengeId', 'expiry']
 
     try:
