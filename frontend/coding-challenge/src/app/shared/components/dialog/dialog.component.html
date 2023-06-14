@@ -70,7 +70,7 @@
             title={{data.buttons.left.title}} look={{data.buttons.left.look}} font="smaller"
             (click)="closeDialog(1)"></app-button>
         <div class="spacer"></div>
-        <app-button *ngIf="data.buttons.middle" class="right_button"
+        <app-button *ngIf="data.buttons.middle" class="middle_button"
             [ngClass]="{'triple': this.threeButtons, 'double': this.twoButtons, 'single': this.oneButton}"
             title={{data.buttons.middle.title}} look={{data.buttons.middle.look}} font="smaller"
             (click)="closeDialog(2)"></app-button>
