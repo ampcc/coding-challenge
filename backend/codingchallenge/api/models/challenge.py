@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Challenge(models.Model):
 
     challengeHeading = models.TextField()

@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from unixtimestampfield.fields import UnixTimeStampField
 
 
@@ -19,8 +19,10 @@ class Application(models.Model):
     expiry = UnixTimeStampField(use_numeric=True)
     submission = UnixTimeStampField(blank=True, use_numeric=True)
     githubRepo = models.CharField(max_length=50, blank=True)
-    status = models.IntegerField(choices=Status.choices,
-                                 default=Status.INITIAL)
+    status = models.IntegerField(
+        choices=Status.choices,
+        default=Status.INITIAL
+    )
     created = UnixTimeStampField(auto_now_add=True, use_numeric=True)
     modified = UnixTimeStampField(auto_now=True, use_numeric=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)

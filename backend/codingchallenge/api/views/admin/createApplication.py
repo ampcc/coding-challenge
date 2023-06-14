@@ -2,24 +2,27 @@ import random
 import secrets
 import string
 import time
+
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
+
 from ...include import jsonMessages, expirySettings
 from ...models import Application, Challenge
 from ...serializers import (
     GetApplicationSerializer, PostApplicationSerializer
 )
 
+
 def create(request):
     expiry_timestamp = time.time() + expirySettings.days_until_challenge_start * 24 * 60 * 60
     try:
         # random challenge selection of active challenges
         challenge_id = random.choice(Challenge.objects.filter(active=True)).id
-        
+
     except IndexError:
         return Response(
             jsonMessages.error_json_response('there are no challenges in database'),
@@ -74,7 +77,7 @@ def create(request):
         password=password
     )
     user.save()
-    
+
     # the key is build as follows: "applicationId+password".
     # Note: The applicationId does always have 8 digits.
     key_plain = request.data.get('applicationId') + "+" + password

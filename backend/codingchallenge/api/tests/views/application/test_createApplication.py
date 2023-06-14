@@ -5,9 +5,9 @@ from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
 from ...mock.mockAuth import MockAuth
+from ....include import expirySettings
 from ....models.application import Application
 from ....models.challenge import Challenge
-from ....include import expirySettings
 
 
 class test_createApplication(APITransactionTestCase):
@@ -28,9 +28,11 @@ class test_createApplication(APITransactionTestCase):
         MockAuth.admin(self)
 
         # Example Challenge in Database
-        self.client.post("/api/admin/challenges/", {"challengeHeading": "TestChallenge", "challengeText": "This is a Test Challenge"}, format="json")
-
-
+        self.client.post(
+            "/api/admin/challenges/",
+            {"challengeHeading": "TestChallenge", "challengeText": "This is a Test Challenge"},
+            format="json"
+        )
 
     def test_missing_auth(self):
         # remove headers for this test
@@ -96,11 +98,27 @@ class test_createApplication(APITransactionTestCase):
 
     def test_random_challenge_selection(self):
         # Add more challenges in Database
-        self.client.post("/api/admin/challenges/", {"challengeHeading": "TestChallenge2", "challengeText": "This is a Test Challenge2"}, format="json")
-        self.client.post("/api/admin/challenges/", {"challengeHeading": "TestChallenge3", "challengeText": "This is a Test Challenge3"}, format="json")
-        self.client.post("/api/admin/challenges/", {"challengeHeading": "TestChallenge4", "challengeText": "This is a Test Challenge4"}, format="json")
-        self.client.post("/api/admin/challenges/", {"challengeHeading": "TestChallenge5", "challengeText": "This is a Test Challenge5"}, format="json")
-        
+        self.client.post(
+            "/api/admin/challenges/",
+            {"challengeHeading": "TestChallenge2", "challengeText": "This is a Test Challenge2"},
+            format="json"
+        )
+        self.client.post(
+            "/api/admin/challenges/",
+            {"challengeHeading": "TestChallenge3", "challengeText": "This is a Test Challenge3"},
+            format="json"
+        )
+        self.client.post(
+            "/api/admin/challenges/",
+            {"challengeHeading": "TestChallenge4", "challengeText": "This is a Test Challenge4"},
+            format="json"
+        )
+        self.client.post(
+            "/api/admin/challenges/",
+            {"challengeHeading": "TestChallenge5", "challengeText": "This is a Test Challenge5"},
+            format="json"
+        )
+
         data = {
             "applicationId": "TEST1234",
         }
@@ -168,7 +186,7 @@ class test_createApplication(APITransactionTestCase):
         expiry = Application.objects.get().expiry
         if timestamp < expiry + 5:
             timestamp = expiry
-        
+
         # rounds the assertion to seconds
         self.assertAlmostEqual(Application.objects.get().expiry, timestamp, 0)
 

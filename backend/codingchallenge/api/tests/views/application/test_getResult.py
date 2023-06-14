@@ -1,7 +1,9 @@
 from pathlib import Path
+
 from django.conf import settings
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
+
 from ...mock.mockAuth import MockAuth
 from ....models.application import Application
 

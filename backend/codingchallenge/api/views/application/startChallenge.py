@@ -1,11 +1,14 @@
 import time
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
+
 from ...include import jsonMessages, expirySettings
 from ...models import Application, Challenge
 from ...serializers import GetChallengeSerializer
+
 
 def start(request):
     try:

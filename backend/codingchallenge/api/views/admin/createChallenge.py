@@ -1,6 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
+
 from ...serializers import GetChallengeSerializer
+
 
 def create(request):
     serializer = GetChallengeSerializer(data=request.data)

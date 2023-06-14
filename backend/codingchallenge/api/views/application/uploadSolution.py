@@ -1,21 +1,24 @@
 import sys
 import time
 from io import BytesIO
-from threading import Thread
 from textwrap import dedent
+from threading import Thread
 from zipfile import ZipFile
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from github import GithubException
 from rest_framework import status
 from rest_framework.response import Response
+
 from ...include import jsonMessages
 from ...include.githubApi import GithubApi
 from ...models import Application, Challenge
 
+
 def upload(request):
     g_api = GithubApi()
-    
+
     try:
         user = User.objects.get(username=request.user.username)
     except ObjectDoesNotExist:
@@ -117,12 +120,12 @@ def upload(request):
 
             g_api.create_repo(repo_name, 'to be defined')  # TODO: description auslagern
             g_api.upload_files(repo_name, file_list)
-            
+
             # as the zipfile is redundant to the previous upload, the http-response will be sent before its upload is completed.
             thread = Thread(
-                    target=g_api.upload_file,
-                    args=(repo_name, 'zippedFile_' + repo_name + '.zip', raw_file)
-                )
+                target=g_api.upload_file,
+                args=(repo_name, 'zippedFile_' + repo_name + '.zip', raw_file)
+            )
             thread.start()
 
         except GithubException:

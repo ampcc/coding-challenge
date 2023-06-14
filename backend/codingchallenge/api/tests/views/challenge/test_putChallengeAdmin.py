@@ -14,7 +14,6 @@ class test_putChallengeAdmin(APITestCase):
         MockAuth.admin(self)
 
         self.client.post(self.url, {"challengeHeading": "Test", "challengeText": "Text of challenge..."}, format='json')
-        
 
     def test_different_data_fields(self):
         response = self.client.get(self.url)
@@ -54,7 +53,6 @@ class test_putChallengeAdmin(APITestCase):
         self.assertEqual(response_only_text.status_code, status.HTTP_200_OK)
         self.assertEqual(response_only_text.data, expected_data)
 
-
     def test_default_request(self):
         response = self.client.get(self.url)
         id_1 = response.data[0]['id']
@@ -69,17 +67,15 @@ class test_putChallengeAdmin(APITestCase):
             "challengeText": "Another challenge text..."
         }
         response = self.client.put(self.url + str(id_1), data, format="json")
-        
+
         self.assertEqual(response.data, GetChallengeSerializer(Challenge.objects.get(id=str(id_1))).data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, expected_data)
 
-
     def test_update_nonexistent_challenge(self):
         response = self.client.put(self.url + "2000", {}, format="json")
-        
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_try_updating_id(self):
         response = self.client.get(self.url)
@@ -88,10 +84,9 @@ class test_putChallengeAdmin(APITestCase):
             "detail": "Only 'challengeHeading' and 'challengeText' are permitted."
         }
         response = self.client.put(self.url + str(id_1), {"id": id_1 + 1}, format="json")
-        
-        self.assertEqual(response.data, expected_error)   
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+        self.assertEqual(response.data, expected_error)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_faulty_body_arguments(self):
         response = self.client.get(self.url)

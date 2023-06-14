@@ -1,15 +1,8 @@
-import time
-
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from ...mock.mockAuth import MockAuth
-from ....models.application import Application
-from ....models.challenge import Challenge
-from ....views import jsonMessages
-from ....views import expirySettings
 
-import unittest.mock as mock
 
 class test_changeAdminPassword(APITestCase):
     url = '/api/admin/changePassword/'
@@ -40,7 +33,7 @@ class test_changeAdminPassword(APITestCase):
         response = self.client.put(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data["detail"], "Password(s) must not be empty!")
-      
+
     def test_wrong_old_password(self):
         data = {
             "oldPassword": "asfsdf",
@@ -48,8 +41,11 @@ class test_changeAdminPassword(APITestCase):
         }
         response = self.client.put(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertEqual(response.data["detail"], "The old password does not match the currently logged in admin user account!")
-  
+        self.assertEqual(
+            response.data["detail"],
+            "The old password does not match the currently logged in admin user account!"
+        )
+
     def test_correct_request(self):
         data = {
             "oldPassword": "admin",
